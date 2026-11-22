@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { de } from '../src/i18n/de';
-import { warningText } from '../src/warningText';
+import { warningText } from '../src/lib/warningText';
 
 describe('warningText', () => {
   it('translates every code the projectors emit', () => {

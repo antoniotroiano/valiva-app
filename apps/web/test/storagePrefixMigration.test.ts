@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { migrateStoragePrefix } from '../src/storagePrefixMigration';
+import { migrateStoragePrefix } from '../src/state/storagePrefixMigration';
 
 class MemoryStorage implements Storage {
   data = new Map<string, string>();

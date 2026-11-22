@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { defaultAssumptions, defaultBlock, parseWorkspace, serializeWorkspace } from '@valiva/core';
-import { BrowserWorkspaceStore, HOUSEHOLD_KEY, LAST_EXPORT_KEY } from '../src/workspaceStore';
-import { personKey } from '../src/personStorage';
+import { BrowserWorkspaceStore, HOUSEHOLD_KEY, LAST_EXPORT_KEY } from '../src/state/workspaceStore';
+import { personKey } from '../src/state/personStorage';
 
 const YEAR = 2026;
 const FORMAT = 'test-format';

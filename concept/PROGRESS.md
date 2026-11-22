@@ -290,6 +290,7 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-22 – Review 14 AP-05 nicht umgesetzt: neuer App-Name Valiva, Umbenennung kommt vor AP-05; Dateizuordnung für den Kern vom Autor freigegeben. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 - 2026-11-22 – Review 14 AP-05a: Umbenennung auf Valiva (Pakete `@valiva/*`, Speicher-Präfix `valiva.*` mit Migration, Export-Kennung `valiva-workspace`, Doku); AP-05 folgt in neuer Session. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 - 2026-11-22 – Review 14 AP-05: Kern in Ordner gegliedert (`shared`, `tax`, `etf`, `goals`, `pension`, `household`, `overview`, `workspace`), Tests gespiegelt, `docs/architecture.md` neu; 572 Unit- und 123 E2E-Tests unverändert grün; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+- 2026-11-22 – Review 14 AP-06: Web in `app/`, `state/`, `lib/`, `components/{charts,forms,layout,cards}`, Seitenordner, `i18n/de/` und `styles/` gegliedert (Dunkel-Tokens einmal via `light-dark()`, sechste Datei `print.css`); 572 Unit- und 123 E2E-Tests grün, Screenshots hell bitgleich, dunkel minimale Kantenabweichung bei Schatten; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 ## Offene Fragen aus dem Bau
 - (leer)

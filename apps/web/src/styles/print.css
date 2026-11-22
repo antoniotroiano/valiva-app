@@ -1,0 +1,54 @@
+@media print {
+  .app-notices {
+    display: none;
+  }
+  :root,
+  :root[data-theme='dark'] {
+    color-scheme: light;
+    --bg: #fff;
+    --surface: #fff;
+    --surface-2: #eee;
+    --text: #000;
+    --muted: #333;
+    --line: #bbb;
+    --accent: #0f766e;
+    --danger: #b42318;
+    --ok: #15803d;
+  }
+  nav,
+  .mobile-top,
+  .sheet,
+  .sheet-scrim,
+  .skip,
+  .no-print,
+  .welcome,
+  .notice.info,
+  .whatif,
+  fieldset,
+  .seg,
+  .field,
+  .btn,
+  .link {
+    display: none !important;
+  }
+  .print-only {
+    display: block;
+  }
+  .print-header {
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+  .layout {
+    display: block;
+  }
+  main {
+    padding: 0;
+  }
+  .card {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+  summary {
+    list-style: none;
+  }
+}

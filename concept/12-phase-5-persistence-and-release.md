@@ -57,7 +57,7 @@ Neue Datei `packages/core/src/workspace/workspace.ts` (rein, ohne `localStorage`
 - Nach dem Import müssen alle Hooks neu laden (einfachster Weg `location.reload()`; Bau-Session bewertet einen sauberen Zustands-Reset)
 - Import schreibt erst nach vollständiger Validierung; schlägt `setItem` fehl (Quota), werden die alten Werte wiederhergestellt und eine Meldung gezeigt
 - Hinweis "Zuletzt exportiert: …" (`valiva.lastExport`) und dezenter Hinweis, wenn noch nie exportiert wurde (Browserdaten löschen = Daten weg)
-- Texte zentral in `de.ts`, verständliche Fehlermeldungen ohne technische Codes
+- Texte zentral in `i18n/de/`, verständliche Fehlermeldungen ohne technische Codes
 - Barrierefreiheit: Dateiauswahl per Tastatur, Ergebnis per `role="status"`, Bestätigungsdialog mit Fokusführung
 - Mockup `docs/mockups/daten.html` vor dem Bauen vom Autor freigeben lassen
 

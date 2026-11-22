@@ -4,7 +4,7 @@ Thanks for your interest. This is a private planner in an early stage; small, fo
 
 ## Rules
 
-- **Language:** code, comments, file names, test names, commit messages, config keys and JSON fields in English. UI texts in German, only in `apps/web/src/i18n/de.ts` (no strings in components). German → English terms: `docs/glossary.md`
+- **Language:** code, comments, file names, test names, commit messages, config keys and JSON fields in English. UI texts in German, only in `apps/web/src/i18n/de/` (no strings in components). German → English terms: `docs/glossary.md`
 - **Calculation core (`packages/core`):** pure, deterministic functions; no dependency on UI, DB or HTTP; fully unit-tested. Validation errors are returned as data, not thrown
 - **Legal values** only in `config/`, each with `value`, `validFrom`, `validTo`, `source`, `status` (`confirmed` or `unverified`). Never in code. Unsure values must not appear as confirmed
 - **No real user data** in the repo. Sample data is invented and lives in `examples/` (`meta.synthetic: true`). Never commit your own `*.workspace.json` files

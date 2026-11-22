@@ -1,6 +1,6 @@
 # Visual design
 
-Calm, modern dashboard. Implemented only in `apps/web/src/styles.css`; components use class names and CSS variables, never hard-coded colours. Concept basis: `concept/05-ui-concept.md` §5.
+Calm, modern dashboard. Implemented only in `apps/web/src/styles/` (`tokens.css`, `base.css`, `layout.css`, `components.css`, `pages.css`, `print.css`, assembled by `index.css`); components use class names and CSS variables, never hard-coded colours. Concept basis: `concept/05-ui-concept.md` §5.
 
 ## Principles
 
@@ -35,7 +35,7 @@ Typography: system sans stack (no webfont, no extra dependency), 15 px base, hea
 
 ## Changing the look
 
-Edit the token block at the top of `styles.css` (light, dark, and the `prefers-color-scheme` copy must stay in sync). Check contrast: body text at least 4.5:1, borders of inputs at least 3:1.
+Edit `styles/tokens.css`. Each colour is defined once as `light-dark(light, dark)`; `color-scheme` (system, or `data-theme`) picks the side. Check contrast: body text at least 4.5:1, borders of inputs at least 3:1.
 
 ## History
 

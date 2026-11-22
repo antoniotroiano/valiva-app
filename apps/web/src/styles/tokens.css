@@ -1,0 +1,41 @@
+/*
+ * Design tokens: see docs/design.md.
+ * Every colour used in components and charts comes from these variables.
+ * Each colour is defined once as light-dark(light, dark). color-scheme picks the side:
+ * the system setting by default, or the manual choice via data-theme="light" / "dark".
+ */
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#f3f6f6, #0d1413);
+  --surface: light-dark(#ffffff, #151e1d);
+  --surface-2: light-dark(#eaf0ef, #1e2928);
+  --nav-bg: light-dark(#fbfcfc, #111918);
+  --text: light-dark(#15201e, #e5eeec);
+  --muted: light-dark(#54635f, #9db0ac);
+  --line: light-dark(#dde5e3, #28353a);
+  --field-border: light-dark(#7c8b88, #6d807c);
+  --accent: light-dark(#0f766e, #4fd1c0);
+  --accent-soft: light-dark(#dff1ee, #17332f);
+  --on-accent: light-dark(#ffffff, #052420);
+  --danger: light-dark(#b42318, #ff8a80);
+  --ok: light-dark(#15803d, #5fd08a);
+  --warn-soft: light-dark(#fdf1e4, #2e2214);
+  --focus: light-dark(#0f766e, #4fd1c0);
+  /* The shadow has two layers; in dark mode only the first one is visible. */
+  --shadow-a: light-dark(rgb(16 40 36 / 6%), rgb(0 0 0 / 30%));
+  --shadow-b: light-dark(rgb(16 40 36 / 5%), transparent);
+  --shadow: 0 1px 2px var(--shadow-a), 0 4px 14px var(--shadow-b);
+  --c-contrib: light-dark(#5b6b68, #9db0ac);
+  --c-pess: light-dark(#c2410c, #f59e5b);
+  --c-neutral: light-dark(#0f766e, #4fd1c0);
+  --c-opt: light-dark(#4f46e5, #a5a0ff);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}

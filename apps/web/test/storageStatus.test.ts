@@ -4,8 +4,8 @@ import {
   SNOOZE_DAYS,
   exportReminder,
   snoozeExportReminder,
-} from '../src/exportReminder';
-import { todayLocal } from '../src/format';
+} from '../src/state/exportReminder';
+import { todayLocal } from '../src/lib/format';
 import {
   getStorageStatus,
   isPersistenceSuspended,
@@ -14,7 +14,7 @@ import {
   resetStorageStatus,
   safeRemoveItem,
   safeSetItem,
-} from '../src/storageStatus';
+} from '../src/state/storageStatus';
 
 function stubStorage(failing: boolean) {
   const data = new Map<string, string>();

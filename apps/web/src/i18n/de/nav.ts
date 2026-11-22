@@ -1,0 +1,28 @@
+import { APP_NAME } from '../../app/appConfig';
+
+export const nav = {
+  label: 'Hauptnavigation',
+  loading: 'Wird geladen …',
+  overview: 'Rentenplan',
+  household: 'Haushalt',
+  profile: 'Profil',
+  blocks: 'Bausteine',
+  etf: 'ETF-Sparplan',
+  statutory: 'Gesetzliche Rente',
+  depot: 'Altersvorsorgedepot',
+  occupational: 'Betriebliche AV',
+  goals: 'Sparziele',
+  assumptions: 'Annahmen',
+  data: 'Daten',
+  skip: 'Zum Inhalt springen',
+  inputs: 'Eingaben',
+  more: 'Mehr',
+  saving: 'Sparen',
+  closeSheet: 'Schließen',
+  pageTitle: (page: string) => `${page} – ${APP_NAME}`,
+  person: 'Aktive Person',
+  theme: 'Darstellung',
+  themeSystem: 'System',
+  themeLight: 'Hell',
+  themeDark: 'Dunkel',
+} as const;

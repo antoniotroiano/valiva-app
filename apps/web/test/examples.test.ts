@@ -11,9 +11,9 @@ import {
   serializeWorkspace,
 } from '@valiva/core';
 import type { PersonBlock } from '@valiva/core';
-import { WORKSPACE_FORMAT } from '../src/appConfig';
-import { currentLegal } from '../src/legalConfig';
-import { buildPersonProducts } from '../src/personProducts';
+import { WORKSPACE_FORMAT } from '../src/app/appConfig';
+import { currentLegal } from '../src/lib/legalConfig';
+import { buildPersonProducts } from '../src/lib/personProducts';
 
 const YEAR = new Date().getFullYear();
 const dir = join(__dirname, '../../../examples');

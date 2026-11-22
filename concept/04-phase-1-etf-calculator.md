@@ -16,7 +16,7 @@ Zahlentyp: Fließkomma genügt (siehe `03-domain-rules.md`); Tests prüfen mit T
 
 ## 3. Sprachkonvention
 - **Gesamter Code auf Englisch**: Bezeichner, Kommentare, Dateinamen, Testnamen, Commit-Messages, Konfig-Schlüssel, JSON-Felder, Entwickler-Teil des README
-- **UI-Texte Deutsch**, zentral in einer Übersetzungsdatei (z. B. `apps/web/src/i18n/de.ts`), keine Strings im Komponentencode
+- **UI-Texte Deutsch**, zentral in einer Übersetzungsdatei (z. B. `apps/web/src/i18n/de/`), keine Strings im Komponentencode
 - Fachbegriffe im Code englisch (`savingsPlan`, `taxFreeAllowance`, `partialExemption`); Glossar Deutsch → Englisch in `docs/glossary.md`
 
 ## 4. Datenmodell (Phase 1, englische Bezeichner)

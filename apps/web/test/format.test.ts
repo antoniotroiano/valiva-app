@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseNumber } from '../src/format';
+import { parseNumber } from '../src/lib/format';
 
 describe('parseNumber', () => {
   it('accepts pasted numbers with thousands separators and a decimal comma', () => {
