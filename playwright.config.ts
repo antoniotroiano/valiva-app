@@ -7,7 +7,7 @@ export default defineConfig({
   use: { baseURL: 'http://localhost:5173', channel: process.env.PW_CHANNEL ?? 'chrome' },
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   webServer: {
-    command: 'npm run dev -w @pathwise/web',
+    command: 'npm run dev -w @valiva/web',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
   },

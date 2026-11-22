@@ -1,4 +1,4 @@
-import type { StatutoryDetails } from '@pathwise/core';
+import type { StatutoryDetails } from '@valiva/core';
 import {
   CartesianGrid,
   Legend,

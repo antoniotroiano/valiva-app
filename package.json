@@ -1,5 +1,5 @@
 {
-  "name": "pathwise",
+  "name": "valiva",
   "private": true,
   "version": "0.0.0",
   "description": "Private retirement and savings planner (ETF savings plan, statutory pension, bAV, retirement depot, savings goals, household)",
@@ -18,8 +18,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "dev": "npm run dev -w @pathwise/web",
-    "build": "npm run build -w @pathwise/web",
+    "dev": "npm run dev -w @valiva/web",
+    "build": "npm run build -w @valiva/web",
     "e2e": "playwright test"
   },
   "devDependencies": {

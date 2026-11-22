@@ -1,9 +1,5 @@
-import {
-  capitalGainsRateWithChurchTax,
-  regularRetirementAgeFor,
-  taxableShare,
-} from '@pathwise/core';
-import type { ChurchTaxChoice, GlobalAssumptions, LegalResolution } from '@pathwise/core';
+import { capitalGainsRateWithChurchTax, regularRetirementAgeFor, taxableShare } from '@valiva/core';
+import type { ChurchTaxChoice, GlobalAssumptions, LegalResolution } from '@valiva/core';
 import { useId, useState } from 'react';
 import { FieldGroup } from '../components/FieldGroup';
 import { NumberField } from '../components/NumberField';

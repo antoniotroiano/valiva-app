@@ -1,6 +1,6 @@
-import { WORKSPACE_LIMITS, parseWorkspace, serializeWorkspace } from '@pathwise/core';
+import { WORKSPACE_LIMITS, parseWorkspace, serializeWorkspace } from '@valiva/core';
 import { suspendPersistence } from '../storageStatus';
-import type { Workspace, WorkspaceWarning } from '@pathwise/core';
+import type { Workspace, WorkspaceWarning } from '@valiva/core';
 import { useCallback, useId, useMemo, useRef, useState } from 'react';
 import { WORKSPACE_FILE_SUFFIX, WORKSPACE_FORMAT } from '../appConfig';
 import { ConfirmDialog } from '../components/ConfirmDialog';

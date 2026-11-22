@@ -1,6 +1,6 @@
 # 01 – Ziel, Umfang und Roadmap
 
-Arbeitstitel der App: **Pathwise** (Name vertagt bis zur GitHub-Veröffentlichung, siehe `07-decisions-and-open-points.md`).
+Name der App: **Valiva** (vorher Arbeitstitel "Pathwise", umbenannt 2026-11-22; siehe `07-decisions-and-open-points.md`).
 
 ## 1. Kontext
 
@@ -73,7 +73,7 @@ Nach jeder Phase ist die App lauffähig. Die Fachwerte für Phase 3 sind am 2026
 
 ## 4. Namensvorschläge (vertagt)
 
-1. **Pathwise** (Favorit, Arbeitstitel): Weg + klug
+1. **Valiva** (gewählt): Weg + klug
 2. Nestly: Nest/Vorsorge
 3. Runway: wie lange reicht es (häufig vergeben)
 4. Horizonly: Blick auf den Zeithorizont

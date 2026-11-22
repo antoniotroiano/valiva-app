@@ -65,7 +65,7 @@ export function useStorageStatus(): StorageStatus {
 
 /** Keys of the household and of per-person blocks; theme and hints are not shared state. */
 export function isSharedDataKey(key: string | null): boolean {
-  return key === null || key === 'pathwise.household.v2' || key.startsWith('pathwise.p.');
+  return key === null || key === 'valiva.household.v2' || key.startsWith('valiva.p.');
 }
 
 /** `storage` events fire only in the other tabs, never for this tab's own writes. */

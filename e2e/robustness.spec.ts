@@ -125,7 +125,7 @@ test.describe('export reminder (B-10)', () => {
   test('shows the age of an old export and is silent after a fresh export', async ({ page }) => {
     await loadCouple(page);
     const old = new Date(Date.now() - 100 * 86_400_000).toISOString();
-    await page.evaluate((iso) => localStorage.setItem('pathwise.lastExport', iso), old);
+    await page.evaluate((iso) => localStorage.setItem('valiva.lastExport', iso), old);
     await page.goto('/#overview');
     await page.reload();
     const reminder = page
@@ -149,4 +149,21 @@ test.describe('export reminder (B-10)', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(page.getByText(/Du hast noch nie exportiert/)).toHaveCount(0);
   });
+});
+
+test('data stored under the old pathwise.* prefix is moved to valiva.* on start (rename)', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    localStorage.clear();
+    localStorage.setItem('pathwise.theme', 'dark');
+    localStorage.setItem('pathwise.lastExport', '2026-11-01T10:00:00.000Z');
+  });
+  await page.reload();
+  const keys = await page.evaluate(() => Object.keys(localStorage).sort());
+  expect(keys.filter((k) => k.startsWith('pathwise.'))).toEqual([]);
+  expect(keys).toContain('valiva.theme');
+  expect(keys).toContain('valiva.lastExport');
+  expect(await page.evaluate(() => localStorage.getItem('valiva.theme'))).toBe('dark');
 });

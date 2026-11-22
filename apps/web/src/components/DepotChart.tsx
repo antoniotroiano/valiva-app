@@ -1,4 +1,4 @@
-import type { DepotProjection, ScenarioName } from '@pathwise/core';
+import type { DepotProjection, ScenarioName } from '@valiva/core';
 import {
   CartesianGrid,
   Legend,

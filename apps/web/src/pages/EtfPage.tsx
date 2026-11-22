@@ -4,8 +4,8 @@ import type {
   EtfProjection,
   GlobalAssumptions,
   ValidationIssue,
-} from '@pathwise/core';
-import { SCENARIO_NAMES, usesAssumedBaseInterest } from '@pathwise/core';
+} from '@valiva/core';
+import { SCENARIO_NAMES, usesAssumedBaseInterest } from '@valiva/core';
 import type { Dispatch, SetStateAction } from 'react';
 import { EtfTargetSection } from '../components/EtfTargetSection';
 import { FieldGroup } from '../components/FieldGroup';

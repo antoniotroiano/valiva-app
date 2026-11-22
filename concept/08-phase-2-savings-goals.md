@@ -35,7 +35,7 @@ Ausgabe `GoalResult`: `status` (`reached_at_start` | `reached` | `not_reached`),
 
 ## 5. Datenmodell (Ergänzung zu `06-data-model.md`)
 - `SavingsGoal` wie in `06` plus `taxFreeAllowancePerYear` (Default aus `config/tax-de.json`, `taxFreeAllowance`); `taxEnabled` Default `true`
-- `GoalsState` lokal gespeichert: `{ schemaVersion: 1, savingsBudgetMonthly?: number, goals: SavingsGoal[] }` unter `localStorage`-Key `pathwise.goals.v1`; IDs per `crypto.randomUUID()`. In Phase 5 wird der Zustand in den Workspace überführt (Migration vorsehen, kein Verlust)
+- `GoalsState` lokal gespeichert: `{ schemaVersion: 1, savingsBudgetMonthly?: number, goals: SavingsGoal[] }` unter `localStorage`-Key `valiva.goals.v1`; IDs per `crypto.randomUUID()`. In Phase 5 wird der Zustand in den Workspace überführt (Migration vorsehen, kein Verlust)
 - `GoalResult` und Rückwärts-Ergebnisse werden **nicht** gespeichert
 - Validierung: `targetAmount > 0`, `currentAmount ≥ 0`, `monthlyContribution ≥ 0`, Zins 0–20 %, Zinsänderungen chronologisch und nach `startMonth`, `targetMonth` > `startMonth`, Monate im Format `YYYY-MM`, `taxFreeAllowancePerYear ≥ 0`
 

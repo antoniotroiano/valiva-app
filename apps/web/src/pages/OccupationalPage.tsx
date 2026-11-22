@@ -1,4 +1,4 @@
-import { OCCUPATIONAL_LIMITS, projectOccupational, SCENARIO_NAMES } from '@pathwise/core';
+import { OCCUPATIONAL_LIMITS, projectOccupational, SCENARIO_NAMES } from '@valiva/core';
 import type {
   EmployerSubsidyMode,
   GlobalAssumptions,
@@ -9,7 +9,7 @@ import type {
   OtherIncome,
   ScenarioName,
   ValidationIssue,
-} from '@pathwise/core';
+} from '@valiva/core';
 import { useId, useMemo } from 'react';
 import { KpiTile } from '../components/KpiTile';
 import { MonthField } from '../components/MonthField';

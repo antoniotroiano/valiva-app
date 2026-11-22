@@ -22,7 +22,7 @@ test('export, reset and import restore the household with the same gap', async (
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Daten exportieren' }).click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toMatch(/^pathwise-\d{4}-\d{2}-\d{2}\.workspace\.json$/);
+  expect(download.suggestedFilename()).toMatch(/^valiva-\d{4}-\d{2}-\d{2}\.workspace\.json$/);
   const file = join(tmpdir(), download.suggestedFilename());
   await download.saveAs(file);
   const exported = JSON.parse(readFileSync(file, 'utf8'));

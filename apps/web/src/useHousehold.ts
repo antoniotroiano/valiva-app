@@ -6,14 +6,14 @@ import {
   migrateLegacyStorage,
   parseHouseholdState,
   validateHousehold,
-} from '@pathwise/core';
+} from '@valiva/core';
 import type {
   Household,
   HouseholdAssumptions,
   HouseholdState,
   LegacyStorage,
   Person,
-} from '@pathwise/core';
+} from '@valiva/core';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { de } from './i18n/de';
 import { socialConfig } from './legalConfig';
@@ -40,14 +40,14 @@ function read(key: string): string | null {
 }
 
 /**
- * Loads the household. Without a `pathwise.household.v2` the old single-person keys are copied into
+ * Loads the household. Without a `valiva.household.v2` the old single-person keys are copied into
  * "Person 1" once; the old keys stay untouched as a backup, and existing per-person keys are not overwritten.
  */
 function boot(): HouseholdState {
   const stored = parseHouseholdState(read(HOUSEHOLD_KEY), CURRENT_YEAR);
   if (stored) return stored;
-  const legacy: LegacyStorage = { profile: read('pathwise.profile.v1') };
-  for (const block of PERSON_BLOCKS) legacy[block] = read(`pathwise.${block}.v1`);
+  const legacy: LegacyStorage = { profile: read('valiva.profile.v1') };
+  for (const block of PERSON_BLOCKS) legacy[block] = read(`valiva.${block}.v1`);
   if (legacy.profile === null && PERSON_BLOCKS.every((block) => legacy[block] === null)) {
     markNewStart();
   }

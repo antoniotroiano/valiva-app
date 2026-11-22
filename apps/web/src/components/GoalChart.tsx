@@ -1,4 +1,4 @@
-import type { GoalProjection } from '@pathwise/core';
+import type { GoalProjection } from '@valiva/core';
 import {
   CartesianGrid,
   Legend,

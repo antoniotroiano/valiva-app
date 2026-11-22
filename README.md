@@ -1,4 +1,4 @@
-# Pathwise (working title)
+# Valiva
 
 Private planner for retirement and savings: ETF savings plans, statutory pension, company pension (bAV), retirement depot (Altersvorsorgedepot from 2027) and short-term savings goals, for one person or a household. It shows what you can expect in retirement, how big the gap to your wish income is, and which extra ETF rate would close it.
 
@@ -19,7 +19,7 @@ Open http://localhost:5173. The UI is in German. To try the app, open "Daten" an
 
 ## Export, import and backup
 
-- **Export:** page "Daten" → "Daten exportieren" downloads `pathwise-YYYY-MM-DD.workspace.json` with all persons and blocks
+- **Export:** page "Daten" → "Daten exportieren" downloads `valiva-YYYY-MM-DD.workspace.json` with all persons and blocks
 - **Import:** choose a file, check the preview, confirm. This replaces all current data; a backup of the current data is downloaded first
 - **Backup hint:** clearing the browser data deletes your inputs. Export a file from time to time. The app shows when you last exported
 - Never commit your own `*.workspace.json` files; they are git-ignored except `examples/`

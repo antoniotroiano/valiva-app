@@ -1,5 +1,5 @@
-import { DEFAULT_WITHDRAWAL_PERCENT } from '@pathwise/core';
-import type { WithdrawalFields as Stored, WithdrawalYear } from '@pathwise/core';
+import { DEFAULT_WITHDRAWAL_PERCENT } from '@valiva/core';
+import type { WithdrawalFields as Stored, WithdrawalYear } from '@valiva/core';
 import { useId } from 'react';
 import {
   CartesianGrid,

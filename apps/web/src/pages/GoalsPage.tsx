@@ -1,4 +1,4 @@
-import type { GoalProjection, GoalResult, SavingsGoal, ValidationIssue } from '@pathwise/core';
+import type { GoalProjection, GoalResult, SavingsGoal, ValidationIssue } from '@valiva/core';
 import { useState } from 'react';
 import { FieldGroup } from '../components/FieldGroup';
 import { GoalChart } from '../components/GoalChart';

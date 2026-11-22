@@ -1,4 +1,4 @@
-import { projectStatutory, regularRetirementAgeFor } from '@pathwise/core';
+import { projectStatutory, regularRetirementAgeFor } from '@valiva/core';
 import type {
   GlobalAssumptions,
   LegalParameters,
@@ -9,7 +9,7 @@ import type {
   StatutoryInput,
   StatutoryProjection,
   ValidationIssue,
-} from '@pathwise/core';
+} from '@valiva/core';
 import { useMemo } from 'react';
 import { KpiTile } from '../components/KpiTile';
 import { NumberField } from '../components/NumberField';

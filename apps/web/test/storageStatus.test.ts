@@ -68,11 +68,11 @@ describe('safeSetItem (B-4)', () => {
 
 describe('isSharedDataKey (B-5)', () => {
   it('counts the household, person blocks and a full clear, not theme or hints', () => {
-    expect(isSharedDataKey('pathwise.household.v2')).toBe(true);
-    expect(isSharedDataKey('pathwise.p.p1.depot.v1')).toBe(true);
+    expect(isSharedDataKey('valiva.household.v2')).toBe(true);
+    expect(isSharedDataKey('valiva.p.p1.depot.v1')).toBe(true);
     expect(isSharedDataKey(null)).toBe(true);
-    expect(isSharedDataKey('pathwise.theme')).toBe(false);
-    expect(isSharedDataKey('pathwise.exportReminderUntil')).toBe(false);
+    expect(isSharedDataKey('valiva.theme')).toBe(false);
+    expect(isSharedDataKey('valiva.exportReminderUntil')).toBe(false);
   });
 });
 
@@ -102,7 +102,7 @@ describe('exportReminder (B-10)', () => {
     const { data } = stubStorage(false);
     const until = snoozeExportReminder(now);
     expect(until).toBe(now + SNOOZE_DAYS * 86_400_000);
-    expect(data.get('pathwise.exportReminderUntil')).toBe(String(until));
+    expect(data.get('valiva.exportReminderUntil')).toBe(String(until));
     stubStorage(true);
     expect(() => snoozeExportReminder(now)).not.toThrow();
   });

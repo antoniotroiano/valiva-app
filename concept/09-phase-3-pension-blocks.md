@@ -15,7 +15,7 @@ Drei Bausteine mit Prognose: **gesetzliche Rente**, **Altersvorsorgedepot**, **b
 | Vorgeschlagen (Planer) | Depot-Varianten wirken über **Kosten und Garantie-Untergrenze**, **kein Glide Path**; ETF-Seite behält bis Phase 4 eigene Inflation und Szenarien; Zulagen werden zum Kalenderjahresende gutgeschrieben |
 
 ## 3. Neue Eingaben
-**Profil (`Person`, lokal `pathwise.profile.v1`):** `birthYear`, `targetRetirementAge` (Default 67), `lifeExpectancyAge` (Default 90), `childrenBirthYears[]`.
+**Profil (`Person`, lokal `valiva.profile.v1`):** `birthYear`, `targetRetirementAge` (Default 67), `lifeExpectancyAge` (Default 90), `childrenBirthYears[]`.
 **Globale Annahmen (gleiche Speicherstelle):** `inflationPercent` (2), `returnScenarios` (3/5/7), `pensionAdjustmentPercent` (2,5), `payoutPhaseReturnPercent` (2), `retirementTaxRatePercent` (Eingabe mit Default und Erklärung), `marginalTaxRateTodayPercent`, `employeeSocialInsuranceRatePercent` (Default 20, Annahme), `health`: `statutoryCompulsory` | `other` (+ `otherRatePercent`), `additionalRatePercent` (Default aus Config, 2,9), `childless` (Pflege 4,2 %).
 ETF behält bis Phase 4 eigene `inflationPercent` und `returnScenarios` (entspricht einem Override); Vereinheitlichung dann.
 
@@ -58,7 +58,7 @@ Schema wie `tax-de.json`: `value` oder `tiers`, `unit`, `validFrom`, `validTo`, 
 - Ausgenommen: Kapitalauszahlung mit 1/120-Verbeitragung, Doppelverbeitragung, Direktzusage/Unterstützungskasse
 
 ## 6. Datenmodell (Ergänzung zu `06-data-model.md`)
-`GlobalAssumptions` erhält `payoutPhaseReturnPercent`, `marginalTaxRateTodayPercent`, `employeeSocialInsuranceRatePercent`, `health`. `Product`-Typen `statutory`, `occupational`, `retirementDepot` mit den Feldern oben. `ProjectionResult` (`06` §5) wird erstmals gebaut: Reihe der Ansparphase, `capitalAtRetirement`, `monthlyPensionNominal`/`Real`, `taxAndContributions`, `netMonthlyPensionReal`, `lumpSum?`, `warnings`. `ProductProjector` (`06` §6) wird eingeführt; ETF bleibt bis Phase 4 bei `calculateEtfPlan`. Neue lokale Zustände: `pathwise.profile.v1`, `pathwise.statutory.v1`, `pathwise.depot.v1`, `pathwise.occupational.v1` (Migration in den Workspace in Phase 5).
+`GlobalAssumptions` erhält `payoutPhaseReturnPercent`, `marginalTaxRateTodayPercent`, `employeeSocialInsuranceRatePercent`, `health`. `Product`-Typen `statutory`, `occupational`, `retirementDepot` mit den Feldern oben. `ProjectionResult` (`06` §5) wird erstmals gebaut: Reihe der Ansparphase, `capitalAtRetirement`, `monthlyPensionNominal`/`Real`, `taxAndContributions`, `netMonthlyPensionReal`, `lumpSum?`, `warnings`. `ProductProjector` (`06` §6) wird eingeführt; ETF bleibt bis Phase 4 bei `calculateEtfPlan`. Neue lokale Zustände: `valiva.profile.v1`, `valiva.statutory.v1`, `valiva.depot.v1`, `valiva.occupational.v1` (Migration in den Workspace in Phase 5).
 Validierung (Daten statt Exceptions): Rentenbeginn 63 bis 70, Depot-Auszahlbeginn 65 bis 70, `payoutEndAge` ≥ 85 und > Beginn, Beitrag ≤ 6.840 €/Jahr, `lumpSumSharePercent` 0 bis 30, Geburtsjahr plausibel, Prozentwerte −50 bis 100.
 
 ## 7. UI (Details in `05-ui-concept.md`)

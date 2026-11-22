@@ -4,21 +4,21 @@ import {
   applyWorkspace,
   parseHouseholdState,
   defaultHouseholdState,
-} from '@pathwise/core';
+} from '@valiva/core';
 import type {
   GlobalAssumptions,
   HouseholdState,
   PersonBlock,
   Workspace,
   WorkspaceInfo,
-} from '@pathwise/core';
+} from '@valiva/core';
 import { personKey } from './personStorage';
 
-export const HOUSEHOLD_KEY = 'pathwise.household.v2';
-export const LAST_EXPORT_KEY = 'pathwise.lastExport';
-const PERSON_KEY_PREFIX = 'pathwise.p.';
+export const HOUSEHOLD_KEY = 'valiva.household.v2';
+export const LAST_EXPORT_KEY = 'valiva.lastExport';
+const PERSON_KEY_PREFIX = 'valiva.p.';
 /** Keys of the single-person storage before Phase 4b; `boot` would migrate them again after a reset. */
-const LEGACY_KEYS = ['pathwise.profile.v1', ...PERSON_BLOCKS.map((b) => `pathwise.${b}.v1`)];
+const LEGACY_KEYS = ['valiva.profile.v1', ...PERSON_BLOCKS.map((b) => `valiva.${b}.v1`)];
 
 export type StoreResult = { ok: true } | { ok: false };
 
@@ -39,7 +39,7 @@ type StoreOptions = {
   now?: () => Date;
 };
 
-/** Bundles `pathwise.household.v2` and `pathwise.p.<id>.<block>.v1` of the browser's `localStorage`. */
+/** Bundles `valiva.household.v2` and `valiva.p.<id>.<block>.v1` of the browser's `localStorage`. */
 export class BrowserWorkspaceStore implements WorkspaceStore {
   constructor(private readonly o: StoreOptions) {}
 

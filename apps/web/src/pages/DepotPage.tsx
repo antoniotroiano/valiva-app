@@ -1,4 +1,4 @@
-import { DEPOT_VARIANTS, projectDepot, SCENARIO_NAMES, withdrawalOf } from '@pathwise/core';
+import { DEPOT_VARIANTS, projectDepot, SCENARIO_NAMES, withdrawalOf } from '@valiva/core';
 import type {
   DepotInput,
   DepotProjection,
@@ -8,7 +8,7 @@ import type {
   OtherIncome,
   ScenarioName,
   ValidationIssue,
-} from '@pathwise/core';
+} from '@valiva/core';
 import { useId, useMemo } from 'react';
 import { DepotChart } from '../components/DepotChart';
 import { KpiTile } from '../components/KpiTile';

@@ -3,7 +3,7 @@ import {
   projectEtfWithPayout,
   SCENARIO_NAMES,
   withdrawalOf,
-} from '@pathwise/core';
+} from '@valiva/core';
 import type {
   EtfPayoutState,
   EtfPlanInput,
@@ -13,7 +13,7 @@ import type {
   Profile,
   ScenarioName,
   ValidationIssue,
-} from '@pathwise/core';
+} from '@valiva/core';
 
 export type ProfileSlice = {
   committed: { profile: Profile; assumptions: GlobalAssumptions };

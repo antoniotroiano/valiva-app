@@ -9,8 +9,8 @@ import {
   parseWorkspace,
   personContext,
   serializeWorkspace,
-} from '@pathwise/core';
-import type { PersonBlock } from '@pathwise/core';
+} from '@valiva/core';
+import type { PersonBlock } from '@valiva/core';
 import { WORKSPACE_FORMAT } from '../src/appConfig';
 import { currentLegal } from '../src/legalConfig';
 import { buildPersonProducts } from '../src/personProducts';

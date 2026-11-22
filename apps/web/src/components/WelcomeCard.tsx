@@ -1,4 +1,4 @@
-import { parseWorkspace } from '@pathwise/core';
+import { parseWorkspace } from '@valiva/core';
 import { useState } from 'react';
 import { WORKSPACE_FORMAT } from '../appConfig';
 import { createStore } from '../createStore';

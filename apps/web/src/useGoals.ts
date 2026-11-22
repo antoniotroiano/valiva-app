@@ -4,8 +4,8 @@ import {
   projectGoal,
   projectGoals,
   validateSavingsGoal,
-} from '@pathwise/core';
-import type { ChurchTaxChoice, GoalResult, GoalsState, SavingsGoal } from '@pathwise/core';
+} from '@valiva/core';
+import type { ChurchTaxChoice, GoalResult, GoalsState, SavingsGoal } from '@valiva/core';
 import { useCallback, useMemo, useState } from 'react';
 import { currentTaxAssumptions } from './taxConfig';
 import { personKey, readBlock } from './personStorage';

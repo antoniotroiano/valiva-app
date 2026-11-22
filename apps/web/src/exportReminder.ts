@@ -8,7 +8,7 @@ import { safeSetItem } from './storageStatus';
  */
 export const EXPORT_REMINDER_DAYS = 90;
 export const SNOOZE_DAYS = 7;
-export const SNOOZE_KEY = 'pathwise.exportReminderUntil';
+export const SNOOZE_KEY = 'valiva.exportReminderUntil';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 

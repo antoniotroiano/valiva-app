@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  defaultAssumptions,
-  defaultBlock,
-  parseWorkspace,
-  serializeWorkspace,
-} from '@pathwise/core';
+import { defaultAssumptions, defaultBlock, parseWorkspace, serializeWorkspace } from '@valiva/core';
 import { BrowserWorkspaceStore, HOUSEHOLD_KEY, LAST_EXPORT_KEY } from '../src/workspaceStore';
 import { personKey } from '../src/personStorage';
 
@@ -110,18 +105,18 @@ describe('BrowserWorkspaceStore', () => {
 
   it('keeps unrelated keys such as theme and last export', () => {
     const { storage, store } = filled();
-    storage.setItem('pathwise.theme', 'dark');
+    storage.setItem('valiva.theme', 'dark');
     store.markExported('2026-11-18T10:00:00.000Z');
     store.clear();
-    expect(storage.getItem('pathwise.theme')).toBe('dark');
+    expect(storage.getItem('valiva.theme')).toBe('dark');
     expect(store.lastExport()).toBe('2026-11-18T10:00:00.000Z');
     expect(storage.getItem(LAST_EXPORT_KEY)).not.toBeNull();
   });
 
   it('clear also removes the pre-household keys so they are not migrated back', () => {
     const { storage, store } = filled();
-    storage.setItem('pathwise.profile.v1', '{}');
-    storage.setItem('pathwise.depot.v1', '{}');
+    storage.setItem('valiva.profile.v1', '{}');
+    storage.setItem('valiva.depot.v1', '{}');
     store.clear();
     expect(storage.data.size).toBe(0);
   });

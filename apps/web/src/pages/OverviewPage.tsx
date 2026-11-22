@@ -1,4 +1,4 @@
-import type { EtfPlanResult, GoalResult, SavingsGoal } from '@pathwise/core';
+import type { EtfPlanResult, GoalResult, SavingsGoal } from '@valiva/core';
 import { PageShell } from '../components/PageShell';
 import { WelcomeCard } from '../components/WelcomeCard';
 import { KpiTile } from '../components/KpiTile';

@@ -1,5 +1,5 @@
-import type { OverviewProductKind, OverviewResult, ScenarioName } from '@pathwise/core';
-import { SCENARIO_NAMES } from '@pathwise/core';
+import type { OverviewProductKind, OverviewResult, ScenarioName } from '@valiva/core';
+import { SCENARIO_NAMES } from '@valiva/core';
 import {
   Area,
   AreaChart,

@@ -25,8 +25,8 @@ Die gesetzliche Rente deflationiert heute ab dem **Stand-Jahr** der Renteninform
 Regel ab Phase 4: **real = Kaufkraft des aktuellen Jahres** (`ctx.currentYear`) für alle Bausteine. Gesetzliche Rente: `real = nominal / (1+Inflation)^(Rentenbeginnjahr − currentYear)`, ebenso im Pfad (`PensionPathPoint.real`). Das ist eine **Abweichung von `09` §5.2** und gehört in `PROGRESS.md`. Folgen: Golden-Vektoren und Excel-Blätter der gesetzlichen Rente (`s01`–`s07`) neu erzeugen, Testwerte anpassen; UI-Beschriftung "Kaufkraft heute" prüfen. Rentenbeginn in der Vergangenheit (`retirementYear < currentYear`) wird nicht unterstützt: Validierungsfehler als Daten.
 
 ## 4. Neue Eingaben
-**Profil (`pathwise.profile.v1`, additiv):** `desiredMonthlyIncomeToday` (Netto, heutige Kaufkraft, ≥ 0; leer = Lücke nicht berechenbar, UI erklärt den nächsten Schritt). `lifeExpectancyAge` existiert bereits (Default 90).
-**Bausteine im Verlauf:** `pathwise.overview.v1` mit `enabled` je Baustein (`etf`, `statutory`, `depot`, `occupational`); nur aktivierte und gültige Bausteine zählen.
+**Profil (`valiva.profile.v1`, additiv):** `desiredMonthlyIncomeToday` (Netto, heutige Kaufkraft, ≥ 0; leer = Lücke nicht berechenbar, UI erklärt den nächsten Schritt). `lifeExpectancyAge` existiert bereits (Default 90).
+**Bausteine im Verlauf:** `valiva.overview.v1` mit `enabled` je Baustein (`etf`, `statutory`, `depot`, `occupational`); nur aktivierte und gültige Bausteine zählen.
 **ETF, neu:** `payoutStartAge` (Default = `targetRetirementAge`), `payoutEndAge` (Default = `lifeExpectancyAge`), `useGlobalAssumptions` (Default an).
 
 ## 5. Rechenregeln
@@ -91,7 +91,7 @@ Reine Funktion `overview(products, profile, assumptions, currentYear)` in `packa
 1. Kaufkraft-Basis vereinheitlichen (§3), Tests und Golden-Vektoren anpassen
 2. `Profile.desiredMonthlyIncomeToday` + Validierung
 3. `overview` (Snapshot, Verlauf, Warnungen) mit Tests und Golden-Vektoren
-4. Minimale Web-Ansicht der Gesamtsicht (Zahlen und einfache Tabelle), damit die Teilphase lauffähig ist; Zustand `pathwise.overview.v1`
+4. Minimale Web-Ansicht der Gesamtsicht (Zahlen und einfache Tabelle), damit die Teilphase lauffähig ist; Zustand `valiva.overview.v1`
 
 **4a-2 ETF im Ruhestand**
 5. `etfProjector` mit Entnahme und Steuer (§5.1), Config-Zugriff, Tests, Golden-Vektoren

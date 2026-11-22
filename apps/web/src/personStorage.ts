@@ -1,8 +1,8 @@
-import type { PersonBlock } from '@pathwise/core';
+import type { PersonBlock } from '@valiva/core';
 
-/** Per-person block storage: `pathwise.p.<personId>.<block>.v1`. */
+/** Per-person block storage: `valiva.p.<personId>.<block>.v1`. */
 export function personKey(personId: string, block: PersonBlock): string {
-  return `pathwise.p.${personId}.${block}.v1`;
+  return `valiva.p.${personId}.${block}.v1`;
 }
 
 /** Raw stored JSON of a block, or `null` if missing or storage is unavailable. */

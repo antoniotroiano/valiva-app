@@ -4,7 +4,7 @@ import {
   projectOccupational,
   projectStatutory,
   withdrawalOf,
-} from '@pathwise/core';
+} from '@valiva/core';
 import type {
   EtfPlanInput,
   GlobalAssumptions,
@@ -14,7 +14,7 @@ import type {
   ProjectionResult,
   ScenarioName,
   ValidationIssue,
-} from '@pathwise/core';
+} from '@valiva/core';
 import { etfRetirement } from './etfRetirement';
 import type { EtfPayoutState } from './etfRetirement';
 import { CURRENT_YEAR } from './useHousehold';

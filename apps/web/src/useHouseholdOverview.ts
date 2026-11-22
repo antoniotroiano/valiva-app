@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { householdOverview, personContext, solveHouseholdGapContribution } from '@pathwise/core';
-import type { GapSolveResult, HouseholdOutcome, LegalResolution } from '@pathwise/core';
+import { householdOverview, personContext, solveHouseholdGapContribution } from '@valiva/core';
+import type { GapSolveResult, HouseholdOutcome, LegalResolution } from '@valiva/core';
 import { buildEtfProduct, buildPersonProducts, loadPersonBlocks } from './personProducts';
 import type { PersonBlocks } from './personProducts';
 import { CURRENT_YEAR } from './useHousehold';

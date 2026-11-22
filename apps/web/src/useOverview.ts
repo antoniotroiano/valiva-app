@@ -5,7 +5,7 @@ import {
   loadBlock,
   overview,
   solveGapContribution,
-} from '@pathwise/core';
+} from '@valiva/core';
 import type {
   GapSolveResult,
   LegalResolution,
@@ -15,7 +15,7 @@ import type {
   OverviewState,
   OtherIncome,
   ScenarioName,
-} from '@pathwise/core';
+} from '@valiva/core';
 import { CURRENT_YEAR } from './useProfile';
 import { buildEtfProduct, buildPersonProducts } from './personProducts';
 import type { ProfileApi } from './useProfile';

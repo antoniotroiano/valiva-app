@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { NumberField } from '../components/NumberField';
 import { PageShell } from '../components/PageShell';
-import { SURVIVOR_WISH_PERCENT_LIMITS } from '@pathwise/core';
+import { SURVIVOR_WISH_PERCENT_LIMITS } from '@valiva/core';
 import { de, issueMessage } from '../i18n/de';
 import type { HouseholdApi } from '../useHousehold';
 

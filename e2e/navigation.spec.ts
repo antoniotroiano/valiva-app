@@ -23,14 +23,14 @@ test.describe('desktop', () => {
     page,
   }) => {
     await page.goto('/#assumptions');
-    await expect(page).toHaveTitle('Annahmen – Pathwise');
+    await expect(page).toHaveTitle('Annahmen – Valiva');
     await scrollDown(page);
     await page
       .getByRole('navigation', { name: 'Hauptnavigation' })
       .getByRole('link', { name: 'Profil' })
       .click();
     await expectTopWithFocusedHeading(page, 'Profil');
-    await expect(page).toHaveTitle('Profil – Pathwise');
+    await expect(page).toHaveTitle('Profil – Valiva');
   });
 
   test('the bottom bar is not shown', async ({ page }) => {
@@ -47,7 +47,7 @@ test.describe('desktop', () => {
     await page.keyboard.press('Enter');
     await expect(page.locator('main')).toBeFocused();
     expect(new URL(page.url()).hash).toBe('#profile');
-    await expect(page).toHaveTitle('Profil – Pathwise');
+    await expect(page).toHaveTitle('Profil – Valiva');
   });
 });
 
@@ -79,7 +79,7 @@ test.describe('phone', () => {
     await scrollDown(page);
     await bar(page).getByRole('link', { name: 'Haushalt' }).click();
     await expectTopWithFocusedHeading(page, 'Haushalt');
-    await expect(page).toHaveTitle('Haushalt – Pathwise');
+    await expect(page).toHaveTitle('Haushalt – Valiva');
     await expect(bar(page).getByRole('link', { name: 'Haushalt' })).toHaveAttribute(
       'aria-current',
       'page',
@@ -126,7 +126,7 @@ test.describe('phone', () => {
       .click();
     await expect(page.getByRole('dialog')).toHaveCount(0);
     await expectTopWithFocusedHeading(page, 'ETF-Sparplan');
-    await expect(page).toHaveTitle('ETF-Sparplan – Pathwise');
+    await expect(page).toHaveTitle('ETF-Sparplan – Valiva');
     // The tab of the sheet that holds the current page is marked, the other one is not.
     await expect(bar(page).getByRole('button', { name: 'Eingaben' })).toHaveAttribute(
       'aria-current',

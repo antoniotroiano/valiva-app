@@ -13,7 +13,7 @@
 | 2026-11-09 | Detailtiefe V1 | Altersrente mit Abschlägen/Zuschlägen | Erwerbsminderung/Hinterbliebene nicht in V1 |
 | 2026-11-09 | Mehrere Personen | Partner/Haushalt gewünscht (Phase 4b) | `Person`-Ebene ab Phase 1 |
 | 2026-11-09 | UI | Deutsch, nüchternes Dashboard | Texte zentral, Englisch später möglich |
-| 2026-11-09 | Name | vertagt bis zur GitHub-Veröffentlichung, Arbeitstitel "Pathwise" | Name nur an zentraler Stelle |
+| 2026-11-09 | Name | 2026-11-22: "Valiva" (vorher Arbeitstitel "Pathwise") | Name nur an zentraler Stelle |
 | 2026-11-09 | Sprachregel | Code und Konfig auf Englisch, UI-Texte Deutsch | `docs/glossary.md` DE → EN |
 | 2026-11-09 | Phase 1 | Depotgebühr als Betrag und/oder Prozent; Rückwärtsrechner später (Phase 2/4); Recharts | siehe `04-phase-1-etf-calculator.md` |
 | 2026-11-09 | Unsichere Fachwerte | Vor Phase 3 gegen Primärquellen prüfen | siehe `03-domain-rules.md` |

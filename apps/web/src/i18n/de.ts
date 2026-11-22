@@ -1,5 +1,5 @@
-import { PROFILE_LIMITS } from '@pathwise/core';
-import type { ValidationIssue } from '@pathwise/core';
+import { PROFILE_LIMITS } from '@valiva/core';
+import type { ValidationIssue } from '@valiva/core';
 import { APP_NAME } from '../appConfig';
 
 export const de = {

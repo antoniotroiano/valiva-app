@@ -1,10 +1,10 @@
 import { safeSetItem } from './storageStatus';
 
 /**
- * First-start state (review 13, U-1). `pathwise.onboarding` is `new` from the first visit until the user
+ * First-start state (review 13, U-1). `valiva.onboarding` is `new` from the first visit until the user
  * edits something, loads example data or imports a file; then it is `done`. Existing users have no key.
  */
-export const ONBOARDING_KEY = 'pathwise.onboarding';
+export const ONBOARDING_KEY = 'valiva.onboarding';
 
 function read(key: string): string | null {
   try {

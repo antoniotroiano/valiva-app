@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { GapSolveResult, ScenarioName, ValidationIssue } from '@pathwise/core';
-import { SCENARIO_NAMES } from '@pathwise/core';
+import type { GapSolveResult, ScenarioName, ValidationIssue } from '@valiva/core';
+import { SCENARIO_NAMES } from '@valiva/core';
 import { formatEur } from '../format';
 import { de, issueMessage } from '../i18n/de';
 import type { HouseholdApi } from '../useHousehold';

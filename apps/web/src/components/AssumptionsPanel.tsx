@@ -1,5 +1,5 @@
-import { resolveTaxAssumptions } from '@pathwise/core';
-import type { LegalValue } from '@pathwise/core';
+import { resolveTaxAssumptions } from '@valiva/core';
+import type { LegalValue } from '@valiva/core';
 import { taxConfig } from '../taxConfig';
 import {
   currentLegal,

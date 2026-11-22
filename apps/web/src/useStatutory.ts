@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
-import { loadBlock } from '@pathwise/core';
-import type { StatutoryState } from '@pathwise/core';
+import { loadBlock } from '@valiva/core';
+import type { StatutoryState } from '@valiva/core';
 import { CURRENT_YEAR } from './useProfile';
 import { useDebounced, usePersist } from './useDebounced';
 import { personKey, readBlock } from './personStorage';

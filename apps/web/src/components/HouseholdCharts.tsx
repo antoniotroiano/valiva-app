@@ -1,4 +1,4 @@
-import type { HouseholdResult, ScenarioName } from '@pathwise/core';
+import type { HouseholdResult, ScenarioName } from '@valiva/core';
 import {
   Area,
   Bar,

@@ -1,5 +1,5 @@
-import { SCENARIO_NAMES, loadBlock, solveEtfRequiredContribution } from '@pathwise/core';
-import type { ChurchTaxChoice, EtfPlanInput, EtfTargetState } from '@pathwise/core';
+import { SCENARIO_NAMES, loadBlock, solveEtfRequiredContribution } from '@valiva/core';
+import type { ChurchTaxChoice, EtfPlanInput, EtfTargetState } from '@valiva/core';
 import { useEffect, useMemo, useState } from 'react';
 import { formatEur, formatEur2 } from '../format';
 import { de, issueMessage } from '../i18n/de';

@@ -1,4 +1,4 @@
-import type { EtfScenarioResult, ScenarioName } from '@pathwise/core';
+import type { EtfScenarioResult, ScenarioName } from '@valiva/core';
 import {
   CartesianGrid,
   Legend,

@@ -20,7 +20,7 @@ The rules the projections use, by phase. The legal values themselves live in `co
 - A goal counts as reached in the first month whose balance after tax is at least the target; the calculation stops after 50 years (`not_reached`)
 - Reverse calculator (savings goal and ETF plan): smallest whole-cent monthly amount that reaches the target; for the ETF plan per scenario, with the target either nominal or in today's purchasing power
 - The monthly budget only shows the sum of goal rates plus the ETF rate and warns when exceeded; nothing is distributed automatically
-- Goals are kept in the browser (`localStorage`, key `pathwise.goals.v1`); results are never stored
+- Goals are kept in the browser (`localStorage`, key `valiva.goals.v1`); results are never stored
 
 ## Assumptions (Phase 3b: retirement depot)
 
@@ -31,17 +31,17 @@ The rules the projections use, by phase. The legal values themselves live in `co
 - Payments are fully taxable at the flat retirement tax rate; health and care contributions are assumed to be 0 for compulsory members (not confirmed), "other" uses its own rate
 - Not covered: special-expense deduction, spouse grant, switching from Riester, lifelong annuity, variable share
 - Legal values live in `config/altersvorsorge-de.json`; the child age limit (18) and the "once" of the bonus are `unverified`
-- State is kept in `localStorage` under `pathwise.depot.v1`
+- State is kept in `localStorage` under `valiva.depot.v1`
 
 ## Assumptions (Phase 3a: profile and statutory pension)
 
-- The profile (birth year, target retirement age, life expectancy, children) and the global assumptions (inflation, return scenarios, pension adjustment, flat retirement tax rate, health insurance) are kept under `pathwise.profile.v1`
+- The profile (birth year, target retirement age, life expectancy, children) and the global assumptions (inflation, return scenarios, pension adjustment, flat retirement tax rate, health insurance) are kept under `valiva.profile.v1`
 - Input is the projection from the pension statement ("Regelaltersrente bei Beitragszahlung bis zur Altersgrenze", today's values) plus the statement year; no entitlement points
 - Nominal pension = statement amount × (1 + pension adjustment)^years × factor. Factor: −0.3 % per month before the regular age (at most −14.4 %), +0.5 % per month after it; retirement age 63 to 70 in whole years
 - Known simplification: early or late retirement changes only this factor, not the entitlement points (fewer or more contribution years)
 - Net pension: taxable share (84.0 % in 2026, +0.5 points per year up to 100 %) × flat retirement tax rate; compulsory health insurance members pay half the health rate plus half the additional rate and the full care rate, "other" uses its own rate
 - Real values deflate with inflation; scenarios give the same value for the statutory pension
-- State is kept in `localStorage` under `pathwise.statutory.v1` (only overrides of the profile)
+- State is kept in `localStorage` under `valiva.statutory.v1` (only overrides of the profile)
 
 ## Assumptions (Phase 3c: company pension, bAV)
 
@@ -50,7 +50,7 @@ The rules the projections use, by phase. The legal values themselves live in `co
 - Savings phase like the retirement depot without grants; a guaranteed rate is a lower bound of the net return, not a capital guarantee
 - Payout as a payout plan until the chosen age (start 62 to 70). Pension is fully taxable at the flat retirement tax rate
 - Compulsory health insurance members pay the full health rate only on the part above the allowance, care contributions apply to the whole pension once it exceeds the threshold (hard edge). Both limits (197.75 € today) are indexed with inflation; they are `unverified`
-- State is kept in `localStorage` under `pathwise.occupational.v1`
+- State is kept in `localStorage` under `valiva.occupational.v1`
 
 ## Assumptions (Phase 4a: overall view, ETF in retirement, closing the gap)
 
@@ -61,7 +61,7 @@ The rules the projections use, by phase. The legal values themselves live in `co
 - ETF in retirement: the savings phase ends at the chosen payout start age (duration derived from it, shown with a note if it differs from the duration field). The capital at that point is the gross final value; the Phase 1 sale-at-end tax does not apply. It is paid out as a constant nominal monthly rate until the end age. Tax per withdrawal: constant gain share of the payout × (1 − partial exemption), minus the unused allowance (nominal, fixed), × capital gains rate. No church tax, no advance lump-sum tax
 - A switch on the ETF page (on by default) uses the global return scenarios and inflation instead of the plan's own values
 - Closing the gap: smallest whole-cent extra monthly ETF rate per scenario so that the net pension reaches the desired income; the ETF block counts even if it is switched off in the overview. The budget note only compares the rates with the monthly budget
-- State is kept in `localStorage` under `pathwise.overview.v1` (block switches) and `pathwise.etfPayout.v1` (global switch, payout ages)
+- State is kept in `localStorage` under `valiva.overview.v1` (block switches) and `valiva.etfPayout.v1` (global switch, payout ages)
 
 ## Assumptions (Phase 4b: household)
 
@@ -69,7 +69,7 @@ The rules the projections use, by phase. The legal values themselves live in `co
 - Household view: each person's net pension is summed on a calendar-year axis. A person counts from their retirement start year up to their life expectancy year; the wish counts while at least one person lives. The snapshot is taken in the year the last person retires
 - Survivor's pension is optional (two-person households, switch on the household page): 55 % (marriage from 2002) or 60 % (old law) of the deceased's net statutory pension, from the year after the death of the person with the shorter life expectancy, minus 40 % of the survivor's own income (statutory, bAV, depot; no ETF withdrawals) above 26.4 times the pension value. Not modelled: death quarter, child supplements, inheritance of ETF, depot and bAV, tax on the sum. Optionally the wish shrinks to a share after the first death. Without the switch there is no survivor's pension and the gap after the first death is rather too large. Tax is computed per person (no joint assessment)
 - Closing the gap: smallest extra monthly ETF rate of one chosen person so that the household reaches the wish income; all other products are taken as given
-- State: `pathwise.household.v2` (persons, shared values) and `pathwise.p.<id>.<block>.v1` per person. Old single-person data is migrated once and kept as a backup
+- State: `valiva.household.v2` (persons, shared values) and `valiva.p.<id>.<block>.v1` per person. Old single-person data is migrated once and kept as a backup
 
 ## Workspace file (Phase 5: export and import)
 

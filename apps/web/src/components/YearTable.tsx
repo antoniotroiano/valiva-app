@@ -1,4 +1,4 @@
-import type { EtfScenarioResult } from '@pathwise/core';
+import type { EtfScenarioResult } from '@valiva/core';
 import { de } from '../i18n/de';
 import { formatEur } from '../format';
 import { ScrollTable } from './ScrollTable';

@@ -1,4 +1,4 @@
-import { resolveLegalParameters } from '@pathwise/core';
+import { resolveLegalParameters } from '@valiva/core';
 import { todayLocal } from './format';
 import type {
   DepotKey,
@@ -7,7 +7,7 @@ import type {
   LegalResolution,
   PensionKey,
   SocialKey,
-} from '@pathwise/core';
+} from '@valiva/core';
 import pensionRaw from '../../../config/pension-de.json';
 import socialRaw from '../../../config/social-de.json';
 import depotRaw from '../../../config/altersvorsorge-de.json';

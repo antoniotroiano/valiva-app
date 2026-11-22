@@ -4,14 +4,14 @@ import type { GlobalAssumptions, Profile } from './profile';
 
 export const HOUSEHOLD_SCHEMA_VERSION = 2;
 
-/** Household plus which person is shown. Stored as `pathwise.household.v2`. */
+/** Household plus which person is shown. Stored as `valiva.household.v2`. */
 export type HouseholdState = {
   schemaVersion: typeof HOUSEHOLD_SCHEMA_VERSION;
   household: Household;
   activePersonId: string;
 };
 
-/** Blocks stored per person next to the household (`pathwise.p.<personId>.<block>.v1`). */
+/** Blocks stored per person next to the household (`valiva.p.<personId>.<block>.v1`). */
 export const PERSON_BLOCKS = [
   'etfPlan',
   'etfPayout',
@@ -125,7 +125,7 @@ export function parseHouseholdState(
 }
 
 /**
- * One-time migration of the single-person storage (`pathwise.*.v1`) into "Person 1" (`11` §5). The old
+ * One-time migration of the single-person storage (`valiva.*.v1`) into "Person 1" (`11` §5). The old
  * blocks are passed through as raw strings (their own loaders validate them); the profile is validated
  * here and replaced by defaults if it no longer fits. Never throws; the caller keeps the old data.
  */

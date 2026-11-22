@@ -1,4 +1,4 @@
-import type { OccupationalProjection, ScenarioName } from '@pathwise/core';
+import type { OccupationalProjection, ScenarioName } from '@valiva/core';
 import {
   CartesianGrid,
   Legend,

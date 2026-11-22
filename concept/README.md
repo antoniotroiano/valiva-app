@@ -1,4 +1,4 @@
-# Konzept: Persönlicher Vorsorge- und Sparplaner (Arbeitstitel "Pathwise")
+# Konzept: Persönlicher Vorsorge- und Sparplaner
 
 Diese Dateien sind die **einzige gültige Version** des Konzepts. Es gibt keine weitere Kopie. Änderungen am Konzept direkt hier machen und in `07-decisions-and-open-points.md` festhalten. Fortschritt steht in `PROGRESS.md`.
 

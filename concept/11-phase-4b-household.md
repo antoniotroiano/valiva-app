@@ -67,8 +67,8 @@ type Person = {                          // merges Phase 1 `Person` and `Profile
 - Status `ok`/`already_reached`/`unreachable` wie 4a; Budgetvergleich je Person in der UI
 
 ## 5. Zustände und Migration (4b-2)
-Aktuelle lokale Schlüssel (Stand 3c, plus 4a): `pathwise.profile.v1`, `pathwise.etfPlan.v1`, `pathwise.etfTarget.v1`, `pathwise.goals.v1`, `pathwise.statutory.v1`, `pathwise.depot.v1`, `pathwise.occupational.v1`, `pathwise.overview.v1`.
-- Neuer Zustand `pathwise.household.v2`: Haushalt mit `persons[]`; Bausteinzustände je Person unter der Personen-ID (genaue Aufteilung entscheidet die Bau-Session, Vorschlag: ein Objekt `{household, byPerson: {[id]: {etfPlan, etfTarget, goals, statutory, depot, occupational, overview}}}`)
+Aktuelle lokale Schlüssel (Stand 3c, plus 4a): `valiva.profile.v1`, `valiva.etfPlan.v1`, `valiva.etfTarget.v1`, `valiva.goals.v1`, `valiva.statutory.v1`, `valiva.depot.v1`, `valiva.occupational.v1`, `valiva.overview.v1`.
+- Neuer Zustand `valiva.household.v2`: Haushalt mit `persons[]`; Bausteinzustände je Person unter der Personen-ID (genaue Aufteilung entscheidet die Bau-Session, Vorschlag: ein Objekt `{household, byPerson: {[id]: {etfPlan, etfTarget, goals, statutory, depot, occupational, overview}}}`)
 - **Migration einmalig beim Start:** Existieren die alten Schlüssel und noch kein `household.v2`, wird "Person 1" aus ihnen gebaut (`desiredMonthlyIncomeToday` aus dem Profil in den Haushalt; globale Annahmen auf Haushalt und Person verteilt). **Die alten Schlüssel bleiben unverändert stehen** (Backup), werden aber nicht mehr geschrieben. Ungültige oder fehlende Alt-Daten ergeben Defaults, nie einen Absturz
 - Test: Migration mit vollständigen, teilweisen und kaputten Alt-Zuständen; erneuter Start migriert nicht doppelt
 - Schemaversion im neuen Zustand, Migrationsfunktionen als Kette (Vorbereitung für Phase 5, `06` §7)
@@ -97,7 +97,7 @@ Aktuelle lokale Schlüssel (Stand 3c, plus 4a): `pathwise.profile.v1`, `pathwise
 2. `householdOverview` und `solveHouseholdGapContribution` mit Tests und Golden-Vektoren
 
 **4b-2 Zustände und Personenverwaltung**
-3. Zustand `pathwise.household.v2` und Migration mit Tests
+3. Zustand `valiva.household.v2` und Migration mit Tests
 4. Personen-Umschalter, Seite Haushalt, Bausteinseiten und Ziele auf die aktive Person umstellen; Smoke-Test
 
 **4b-3 Haushaltssicht**

@@ -89,7 +89,7 @@ export function App() {
   const narrow = useNarrowScreen();
   const [theme, setTheme] = useState<Theme>(() => {
     try {
-      return (localStorage.getItem('pathwise.theme') as Theme) || 'system';
+      return (localStorage.getItem('valiva.theme') as Theme) || 'system';
     } catch {
       return 'system';
     }
@@ -180,7 +180,7 @@ export function App() {
   useEffect(() => {
     if (theme === 'system') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', theme);
-    safeSetItem('pathwise.theme', theme);
+    safeSetItem('valiva.theme', theme);
   }, [theme]);
 
   const go = (p: Page) => {

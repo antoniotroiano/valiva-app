@@ -1,4 +1,4 @@
-import { SCENARIO_NAMES } from '@pathwise/core';
+import { SCENARIO_NAMES } from '@valiva/core';
 import type { OverviewApi } from '../useOverview';
 import { useId, useMemo, useState } from 'react';
 import { formatEur, formatNumber } from '../format';

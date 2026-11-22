@@ -4,8 +4,8 @@ import type {
   OverviewResult,
   ScenarioName,
   ValidationIssue,
-} from '@pathwise/core';
-import { SCENARIO_NAMES } from '@pathwise/core';
+} from '@valiva/core';
+import { SCENARIO_NAMES } from '@valiva/core';
 import { useState } from 'react';
 import { formatEur } from '../format';
 import { WhatIfCard } from './WhatIfCard';

@@ -3,14 +3,14 @@ import {
   resolveAdvanceLumpSumParameters,
   resolveChurchTaxParameters,
   resolveTaxAssumptions,
-} from '@pathwise/core';
+} from '@valiva/core';
 import type {
   AdvanceLumpSumParameters,
   ChurchTaxChoice,
   ChurchTaxParameters,
   TaxAssumptions,
   TaxConfig,
-} from '@pathwise/core';
+} from '@valiva/core';
 import raw from '../../../config/tax-de.json';
 import { todayLocal } from './format';
 

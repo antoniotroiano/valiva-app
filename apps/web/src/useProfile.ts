@@ -4,8 +4,8 @@ import {
   validateAssumptions,
   validateProfile,
   validateRetirementTiming,
-} from '@pathwise/core';
-import type { GlobalAssumptions, Profile, ValidationIssue } from '@pathwise/core';
+} from '@valiva/core';
+import type { GlobalAssumptions, Profile, ValidationIssue } from '@valiva/core';
 import { useCallback, useMemo } from 'react';
 import { CURRENT_YEAR, defaultGlobalAssumptions } from './useHousehold';
 import type { HouseholdApi } from './useHousehold';

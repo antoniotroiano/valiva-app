@@ -74,7 +74,7 @@ test('print layout hides the navigation and shows a header with the disclaimer',
   await expect(page.getByRole('heading', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
   await page.emulateMedia({ media: 'print' });
   await expect(page.getByRole('navigation')).toBeHidden();
-  await expect(page.getByText(/^Pathwise – Rentenplan, Stand/)).toBeVisible();
+  await expect(page.getByText(/^Valiva – Rentenplan, Stand/)).toBeVisible();
   await expect(page.getByText(/Keine Anlage- oder Steuerberatung/).first()).toBeVisible();
 });
 

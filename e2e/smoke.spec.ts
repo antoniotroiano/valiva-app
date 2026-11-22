@@ -179,7 +179,7 @@ test('migration: old single-person data becomes Person 1 and stays as backup', a
     if (localStorage.getItem('seeded')) return;
     localStorage.setItem('seeded', '1');
     localStorage.setItem(
-      'pathwise.profile.v1',
+      'valiva.profile.v1',
       JSON.stringify({
         schemaVersion: 1,
         profile: {
@@ -201,7 +201,7 @@ test('migration: old single-person data becomes Person 1 and stays as backup', a
         },
       }),
     );
-    localStorage.setItem('pathwise.etfPlan.v1', JSON.stringify({ monthlyContribution: 321 }));
+    localStorage.setItem('valiva.etfPlan.v1', JSON.stringify({ monthlyContribution: 321 }));
   });
   await page.goto('/#profile');
   await expect(page.getByLabel('Geburtsjahr', { exact: true })).toHaveValue('1980');
@@ -210,9 +210,9 @@ test('migration: old single-person data becomes Person 1 and stays as backup', a
   await page.reload();
   await expect(page.getByLabel('Monatliche Sparrate')).toHaveValue('321');
   const keys = await page.evaluate(() => Object.keys(localStorage));
-  expect(keys).toContain('pathwise.household.v2');
-  expect(keys).toContain('pathwise.profile.v1');
-  expect(keys).toContain('pathwise.p.p1.etfPlan.v1');
+  expect(keys).toContain('valiva.household.v2');
+  expect(keys).toContain('valiva.profile.v1');
+  expect(keys).toContain('valiva.p.p1.etfPlan.v1');
 });
 
 test('two persons: own data per person, shared wish', async ({ page }) => {

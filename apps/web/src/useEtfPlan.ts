@@ -1,5 +1,5 @@
-import { DEFAULT_ETF_PLAN, calculateEtfPlan, loadBlock } from '@pathwise/core';
-import type { EtfPlanInput, LegalResolution } from '@pathwise/core';
+import { DEFAULT_ETF_PLAN, calculateEtfPlan, loadBlock } from '@valiva/core';
+import type { EtfPlanInput, LegalResolution } from '@valiva/core';
 import { useCallback, useMemo, useState } from 'react';
 import { DEFAULT_PAYOUT, effectiveEtfPlan, etfRetirement } from './etfRetirement';
 import type { EtfPayoutState } from './etfRetirement';
