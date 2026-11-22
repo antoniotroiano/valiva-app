@@ -251,15 +251,6 @@ fieldset.plain legend {
   vertical-align: 4px;
 }
 
-.person-switch {
-  display: grid;
-  gap: 0.25rem;
-  margin: 0 4px 1rem;
-}
-.person-switch label {
-  font-size: 13px;
-  color: var(--muted);
-}
 .person-list {
   list-style: none;
   padding: 0;

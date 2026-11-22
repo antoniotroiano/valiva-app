@@ -11,7 +11,8 @@ import { Icon } from '../components/layout/Icon';
 import { BLOCK_OF, NAV, PAGES } from './pages';
 import type { Page } from './pages';
 import { PersonWorkspace } from './PersonWorkspace';
-import { ViewSwitch } from './ViewSwitch';
+import { PageHeadProvider, type PageHeadValue } from '../components/layout/PageHead';
+import { PersonTabs } from '../components/layout/PersonTabs';
 
 const HouseholdPage = lazy(() =>
   import('../pages/household/HouseholdPage').then((m) => ({ default: m.HouseholdPage })),
@@ -21,6 +22,8 @@ const DataPage = lazy(() =>
 );
 
 type Theme = 'system' | 'light' | 'dark';
+
+const PERSON_PAGES: Page[] = ['profile', 'etf', 'statutory', 'depot', 'occupational', 'goals'];
 
 function pageFromHash(): Page {
   const h = window.location.hash.slice(1) as Page;
@@ -130,6 +133,40 @@ export function App() {
     window.location.hash = p;
   };
 
+  // The one person switcher sits in the page head; building-block pages carry the person in the title.
+  const persons = household.state.household.persons.map((p, i) => ({
+    id: p.id,
+    label: p.name.trim() || de.household.newPersonName(i + 1),
+  }));
+  const activeLabel = persons.find((p) => p.id === personId)?.label;
+  let head: PageHeadValue = {};
+  if (multi && page === 'overview') {
+    head = {
+      person: view === 'person' ? activeLabel : undefined,
+      switcher: (
+        <PersonTabs
+          withHousehold
+          persons={persons}
+          selected={view === 'household' ? 'household' : personId}
+          onSelect={(id) => {
+            if (id === 'household') setView('household');
+            else {
+              household.setActivePerson(id);
+              setView('person');
+            }
+          }}
+        />
+      ),
+    };
+  } else if (multi && PERSON_PAGES.includes(page)) {
+    head = {
+      person: activeLabel,
+      switcher: (
+        <PersonTabs persons={persons} selected={personId} onSelect={household.setActivePerson} />
+      ),
+    };
+  }
+
   const navLink = (p: Page) => (
     <a
       className="nl"
@@ -157,38 +194,12 @@ export function App() {
         {de.nav.skip}
       </a>
       {narrow ? (
-        <MobileNav
-          page={page}
-          persons={household.state.household.persons.map((p, i) => ({
-            id: p.id,
-            label: p.name.trim() || de.household.newPersonName(i + 1),
-          }))}
-          activePersonId={personId}
-          onPersonChange={household.setActivePerson}
-          theme={theme}
-          onThemeChange={setTheme}
-        />
+        <MobileNav page={page} theme={theme} onThemeChange={setTheme} />
       ) : (
         <nav className="sidebar" aria-label={de.nav.label}>
           <div className="nav-head">
             <strong>{de.appName}</strong>
           </div>
-          {household.state.household.persons.length > 1 && (
-            <div className="person-switch">
-              <label htmlFor="person">{de.nav.person}</label>
-              <select
-                id="person"
-                value={personId}
-                onChange={(e) => household.setActivePerson(e.target.value)}
-              >
-                {household.state.household.persons.map((p, i) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name.trim() || de.household.newPersonName(i + 1)}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
           <ul className="nav-list">
             {NAV.map((entry) =>
               typeof entry === 'string' ? (
@@ -226,39 +237,37 @@ export function App() {
           hideExportReminder={page === 'data'}
           isNewStart={newStart}
         />
-        {page === 'overview' && multi && (
-          <ViewSwitch household={household} view={view} setView={setView} />
-        )}
-        <Suspense fallback={<p role="status">{de.nav.loading}</p>}>
-          {page === 'household' ? (
-            <HouseholdPage api={household} goToProfile={() => go('profile')} />
-          ) : page === 'data' ? (
-            <DataPage household={household} />
-          ) : page === 'overview' && multi && view === 'household' ? (
-            <HouseholdOverviewPage
-              household={household}
-              goToHousehold={() => go('household')}
-              openPerson={(id) => {
-                household.setActivePerson(id);
-                setView('person');
-              }}
-              goToPersonProfile={(id) => {
-                household.setActivePerson(id);
-                setView('person');
-                go('profile');
-              }}
-            />
-          ) : (
-            <PersonWorkspace
-              key={personId}
-              personId={personId}
-              household={household}
-              page={page}
-              go={go}
-              newStart={newStart}
-            />
-          )}
-        </Suspense>
+        <PageHeadProvider value={head}>
+          <Suspense fallback={<p role="status">{de.nav.loading}</p>}>
+            {page === 'household' ? (
+              <HouseholdPage api={household} goToProfile={() => go('profile')} />
+            ) : page === 'data' ? (
+              <DataPage household={household} />
+            ) : page === 'overview' && multi && view === 'household' ? (
+              <HouseholdOverviewPage
+                household={household}
+                openPerson={(id) => {
+                  household.setActivePerson(id);
+                  setView('person');
+                }}
+                goToPersonProfile={(id) => {
+                  household.setActivePerson(id);
+                  setView('person');
+                  go('profile');
+                }}
+              />
+            ) : (
+              <PersonWorkspace
+                key={personId}
+                personId={personId}
+                household={household}
+                page={page}
+                go={go}
+                newStart={newStart}
+              />
+            )}
+          </Suspense>
+        </PageHeadProvider>
       </main>
     </div>
   );

@@ -9,12 +9,10 @@ const HouseholdOverview = lazy(() =>
 
 export function HouseholdOverviewPage({
   household,
-  goToHousehold,
   openPerson,
   goToPersonProfile,
 }: {
   household: HouseholdApi;
-  goToHousehold: () => void;
   openPerson: (id: string) => void;
   goToPersonProfile: (id: string) => void;
 }) {
@@ -24,7 +22,6 @@ export function HouseholdOverviewPage({
     <HouseholdOverview
       household={household}
       data={data}
-      goToHousehold={goToHousehold}
       openPerson={openPerson}
       goToPersonProfile={goToPersonProfile}
     />

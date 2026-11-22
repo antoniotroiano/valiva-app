@@ -7,6 +7,14 @@ export const householdView = {
   invalid: 'Die Angaben einer Person sind unvollständig. Bitte dort korrigieren:',
   fixPerson: (name: string) => `Profil von ${name} öffnen`,
   loading: 'Daten werden geladen …',
+  hero: {
+    wishHint:
+      'Gemeinsamer Wunsch des Haushalts. Er entscheidet, ob eine Lücke oder ein Überschuss entsteht.',
+  },
+  sections: {
+    details: 'Details und Tabellen',
+    detailsMeta: 'Nettorente je Person und Baustein, Hinterbliebenenrente, Personen',
+  },
   headline: (year: number, scenario: string) => `Haushalt im Jahr ${year} (${scenario})`,
   noWish: 'Ohne Wunscheinkommen gibt es keine Lücke.',
   toHousehold: 'Wunscheinkommen eintragen',

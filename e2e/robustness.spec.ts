@@ -27,14 +27,25 @@ test('a person who retires in the past gets an error, not a household gap (B-3)'
   await expect(message).toContainText('Der Modus für Personen, die schon in Rente sind, folgt.');
 
   await page.goto('/#overview');
-  await page.getByRole('radio', { name: 'Haushalt' }).check();
-  const section = page.getByRole('region', { name: 'Gesamtsicht Haushalt' });
-  await expect(section).toContainText('Die Angaben einer Person sind unvollständig');
-  await expect(section).toContainText('Der Rentenbeginn liegt in der Vergangenheit.');
+  await page.getByRole('radio', { name: 'Haushalt' }).click();
+  // The message is an alert above the page head, not buried in the page.
+  const alert = page
+    .getByRole('alert')
+    .filter({ hasText: 'Die Angaben einer Person sind unvollständig' });
+  await expect(alert).toContainText('Der Rentenbeginn liegt in der Vergangenheit.');
+  const aboveHead = await alert.evaluate(
+    (a) =>
+      !!(
+        a.compareDocumentPosition(document.querySelector('main h1')!) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+      ),
+  );
+  expect(aboveHead).toBe(true);
   await expect(page.getByText(/Gedeckt sind/)).toHaveCount(0);
   await expect(page.locator('.kpi')).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'Gesamtsicht Haushalt' })).toHaveCount(0);
 
-  await section.getByRole('button', { name: /^Profil von .* öffnen$/ }).click();
+  await alert.getByRole('button', { name: /^Profil von .* öffnen$/ }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Profil' })).toBeVisible();
   await expect(page.getByLabel('Geburtsjahr', { exact: true })).toHaveValue('1950');
 });

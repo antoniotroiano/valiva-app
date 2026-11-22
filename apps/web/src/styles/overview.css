@@ -1,0 +1,221 @@
+/*
+ * Result-first pages (AP-09): page head with the person switcher, hero card with the wish field next to
+ * it, notices above the head, collapsible detail rows, link card. Mockup: docs/mockups/rentenplan-ap09.html.
+ */
+
+/* Page head: title and purpose left, badge, buttons and the person switcher right */
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--s3) var(--s4);
+  margin-bottom: var(--s4);
+}
+.page-head .sub {
+  margin-bottom: 0;
+}
+.head-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+}
+.head-tools .seg,
+.head-tools .btn {
+  margin: 0;
+}
+.person-select {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+.person-select select {
+  width: auto;
+  min-width: 10em;
+}
+
+/* Notices above the head */
+.notice.warn,
+.notice.bad {
+  display: flex;
+  gap: var(--s3);
+  align-items: flex-start;
+  border-radius: var(--radius);
+  padding: var(--s3) var(--s4);
+}
+.notice.warn {
+  color: var(--warn-fg);
+  background: var(--warn-bg);
+  border-color: var(--warn-bd);
+}
+.notice.bad {
+  color: var(--bad-fg);
+  background: var(--bad-bg);
+  border-color: var(--bad-bd);
+}
+.notice .ic {
+  flex: none;
+  margin-top: 2px;
+}
+.notice > div {
+  min-width: 0;
+}
+.notice b {
+  display: block;
+}
+.notice .link {
+  color: inherit;
+  font-weight: 600;
+}
+.note-list {
+  margin: var(--s1) 0 0;
+  padding-left: var(--s4);
+}
+
+/* Hero card and wish field */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--s4);
+  margin-bottom: var(--s4);
+}
+.hero-grid > .card {
+  margin: 0;
+}
+.hero-num {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s3);
+}
+.hero .kpi-value {
+  margin: 2px 0;
+}
+.hero .gapbar {
+  margin-top: var(--s2);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin: var(--s2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hero p {
+  margin: var(--s1) 0 0;
+}
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Section titles on result pages */
+.block-h {
+  font-size: var(--fs-h3);
+  line-height: 1.35;
+  margin: var(--s5) 0 var(--s2);
+}
+
+/* Collapsible rows: one grouped list, each row title + grey summary + chevron */
+.dts {
+  display: flex;
+  flex-direction: column;
+}
+.dt {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-bottom-width: 0;
+}
+.dt:first-child {
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.dt:last-child {
+  border-radius: 0 0 var(--radius) var(--radius);
+  border-bottom-width: 1px;
+}
+.dt:only-child {
+  border-radius: var(--radius);
+}
+.dt > summary {
+  list-style: none;
+  cursor: pointer;
+  min-height: 48px;
+  padding: var(--s2) var(--s4);
+  font-weight: 600;
+}
+.dt > summary::-webkit-details-marker {
+  display: none;
+}
+.dt-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  min-height: 32px;
+}
+.dt-row .meta {
+  font-weight: 400;
+  font-size: var(--fs-small);
+  color: var(--muted);
+  text-align: right;
+}
+.dt-row .ic:last-child {
+  flex: none;
+  transition: transform 0.15s ease-out;
+}
+.dt-row > span:first-child {
+  flex: 1;
+  min-width: 0;
+}
+.dt[open] .dt-row .ic:last-child {
+  transform: rotate(180deg);
+}
+.dt-body {
+  padding: 0 var(--s4) var(--s4);
+}
+.dt-body > h3 {
+  margin-top: var(--s4);
+}
+@media (max-width: 900px) {
+  .dt-row .meta {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dt-row .ic:last-child {
+    transition: none;
+  }
+}
+
+/* Link card (savings goals) */
+.linkcard {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-top: var(--s4);
+  padding: var(--s3) var(--s4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+  text-decoration: none;
+}
+.linkcard small {
+  display: block;
+  color: var(--muted);
+}
+.linkcard > span {
+  flex: 1;
+  min-width: 0;
+}
+.linkcard:hover {
+  background: var(--surface-2);
+}
+.linkcard:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}

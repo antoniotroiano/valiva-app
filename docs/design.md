@@ -95,7 +95,8 @@ Contrast rule: text 4.5:1, controls, focus ring and chart fills 3:1; the full pa
 
 ### Components
 
-- **Result first (AP-09):** hero card (large number, status chip, stacked bar against the wish, one sentence) with the wish input next to it; details collapsed below. Savings goals appear only as a link card.
+- **Result first (AP-09, built):** hero card (large number, status chip, bar against the wish, one sentence, block status chips) with the wish input next to it, scenario switch below, composition, then "More" as collapsible rows (`Disclosure`, `.dts`). Important notes and invalid input stand above the page head, other notes are collapsed with their count. Savings goals are only a link card.
+- **Person switcher (AP-09):** one switcher in the page head (`PersonTabs`; overview: household + persons, other pages: persons; more than three options become a select). The active person is part of the heading of block pages. No person select in the sidebar or the phone top bar.
 - **Block page template (AP-10, AP-11):** inputs | result | calculation. Desktop: inputs left, result top right, calculation (collapsed groups) below it. Phone: result, calculation, inputs.
 - **Navigation:** line icons as inline SVG (24 grid, stroke 1.8, no library); active item = tinted pill; small block-colour dot next to block pages. Phone: bottom tab bar and sheets exactly as approved in AP-03, now with icons in the sheet rows.
 - **Empty state:** three steps with progress, one primary button for the next step, one quiet secondary action.
@@ -107,3 +108,4 @@ Contrast rule: text 4.5:1, controls, focus ring and chart fills 3:1; the full pa
 - 2026-11-18: first visual pass (teal accent, softer surfaces, tokens extended). Logic, texts and component structure unchanged.
 - 2026-11-22: design v2 decided (AP-07, mockup approved by the author).
 - 2026-11-22: AP-08 implemented the foundations: tokens (spacing, type, block and status colours), 16 px base, navigation icons, `StatusChip`, `EmptyState`, hero `KpiTile`, chart palettes with person patterns. Differences to the mockup: page layouts (AP-09 to AP-12), household chart stacks by person, no "Inputs" sidebar group yet.
+- 2026-11-22: AP-09 built the result-first retirement plan and the single person switcher (mockup `docs/mockups/rentenplan-ap09.html`). "Verlauf" is collapsed by default to keep the page under the height target.

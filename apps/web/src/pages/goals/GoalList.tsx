@@ -39,7 +39,7 @@ export function GoalListItem({
           aria-valuenow={percent}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={de.overview.goalProgressLabel(goal.name)}
+          aria-label={t.progressLabel(goal.name)}
         >
           <span style={{ width: `${percent}%` }} />
         </span>

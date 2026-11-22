@@ -10,7 +10,7 @@ test('first start shows the welcome card; example data load it and the card disa
   await page.getByRole('button', { name: 'Mit Beispieldaten ausprobieren' }).click();
   await page.getByRole('button', { name: 'Beispieldaten laden' }).click();
   await page.waitForLoadState('load');
-  await expect(page.getByRole('heading', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Willkommen' })).toHaveCount(0);
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Willkommen' })).toHaveCount(0);
@@ -71,7 +71,7 @@ test('print layout hides the navigation and shows a header with the disclaimer',
   page,
 }) => {
   await page.goto('/#overview');
-  await expect(page.getByRole('heading', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
   await page.emulateMedia({ media: 'print' });
   await expect(page.getByRole('navigation')).toBeHidden();
   await expect(page.getByText(/^Valiva – Rentenplan, Stand/)).toBeVisible();

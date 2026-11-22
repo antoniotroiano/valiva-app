@@ -21,6 +21,7 @@ export const nav = {
   closeSheet: 'Schließen',
   pageTitle: (page: string) => `${page} – ${APP_NAME}`,
   person: 'Aktive Person',
+  titleWithPerson: (title: string, person: string) => `${title} · ${person}`,
   theme: 'Darstellung',
   themeSystem: 'System',
   themeLight: 'Hell',

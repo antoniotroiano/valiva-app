@@ -176,7 +176,7 @@ test.describe('phone', () => {
     await expect(page.locator('#main')).not.toHaveAttribute('inert', '');
   });
 
-  test('active person is shown in the top bar and can be switched', async ({ page }) => {
+  test('the person switcher sits in the page head, not in the top bar', async ({ page }) => {
     await page.goto('/#data');
     await page.getByRole('button', { name: 'Paar', exact: true }).click();
     await page.getByRole('button', { name: 'Daten ersetzen …' }).click();
@@ -185,12 +185,16 @@ test.describe('phone', () => {
     await backup;
     await page.waitForLoadState('load');
     await page.goto('/#overview');
-    const select = page.locator('.mobile-top').getByLabel('Aktive Person');
-    await expect(select).toBeVisible();
-    const options = await select.locator('option').allTextContents();
-    expect(options.length).toBeGreaterThan(1);
-    await select.selectOption({ index: 1 });
-    await expect(select.locator('option:checked')).toHaveText(options[1]);
+    await expect(page.locator('.mobile-top').getByLabel('Aktive Person')).toHaveCount(0);
+    const tabs = page.getByRole('radiogroup', { name: 'Ansicht' });
+    await expect(tabs).toBeVisible();
+    await expect(tabs.getByRole('radio', { name: 'Haushalt' })).toBeChecked();
+    await tabs.getByRole('radio').nth(1).click();
+    await expect(page.getByRole('region', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
+    // Keyboard focus stays on the switcher after the view changed.
+    await expect(
+      page.getByRole('radiogroup', { name: 'Ansicht' }).getByRole('radio').nth(1),
+    ).toBeFocused();
   });
 
   for (const colorScheme of ['light', 'dark'] as const) {

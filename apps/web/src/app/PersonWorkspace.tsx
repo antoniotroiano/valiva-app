@@ -64,11 +64,6 @@ export function PersonWorkspace({
       {shared && <p className="hint">{de.household.sharedNote}</p>}
       {page === 'overview' && (
         <OverviewPage
-          result={plan.result}
-          taxEnabled={plan.input.taxEnabled}
-          goals={goals.goals}
-          goalResults={goals.results}
-          goToGoals={() => go('goals')}
           retirement={retirement}
           budget={{
             budget: goals.state.savingsBudgetMonthly,

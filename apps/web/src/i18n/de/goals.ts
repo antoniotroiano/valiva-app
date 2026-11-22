@@ -1,6 +1,7 @@
 export const goals = {
   title: 'Sparziele',
   subtitle: 'Wann erreichst du dein Ziel, und welche Rate brauchst du bis zum Wunschtermin?',
+  progressLabel: (name: string) => `Fortschritt ${name}`,
   listTitle: 'Meine Sparziele',
   add: 'Ziel hinzufügen',
   remove: 'Ziel löschen',

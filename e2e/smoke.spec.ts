@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openRow } from './helpers';
 
 test('input leads to visible result and scenario chart', async ({ page }) => {
   await page.goto('/#etf');
@@ -144,9 +145,12 @@ test('overview: statutory pension and desired income show a gap', async ({ page 
     .first()
     .fill('1500');
   await page.goto('/#overview');
-  const section = page.getByRole('region', { name: 'Gesamtsicht im Ruhestand' });
+  const section = page.locator('main');
+  await expect(page.getByRole('region', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
+  await openRow(page, 'Details und Tabellen');
   await expect(section.getByRole('table').first()).toBeVisible();
-  await expect(section.getByRole('row', { name: /Rentenlücke/ })).toContainText('€');
+  await expect(section.getByRole('row', { name: /^Rentenlücke/ })).toContainText('€');
+  await openRow(page, 'Verlauf je Alter');
   await expect(section.getByRole('img', { name: /Flächendiagramm des monatlichen/ })).toBeVisible();
   await expect(section.getByRole('img', { name: /Gestapelter Balken/ })).toBeVisible();
   await expect(section.getByText(/Es fehlen etwa/)).toBeVisible();
@@ -155,8 +159,9 @@ test('overview: statutory pension and desired income show a gap', async ({ page 
     section.getByText(/Netto-Rente ab 67, Kaufkraft von heute \(Optimistisch\)/),
   ).toBeVisible();
   await section.getByLabel('Neutral', { exact: true }).check();
-  const gap = section.getByRole('region', { name: 'Lücke schließen' });
-  await expect(gap.getByRole('row', { name: /Zusätzlich pro Monat/ })).toContainText('€');
+  await openRow(page, 'Lücke schließen');
+  await expect(section.getByRole('row', { name: /Zusätzlich pro Monat/ })).toContainText('€');
+  await openRow(page, 'Bausteine in der Gesamtsicht');
   await section.getByRole('checkbox', { name: 'Gesetzliche Rente' }).uncheck();
   await expect(section.getByText('ausgeschaltet').first()).toBeVisible();
 });
@@ -227,14 +232,21 @@ test('two persons: own data per person, shared wish', async ({ page }) => {
   await page.goto('/#household');
   await page.getByRole('button', { name: 'Person hinzufügen' }).click();
   await page.getByLabel('Name von Person 2').fill('Partner');
-  await expect(page.getByLabel('Aktive Person')).toHaveValue('p2');
   await expect(page.getByLabel(/Wunscheinkommen im Ruhestand/)).toHaveValue('3.000');
   await page.goto('/#profile');
   await expect(page.getByLabel(/Wunscheinkommen im Ruhestand/)).toHaveCount(0);
   await page.getByLabel('Geburtsjahr', { exact: true }).fill('1988');
   await page.goto('/#etf');
+  // The one person switcher sits in the page head; the active person is part of the heading.
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'ETF-Sparplan · Partner' }),
+  ).toBeVisible();
+  await expect(page.getByRole('radio', { name: 'Partner' })).toBeChecked();
   await expect(page.getByLabel('Monatliche Sparrate')).not.toHaveValue('222');
-  await page.getByLabel('Aktive Person').selectOption('p1');
+  await page.getByRole('radio', { name: 'Person 1' }).click();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'ETF-Sparplan · Person 1' }),
+  ).toBeVisible();
   await expect(page.getByLabel('Monatliche Sparrate')).toHaveValue('222');
   await page.goto('/#profile');
   await expect(page.getByLabel('Geburtsjahr', { exact: true })).toHaveValue('1985');
@@ -251,12 +263,13 @@ test('household view: shared gap, closing it with one person', async ({ page }) 
   await page.goto('/#profile');
   await page.getByLabel('Geburtsjahr', { exact: true }).fill('1988');
   await page.goto('/#overview');
-  await expect(page.getByRole('heading', { name: 'Gesamtsicht Haushalt' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Gesamtsicht Haushalt' })).toBeVisible();
   await expect(page.getByText(/Haushalt im Jahr/)).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Lücke schließen' })).toBeVisible();
+  await openRow(page, 'Lücke schließen');
+  await openRow(page, 'Details und Tabellen');
   await expect(page.getByRole('row', { name: /^Anna/ })).toBeVisible();
   await expect(page.getByRole('row', { name: /^Partner/ })).toBeVisible();
   await page.getByLabel('Person für die zusätzliche ETF-Rate').selectOption('p1');
-  await page.getByRole('radio', { name: 'Partner' }).check();
-  await expect(page.getByRole('heading', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
+  await page.getByRole('radio', { name: 'Partner' }).click();
+  await expect(page.getByRole('region', { name: 'Gesamtsicht im Ruhestand' })).toBeVisible();
 });

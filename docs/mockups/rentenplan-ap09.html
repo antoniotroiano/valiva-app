@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup AP-09: Rentenplan, Ergebnis zuerst (Ergänzung zu design-v2)</title>
+    <style>
+      /* Tokens as in apps/web/src/styles/tokens.css (excerpt). Static mockup, no scripts needed except the theme switch. */
+      :root {
+        color-scheme: light dark;
+        --bg: light-dark(#f3f6f6, #0d1413);
+        --surface: light-dark(#ffffff, #151e1d);
+        --surface-2: light-dark(#eaf0ef, #1e2928);
+        --nav-bg: light-dark(#fbfcfc, #111918);
+        --text: light-dark(#15201e, #e5eeec);
+        --muted: light-dark(#54635f, #9db0ac);
+        --line: light-dark(#dde5e3, #28353a);
+        --field-border: light-dark(#76847f, #6d807c);
+        --accent: light-dark(#0f766e, #4fd1c0);
+        --accent-soft: light-dark(#dff1ee, #17332f);
+        --b-etf: light-dark(#1d4ed8, #7aa2ff);
+        --b-stat: light-dark(#475569, #a9b8b4);
+        --b-dep: light-dark(#a21caf, #f08fd0);
+        --b-bav: light-dark(#b45309, #e0a24a);
+        --ok-fg: light-dark(#166534, #7fdca0);
+        --ok-bg: light-dark(#e2f4e7, #12301f);
+        --ok-bd: light-dark(#9fd0ae, #245b3a);
+        --hint-fg: light-dark(#3b4a47, #c0cdca);
+        --hint-bg: light-dark(#eaf0ef, #1e2928);
+        --hint-bd: light-dark(#cfdad8, #36464a);
+        --warn-fg: light-dark(#8a4b00, #f0b46a);
+        --warn-bg: light-dark(#fdf1e4, #2e2214);
+        --warn-bd: light-dark(#ecc08a, #6b4a1d);
+        --bad-fg: light-dark(#b42318, #ff8a80);
+        --bad-bg: light-dark(#fde9e7, #3a1714);
+        --bad-bd: light-dark(#f1aaa3, #7a2f29);
+        --wish: light-dark(#b42318, #ff8a80);
+      }
+      :root[data-theme='light'] {
+        color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
+      .top {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+      }
+      .top h1 {
+        font-size: 22px;
+        margin: 0 0 4px;
+      }
+      .top p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 80ch;
+      }
+      button.theme {
+        margin-top: 8px;
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+      }
+      .sec {
+        padding: 24px;
+      }
+      .sec > h2 {
+        font-size: 20px;
+        margin: 0 0 4px;
+      }
+      .note {
+        color: var(--muted);
+        max-width: 90ch;
+        margin: 0 0 16px;
+      }
+      .row {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      /* frames */
+      .desk {
+        width: 1100px;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      .phone {
+        width: 375px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        background: var(--bg);
+        position: relative;
+      }
+      .phone .topbar {
+        padding: 10px 16px;
+        background: var(--nav-bg);
+        border-bottom: 1px solid var(--line);
+        font-weight: 700;
+      }
+      .phone .tabbar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--line);
+        background: var(--nav-bg);
+        font-size: 13px;
+        text-align: center;
+        padding: 8px 0;
+        color: var(--muted);
+      }
+      .phone .tabbar b {
+        color: var(--accent);
+      }
+      .phone main {
+        padding: 16px;
+      }
+      /* sidebar */
+      .side {
+        background: var(--nav-bg);
+        border-right: 1px solid var(--line);
+        padding: 16px 8px;
+        font-size: 15px;
+      }
+      .side strong {
+        display: block;
+        padding: 0 8px 12px;
+        font-size: 18px;
+      }
+      .side .nl {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        color: var(--text);
+      }
+      .side .nl.on {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .side .grp {
+        padding: 12px 10px 4px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-left: auto;
+      }
+      .gone {
+        margin: 12px 8px;
+        padding: 8px;
+        border: 1px dashed var(--field-border);
+        border-radius: 8px;
+        font-size: 13px;
+        color: var(--muted);
+        text-decoration: line-through;
+      }
+      main.m {
+        padding: 24px;
+        min-width: 0;
+      }
+      /* page parts */
+      .ph {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        margin-bottom: 16px;
+      }
+      h1.t {
+        font-size: 28px;
+        line-height: 1.2;
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+      .phone h1.t {
+        font-size: 24px;
+      }
+      .sub {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .seg {
+        display: inline-flex;
+        border: 1px solid var(--field-border);
+        border-radius: 999px;
+        padding: 3px;
+        background: var(--surface-2);
+        max-width: 100%;
+      }
+      .seg span {
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .seg .on {
+        background: var(--surface);
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      .card.hero {
+        box-shadow:
+          0 1px 2px rgb(16 40 36 / 8%),
+          0 6px 20px rgb(16 40 36 / 7%);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        gap: 16px;
+        align-items: stretch;
+      }
+      .grid > .card {
+        margin-bottom: 0;
+      }
+      .phone .grid {
+        grid-template-columns: 1fr;
+      }
+      .phone .card {
+        padding: 16px;
+      }
+      .eyebrow {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .display {
+        font-size: 48px;
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .phone .display {
+        font-size: 40px;
+      }
+      .unit {
+        font-size: 18px;
+        color: var(--muted);
+        margin-left: 6px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid;
+        font-size: 13px;
+        font-weight: 600;
+        vertical-align: middle;
+      }
+      .chip.ok {
+        color: var(--ok-fg);
+        background: var(--ok-bg);
+        border-color: var(--ok-bd);
+      }
+      .chip.hint {
+        color: var(--hint-fg);
+        background: var(--hint-bg);
+        border-color: var(--hint-bd);
+      }
+      .chip.warn {
+        color: var(--warn-fg);
+        background: var(--warn-bg);
+        border-color: var(--warn-bd);
+      }
+      .chip.bad {
+        color: var(--bad-fg);
+        background: var(--bad-bg);
+        border-color: var(--bad-bd);
+      }
+      .bar {
+        height: 14px;
+        border-radius: 999px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        overflow: hidden;
+        margin: 12px 0 8px;
+        position: relative;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+      }
+      .verdict {
+        margin: 0;
+      }
+      .stack {
+        display: flex;
+        gap: 2px;
+        height: 44px;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 8px 0;
+      }
+      .stack span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: light-dark(#fff, #0d1413);
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .legend {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        font-size: 14px;
+        color: var(--muted);
+        margin: 4px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .legend i {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        margin-right: 6px;
+      }
+      label.f {
+        display: block;
+      }
+      .f .lb {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .in {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        min-height: 44px;
+        padding: 0 12px;
+        background: var(--surface);
+        font-size: 18px;
+      }
+      .in span {
+        margin-left: auto;
+        color: var(--muted);
+      }
+      .hintp {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 6px 0 0;
+      }
+      h2.bh {
+        font-size: 18px;
+        margin: 24px 0 8px;
+      }
+      .dts details {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-bottom-width: 0;
+      }
+      .dts details:first-child {
+        border-radius: 14px 14px 0 0;
+      }
+      .dts details:last-child {
+        border-radius: 0 0 14px 14px;
+        border-bottom-width: 1px;
+      }
+      .dts summary {
+        min-height: 48px;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .dts summary .meta {
+        margin-left: auto;
+        font-weight: 400;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .dts .body {
+        padding: 0 16px 16px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .notice {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        border: 1px solid;
+        border-radius: 14px;
+        margin-bottom: 16px;
+      }
+      .notice.warn {
+        color: var(--warn-fg);
+        background: var(--warn-bg);
+        border-color: var(--warn-bd);
+      }
+      .notice.bad {
+        color: var(--bad-fg);
+        background: var(--bad-bg);
+        border-color: var(--bad-bd);
+      }
+      .notice b {
+        display: block;
+      }
+      .notice a {
+        color: inherit;
+        font-weight: 600;
+      }
+      .link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        margin-top: 16px;
+      }
+      .link small {
+        display: block;
+        color: var(--muted);
+      }
+      .statusrow {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 12px 0 0;
+      }
+      .scen {
+        margin: 0 0 12px;
+      }
+      .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .blockgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .ph-box {
+        border: 1px dashed var(--field-border);
+        border-radius: 14px;
+        padding: 14px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .cap {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        margin: 0 0 8px;
+        text-transform: none;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 1px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--bad-bd);
+        color: var(--bad-fg);
+        background: var(--bad-bg);
+        margin-right: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <h1>Mockup AP-09: Rentenplan „Ergebnis zuerst“</h1>
+      <p>
+        Ergänzung zu <code>design-v2.html</code>. Gezeigt wird nur, was dort fehlt:
+        Szenarioschalter, wichtige Hinweise oben, ungültiger Zustand, Person ohne Bausteine,
+        Einzelperson, und der eine Personenumschalter mit der aktiven Person in der Überschrift der
+        Bausteinseiten. Alle Zahlen sind erfunden. Der Rest (Hero, Wunsch daneben, Zusammensetzung,
+        Verlauf, Lücke schließen, Link „Sparziele“) wird wie in <code>design-v2.html</code> gebaut.
+      </p>
+      <button class="theme" type="button" id="theme">Hell / Dunkel umschalten</button>
+    </header>
+
+    <!-- ============ (a) Rentenplan Haushalt ============ -->
+    <section class="sec">
+      <h2>(a) Rentenplan, Haushalt (Desktop)</h2>
+      <p class="note">
+        Reihenfolge: Hinweise, die wichtig sind (hier keine), Kopf mit Reiter „Haushalt | Anna |
+        Ben“, Hero mit Wunscheinkommen daneben, Szenarioschalter <b>direkt unter dem Hero</b> (er
+        ändert Hero, Balken, Zusammensetzung und Verlauf), Zusammensetzung, dann „Mehr dazu“
+        einklappbar. Die Seitenleiste hat <b>keine</b> „Aktive Person“-Auswahl mehr. Der Reiter ist
+        der einzige Umschalter. „Anna“/„Ben“ im Reiter setzt zugleich die aktive Person für die
+        Bausteinseiten.
+      </p>
+      <div class="desk">
+        <nav class="side" aria-label="Seitenleiste">
+          <strong>Valiva</strong>
+          <div class="gone">Aktive Person: Anna ▾ (entfällt)</div>
+          <div class="nl on">Rentenplan</div>
+          <div class="nl">Haushalt</div>
+          <div class="nl">Profil</div>
+          <div class="grp">Bausteine</div>
+          <div class="nl">
+            ETF-Sparplan<span class="dot" style="background: var(--b-etf)"></span>
+          </div>
+          <div class="nl">
+            Gesetzliche Rente<span class="dot" style="background: var(--b-stat)"></span>
+          </div>
+          <div class="nl">
+            Altersvorsorgedepot<span class="dot" style="background: var(--b-dep)"></span>
+          </div>
+          <div class="nl">
+            Betriebliche AV<span class="dot" style="background: var(--b-bav)"></span>
+          </div>
+          <div class="grp">Sparen</div>
+          <div class="nl">Sparziele</div>
+        </nav>
+        <main class="m">
+          <div class="ph">
+            <div>
+              <h1 class="t">Rentenplan</h1>
+              <p class="sub">Gesamtsicht im Ruhestand · Anna und Ben</p>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap">
+              <span class="chip hint">ⓘ Prognose, keine Garantie</span>
+              <span class="seg" role="radiogroup" aria-label="Ansicht"
+                ><span class="on">Haushalt</span><span>Anna</span><span>Ben</span></span
+              >
+            </div>
+          </div>
+          <div class="grid">
+            <article class="card hero">
+              <p class="eyebrow">Netto-Rente des Haushalts 2052, Kaufkraft von heute</p>
+              <p style="margin: 8px 0">
+                <span class="display">3.453 €</span><span class="unit">pro Monat</span>
+                <span class="chip warn">⚠ Lücke 1.047 €</span>
+              </p>
+              <p class="eyebrow">Neutral · Spanne 3.222 € bis 3.771 €</p>
+              <div class="bar"><i style="width: 77%"></i></div>
+              <p class="verdict">
+                Gedeckt sind 77 % des Wunsches. Es fehlen etwa 1.047 € pro Monat.
+                <a href="#">So lässt sich die Lücke schließen</a>
+              </p>
+            </article>
+            <aside class="card">
+              <label class="f"
+                ><span class="lb">Wunscheinkommen pro Monat (Kaufkraft von heute)</span>
+                <span class="in">4.500<span>€</span></span>
+                <span class="hintp">Entscheidet über Lücke oder Überschuss.</span></label
+              >
+            </aside>
+          </div>
+          <p class="cap" style="margin-top: 16px">Szenario</p>
+          <div class="seg scen">
+            <span>Pessimistisch</span><span class="on">Neutral</span><span>Optimistisch</span>
+          </div>
+
+          <h2 class="bh">Zusammensetzung nach Person</h2>
+          <div class="card">
+            <div class="stack">
+              <span style="flex: 52; background: var(--b-stat)">Anna 2.694 €</span>
+              <span style="flex: 48; background: var(--b-etf)">Ben 2.613 €</span>
+            </div>
+            <ul class="legend">
+              <li><i style="background: var(--b-stat)"></i>Anna</li>
+              <li><i style="background: var(--b-etf)"></i>Ben</li>
+            </ul>
+          </div>
+          <h2 class="bh">Mehr dazu</h2>
+          <div class="dts">
+            <details open>
+              <summary>
+                Verlauf nach Kalenderjahr<span class="meta">Diagramm, drei Szenarien</span>
+              </summary>
+              <div class="body">(Diagramm wie bisher)</div>
+            </details>
+            <details>
+              <summary>Lücke schließen<span class="meta">+560 € Sparrate (Anna)</span></summary>
+            </details>
+            <details>
+              <summary>Was wäre, wenn<span class="meta">Rentenbeginn Anna</span></summary>
+            </details>
+            <details>
+              <summary>
+                Details und Tabellen<span class="meta"
+                  >Werte je Szenario, Hinterbliebenenrente, Personen</span
+                >
+              </summary>
+            </details>
+            <details>
+              <summary>Bausteine in der Gesamtsicht<span class="meta">4 von 4</span></summary>
+            </details>
+            <details>
+              <summary>Hinweise (3)<span class="meta">3 Hinweise, keiner wichtig</span></summary>
+            </details>
+          </div>
+          <div class="link">
+            <span>🎯</span
+            ><span
+              ><b>Sparziele</b
+              ><small>Kurzfristige Ziele wie Urlaub oder Auto, getrennt von der Rente.</small></span
+            >
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <!-- ============ (b) Rentenplan Einzelperson ============ -->
+    <section class="sec">
+      <h2>(b) Rentenplan, Person Anna (Desktop und Smartphone)</h2>
+      <p class="note">
+        Gleiche Reihenfolge, ohne Haushalt. Zusätzlich zwischen Hero und Szenarioschalter die
+        Baustein-Status als kleine Chips (statt der langen Statusliste), „Hinweise (7)“ eingeklappt,
+        aber <b>wichtige Hinweise stehen als Meldung oben über dem Kopf</b>, nicht in der Liste. Auf
+        dem Smartphone entfällt die Auswahl „Aktive Person“ in der Kopfzeile, der Reiter im
+        Seitenkopf übernimmt (bei mehr als drei Personen wird er zum Auswahlfeld).
+      </p>
+      <div class="row">
+        <div class="desk" style="width: 700px">
+          <nav class="side" aria-label="Seitenleiste" style="display: none"></nav>
+          <main class="m" style="grid-column: 1 / -1">
+            <div class="notice warn" role="note">
+              <span>⚠</span>
+              <div>
+                <b>2 wichtige Hinweise</b>
+                Ungeprüfter Rechtswert: Kinderzulage. · Besteuerung der Auszahlungen ist eine
+                Annahme (nicht bestätigt).
+                <a href="#">Alle Hinweise ansehen</a>
+              </div>
+            </div>
+            <div class="ph">
+              <div>
+                <h1 class="t">Rentenplan</h1>
+                <p class="sub">Anna · Altersvorsorge ab 67</p>
+              </div>
+              <span class="seg"
+                ><span>Haushalt</span><span class="on">Anna</span><span>Ben</span></span
+              >
+            </div>
+            <div class="grid" style="grid-template-columns: 1fr">
+              <article class="card hero">
+                <p class="eyebrow">Netto-Rente ab 67, Kaufkraft von heute</p>
+                <p style="margin: 8px 0">
+                  <span class="display">2.694 €</span><span class="unit">pro Monat</span>
+                  <span class="chip warn">⚠ Lücke 1.506 €</span>
+                </p>
+                <div class="bar"><i style="width: 64%"></i></div>
+                <p class="verdict">Gedeckt sind 64 % des Wunsches von 4.200 €.</p>
+                <div class="statusrow">
+                  <span class="chip ok">✓ Gesetzliche Rente</span>
+                  <span class="chip ok">✓ ETF-Sparplan</span>
+                  <span class="chip ok">✓ Altersvorsorgedepot</span>
+                  <span class="chip warn">⚠ Betriebliche AV: leer</span>
+                </div>
+              </article>
+              <div class="card">
+                <label class="f"
+                  ><span class="lb">Wunscheinkommen pro Monat</span>
+                  <span class="in">4.200<span>€</span></span></label
+                >
+              </div>
+            </div>
+          </main>
+        </div>
+        <div class="phone">
+          <div class="topbar">Valiva</div>
+          <main>
+            <div class="notice warn">
+              <span>⚠</span>
+              <div><b>2 wichtige Hinweise</b><a href="#">Ansehen</a></div>
+            </div>
+            <h1 class="t">Rentenplan</h1>
+            <p class="sub" style="margin-bottom: 12px">Anna · ab 67</p>
+            <span class="seg" style="margin-bottom: 12px"
+              ><span>Haushalt</span><span class="on">Anna</span><span>Ben</span></span
+            >
+            <article class="card hero">
+              <p class="eyebrow">Netto-Rente ab 67</p>
+              <p style="margin: 6px 0">
+                <span class="display">2.694 €</span><br /><span class="unit" style="margin: 0"
+                  >pro Monat</span
+                >
+              </p>
+              <span class="chip warn">⚠ Lücke 1.506 €</span>
+              <div class="bar"><i style="width: 64%"></i></div>
+              <p class="verdict">Gedeckt sind 64 % des Wunsches.</p>
+            </article>
+            <div class="card">
+              <label class="f"
+                ><span class="lb">Wunscheinkommen pro Monat</span
+                ><span class="in">4.200<span>€</span></span></label
+              >
+            </div>
+            <div class="seg" style="width: 100%">
+              <span>Pessim.</span><span class="on">Neutral</span><span>Optim.</span>
+            </div>
+          </main>
+          <div class="tabbar">
+            <b>Rentenplan</b><span>Eingaben</span><span>Haushalt</span><span>Mehr</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ (c) Ungültig und leer ============ -->
+    <section class="sec">
+      <h2>(c) Ungültiger Zustand (Geburtsjahr 1950) und Person ohne Bausteine</h2>
+      <p class="note">
+        Ungültig: Die Meldung steht <b>oben, vor dem Kopf</b>, rot, mit Sprung zum Profil. Statt des
+        Hero erscheint keine Zahl. Im Haushalt nennt sie die Person (bisheriges Verhalten, nur nach
+        oben verlegt). Person ohne Bausteine: Hero zeigt „0 €“ nicht groß, sondern den leeren
+        Zustand mit nächstem Schritt (Komponente <code>EmptyState</code> aus AP-08).
+      </p>
+      <div class="row">
+        <div class="phone" style="width: 520px">
+          <main>
+            <div class="notice bad" role="alert">
+              <span>⛔</span>
+              <div>
+                <b>Anna: Der Rentenbeginn liegt in der Vergangenheit.</b>
+                Der Modus für Personen, die schon in Rente sind, folgt.
+                <a href="#">Profil von Anna öffnen</a>
+              </div>
+            </div>
+            <div class="ph">
+              <div>
+                <h1 class="t">Rentenplan</h1>
+                <p class="sub">Haushalt · Anna und Ben</p>
+              </div>
+              <span class="seg"
+                ><span class="on">Haushalt</span><span>Anna</span><span>Ben</span></span
+              >
+            </div>
+            <div class="card ph-box">
+              Keine Gesamtzahl, solange eine Person ungültig ist (wie heute).
+            </div>
+          </main>
+        </div>
+        <div class="phone" style="width: 520px">
+          <main>
+            <div class="ph">
+              <div>
+                <h1 class="t">Rentenplan</h1>
+                <p class="sub">Person 3 · noch keine Bausteine</p>
+              </div>
+              <span class="seg"
+                ><span>Haushalt</span><span>Anna</span><span>Ben</span
+                ><span class="on">Person 3</span></span
+              >
+            </div>
+            <div class="card">
+              <h2 style="font-size: 18px; margin: 0 0 8px">
+                Nächster Schritt: gesetzliche Rente eintragen
+              </h2>
+              <p style="margin: 0 0 12px; color: var(--muted)">
+                Für Person 3 ist noch kein Baustein ausgefüllt. Sobald einer da ist, erscheint hier
+                das Ergebnis.
+              </p>
+              <span class="chip hint">Gesetzliche Rente: Eingaben fehlen</span>
+              <p style="margin: 12px 0 0">
+                <span
+                  class="chip ok"
+                  style="background: var(--accent); color: #fff; border-color: var(--accent)"
+                  >Gesetzliche Rente eintragen</span
+                >
+              </p>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ (d) Personenumschalter ============ -->
+    <section class="sec">
+      <h2>(d) Ein Personenumschalter, aktive Person in der Überschrift</h2>
+      <p class="note">
+        <b>Vorschlag:</b> Es gibt nur noch den Umschalter im Seitenkopf der Seite. Auf dem
+        Rentenplan ist es der Reiter „Haushalt | Anna | Ben“. Auf Profil, Bausteinseiten und
+        Sparziele steht in derselben Position der Reiter „Anna | Ben“ (ohne „Haushalt“), und die
+        Überschrift nennt die Person: „Altersvorsorgedepot · Anna“. Die Seitenleiste hat keine
+        Auswahl mehr. Bei einer Einzelperson gibt es keinen Umschalter und die Person steht nicht in
+        der Überschrift. Ab vier Personen wird der Reiter zu einem Auswahlfeld. Auf der Seite
+        „Haushalt“ (Personen anlegen) gibt es keinen Umschalter.
+      </p>
+      <div class="desk">
+        <nav class="side" aria-label="Seitenleiste">
+          <strong>Valiva</strong>
+          <div class="nl">Rentenplan</div>
+          <div class="nl">Haushalt</div>
+          <div class="nl">Profil</div>
+          <div class="grp">Bausteine</div>
+          <div class="nl">
+            ETF-Sparplan<span class="dot" style="background: var(--b-etf)"></span>
+          </div>
+          <div class="nl">
+            Gesetzliche Rente<span class="dot" style="background: var(--b-stat)"></span>
+          </div>
+          <div class="nl on">
+            Altersvorsorgedepot<span class="dot" style="background: var(--b-dep)"></span>
+          </div>
+          <div class="nl">
+            Betriebliche AV<span class="dot" style="background: var(--b-bav)"></span>
+          </div>
+        </nav>
+        <main class="m">
+          <div class="ph">
+            <div>
+              <h1 class="t">Altersvorsorgedepot · Anna</h1>
+              <p class="sub">Was wird aus deinen Beiträgen plus staatlicher Zulage?</p>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap">
+              <span class="chip hint">ⓘ Prognose, keine Garantie</span>
+              <span class="seg" role="radiogroup" aria-label="Person"
+                ><span class="on">Anna</span><span>Ben</span></span
+              >
+            </div>
+          </div>
+          <div class="blockgrid">
+            <div class="ph-box">Eingaben (AP-11)</div>
+            <div class="ph-box">Ergebnis (AP-11)</div>
+          </div>
+        </main>
+      </div>
+      <p class="note" style="margin-top: 16px">
+        Smartphone: Die Kopfzeile zeigt nur „Valiva“ (die Auswahl „Aktive Person“ entfällt). Die
+        Person wählt man im Reiter unter der Überschrift, hier auf dem Depot:
+      </p>
+      <div class="phone">
+        <div class="topbar">Valiva</div>
+        <main>
+          <h1 class="t">Altersvorsorgedepot · Anna</h1>
+          <p class="sub" style="margin-bottom: 12px">Was wird aus deinen Beiträgen?</p>
+          <span class="seg"><span class="on">Anna</span><span>Ben</span></span>
+          <div class="ph-box" style="margin-top: 12px">Ergebnis, Eingaben (AP-11)</div>
+        </main>
+        <div class="tabbar">
+          <span>Rentenplan</span><b>Eingaben</b><span>Haushalt</span><span>Mehr</span>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      document.getElementById('theme').addEventListener('click', function () {
+        var r = document.documentElement;
+        var dark =
+          r.getAttribute('data-theme') === 'dark' ||
+          (!r.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+        r.setAttribute('data-theme', dark ? 'light' : 'dark');
+      });
+    </script>
+  </body>
+</html>

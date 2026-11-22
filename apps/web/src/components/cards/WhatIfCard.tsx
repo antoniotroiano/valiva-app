@@ -3,6 +3,7 @@ import type { OverviewApi } from '../../state/useOverview';
 import { useId, useMemo, useState } from 'react';
 import { formatEur, formatNumber } from '../../lib/format';
 import { de } from '../../i18n/de';
+import { Disclosure } from './Disclosure';
 import { ScrollTable } from './ScrollTable';
 
 const signed = (v: number, unit: string) =>
@@ -32,10 +33,7 @@ export function WhatIfCard({ api }: { api: OverviewApi }) {
   const same = returnDelta === 0 && rate === 0;
 
   return (
-    <details className="card whatif">
-      <summary>
-        <b>{t.title}</b> <span className="hint">{t.hint}</span>
-      </summary>
+    <Disclosure title={t.title} meta={t.hint}>
       <div className="slider">
         <label htmlFor={returnId}>{t.returnLabel}</label>
         <output>{t.returnValue(signed(returnDelta, ''))}</output>
@@ -143,7 +141,7 @@ export function WhatIfCard({ api }: { api: OverviewApi }) {
         {t.reset}
       </button>
       <p className="hint">{t.note}</p>
-    </details>
+    </Disclosure>
   );
 }
 

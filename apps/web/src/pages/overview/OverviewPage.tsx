@@ -1,19 +1,13 @@
-import type { EtfPlanResult, GoalResult, SavingsGoal } from '@valiva/core';
 import { PageShell } from '../../components/layout/PageShell';
+import { usePageHead } from '../../components/layout/PageHead';
 import { WelcomeCard } from '../../components/cards/WelcomeCard';
-import { KpiTile } from '../../components/cards/KpiTile';
-import { RetirementOverview } from './RetirementOverview';
+import { Icon } from '../../components/layout/Icon';
+import { RetirementAlerts, RetirementOverview } from './RetirementOverview';
 import type { BudgetInfo } from './RetirementGap';
 import type { OverviewApi } from '../../state/useOverview';
-import { formatEur, formatMonth } from '../../lib/format';
 import { de } from '../../i18n/de';
 
 export function OverviewPage({
-  result,
-  taxEnabled,
-  goals,
-  goalResults,
-  goToGoals,
   retirement,
   goTo,
   budget,
@@ -21,15 +15,11 @@ export function OverviewPage({
   setWish,
   newStart,
 }: {
-  result: EtfPlanResult;
-  taxEnabled: boolean;
-  goals: SavingsGoal[];
-  goalResults: Map<string, GoalResult>;
-  goToGoals: () => void;
   retirement: OverviewApi;
   budget: BudgetInfo;
   goTo: (
-    page: 'profile' | 'etf' | 'statutory' | 'depot' | 'occupational' | 'assumptions' | 'data',
+    page:
+      'profile' | 'etf' | 'statutory' | 'depot' | 'occupational' | 'assumptions' | 'data' | 'goals',
   ) => void;
   wish: number | undefined;
   setWish: (value: number | undefined) => void;
@@ -37,8 +27,19 @@ export function OverviewPage({
   newStart: boolean;
 }) {
   const t = de.overview;
+  const { person } = usePageHead();
   return (
-    <PageShell title={t.title} subtitle={t.subtitle}>
+    <PageShell
+      title={t.title}
+      subtitle={person ? t.subtitlePerson(person) : t.subtitle}
+      personInTitle={false}
+      above={<RetirementAlerts api={retirement} goTo={goTo} />}
+      tools={
+        <button type="button" className="btn quiet no-print" onClick={() => window.print()}>
+          {t.retirement.print}
+        </button>
+      }
+    >
       {newStart && (
         <>
           <WelcomeCard goToProfile={() => goTo('profile')} goToBlocks={() => goTo('etf')} />
@@ -54,76 +55,14 @@ export function OverviewPage({
         wish={wish}
         setWish={setWish}
       />
-      {result.ok ? (
-        <KpiTile
-          label={taxEnabled ? t.headline : t.headlineNoTax}
-          value={formatEur(result.scenarios.neutral.finalValueReal)}
-          note={t.range(
-            formatEur(result.scenarios.pessimistic.finalValueReal),
-            formatEur(result.scenarios.optimistic.finalValueReal),
-          )}
-        />
-      ) : (
-        <div className="card">{t.invalid}</div>
-      )}
-      <section className="card" aria-labelledby="ov-goals">
-        <h2 id="ov-goals">{t.goalsTitle}</h2>
-        {goals.length === 0 ? (
-          <p>{t.goalsEmpty}</p>
-        ) : (
-          <ul className="goal-list">
-            {goals.map((g) => (
-              <OverviewGoal key={g.id} goal={g} result={goalResults.get(g.id)} />
-            ))}
-          </ul>
-        )}
-        <button type="button" className="btn" onClick={goToGoals}>
-          {goals.length === 0 ? t.goalsCreate : t.goalsOpen}
-        </button>
-      </section>
-    </PageShell>
-  );
-}
-
-function OverviewGoal({ goal, result }: { goal: SavingsGoal; result: GoalResult | undefined }) {
-  const t = de.overview;
-  const percent =
-    goal.targetAmount > 0 && Number.isFinite(goal.currentAmount)
-      ? Math.min(100, Math.floor((goal.currentAmount / goal.targetAmount) * 100))
-      : 0;
-  const parts: string[] = [];
-  if (!result || !result.ok) parts.push(t.goalInvalid);
-  else {
-    parts.push(
-      result.reachedMonth ? t.goalExpected(formatMonth(result.reachedMonth)) : t.goalNotReached,
-    );
-    if (goal.targetMonth) {
-      parts.push(
-        result.warnings.includes('target_month_missed')
-          ? t.goalMissed(formatMonth(goal.targetMonth))
-          : t.goalDesired(formatMonth(goal.targetMonth)),
-      );
-    }
-  }
-  return (
-    <li>
-      <div className="row">
-        <strong>{goal.name}</strong>
+      <a className="linkcard" href="#goals">
+        <Icon name="goals" size="lg" />
         <span>
-          {t.goalProgress(formatEur(goal.currentAmount), formatEur(goal.targetAmount), percent)}
+          <b>{t.goalsLink.title}</b>
+          <small>{t.goalsLink.text}</small>
         </span>
-      </div>
-      <div
-        className="progress"
-        role="progressbar"
-        aria-valuenow={percent}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label={t.goalProgressLabel(goal.name)}
-      >
-        <span style={{ width: `${percent}%` }} />
-      </div>
-      <span className="hint">{parts.join(' · ')}</span>
-    </li>
+        <Icon name="go" />
+      </a>
+    </PageShell>
   );
 }

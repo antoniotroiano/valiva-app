@@ -10,20 +10,23 @@ import {
   HouseholdPathChart,
   PersonCompositionChart,
 } from '../../components/charts/HouseholdCharts';
-import { warningText } from '../../lib/warningText';
 import { PageShell } from '../../components/layout/PageShell';
 import { ScrollTable } from '../../components/cards/ScrollTable';
+import { Disclosure } from '../../components/cards/Disclosure';
+import { StatusChip } from '../../components/cards/StatusChip';
+import { Icon } from '../../components/layout/Icon';
+import { NumberField } from '../../components/forms/NumberField';
+import { gapMeta } from '../overview/RetirementGap';
+import { ImportantNotes, InfoNotes, TopNotice, splitWarnings } from '../overview/OverviewNotes';
 
 export function HouseholdOverview({
   household,
   data,
-  goToHousehold,
   openPerson,
   goToPersonProfile,
 }: {
   household: HouseholdApi;
   data: HouseholdOverviewApi;
-  goToHousehold: () => void;
   openPerson: (id: string) => void;
   goToPersonProfile: (id: string) => void;
 }) {
@@ -32,55 +35,80 @@ export function HouseholdOverview({
   const [scenario, setScenario] = useState<ScenarioName>('neutral');
   const { outcome } = data;
   const { persons } = household.state.household;
+  const names = persons.map((p, i) => p.name.trim() || de.household.newPersonName(i + 1));
+
+  const warnings = outcome?.ok
+    ? outcome.result.persons.flatMap((p) => p.overview.scenarios[scenario].snapshot.warnings)
+    : [];
+  const split = splitWarnings(warnings);
+
+  const alerts = (
+    <>
+      {outcome && !outcome.ok && (
+        <TopNotice kind="bad" title={t.invalid}>
+          <ul className="note-list">
+            {outcome.issues.map((i: ValidationIssue) => {
+              const owner = persons.find((p) => i.field.startsWith(`persons.${p.id}.`));
+              const name = owner?.name.trim() || undefined;
+              return (
+                <li key={`${i.field}|${i.code}`}>
+                  {name !== undefined && <b>{name}: </b>}
+                  {issueMessage(i)}
+                  {owner && (
+                    <>
+                      {' '}
+                      <button
+                        type="button"
+                        className="link"
+                        onClick={() => goToPersonProfile(owner.id)}
+                      >
+                        {t.fixPerson(name ?? owner.id)}
+                      </button>
+                    </>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </TopNotice>
+      )}
+      <ImportantNotes codes={split.important} />
+    </>
+  );
 
   return (
-    <PageShell title={de.overview.title} subtitle={de.overview.subtitle}>
-      <section className="card" aria-labelledby="hh-overview">
-        <h2 id="hh-overview">{t.title}</h2>
-        {!outcome && <p>{t.loading}</p>}
-        {outcome && !outcome.ok && (
-          <>
-            <p>{t.invalid}</p>
-            <ul>
-              {outcome.issues.map((i: ValidationIssue) => {
-                const owner = persons.find((p) => i.field.startsWith(`persons.${p.id}.`));
-                const name = owner?.name.trim() || undefined;
-                return (
-                  <li key={`${i.field}|${i.code}`}>
-                    {name !== undefined && <b>{name}: </b>}
-                    {issueMessage(i)}
-                    {owner && (
-                      <>
-                        {' '}
-                        <button
-                          type="button"
-                          className="link"
-                          onClick={() => goToPersonProfile(owner.id)}
-                        >
-                          {t.fixPerson(name ?? owner.id)}
-                        </button>
-                      </>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </>
-        )}
-        {outcome?.ok && (
-          <Result
-            data={data}
-            household={household.state.household}
-            persons={persons.length}
-            scenario={scenario}
-            setScenario={setScenario}
-            goToHousehold={goToHousehold}
-            openPerson={openPerson}
-            result={outcome.result}
-            r={r}
-          />
-        )}
-      </section>
+    <PageShell
+      title={de.overview.title}
+      subtitle={de.overview.subtitleHousehold(names.join(', '))}
+      personInTitle={false}
+      above={alerts}
+      tools={
+        <button type="button" className="btn quiet no-print" onClick={() => window.print()}>
+          {r.print}
+        </button>
+      }
+    >
+      {!outcome && <p>{t.loading}</p>}
+      {outcome?.ok && (
+        <Result
+          data={data}
+          household={household}
+          scenario={scenario}
+          setScenario={setScenario}
+          openPerson={openPerson}
+          result={outcome.result}
+          infoCodes={split.info}
+          r={r}
+        />
+      )}
+      <a className="linkcard" href="#goals">
+        <Icon name="goals" size="lg" />
+        <span>
+          <b>{de.overview.goalsLink.title}</b>
+          <small>{de.overview.goalsLink.text}</small>
+        </span>
+        <Icon name="go" />
+      </a>
     </PageShell>
   );
 }
@@ -92,138 +120,182 @@ function Result({
   household,
   scenario,
   setScenario,
-  goToHousehold,
   openPerson,
   result,
+  infoCodes,
   r,
 }: {
   data: HouseholdOverviewApi;
-  household: HouseholdApi['state']['household'];
-  persons: number;
+  household: HouseholdApi;
   scenario: ScenarioName;
   setScenario: (s: ScenarioName) => void;
-  goToHousehold: () => void;
   openPerson: (id: string) => void;
   result: Extract<Outcome, { ok: true }>['result'];
+  infoCodes: string[];
   r: typeof de.overview.retirement;
 }) {
   const t = de.householdView;
-  const wishPercent = household.survivorWishPercent;
+  const wishPercent = household.state.household.survivorWishPercent;
   const chosen = result.scenarios[scenario].snapshot;
   const desired = result.desiredMonthlyIncomeToday;
-  const warnings = [
-    ...new Set(result.persons.flatMap((p) => p.overview.scenarios[scenario].snapshot.warnings)),
-  ];
+  const hasWish = desired !== undefined;
   const emptyPerson = (id: string) =>
     result.persons
       .find((p) => p.personId === id)
       ?.overview.products.every((p) => p.status !== 'included' && p.status !== 'later') ?? true;
+  const gap = chosen.gap;
+  const chip = !hasWish ? (
+    <StatusChip kind="hint" size="lg">
+      {r.hero.chipNoWish}
+    </StatusChip>
+  ) : gap !== undefined && gap > 0 ? (
+    <StatusChip kind="warn" size="lg">
+      {r.hero.chipGap(formatEur(gap))}
+    </StatusChip>
+  ) : (
+    <StatusChip kind="ok" size="lg">
+      {r.hero.chipCovered}
+    </StatusChip>
+  );
+  const gapOpen = () => {
+    const d = document.getElementById('close-gap');
+    if (d instanceof HTMLDetailsElement) {
+      d.open = true;
+      d.scrollIntoView({ block: 'center' });
+    }
+  };
+  const compositionRows = ['statutory', 'etf', 'retirementDepot', 'occupational'] as const;
+
   return (
     <>
-      <p>{t.intro(result.snapshotYear)}</p>
-      <ScenarioSwitch value={scenario} onChange={setScenario} />
-      <div className="kpi">
-        <span className="kpi-label">{t.headline(result.snapshotYear, r.scenarios[scenario])}</span>
-        <b className="kpi-value">{r.charts.perMonth(formatEur(chosen.netMonthlyPensionReal))}</b>
-        <span className="kpi-label">
-          {r.charts.range(
-            formatEur(result.scenarios.pessimistic.snapshot.netMonthlyPensionReal),
-            formatEur(result.scenarios.optimistic.snapshot.netMonthlyPensionReal),
+      <section className="hero-grid" aria-label={t.title}>
+        <article className="card kpi kpi-hero hero">
+          <span className="kpi-label">
+            {t.headline(result.snapshotYear, r.scenarios[scenario])}
+          </span>
+          <div className="hero-num">
+            <b className="kpi-value">
+              {r.charts.perMonth(formatEur(chosen.netMonthlyPensionReal))}
+            </b>
+            {chip}
+          </div>
+          <span className="kpi-label">
+            {r.charts.range(
+              formatEur(result.scenarios.pessimistic.snapshot.netMonthlyPensionReal),
+              formatEur(result.scenarios.optimistic.snapshot.netMonthlyPensionReal),
+            )}
+            {desired !== undefined && `. ${r.charts.wish(formatEur(desired))}`}
+          </span>
+          {desired !== undefined ? (
+            <GapBar net={chosen.netMonthlyPensionReal} desired={desired} />
+          ) : (
+            <p>{t.noWish}</p>
           )}
-          {desired !== undefined && `. ${r.charts.wish(formatEur(desired))}`}
-        </span>
+          {hasWish && data.gap && (
+            <p>
+              <button type="button" className="link" onClick={gapOpen}>
+                {r.hero.closeGapLink}
+              </button>
+            </p>
+          )}
+        </article>
+        <aside className="card">
+          <NumberField
+            label={de.household.wishLabel}
+            hint={t.hero.wishHint}
+            unit={de.profile.units.eurPerMonth}
+            value={household.state.household.desiredMonthlyIncomeToday}
+            onChange={(v) => household.setDesiredIncome(v)}
+            onClear={() => household.setDesiredIncome(undefined)}
+          />
+        </aside>
+      </section>
+
+      <ScenarioSwitch value={scenario} onChange={setScenario} />
+
+      <h2 className="block-h">{t.compositionTitle}</h2>
+      <div className="card">
+        <PersonCompositionChart result={result} scenario={scenario} />
       </div>
-      {desired !== undefined ? (
-        <>
-          <h3>{r.charts.gapTitle}</h3>
-          <GapBar net={chosen.netMonthlyPensionReal} desired={desired} />
-        </>
-      ) : (
-        <p>
-          {t.noWish}{' '}
-          <button type="button" className="link" onClick={goToHousehold}>
-            {t.toHousehold}
-          </button>
-        </p>
-      )}
 
-      <h3>{t.compositionTitle}</h3>
-      <PersonCompositionChart result={result} scenario={scenario} />
-      <ScrollTable label={t.compositionCaption(r.scenarios[scenario])}>
-        <table>
-          <caption>{t.compositionCaption(r.scenarios[scenario])}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{t.person}</th>
-              {(['statutory', 'etf', 'retirementDepot', 'occupational'] as const).map((k) => (
-                <th key={k} scope="col">
-                  {r.productNames[k]}
-                </th>
-              ))}
-              <th scope="col">{t.total}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {result.persons.map((p) => (
-              <tr key={p.personId}>
-                <th scope="row">{p.name}</th>
-                {(['statutory', 'etf', 'retirementDepot', 'occupational'] as const).map((k) => (
-                  <td key={k} className="num">
-                    {formatEur(chosen.byPersonProduct[p.personId]?.[k] ?? 0)}
-                  </td>
+      <h2 className="block-h">{r.sections.more}</h2>
+      <div className="dts">
+        <Disclosure title={t.pathTitle} meta={r.sections.pathMeta}>
+          <HouseholdPathChart result={result} scenario={scenario} />
+          <SurvivorNote result={result} scenario={scenario} wishPercent={wishPercent} />
+        </Disclosure>
+        {hasWish && data.gap && (
+          <Disclosure id="close-gap" title={r.closeGap.title} meta={gapMeta(data.gap)}>
+            <GapTile
+              gap={data.gap}
+              gapPersonId={data.gapPersonId}
+              setGapPersonId={data.setGapPersonId}
+              result={result}
+              budget={data.blocks?.[data.gapPersonId]?.goals}
+            />
+          </Disclosure>
+        )}
+        <Disclosure title={t.sections.details} meta={t.sections.detailsMeta}>
+          <ScrollTable label={t.compositionCaption(r.scenarios[scenario])}>
+            <table>
+              <caption>{t.compositionCaption(r.scenarios[scenario])}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">{t.person}</th>
+                  {compositionRows.map((k) => (
+                    <th key={k} scope="col">
+                      {r.productNames[k]}
+                    </th>
+                  ))}
+                  <th scope="col">{t.total}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.persons.map((p) => (
+                  <tr key={p.personId}>
+                    <th scope="row">{p.name}</th>
+                    {compositionRows.map((k) => (
+                      <td key={k} className="num">
+                        {formatEur(chosen.byPersonProduct[p.personId]?.[k] ?? 0)}
+                      </td>
+                    ))}
+                    <td className="num">
+                      <b>{formatEur(chosen.byPerson[p.personId] ?? 0)}</b>
+                    </td>
+                  </tr>
                 ))}
-                <td className="num">
-                  <b>{formatEur(chosen.byPerson[p.personId] ?? 0)}</b>
-                </td>
-              </tr>
+              </tbody>
+            </table>
+          </ScrollTable>
+          {result.persons.map((p) => {
+            const lump = chosen.lumpSumNetReal[p.personId] ?? 0;
+            return lump > 0 ? <p key={p.personId}>{t.lumpSum(p.name, formatEur(lump))}</p> : null;
+          })}
+          <h3>{t.persons}</h3>
+          <ul className="person-list">
+            {result.persons.map((p) => (
+              <li key={p.personId} className="person-row">
+                <div>
+                  <strong>
+                    {t.personLine(
+                      p.name,
+                      r.charts.perMonth(formatEur(chosen.byPerson[p.personId] ?? 0)),
+                    )}
+                  </strong>
+                  {emptyPerson(p.personId) && <p className="hint">{t.personEmpty}</p>}
+                </div>
+                <button type="button" className="btn" onClick={() => openPerson(p.personId)}>
+                  {t.personEdit(p.name)}
+                </button>
+              </li>
             ))}
-          </tbody>
-        </table>
-      </ScrollTable>
-      {result.persons.map((p) => {
-        const lump = chosen.lumpSumNetReal[p.personId] ?? 0;
-        return lump > 0 ? <p key={p.personId}>{t.lumpSum(p.name, formatEur(lump))}</p> : null;
-      })}
-
-      <SurvivorNote result={result} scenario={scenario} wishPercent={wishPercent} />
-      <h3>{t.pathTitle}</h3>
-      <HouseholdPathChart result={result} scenario={scenario} />
-
-      <h3>{t.persons}</h3>
-      <ul className="person-list">
-        {result.persons.map((p) => (
-          <li key={p.personId} className="person-row">
-            <div>
-              <strong>
-                {t.personLine(
-                  p.name,
-                  r.charts.perMonth(formatEur(chosen.byPerson[p.personId] ?? 0)),
-                )}
-              </strong>
-              {emptyPerson(p.personId) && <p className="hint">{t.personEmpty}</p>}
-            </div>
-            <button type="button" className="btn" onClick={() => openPerson(p.personId)}>
-              {t.personEdit(p.name)}
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      <GapTile
-        gap={data.gap}
-        gapPersonId={data.gapPersonId}
-        setGapPersonId={data.setGapPersonId}
-        result={result}
-        budget={data.blocks?.[data.gapPersonId]?.goals}
-      />
-
-      <ul className="warnings">
-        <li>{result.survivor ? t.survivorSimplified : t.noSurvivor}</li>
-        <li>{t.flatTax}</li>
-        {warnings.map((w) => (
-          <li key={w}>{warningText(w)}</li>
-        ))}
-      </ul>
+          </ul>
+        </Disclosure>
+        <InfoNotes
+          codes={infoCodes}
+          extra={[result.survivor ? t.survivorSimplified : t.noSurvivor, t.flatTax]}
+        />
+      </div>
     </>
   );
 }
@@ -259,8 +331,7 @@ function GapTile({
     rest = budget.savingsBudgetMonthly - others - neutral.newMonthly;
   }
   return (
-    <section aria-labelledby="hh-gap">
-      <h3 id="hh-gap">{t.title}</h3>
+    <>
       <div className="field">
         <label htmlFor="hh-gap-person">{v.gapPerson}</label>
         <select
@@ -325,7 +396,7 @@ function GapTile({
           )}
         </>
       )}
-    </section>
+    </>
   );
 }
 

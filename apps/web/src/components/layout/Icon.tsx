@@ -72,6 +72,7 @@ const PATHS = {
     </>
   ),
   next: <path d="M9 6l6 6-6 6" />,
+  chevron: <path d="M6 9l6 6 6-6" />,
   go: <path d="M5 12h14M13 6l6 6-6 6" />,
 } satisfies Record<string, ReactNode>;
 

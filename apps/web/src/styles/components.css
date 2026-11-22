@@ -83,29 +83,6 @@ td.left {
     font-weight: 700;
     letter-spacing: -0.02em;
   }
-  .person-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 0;
-    padding: 0 4px 0 12px;
-    border: 1px solid var(--field-border);
-    border-radius: 24px;
-    background: var(--surface);
-    font-size: var(--fs-caption);
-    color: var(--muted);
-  }
-  .person-chip select {
-    width: auto;
-    max-width: 9em;
-    min-height: 44px;
-    padding: 0 6px;
-    border: 0;
-    background: transparent;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-  }
   .tabbar {
     position: fixed;
     left: 0;

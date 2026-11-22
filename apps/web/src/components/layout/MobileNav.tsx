@@ -20,21 +20,15 @@ function TabIcon({ name }: { name: IconName }) {
 }
 
 /**
- * Phone navigation (visible up to 900 px, see styles.css): a slim top bar with the app name and
- * the active person, plus a fixed bottom tab bar. "Inputs" and "More" open a sheet above the bar.
+ * Phone navigation (visible up to 900 px, see styles.css): a slim top bar with the app name (the person
+ * switcher sits in the page head), plus a fixed bottom tab bar. "Inputs" and "More" open a sheet above the bar.
  */
 export function MobileNav({
   page,
-  persons,
-  activePersonId,
-  onPersonChange,
   theme,
   onThemeChange,
 }: {
   page: string;
-  persons: { id: string; label: string }[];
-  activePersonId: string;
-  onPersonChange: (id: string) => void;
   theme: Theme;
   onThemeChange: (t: Theme) => void;
 }) {
@@ -130,18 +124,6 @@ export function MobileNav({
     <>
       <header className="mobile-top">
         <strong>{de.appName}</strong>
-        {persons.length > 1 && (
-          <label className="person-chip">
-            <span>{de.nav.person}</span>
-            <select value={activePersonId} onChange={(e) => onPersonChange(e.target.value)}>
-              {persons.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
       </header>
 
       {open && <div className="sheet-scrim" aria-hidden="true" onClick={() => dismiss(open)} />}

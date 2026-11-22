@@ -13,8 +13,8 @@ test('export, reset and import restore the household with the same gap', async (
   await page.goto('/#etf');
   await page.getByLabel('Monatliche Sparrate').fill('333');
   await page.goto('/#overview');
-  await page.getByRole('radio', { name: 'Haushalt' }).check();
-  await expect(page.getByRole('heading', { name: 'Gesamtsicht Haushalt' })).toBeVisible();
+  await page.getByRole('radio', { name: 'Haushalt' }).click();
+  await expect(page.getByRole('region', { name: 'Gesamtsicht Haushalt' })).toBeVisible();
   const gapBefore = await page.locator('.kpi').first().textContent();
 
   await page.goto('/#data');

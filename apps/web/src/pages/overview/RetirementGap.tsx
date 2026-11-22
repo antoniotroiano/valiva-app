@@ -7,9 +7,7 @@ import {
 } from '@valiva/core';
 import { SCENARIO_NAMES } from '@valiva/core';
 import { formatEur } from '../../lib/format';
-import { withTerms } from '../../components/cards/Terms';
 import { de, issueMessage } from '../../i18n/de';
-import { warningText, warningWeight } from '../../lib/warningText';
 import { ScrollTable } from '../../components/cards/ScrollTable';
 
 export type BudgetInfo = { budget?: number; otherSavingsMonthly: number };
@@ -17,29 +15,6 @@ export type BudgetInfo = { budget?: number; otherSavingsMonthly: number };
 export function productName(id: OverviewProductKind): string {
   const n = de.overview.retirement.productNames;
   return n[id];
-}
-
-export function Notes({ codes }: { codes: string[] }) {
-  const t = de.overview.retirement;
-  const sorted = [...codes].sort(
-    (a, b) => Number(warningWeight(a) === 'info') - Number(warningWeight(b) === 'info'),
-  );
-  const important = sorted.filter((c) => warningWeight(c) === 'important').length;
-  return (
-    <details className="notes" open={important > 0}>
-      <summary>{t.notes(sorted.length, important)}</summary>
-      <ul className="warnings">
-        {sorted.map((w) => (
-          <li key={w}>
-            <span className={warningWeight(w) === 'important' ? 'tag important' : 'tag'}>
-              {warningWeight(w) === 'important' ? t.noteImportant : t.noteInfo}
-            </span>
-            {withTerms(warningText(w))}
-          </li>
-        ))}
-      </ul>
-    </details>
-  );
 }
 
 export function GapTile({
@@ -56,8 +31,7 @@ export function GapTile({
   const t = de.overview.retirement.closeGap;
   if (!hasWish) return null;
   return (
-    <section aria-labelledby="ov-gap">
-      <h3 id="ov-gap">{t.title}</h3>
+    <>
       {!gap.ok && <p>{gap.issues.map((i: ValidationIssue) => issueMessage(i)).join(' ')}</p>}
       {gap.ok && (
         <>
@@ -105,8 +79,18 @@ export function GapTile({
           <BudgetHint gap={gap} budget={budget} />
         </>
       )}
-    </section>
+    </>
   );
+}
+
+/** Short grey summary of the gap solver for the collapsed row (neutral scenario). */
+export function gapMeta(gap: GapSolveResult | undefined): string | undefined {
+  if (!gap?.ok) return undefined;
+  const x = gap.scenarios.neutral;
+  const t = de.overview.retirement;
+  if (x.status === 'ok') return t.sections.closeGapMeta(formatEur(x.monthly));
+  if (x.status === 'unreachable') return t.closeGap.status.unreachable;
+  return t.sections.closeGapNone;
 }
 
 export function BudgetHint({

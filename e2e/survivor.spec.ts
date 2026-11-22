@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openRow } from './helpers';
 
 async function loadCouple(page: import('@playwright/test').Page) {
   await page.goto('/#data');
@@ -13,16 +14,20 @@ async function loadCouple(page: import('@playwright/test').Page) {
 test('survivor pension shows in the household view and can be switched off', async ({ page }) => {
   await loadCouple(page);
   await page.goto('/#overview');
-  await page.getByRole('radio', { name: 'Haushalt' }).check();
+  await page.getByRole('radio', { name: 'Haushalt' }).click();
+  await openRow(page, 'Verlauf nach Kalenderjahr');
   await expect(page.getByRole('heading', { name: 'Hinterbliebenenrente' })).toBeVisible();
   await expect(page.getByText(/erhält .* eine Witwenrente von etwa/)).toBeVisible();
+  await openRow(page, 'Hinweise');
   await expect(page.getByText(/Die Hinterbliebenenrente ist vereinfacht/)).toBeVisible();
 
   await page.goto('/#household');
   await page.getByLabel(/Hinterbliebenenrente der gesetzlichen Rente berücksichtigen/).uncheck();
   await page.goto('/#overview');
-  await page.getByRole('radio', { name: 'Haushalt' }).check();
+  await page.getByRole('radio', { name: 'Haushalt' }).click();
+  await openRow(page, 'Verlauf nach Kalenderjahr');
   await expect(page.getByRole('heading', { name: 'Hinterbliebenenrente' })).toHaveCount(0);
+  await openRow(page, 'Hinweise');
   await expect(page.getByText(/Es gibt keine Hinterbliebenenrente/)).toBeVisible();
 });
 
