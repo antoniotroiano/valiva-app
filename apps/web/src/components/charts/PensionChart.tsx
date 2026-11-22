@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import { formatEur, formatEur2 } from '../../lib/format';
 import { de } from '../../i18n/de';
+import { AXIS, TOOLTIP_STYLE } from './chartTheme';
 
 export function PensionChart({ details }: { details: StatutoryDetails }) {
   const c = de.statutory.chart;
@@ -28,22 +29,9 @@ export function PensionChart({ details }: { details: StatutoryDetails }) {
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 8, right: 16, bottom: 8, left: 8 }}>
             <CartesianGrid stroke="var(--line)" strokeDasharray="3 3" />
-            <XAxis
-              dataKey="year"
-              stroke="var(--muted)"
-              tick={{ fill: 'var(--muted)' }}
-              minTickGap={24}
-            />
-            <YAxis
-              stroke="var(--muted)"
-              tick={{ fill: 'var(--muted)' }}
-              tickFormatter={(v: number) => formatEur(v)}
-              width={90}
-            />
-            <Tooltip
-              formatter={(v) => formatEur2(Number(v))}
-              contentStyle={{ background: 'var(--surface)', border: '1px solid var(--line)' }}
-            />
+            <XAxis dataKey="year" {...AXIS} minTickGap={24} />
+            <YAxis {...AXIS} tickFormatter={(v: number) => formatEur(v)} width={90} />
+            <Tooltip formatter={(v) => formatEur2(Number(v))} contentStyle={TOOLTIP_STYLE} />
             <Legend />
             <Line
               dataKey="nominal"

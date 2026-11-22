@@ -67,45 +67,48 @@ export function AllowanceTable({ details: d }: { details: DepotProjection['detai
   const sum = (f: (y: (typeof d.yearly)[number]) => number) =>
     d.yearly.reduce((s, y) => s + f(y), 0);
   return (
-    <ScrollTable label={t.title} className="card">
-      <table>
-        <caption>{t.title}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{t.year}</th>
-            <th scope="col">{t.contribution}</th>
-            <th scope="col">{t.basic}</th>
-            <th scope="col">{t.child}</th>
-            <th scope="col">{t.bonus}</th>
-            <th scope="col">{t.total}</th>
-            <th scope="col">{t.value}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {d.yearly.map((y) => (
-            <tr key={y.year}>
-              <th scope="row">{y.year}</th>
-              <td>{formatEur(y.contributions)}</td>
-              <td>{formatEur(y.basic)}</td>
-              <td>{formatEur(y.child)}</td>
-              <td>{formatEur(y.bonus)}</td>
-              <td>{formatEur(y.total)}</td>
-              <td>{formatEur(y.valueEnd)}</td>
+    <details className="card">
+      <summary>{t.toggle(d.yearly.length)}</summary>
+      <ScrollTable label={t.title}>
+        <table>
+          <caption>{t.title}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{t.year}</th>
+              <th scope="col">{t.contribution}</th>
+              <th scope="col">{t.basic}</th>
+              <th scope="col">{t.child}</th>
+              <th scope="col">{t.bonus}</th>
+              <th scope="col">{t.total}</th>
+              <th scope="col">{t.value}</th>
             </tr>
-          ))}
-          <tr className="sum">
-            <th scope="row">{t.sum}</th>
-            <td>{formatEur(sum((y) => y.contributions))}</td>
-            <td>{formatEur(sum((y) => y.basic))}</td>
-            <td>{formatEur(sum((y) => y.child))}</td>
-            <td>{formatEur(sum((y) => y.bonus))}</td>
-            <td>{formatEur(sum((y) => y.total))}</td>
-            <td>{formatEur(d.modelCapital)}</td>
-          </tr>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {d.yearly.map((y) => (
+              <tr key={y.year}>
+                <th scope="row">{y.year}</th>
+                <td>{formatEur(y.contributions)}</td>
+                <td>{formatEur(y.basic)}</td>
+                <td>{formatEur(y.child)}</td>
+                <td>{formatEur(y.bonus)}</td>
+                <td>{formatEur(y.total)}</td>
+                <td>{formatEur(y.valueEnd)}</td>
+              </tr>
+            ))}
+            <tr className="sum">
+              <th scope="row">{t.sum}</th>
+              <td>{formatEur(sum((y) => y.contributions))}</td>
+              <td>{formatEur(sum((y) => y.basic))}</td>
+              <td>{formatEur(sum((y) => y.child))}</td>
+              <td>{formatEur(sum((y) => y.bonus))}</td>
+              <td>{formatEur(sum((y) => y.total))}</td>
+              <td>{formatEur(d.modelCapital)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ScrollTable>
       <p className="hint">{t.note}</p>
-    </ScrollTable>
+    </details>
   );
 }
 

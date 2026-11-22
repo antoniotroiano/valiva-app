@@ -14,14 +14,10 @@ import {
 } from 'recharts';
 import { formatEur } from '../../lib/format';
 import { de } from '../../i18n/de';
+import { AXIS, BLOCK_COLOR, SEGMENT_GAP, TOOLTIP_STYLE, segmentLabel } from './chartTheme';
 
 const KINDS: OverviewProductKind[] = ['statutory', 'etf', 'retirementDepot', 'occupational'];
-const COLOR: Record<OverviewProductKind, string> = {
-  statutory: 'var(--c-contrib)',
-  etf: 'var(--c-neutral)',
-  retirementDepot: 'var(--c-opt)',
-  occupational: 'var(--c-pess)',
-};
+const COLOR = BLOCK_COLOR;
 
 export function ScenarioSwitch({
   value,
@@ -111,10 +107,18 @@ export function CompositionChart({
             <YAxis type="category" dataKey="name" hide />
             <Tooltip
               formatter={(v, n) => [formatEur(Number(v)), t.productNames[n as OverviewProductKind]]}
-              contentStyle={{ background: 'var(--surface)', border: '1px solid var(--line)' }}
+              contentStyle={TOOLTIP_STYLE}
             />
             {KINDS.map((k) => (
-              <Bar key={k} dataKey={k} stackId="a" fill={COLOR[k]} isAnimationActive={false} />
+              <Bar
+                key={k}
+                dataKey={k}
+                stackId="a"
+                fill={COLOR[k]}
+                {...SEGMENT_GAP}
+                label={segmentLabel('block', row[k] as number)}
+                isAnimationActive={false}
+              />
             ))}
           </BarChart>
         </ResponsiveContainer>
@@ -171,10 +175,9 @@ export function PathChart({
         <ResponsiveContainer>
           <AreaChart data={data} margin={{ top: 28, right: 16, bottom: 8, left: 8 }}>
             <CartesianGrid stroke="var(--line)" strokeDasharray="3 3" />
-            <XAxis dataKey="age" stroke="var(--muted)" tick={{ fill: 'var(--muted)' }} />
+            <XAxis dataKey="age" {...AXIS} />
             <YAxis
-              stroke="var(--muted)"
-              tick={{ fill: 'var(--muted)' }}
+              {...AXIS}
               tickFormatter={(v: number) => formatEur(v)}
               width={90}
               domain={[0, (max: number) => Math.max(max, desired ?? 0) * 1.05]}
@@ -182,7 +185,7 @@ export function PathChart({
             <Tooltip
               formatter={(v, n) => [formatEur(Number(v)), t.productNames[n as OverviewProductKind]]}
               labelFormatter={(l) => `${t.age} ${l}`}
-              contentStyle={{ background: 'var(--surface)', border: '1px solid var(--line)' }}
+              contentStyle={TOOLTIP_STYLE}
             />
             {used.map((k) => (
               <Area
@@ -190,16 +193,16 @@ export function PathChart({
                 dataKey={k}
                 stackId="a"
                 type="stepAfter"
-                stroke={COLOR[k]}
+                {...SEGMENT_GAP}
                 fill={COLOR[k]}
-                fillOpacity={0.85}
+                fillOpacity={1}
                 isAnimationActive={false}
               />
             ))}
             {desired !== undefined && (
               <ReferenceLine
                 y={desired}
-                stroke="var(--danger)"
+                stroke="var(--wish)"
                 strokeWidth={2}
                 strokeDasharray="6 4"
               />

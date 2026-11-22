@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import { formatEur } from '../../lib/format';
 import { de } from '../../i18n/de';
+import { AXIS, TOOLTIP_STYLE } from './chartTheme';
 
 type Scenarios = Record<ScenarioName, DepotProjection>;
 
@@ -54,17 +55,12 @@ export function DepotChart({ scenarios }: { scenarios: Scenarios }) {
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 8, right: 16, bottom: 8, left: 8 }}>
             <CartesianGrid stroke="var(--line)" strokeDasharray="3 3" />
-            <XAxis dataKey="year" stroke="var(--muted)" tick={{ fill: 'var(--muted)' }} />
-            <YAxis
-              stroke="var(--muted)"
-              tick={{ fill: 'var(--muted)' }}
-              tickFormatter={(v: number) => formatEur(v)}
-              width={90}
-            />
+            <XAxis dataKey="year" {...AXIS} />
+            <YAxis {...AXIS} tickFormatter={(v: number) => formatEur(v)} width={90} />
             <Tooltip
               formatter={(v) => formatEur(Number(v))}
               labelFormatter={(l) => `${c.year} ${l}`}
-              contentStyle={{ background: 'var(--surface)', border: '1px solid var(--line)' }}
+              contentStyle={TOOLTIP_STYLE}
             />
             <Legend />
             {lines.map((l) => (

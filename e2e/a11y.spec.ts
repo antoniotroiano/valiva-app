@@ -73,3 +73,25 @@ for (const colorScheme of ['light', 'dark'] as const) {
     }
   });
 }
+
+// Phone navigation (bottom tab bar and its sheets) in both colour schemes.
+for (const colorScheme of ['light', 'dark'] as const) {
+  test.describe(`accessibility, phone navigation (${colorScheme})`, () => {
+    test.use({ colorScheme, viewport: { width: 375, height: 812 } });
+
+    test('tab bar and the Inputs and More sheets have no axe violations', async ({ page }) => {
+      await loadCouple(page);
+      await page.goto('/#overview');
+      await page.getByRole('radio', { name: 'Haushalt' }).check();
+      await expectNoViolations(page);
+      for (const name of ['Eingaben', 'Mehr']) {
+        await page.getByRole('button', { name, exact: true }).click();
+        const results = await new AxeBuilder({ page })
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+          .analyze();
+        expect(results.violations.map((v) => v.id)).toEqual([]);
+        await page.keyboard.press('Escape');
+      }
+    });
+  });
+}

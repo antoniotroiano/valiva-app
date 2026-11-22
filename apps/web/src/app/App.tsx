@@ -7,7 +7,8 @@ import { MobileNav } from '../components/layout/MobileNav';
 import { AppNotices } from '../components/layout/AppNotices';
 import { useNarrowScreen } from '../state/useNarrowScreen';
 import { HouseholdOverviewPage } from './HouseholdOverviewPage';
-import { NAV, PAGES } from './pages';
+import { Icon } from '../components/layout/Icon';
+import { BLOCK_OF, NAV, PAGES } from './pages';
 import type { Page } from './pages';
 import { PersonWorkspace } from './PersonWorkspace';
 import { ViewSwitch } from './ViewSwitch';
@@ -130,8 +131,15 @@ export function App() {
   };
 
   const navLink = (p: Page) => (
-    <a href={`#${p}`} aria-current={page === p ? 'page' : undefined}>
+    <a
+      className="nl"
+      href={`#${p}`}
+      aria-current={page === p ? 'page' : undefined}
+      data-block={BLOCK_OF[p]}
+    >
+      <Icon name={p} />
       {de.nav[p]}
+      {BLOCK_OF[p] && <span className="dot" aria-hidden="true" />}
     </a>
   );
 

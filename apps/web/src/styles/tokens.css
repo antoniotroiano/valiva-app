@@ -13,24 +13,61 @@
   --text: light-dark(#15201e, #e5eeec);
   --muted: light-dark(#54635f, #9db0ac);
   --line: light-dark(#dde5e3, #28353a);
-  --field-border: light-dark(#7c8b88, #6d807c);
+  --field-border: light-dark(#76847f, #6d807c);
   --accent: light-dark(#0f766e, #4fd1c0);
   --accent-soft: light-dark(#dff1ee, #17332f);
   --on-accent: light-dark(#ffffff, #052420);
   --danger: light-dark(#b42318, #ff8a80);
   --ok: light-dark(#15803d, #5fd08a);
-  --warn-soft: light-dark(#fdf1e4, #2e2214);
   --focus: light-dark(#0f766e, #4fd1c0);
-  /* The shadow has two layers; in dark mode only the first one is visible. */
+  --scrim: light-dark(rgb(10 20 18 / 40%), rgb(0 0 0 / 55%));
+  /* Shadows only for raised things: hero card, active segment, phone sheet. Cards have none. */
   --shadow-a: light-dark(rgb(16 40 36 / 6%), rgb(0 0 0 / 30%));
-  --shadow-b: light-dark(rgb(16 40 36 / 5%), transparent);
-  --shadow: 0 1px 2px var(--shadow-a), 0 4px 14px var(--shadow-b);
+  --shadow-b: light-dark(rgb(16 40 36 / 7%), transparent);
+  --shadow: 0 1px 2px var(--shadow-a), 0 6px 20px var(--shadow-b);
+  /* Building blocks: one fixed colour per block (charts, chips, dots), label text on it */
+  --b-etf: light-dark(#1d4ed8, #7aa2ff);
+  --b-stat: light-dark(#475569, #a9b8b4);
+  --b-dep: light-dark(#a21caf, #f08fd0);
+  --b-bav: light-dark(#b45309, #e0a24a);
+  --on-block: light-dark(#ffffff, #0d1413);
+  /* Status chips and notices: text, fill, border. Always together with an icon and text. */
+  --ok-fg: light-dark(#166534, #7fdca0);
+  --ok-bg: light-dark(#e2f4e7, #12301f);
+  --ok-bd: light-dark(#9fd0ae, #245b3a);
+  --hint-fg: light-dark(#3b4a47, #c0cdca);
+  --hint-bg: light-dark(#eaf0ef, #1e2928);
+  --hint-bd: light-dark(#cfdad8, #36464a);
+  --warn-fg: light-dark(#8a4b00, #f0b46a);
+  --warn-bg: light-dark(#fdf1e4, #2e2214);
+  --warn-bd: light-dark(#ecc08a, #6b4a1d);
+  --bad-fg: light-dark(#b42318, #ff8a80);
+  --bad-bg: light-dark(#fde9e7, #3a1714);
+  --bad-bd: light-dark(#f1aaa3, #7a2f29);
+  /* Wish line in charts */
+  --wish: light-dark(#b42318, #ff8a80);
   --c-contrib: light-dark(#5b6b68, #9db0ac);
   --c-pess: light-dark(#c2410c, #f59e5b);
   --c-neutral: light-dark(#0f766e, #4fd1c0);
   --c-opt: light-dark(#4f46e5, #a5a0ff);
   --radius: 14px;
   --radius-sm: 8px;
+  --radius-pill: 999px;
+  /* Spacing scale */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  /* Type scale (see docs/design.md) */
+  --fs-hero: 48px;
+  --fs-h1: 28px;
+  --fs-h2: 22px;
+  --fs-h3: 18px;
+  --fs-text: 16px;
+  --fs-small: 14px;
+  --fs-caption: 13px;
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
 :root[data-theme='light'] {

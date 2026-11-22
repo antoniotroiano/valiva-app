@@ -1,5 +1,8 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { de } from '../../i18n/de';
+import { BLOCK_OF } from '../../app/pages';
+import type { Page } from '../../app/pages';
+import { Icon, type IconName } from './Icon';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sheet = 'inputs' | 'more';
@@ -8,30 +11,10 @@ type Sheet = 'inputs' | 'more';
 const INPUT_PAGES = ['profile', 'etf', 'statutory', 'depot', 'occupational', 'goals'];
 const MORE_PAGES = ['assumptions', 'data'];
 
-const ICONS: Record<string, ReactNode> = {
-  overview: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
-  inputs: <path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" />,
-  household: (
-    <>
-      <circle cx="9" cy="8" r="3" />
-      <path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 5.5a3 3 0 010 5.5M18 14c2 .7 3 2.6 3 6" />
-    </>
-  ),
-  more: (
-    <>
-      <circle cx="5" cy="12" r="1.2" />
-      <circle cx="12" cy="12" r="1.2" />
-      <circle cx="19" cy="12" r="1.2" />
-    </>
-  ),
-};
-
-function Icon({ name }: { name: string }) {
+function TabIcon({ name }: { name: IconName }) {
   return (
     <span className="pill" aria-hidden="true">
-      <svg viewBox="0 0 24 24" focusable="false">
-        {ICONS[name]}
-      </svg>
+      <Icon name={name} size="lg" />
     </span>
   );
 }
@@ -90,13 +73,17 @@ export function MobileNav({
       <a
         href={`#${p}`}
         aria-current={page === p ? 'page' : undefined}
+        data-block={BLOCK_OF[p as Page]}
         onClick={() => {
           // Same page: no hashchange follows, so the focus goes back to the tab itself.
           if (page === p) dismiss(sheet);
           else setOpen(null);
         }}
       >
+        <Icon name={p as Page} />
         {de.nav[p as keyof typeof de.nav] as string}
+        {BLOCK_OF[p as Page] && <span className="dot" aria-hidden="true" />}
+        <Icon name="next" size="sm" />
       </a>
     </li>
   );
@@ -108,7 +95,7 @@ export function MobileNav({
       aria-current={page === p ? 'page' : undefined}
       onClick={() => setOpen(null)}
     >
-      <Icon name={p} />
+      <TabIcon name={p} />
       {de.nav[p]}
     </a>
   );
@@ -125,7 +112,7 @@ export function MobileNav({
       aria-current={pages.includes(page) ? 'true' : undefined}
       onClick={() => (open === sheet ? dismiss(sheet) : setOpen(sheet))}
     >
-      <Icon name={sheet} />
+      <TabIcon name={sheet} />
       {label}
     </button>
   );

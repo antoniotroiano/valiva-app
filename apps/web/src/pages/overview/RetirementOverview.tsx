@@ -1,6 +1,7 @@
 import { productName, type BudgetInfo } from './RetirementGap';
 import {
   type OverviewProductKind,
+  type OverviewProductStatus,
   type OverviewResult,
   type ScenarioName,
   type ValidationIssue,
@@ -19,6 +20,7 @@ import {
 import { de, issueMessage } from '../../i18n/de';
 import { type OverviewApi, type OverviewBlock } from '../../state/useOverview';
 import { OVERVIEW_BLOCKS } from '../../state/useOverview';
+import { StatusChip, type StatusKind } from '../../components/cards/StatusChip';
 import { ScrollTable } from '../../components/cards/ScrollTable';
 import { Notes, GapTile, Row, PathTable } from './RetirementGap';
 
@@ -100,6 +102,13 @@ export function RetirementOverview({
   );
 }
 
+const STATUS_KIND: Record<OverviewProductStatus['status'], StatusKind> = {
+  included: 'ok',
+  later: 'hint',
+  disabled: 'hint',
+  invalid: 'error',
+};
+
 function Result({
   result,
   goTo,
@@ -128,7 +137,9 @@ function Result({
         {result.products.map((p) => (
           <li key={p.productId}>
             <b>{productName(p.productId)}:</b>{' '}
-            {p.empty ? t.statusEmpty : t.status[p.status](p.payoutStartAge)}
+            <StatusChip kind={p.empty ? 'warn' : STATUS_KIND[p.status]}>
+              {p.empty ? t.statusEmpty : t.status[p.status](p.payoutStartAge)}
+            </StatusChip>
             {p.status === 'invalid' && p.issues && (
               <>
                 {' '}

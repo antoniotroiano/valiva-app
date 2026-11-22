@@ -23,13 +23,14 @@ caption {
 th,
 td {
   text-align: right;
-  padding: 8px 10px;
+  padding: var(--s2) var(--s3);
   border-bottom: 1px solid var(--line);
+  font-size: var(--fs-small);
   font-weight: normal;
 }
 thead th {
   font-weight: 600;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   color: var(--muted);
   background: var(--bg);
 }
@@ -43,9 +44,9 @@ td.left {
   text-align: left;
 }
 .disclaimer {
-  font-size: 13px;
+  font-size: var(--fs-small);
   color: var(--muted);
-  margin-top: 32px;
+  margin-top: var(--s6);
   max-width: 80ch;
 }
 
@@ -78,19 +79,9 @@ td.left {
     border-bottom: 1px solid var(--line);
   }
   .mobile-top strong {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 17px;
-    letter-spacing: -0.01em;
-  }
-  .mobile-top strong::before {
-    content: '';
-    width: 22px;
-    height: 22px;
-    border-radius: 7px;
-    background: var(--accent);
-    box-shadow: inset 0 -6px 0 rgb(255 255 255 / 22%);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
   .person-chip {
     display: inline-flex;
@@ -101,7 +92,7 @@ td.left {
     border: 1px solid var(--field-border);
     border-radius: 24px;
     background: var(--surface);
-    font-size: 12px;
+    font-size: var(--fs-caption);
     color: var(--muted);
   }
   .person-chip select {
@@ -139,7 +130,7 @@ td.left {
     background: none;
     color: var(--muted);
     font: inherit;
-    font-size: 12.5px;
+    font-size: var(--fs-caption);
     text-decoration: none;
     cursor: pointer;
   }
@@ -150,15 +141,6 @@ td.left {
     width: 56px;
     height: 28px;
     border-radius: 14px;
-  }
-  .tab svg {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: currentcolor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
   }
   .tab[aria-current],
   .tab[aria-expanded='true'] {
@@ -174,7 +156,7 @@ td.left {
     inset: 0 0 var(--tabbar-h) 0;
     z-index: 24;
     display: block;
-    background: rgb(10 20 18 / 45%);
+    background: var(--scrim);
   }
   .sheet {
     position: fixed;
@@ -191,7 +173,17 @@ td.left {
     border: 1px solid var(--line);
     border-bottom: 0;
     border-radius: 20px 20px 0 0;
-    box-shadow: 0 -4px 20px rgb(0 0 0 / 18%);
+    box-shadow: var(--shadow);
+  }
+  /* Grab handle: decoration only (closing works by button, scrim and Escape) */
+  .sheet::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    margin: 4px auto 0;
+    border-radius: 2px;
+    background: var(--field-border);
   }
   .sheet ul {
     list-style: none;
@@ -206,7 +198,7 @@ td.left {
   }
   .sheet-head h2 {
     margin: 0;
-    font-size: 17px;
+    font-size: var(--fs-h3);
   }
   .sheet-close {
     min-height: 48px;
@@ -220,24 +212,47 @@ td.left {
   }
   .sheet-group {
     margin: 6px 8px 2px;
-    font-size: 12.5px;
+    font-size: var(--fs-caption);
     font-weight: 600;
     color: var(--muted);
   }
   .sheet li a {
+    --bk: var(--accent);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: var(--s3);
     min-height: 48px;
-    padding: 0 8px;
+    padding: 0 var(--s2);
     border-radius: var(--radius-sm);
     color: var(--text);
     text-decoration: none;
   }
-  .sheet li a::after {
-    content: '\203a';
+  .sheet li a .dot {
+    margin-left: auto;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bk);
+  }
+  /* The chevron sits at the right edge: after the block dot, or pushed there by itself */
+  .sheet li a > .ic:last-child {
+    margin-left: auto;
     color: var(--muted);
-    font-size: 20px;
+  }
+  .sheet li a .dot + .ic:last-child {
+    margin-left: var(--s3);
+  }
+  .sheet li a[data-block='etf'] {
+    --bk: var(--b-etf);
+  }
+  .sheet li a[data-block='stat'] {
+    --bk: var(--b-stat);
+  }
+  .sheet li a[data-block='dep'] {
+    --bk: var(--b-dep);
+  }
+  .sheet li a[data-block='bav'] {
+    --bk: var(--b-bav);
   }
   .sheet li a[aria-current='page'] {
     background: var(--accent-soft);
@@ -264,6 +279,10 @@ td.left {
   /* Skip link and focus jumps must not hide the heading under the sticky bar */
   main h1 {
     scroll-margin-top: 72px;
+    font-size: 24px;
+  }
+  .hero .kpi-value {
+    font-size: 40px;
   }
   /* Touch targets: at least 44 px high */
   .btn,

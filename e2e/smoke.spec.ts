@@ -92,6 +92,9 @@ test('retirement depot: contribution leads to allowances and a net pension', asy
   await expect(
     page.locator('.kpi', { hasText: 'Netto pro Monat (Kaufkraft heute)' }),
   ).toContainText('€');
+  // The long yearly table is collapsed by default
+  await expect(page.getByRole('table', { name: 'Zulagen je Kalenderjahr' })).toBeHidden();
+  await page.getByText(/Zulagen je Kalenderjahr anzeigen/).click();
   await expect(page.getByRole('table', { name: 'Zulagen je Kalenderjahr' })).toBeVisible();
   await expect(page.getByRole('table', { name: /Szenarien im Vergleich/ })).toBeVisible();
   await expect(page.getByRole('img', { name: /Liniendiagramm: Eigenbeiträge/ })).toBeVisible();

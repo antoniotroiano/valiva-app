@@ -115,6 +115,7 @@ export const depot = {
   },
   allowanceTable: {
     title: 'Zulagen je Kalenderjahr',
+    toggle: (years: number) => `Zulagen je Kalenderjahr anzeigen (${years} Jahre)`,
     year: 'Jahr',
     contribution: 'Eigenbeitrag',
     basic: 'Grundzulage',

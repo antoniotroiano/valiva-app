@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import { formatEur, formatEur2, formatMonth } from '../../lib/format';
 import { de } from '../../i18n/de';
+import { AXIS, TOOLTIP_STYLE } from './chartTheme';
 
 export function GoalChart({
   projection,
@@ -45,22 +46,9 @@ export function GoalChart({
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 8, right: 16, bottom: 8, left: 8 }}>
             <CartesianGrid stroke="var(--line)" strokeDasharray="3 3" />
-            <XAxis
-              dataKey="label"
-              stroke="var(--muted)"
-              tick={{ fill: 'var(--muted)' }}
-              minTickGap={32}
-            />
-            <YAxis
-              stroke="var(--muted)"
-              tick={{ fill: 'var(--muted)' }}
-              tickFormatter={(v: number) => formatEur(v)}
-              width={90}
-            />
-            <Tooltip
-              formatter={(v) => formatEur2(Number(v))}
-              contentStyle={{ background: 'var(--surface)', border: '1px solid var(--line)' }}
-            />
+            <XAxis dataKey="label" {...AXIS} minTickGap={32} />
+            <YAxis {...AXIS} tickFormatter={(v: number) => formatEur(v)} width={90} />
+            <Tooltip formatter={(v) => formatEur2(Number(v))} contentStyle={TOOLTIP_STYLE} />
             <Legend />
             <Line
               dataKey="target"

@@ -32,3 +32,11 @@ export const NAV: (Page | { group: 'blocks'; items: Page[] })[] = [
   'assumptions',
   'data',
 ];
+
+/** Colour group of a building-block page (sidebar dot, see docs/design.md). */
+export const BLOCK_OF: Partial<Record<Page, 'etf' | 'stat' | 'dep' | 'bav'>> = {
+  etf: 'etf',
+  statutory: 'stat',
+  depot: 'dep',
+  occupational: 'bav',
+};
