@@ -11,9 +11,10 @@ import { useStatutory } from './useStatutory';
 import { useDepot } from './useDepot';
 import { useOccupational } from './useOccupational';
 import { useOverview } from './useOverview';
-import { createStore } from './createStore';
+import { safeSetItem, watchOtherTabs } from './storageStatus';
 import { isNewStart, markStarted } from './onboarding';
 import { MobileNav } from './components/MobileNav';
+import { AppNotices } from './components/AppNotices';
 import { useNarrowScreen } from './useNarrowScreen';
 
 const AssumptionsPage = lazy(() =>
@@ -99,7 +100,8 @@ export function App() {
   const multi = household.state.household.persons.length > 1;
 
   const [newStart, setNewStart] = useState(isNewStart);
-  const neverExported = useMemo(() => createStore().lastExport() === undefined, []);
+
+  useEffect(() => watchOtherTabs(), []);
 
   useEffect(() => {
     // The first edit in a page (not in the navigation) ends the first-start state.
@@ -178,11 +180,7 @@ export function App() {
   useEffect(() => {
     if (theme === 'system') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', theme);
-    try {
-      localStorage.setItem('pathwise.theme', theme);
-    } catch {
-      /* ignore */
-    }
+    safeSetItem('pathwise.theme', theme);
   }, [theme]);
 
   const go = (p: Page) => {
@@ -273,6 +271,11 @@ export function App() {
         <p className="print-only print-header">
           {de.printHeader(de.nav[page], new Date().toLocaleDateString('de-DE'))}
         </p>
+        <AppNotices
+          goToData={() => go('data')}
+          hideExportReminder={page === 'data'}
+          isNewStart={newStart}
+        />
         {page === 'overview' && multi && (
           <ViewSwitch household={household} view={view} setView={setView} />
         )}
@@ -289,6 +292,11 @@ export function App() {
                 household.setActivePerson(id);
                 setView('person');
               }}
+              goToPersonProfile={(id) => {
+                household.setActivePerson(id);
+                setView('person');
+                go('profile');
+              }}
             />
           ) : (
             <PersonWorkspace
@@ -298,7 +306,6 @@ export function App() {
               page={page}
               go={go}
               newStart={newStart}
-              neverExported={neverExported}
             />
           )}
         </Suspense>
@@ -351,10 +358,12 @@ function HouseholdOverviewPage({
   household,
   goToHousehold,
   openPerson,
+  goToPersonProfile,
 }: {
   household: HouseholdApi;
   goToHousehold: () => void;
   openPerson: (id: string) => void;
+  goToPersonProfile: (id: string) => void;
 }) {
   const legal = useMemo(() => currentLegal(), []);
   const data = useHouseholdOverview(household, legal);
@@ -364,6 +373,7 @@ function HouseholdOverviewPage({
       data={data}
       goToHousehold={goToHousehold}
       openPerson={openPerson}
+      goToPersonProfile={goToPersonProfile}
     />
   );
 }
@@ -374,14 +384,12 @@ function PersonWorkspace({
   page,
   go,
   newStart,
-  neverExported,
 }: {
   personId: string;
   household: HouseholdApi;
   page: Page;
   go: (p: Page) => void;
   newStart: boolean;
-  neverExported: boolean;
 }) {
   const profile = useProfile(household, personId);
   const goals = useGoals(personId, profile.committed.assumptions.churchTax);
@@ -418,7 +426,6 @@ function PersonWorkspace({
           wish={profile.state.profile.desiredMonthlyIncomeToday}
           setWish={(v) => profile.setProfile({ desiredMonthlyIncomeToday: v })}
           newStart={newStart}
-          neverExported={neverExported}
         />
       )}
       {page === 'etf' && (

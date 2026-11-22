@@ -286,6 +286,7 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-22 – Review 14 AP-01: Git lokal eingerichtet (`main`, `origin` privat), Notizen nach `PROGRESS-notes-archive.md` ausgelagert, `arningText.ts` gelöscht; Commit/Push beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 - 2026-11-22 – Review 14 AP-02: Smartphone-Layout repariert (Grid, `ScrollTable`, 16 px/44 px, `theme-color`), neuer `e2e/mobile.spec.ts`, Sichtprüfung 375/320 px hell und dunkel; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 - 2026-11-22 – Review 14 AP-03: Navigation (Scroll nach oben, Fokus auf die `h1`, Seitentitel, untere Tab-Leiste mit Blättern bis 900 px, Skip-Link repariert), neuer `e2e/navigation.spec.ts`, Mockup `mobile-nav.html` freigegeben; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+- 2026-11-22 – Review 14 AP-04: Robustheit (Rentenbeginn in der Vergangenheit als Fehler über `validateRetirementTiming`, bewusst nicht in `validateProfile`; zentrale Speicherfunktion mit Warnleiste, Hinweis bei Änderung in anderem Tab, Flush bei `pagehide`, `todayLocal()`, Exportmahnung nach WebKit-Regel); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 ## Offene Fragen aus dem Bau
 - (leer)

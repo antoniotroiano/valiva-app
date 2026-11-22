@@ -1,6 +1,5 @@
 import type { EtfPlanResult, GoalResult, SavingsGoal } from '@pathwise/core';
 import { PageShell } from '../components/PageShell';
-import { LocalDataNotice } from '../components/LocalDataNotice';
 import { WelcomeCard } from '../components/WelcomeCard';
 import { KpiTile } from '../components/KpiTile';
 import { RetirementOverview } from '../components/RetirementOverview';
@@ -21,7 +20,6 @@ export function OverviewPage({
   wish,
   setWish,
   newStart,
-  neverExported,
 }: {
   result: EtfPlanResult;
   taxEnabled: boolean;
@@ -37,20 +35,17 @@ export function OverviewPage({
   setWish: (value: number | undefined) => void;
   /** First visit, nothing entered yet: shows the welcome card and marks the values as examples. */
   newStart: boolean;
-  neverExported: boolean;
 }) {
   const t = de.overview;
   return (
     <PageShell title={t.title} subtitle={t.subtitle}>
-      {newStart ? (
+      {newStart && (
         <>
           <WelcomeCard goToProfile={() => goTo('profile')} goToBlocks={() => goTo('etf')} />
           <p className="notice info">
             <span className="badge">{t.sampleBadge}</span> {t.sampleNote}
           </p>
         </>
-      ) : (
-        <LocalDataNotice neverExported={neverExported} goToData={() => goTo('data')} />
       )}
       <RetirementOverview
         api={retirement}

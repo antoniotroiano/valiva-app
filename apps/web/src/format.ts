@@ -5,6 +5,13 @@ const eur = new Intl.NumberFormat('de-DE', {
 });
 const num = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 4 });
 
+/** Today's date as `YYYY-MM-DD` in the local time zone (`toISOString` would give the UTC date, off by one around midnight). */
+export function todayLocal(now: Date = new Date()): string {
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${now.getFullYear()}-${month}-${day}`;
+}
+
 export const formatEur = (v: number): string => eur.format(Math.round(v));
 export const formatNumber = (v: number): string => (Number.isFinite(v) ? num.format(v) : '');
 

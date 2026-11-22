@@ -68,16 +68,17 @@ export function RetirementOverview({
         ))}
       </fieldset>
       {outcome === undefined && (
-        <p>
+        <p role="alert">
           {t.profileInvalid}{' '}
+          {api.profileIssues.map((i: ValidationIssue) => issueMessage(i)).join(' ')}{' '}
           <button type="button" className="link" onClick={() => goTo('profile')}>
             {t.toProfile}
           </button>
         </p>
       )}
       {outcome && !outcome.ok && (
-        <p>
-          {t.profileInvalid}{' '}
+        <p role="alert">
+          {t.profileInvalid} {outcome.issues.map((i: ValidationIssue) => issueMessage(i)).join(' ')}{' '}
           <button type="button" className="link" onClick={() => goTo('profile')}>
             {t.toProfile}
           </button>

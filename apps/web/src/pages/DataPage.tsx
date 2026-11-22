@@ -1,4 +1,5 @@
 import { WORKSPACE_LIMITS, parseWorkspace, serializeWorkspace } from '@pathwise/core';
+import { suspendPersistence } from '../storageStatus';
 import type { Workspace, WorkspaceWarning } from '@pathwise/core';
 import { useCallback, useId, useMemo, useRef, useState } from 'react';
 import { WORKSPACE_FILE_SUFFIX, WORKSPACE_FORMAT } from '../appConfig';
@@ -109,6 +110,7 @@ export function DataPage({ household }: { household: HouseholdApi }) {
       return;
     }
     markStarted();
+    suspendPersistence();
     setPending(undefined);
     setMessage({ kind: 'ok', text: t.imported });
     reloadSoon();
@@ -121,6 +123,7 @@ export function DataPage({ household }: { household: HouseholdApi }) {
       setMessage({ kind: 'error', text: t.resetFailed });
       return;
     }
+    suspendPersistence();
     setBusy(true);
     setMessage({ kind: 'ok', text: t.resetDone });
     reloadSoon();

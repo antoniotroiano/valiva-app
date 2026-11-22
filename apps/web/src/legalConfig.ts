@@ -1,4 +1,5 @@
 import { resolveLegalParameters } from '@pathwise/core';
+import { todayLocal } from './format';
 import type {
   DepotKey,
   IncomeTaxKey,
@@ -24,6 +25,6 @@ export function currentLegal(): LegalResolution {
     socialConfig,
     depotConfig,
     incomeTaxConfig,
-    new Date().toISOString().slice(0, 10),
+    todayLocal(),
   );
 }

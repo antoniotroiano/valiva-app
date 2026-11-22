@@ -9,6 +9,7 @@ import { currentTaxAssumptions } from '../taxConfig';
 import { FieldGroup } from './FieldGroup';
 import { NumberField } from './NumberField';
 import { ScrollTable } from './ScrollTable';
+import { safeSetItem } from '../storageStatus';
 
 type Stored = EtfTargetState;
 
@@ -32,11 +33,7 @@ export function EtfTargetSection({
 
   useEffect(() => {
     if (!Number.isFinite(stored.targetValue)) return;
-    try {
-      localStorage.setItem(personKey(personId, 'etfTarget'), JSON.stringify(stored));
-    } catch {
-      /* ignore */
-    }
+    safeSetItem(personKey(personId, 'etfTarget'), JSON.stringify(stored));
   }, [stored]);
 
   const result = useMemo(

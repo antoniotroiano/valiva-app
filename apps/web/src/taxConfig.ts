@@ -12,12 +12,11 @@ import type {
   TaxConfig,
 } from '@pathwise/core';
 import raw from '../../../config/tax-de.json';
+import { todayLocal } from './format';
 
 export const taxConfig = raw as unknown as TaxConfig;
 
-function today(): string {
-  return new Date().toISOString().slice(0, 10);
-}
+const today = todayLocal;
 
 /**
  * Base interest and factor for the advance lump-sum tax, with the plan starting this month. Falls back to the

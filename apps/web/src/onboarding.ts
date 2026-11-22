@@ -1,9 +1,10 @@
+import { safeSetItem } from './storageStatus';
+
 /**
  * First-start state (review 13, U-1). `pathwise.onboarding` is `new` from the first visit until the user
  * edits something, loads example data or imports a file; then it is `done`. Existing users have no key.
  */
 export const ONBOARDING_KEY = 'pathwise.onboarding';
-export const LOCAL_NOTICE_KEY = 'pathwise.localNoticeDismissed';
 
 function read(key: string): string | null {
   try {
@@ -14,11 +15,7 @@ function read(key: string): string | null {
 }
 
 function write(key: string, value: string): void {
-  try {
-    localStorage.setItem(key, value);
-  } catch {
-    /* ignore */
-  }
+  safeSetItem(key, value);
 }
 
 export function isNewStart(): boolean {
@@ -31,12 +28,4 @@ export function markNewStart(): void {
 
 export function markStarted(): void {
   if (isNewStart()) write(ONBOARDING_KEY, 'done');
-}
-
-export function isLocalNoticeDismissed(): boolean {
-  return read(LOCAL_NOTICE_KEY) === '1';
-}
-
-export function dismissLocalNotice(): void {
-  write(LOCAL_NOTICE_KEY, '1');
 }

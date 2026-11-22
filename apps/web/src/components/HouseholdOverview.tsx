@@ -16,11 +16,13 @@ export function HouseholdOverview({
   data,
   goToHousehold,
   openPerson,
+  goToPersonProfile,
 }: {
   household: HouseholdApi;
   data: HouseholdOverviewApi;
   goToHousehold: () => void;
   openPerson: (id: string) => void;
+  goToPersonProfile: (id: string) => void;
 }) {
   const t = de.householdView;
   const r = de.overview.retirement;
@@ -37,9 +39,28 @@ export function HouseholdOverview({
           <>
             <p>{t.invalid}</p>
             <ul>
-              {outcome.issues.map((i: ValidationIssue) => (
-                <li key={`${i.field}|${i.code}`}>{issueMessage(i)}</li>
-              ))}
+              {outcome.issues.map((i: ValidationIssue) => {
+                const owner = persons.find((p) => i.field.startsWith(`persons.${p.id}.`));
+                const name = owner?.name.trim() || undefined;
+                return (
+                  <li key={`${i.field}|${i.code}`}>
+                    {name !== undefined && <b>{name}: </b>}
+                    {issueMessage(i)}
+                    {owner && (
+                      <>
+                        {' '}
+                        <button
+                          type="button"
+                          className="link"
+                          onClick={() => goToPersonProfile(owner.id)}
+                        >
+                          {t.fixPerson(name ?? owner.id)}
+                        </button>
+                      </>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </>
         )}

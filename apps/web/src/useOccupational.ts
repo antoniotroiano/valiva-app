@@ -4,6 +4,7 @@ import type { OccupationalState } from '@pathwise/core';
 import { CURRENT_YEAR } from './useProfile';
 import { useDebounced, usePersist } from './useDebounced';
 import { personKey, readBlock } from './personStorage';
+import { safeSetItem } from './storageStatus';
 
 export type { OccupationalState };
 
@@ -25,11 +26,7 @@ export function useOccupational(personId: string) {
     ];
     if (!required.every(Number.isFinite)) return;
     if (Number.isNaN(committed.annualContributionIncreasePercent)) return;
-    try {
-      localStorage.setItem(personKey(personId, 'occupational'), JSON.stringify(committed));
-    } catch {
-      /* ignore */
-    }
+    safeSetItem(personKey(personId, 'occupational'), JSON.stringify(committed));
   });
 
   const update = useCallback((patch: Partial<OccupationalState>) => {

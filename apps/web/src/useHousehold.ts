@@ -14,12 +14,13 @@ import type {
   LegacyStorage,
   Person,
 } from '@pathwise/core';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { de } from './i18n/de';
 import { socialConfig } from './legalConfig';
 import { markNewStart } from './onboarding';
 import { personKey } from './personStorage';
-import { useDebounced } from './useDebounced';
+import { safeRemoveItem, safeSetItem } from './storageStatus';
+import { useDebounced, useFlushOnHide } from './useDebounced';
 import { HOUSEHOLD_KEY } from './workspaceStore';
 
 export { HOUSEHOLD_KEY };
@@ -56,18 +57,15 @@ function boot(): HouseholdState {
     defaultGlobalAssumptions(),
     de.household.firstPersonName,
   );
-  try {
-    const id = state.activePersonId;
-    for (const block of PERSON_BLOCKS) {
-      const raw = personData[block];
-      if (raw !== undefined && read(personKey(id, block)) === null) {
-        localStorage.setItem(personKey(id, block), raw);
-      }
+  // A failed write is reported by `safeSetItem`; the state still works for this session.
+  const id = state.activePersonId;
+  for (const block of PERSON_BLOCKS) {
+    const raw = personData[block];
+    if (raw !== undefined && read(personKey(id, block)) === null) {
+      safeSetItem(personKey(id, block), raw);
     }
-    localStorage.setItem(HOUSEHOLD_KEY, JSON.stringify(state));
-  } catch {
-    /* storage unavailable: the state still works for this session */
   }
+  safeSetItem(HOUSEHOLD_KEY, JSON.stringify(state));
   return state;
 }
 
@@ -83,12 +81,20 @@ export function useHousehold() {
   useEffect(() => {
     // Only valid states are saved, so a half-typed field never overwrites good data.
     if (!valid) return;
-    try {
-      localStorage.setItem(HOUSEHOLD_KEY, JSON.stringify(committed));
-    } catch {
-      /* ignore */
-    }
+    safeSetItem(HOUSEHOLD_KEY, JSON.stringify(committed));
   }, [committed, valid]);
+
+  // Also save the live state when the tab is hidden or closed within the 250 ms debounce (B-6).
+  const liveRef = useRef(state);
+  useEffect(() => {
+    liveRef.current = state;
+  });
+  useFlushOnHide(() => {
+    const live = liveRef.current;
+    if (validateHousehold(live.household, CURRENT_YEAR).length === 0) {
+      safeSetItem(HOUSEHOLD_KEY, JSON.stringify(live));
+    }
+  });
 
   const setHousehold = useCallback((update: (h: Household) => Household) => {
     setState((s) => ({ ...s, household: update(s.household) }));
@@ -139,22 +145,21 @@ export function useHousehold() {
     return newId;
   }, []);
   const removePerson = useCallback((id: string) => {
+    // The updater stays pure (no storage access); the keys go after the state change was accepted.
+    // `liveRef` is the latest rendered state; a person that is not the last one is removed.
+    const current = liveRef.current;
+    if (current.household.persons.length <= 1) return;
+    if (!current.household.persons.some((p) => p.id === id)) return;
     setState((s) => {
       if (s.household.persons.length <= 1) return s;
       const persons = s.household.persons.filter((p) => p.id !== id);
-      for (const block of PERSON_BLOCKS) {
-        try {
-          localStorage.removeItem(personKey(id, block));
-        } catch {
-          /* ignore */
-        }
-      }
       return {
         ...s,
         household: { ...s.household, persons },
         activePersonId: s.activePersonId === id ? persons[0]!.id : s.activePersonId,
       };
     });
+    for (const block of PERSON_BLOCKS) safeRemoveItem(personKey(id, block));
   }, []);
   const resetAll = useCallback(
     () =>

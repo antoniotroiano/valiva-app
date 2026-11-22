@@ -9,7 +9,7 @@ import {
   socialConfig,
 } from '../legalConfig';
 import { de } from '../i18n/de';
-import { formatNumber } from '../format';
+import { formatNumber, todayLocal } from '../format';
 import { ScrollTable } from './ScrollTable';
 
 const taxKeys = [
@@ -116,7 +116,7 @@ function advanceValues(): {
 export function AssumptionsPanel() {
   const a = de.assumptions;
   const advance = advanceValues();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayLocal();
   const taxResolved = resolveTaxAssumptions(taxConfig, today);
   const legalResolved = currentLegal();
   return (

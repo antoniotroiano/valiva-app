@@ -3,6 +3,7 @@ import {
   splitAssumptions,
   validateAssumptions,
   validateProfile,
+  validateRetirementTiming,
 } from '@pathwise/core';
 import type { GlobalAssumptions, Profile, ValidationIssue } from '@pathwise/core';
 import { useCallback, useMemo } from 'react';
@@ -35,7 +36,10 @@ export function useProfile(household: HouseholdApi, personId: string) {
 
   const issues = useMemo(
     () => ({
-      profile: validateProfile(state.profile, CURRENT_YEAR),
+      profile: [
+        ...validateProfile(state.profile, CURRENT_YEAR),
+        ...validateRetirementTiming(state.profile, CURRENT_YEAR),
+      ],
       assumptions: validateAssumptions(state.assumptions),
     }),
     [state],
@@ -43,6 +47,7 @@ export function useProfile(household: HouseholdApi, personId: string) {
   const committedValid = useMemo(
     () =>
       validateProfile(committed.profile, CURRENT_YEAR).length === 0 &&
+      validateRetirementTiming(committed.profile, CURRENT_YEAR).length === 0 &&
       validateAssumptions(committed.assumptions).length === 0,
     [committed],
   );

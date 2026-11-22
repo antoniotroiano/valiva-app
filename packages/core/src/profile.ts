@@ -85,6 +85,28 @@ export function validateProfile(profile: Profile, currentYear: number): Validati
   return c.issues;
 }
 
+/**
+ * The retirement start (`birthYear + targetRetirementAge`) must not lie before `currentYear`. Kept apart from
+ * `validateProfile` on purpose: that one also guards loading and importing saved data, and a rule that depends
+ * on the calendar must not discard a stored household when the year changes. The calculation entry points
+ * (`overview`, `householdOverview`) and the profile form use this one. `min` is the earliest valid age.
+ * A start in `currentYear` itself is valid. Returns no issue while the inputs are not finite integers
+ * (`validateProfile` reports those).
+ */
+export function validateRetirementTiming(profile: Profile, currentYear: number): ValidationIssue[] {
+  if (!Number.isInteger(profile.birthYear) || !Number.isInteger(profile.targetRetirementAge)) {
+    return [];
+  }
+  if (profile.birthYear + profile.targetRetirementAge >= currentYear) return [];
+  return [
+    {
+      field: 'targetRetirementAge',
+      code: 'retirement_in_past',
+      min: currentYear - profile.birthYear,
+    },
+  ];
+}
+
 export function validateAssumptions(a: GlobalAssumptions): ValidationIssue[] {
   const c = new Collector();
   const wide = PROFILE_LIMITS.percentWide;

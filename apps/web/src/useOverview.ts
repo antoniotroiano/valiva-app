@@ -24,6 +24,7 @@ import type { DepotApi } from './useDepot';
 import type { OccupationalApi } from './useOccupational';
 import type { EtfPlanApi } from './useEtfPlan';
 import { personKey, readBlock } from './personStorage';
+import { safeSetItem } from './storageStatus';
 
 export { OVERVIEW_BLOCKS };
 export type { OverviewBlock, OverviewState };
@@ -44,11 +45,7 @@ export function useOverview(
   const [state, setState] = useState<OverviewState>(() => load(personId));
 
   useEffect(() => {
-    try {
-      localStorage.setItem(personKey(personId, 'overview'), JSON.stringify(state));
-    } catch {
-      /* ignore */
-    }
+    safeSetItem(personKey(personId, 'overview'), JSON.stringify(state));
   }, [state]);
 
   const setEnabled = useCallback((block: OverviewBlock, value: boolean) => {
@@ -158,6 +155,8 @@ export function useOverview(
     outcome: computed?.outcome,
     gap: computed?.gap,
     otherIncome: computed?.otherIncome,
+    /** Profile errors of this person (empty when valid); shown instead of a result. */
+    profileIssues: profile.issues.profile,
   };
 }
 

@@ -10,6 +10,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { currentTaxAssumptions } from './taxConfig';
 import { personKey, readBlock } from './personStorage';
 import { useDebounced, usePersist } from './useDebounced';
+import { safeSetItem } from './storageStatus';
 
 const allowanceIsValid = (v: number | undefined) =>
   v === undefined || (Number.isFinite(v) && v >= 0);
@@ -52,11 +53,7 @@ export function useGoals(personId: string, churchTax?: ChurchTaxChoice) {
       committed.goals.every((g) => validateSavingsGoal(g).length === 0) &&
       allowanceIsValid(committed.taxFreeAllowanceYearly);
     if (!valid) return;
-    try {
-      localStorage.setItem(personKey(personId, 'goals'), JSON.stringify(committed));
-    } catch {
-      /* ignore */
-    }
+    safeSetItem(personKey(personId, 'goals'), JSON.stringify(committed));
   });
 
   const defaultAllowance = currentTaxAssumptions().assumptions.taxFreeAllowance;

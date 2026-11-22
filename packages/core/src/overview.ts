@@ -1,7 +1,7 @@
 import { lumpSumTax, retirementIncomeTax } from './retirementTax';
 import type { IncomeTaxParameters } from './incomeTax';
 import type { OtherIncome, TaxableIncome } from './retirementTax';
-import { validateAssumptions, validateProfile } from './profile';
+import { validateAssumptions, validateProfile, validateRetirementTiming } from './profile';
 import type { GlobalAssumptions, Profile } from './profile';
 import type { ProjectionResult } from './projection';
 import { SCENARIO_NAMES } from './types';
@@ -205,7 +205,11 @@ export function overview(
   incomeTaxParameters: IncomeTaxParameters,
   personId = 'default',
 ): OverviewOutcome {
-  const issues = [...validateProfile(profile, currentYear), ...validateAssumptions(assumptions)];
+  const issues = [
+    ...validateProfile(profile, currentYear),
+    ...validateRetirementTiming(profile, currentYear),
+    ...validateAssumptions(assumptions),
+  ];
   if (issues.length > 0) return { ok: false, issues };
 
   const target = profile.targetRetirementAge;

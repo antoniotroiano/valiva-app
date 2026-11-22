@@ -1,6 +1,7 @@
 import type { IncomeTaxParameters } from './incomeTax';
 import { personContext, validateHousehold } from './household';
 import type { PensionKey } from './legalConfig';
+import { validateRetirementTiming } from './profile';
 import type { Household } from './household';
 import { overview } from './overview';
 import type { OverviewProductInput, OverviewProductKind, OverviewResult } from './overview';
@@ -94,6 +95,13 @@ export function householdOverview(
   survivorParameters?: SurvivorParameters,
 ): HouseholdOutcome {
   const issues = validateHousehold(household, currentYear);
+  // A person who has to retire in the past must never yield a household result that looks valid.
+  for (const person of household.persons) {
+    const ctx = personContext(household, person);
+    for (const i of validateRetirementTiming(ctx.profile, currentYear)) {
+      issues.push({ ...i, field: `persons.${person.id}.${i.field}` });
+    }
+  }
   if (issues.length > 0) return { ok: false, issues };
 
   const desired = household.desiredMonthlyIncomeToday;

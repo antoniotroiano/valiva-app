@@ -24,7 +24,8 @@ test('the welcome card ends with the first edit and the wish can be entered on t
   await page.getByLabel(/Gewünschtes Netto-Einkommen/).fill('3000');
   await expect(page.getByRole('heading', { name: 'Willkommen' })).toHaveCount(0);
   await expect(page.getByText('Rentenlücke').first()).toBeVisible();
-  await expect(page.getByText(/Deine Daten liegen nur in diesem Browser/)).toBeVisible();
+  // After the first edit the export reminder (never exported) takes the place of the old one-time hint.
+  await expect(page.getByText(/Du hast noch nie exportiert/)).toBeVisible();
   await page.waitForTimeout(600);
   await page.reload();
   await expect(page.getByLabel(/Gewünschtes Netto-Einkommen/)).toHaveValue('3.000');

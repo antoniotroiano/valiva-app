@@ -4,6 +4,7 @@ import type { StatutoryState } from '@pathwise/core';
 import { CURRENT_YEAR } from './useProfile';
 import { useDebounced, usePersist } from './useDebounced';
 import { personKey, readBlock } from './personStorage';
+import { safeSetItem } from './storageStatus';
 
 export type { StatutoryState };
 
@@ -24,11 +25,7 @@ export function useStatutory(personId: string) {
     ) {
       return;
     }
-    try {
-      localStorage.setItem(personKey(personId, 'statutory'), JSON.stringify(committed));
-    } catch {
-      /* ignore */
-    }
+    safeSetItem(personKey(personId, 'statutory'), JSON.stringify(committed));
   });
 
   const update = useCallback((patch: Partial<StatutoryState>) => {

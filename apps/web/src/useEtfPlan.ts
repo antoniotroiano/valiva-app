@@ -8,6 +8,7 @@ import type { ProfileApi } from './useProfile';
 import { personKey, readBlock } from './personStorage';
 import { CURRENT_YEAR } from './useProfile';
 import { useDebounced, usePersist } from './useDebounced';
+import { safeSetItem } from './storageStatus';
 
 export const DEFAULT_INPUT: EtfPlanInput = DEFAULT_ETF_PLAN;
 
@@ -27,13 +28,9 @@ export function useEtfPlan(personId: string, profile: ProfileApi, legal: LegalRe
   const debouncedPayout = useDebounced(payout, 250);
 
   usePersist(input, debounced, (debounced) => {
-    try {
-      // NaN is serialised as null; load() falls back per field only via the spread, so skip invalid.
-      if (Number.isFinite(debounced.durationYears)) {
-        localStorage.setItem(personKey(personId, 'etfPlan'), JSON.stringify(debounced));
-      }
-    } catch {
-      /* ignore */
+    // NaN is serialised as null; load() falls back per field only via the spread, so skip invalid.
+    if (Number.isFinite(debounced.durationYears)) {
+      safeSetItem(personKey(personId, 'etfPlan'), JSON.stringify(debounced));
     }
   });
 
@@ -42,11 +39,7 @@ export function useEtfPlan(personId: string, profile: ProfileApi, legal: LegalRe
     const ages = [debouncedPayout.payoutStartAge, debouncedPayout.payoutEndAge];
     if (ages.some((a) => a !== undefined && !Number.isFinite(a))) return;
     if (Number.isNaN(debouncedPayout.withdrawalPercent)) return;
-    try {
-      localStorage.setItem(personKey(personId, 'etfPayout'), JSON.stringify(debouncedPayout));
-    } catch {
-      /* ignore */
-    }
+    safeSetItem(personKey(personId, 'etfPayout'), JSON.stringify(debouncedPayout));
   });
 
   const setPayout = useCallback((patch: Partial<EtfPayoutState>) => {

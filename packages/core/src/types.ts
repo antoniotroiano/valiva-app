@@ -112,6 +112,7 @@ export type ValidationIssue = {
     | 'not_chronological'
     | 'before_statement_year'
     | 'before_current_year'
+    | 'retirement_in_past'
     | 'before_first_contribution_year'
     | 'required';
   /** Allowed range or limit, for message formatting in the UI. */

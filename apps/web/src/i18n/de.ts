@@ -1,3 +1,4 @@
+import { PROFILE_LIMITS } from '@pathwise/core';
 import type { ValidationIssue } from '@pathwise/core';
 import { APP_NAME } from '../appConfig';
 
@@ -69,6 +70,26 @@ export const de = {
         'Ein Haushalt mit einer Person braucht meist weniger. 100 % heißt: keine Kürzung. Zulässig sind 10 bis 100 %.',
       creditNote:
         'Die Witwenrente wird auf das eigene Einkommen angerechnet: 40 % des Betrags über dem Freibetrag. Kapitalentnahmen aus dem ETF zählen dabei nicht. Die genauen Werte stehen auf der Seite „Annahmen“.',
+    },
+  },
+  notices: {
+    storageFailed: {
+      text: 'Speichern im Browser ist nicht möglich. Deine letzten Änderungen gehen verloren, wenn du die Seite schließt. Exportiere deine Daten.',
+      export: 'Zu den Daten',
+    },
+    changedElsewhere: {
+      text: 'In einem anderen Fenster wurde etwas geändert. Neu laden?',
+      hint: 'Wenn du hier weiterarbeitest, überschreibst du die Änderung aus dem anderen Fenster.',
+      reload: 'Neu laden',
+      ignore: 'Ignorieren',
+    },
+    exportReminder: {
+      never:
+        'Du hast noch nie exportiert. Deine Eingaben liegen nur in diesem Browser. Safari kann lokale Daten löschen, wenn die Seite längere Zeit nicht genutzt wird. Exportiere eine Sicherung.',
+      stale: (days: number) =>
+        `Dein letzter Export ist ${days} Tage alt. Deine Eingaben liegen nur in diesem Browser, und Safari kann lokale Daten löschen, wenn die Seite längere Zeit nicht genutzt wird. Exportiere eine neue Sicherung.`,
+      export: 'Jetzt exportieren',
+      later: 'Später',
     },
   },
   data: {
@@ -170,6 +191,7 @@ export const de = {
     intro: (year: number) =>
       `Monatliches Nettoeinkommen aller Personen in Kaufkraft von heute, gerechnet im Jahr ${year}, in dem die letzte Person in Rente geht.`,
     invalid: 'Die Angaben einer Person sind unvollständig. Bitte dort korrigieren:',
+    fixPerson: (name: string) => `Profil von ${name} öffnen`,
     loading: 'Daten werden geladen …',
     headline: (year: number, scenario: string) => `Haushalt im Jahr ${year} (${scenario})`,
     noWish: 'Ohne Wunscheinkommen gibt es keine Lücke.',
@@ -257,11 +279,6 @@ export const de = {
       label: 'Gewünschtes Netto-Einkommen pro Monat (Kaufkraft von heute)',
       hint: 'Ohne diesen Wert kann die Rentenlücke nicht berechnet werden.',
       unit: '€ pro Monat',
-    },
-    localNotice: {
-      text: 'Deine Daten liegen nur in diesem Browser. Beim Löschen der Browserdaten gehen sie verloren.',
-      export: 'Jetzt exportieren',
-      dismiss: 'Hinweis schließen',
     },
     retirement: {
       title: 'Gesamtsicht im Ruhestand',
@@ -1513,6 +1530,12 @@ export const de = {
       min !== undefined
         ? `Der Rentenbeginn liegt in der Vergangenheit. Frühestens mit ${min} Jahren.`
         : 'Der Rentenbeginn liegt in der Vergangenheit.',
+    retirement_in_past: (min?: number) =>
+      `Der Rentenbeginn liegt in der Vergangenheit.${
+        min !== undefined && min <= PROFILE_LIMITS.retirementAge.max
+          ? ` Frühestens mit ${min} Jahren.`
+          : ''
+      } Der Modus für Personen, die schon in Rente sind, folgt.`,
     before_statement_year: (min?: number) =>
       min !== undefined
         ? `Der Rentenbeginn liegt vor dem Jahr der Renteninformation. Frühestens mit ${min} Jahren.`
@@ -1526,6 +1549,7 @@ export function issueMessage(issue: ValidationIssue): string {
     return de.issues.before_first_contribution_year(issue.min);
   }
   if (issue.code === 'before_current_year') return de.issues.before_current_year(issue.min);
+  if (issue.code === 'retirement_in_past') return de.issues.retirement_in_past(issue.min);
   if (issue.code === 'before_statement_year') return de.issues.before_statement_year(issue.min);
   return de.issues[issue.code];
 }

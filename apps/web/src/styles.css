@@ -1050,6 +1050,9 @@ abbr[title] {
 }
 
 @media print {
+  .app-notices {
+    display: none;
+  }
   :root,
   :root[data-theme='dark'] {
     color-scheme: light;
