@@ -1,15 +1,7 @@
-import { expect, test } from '@playwright/test';
-import { openRow } from './helpers';
+import { expect, test, type Page } from '@playwright/test';
+import { loadExample, openRow } from './helpers';
 
-async function loadCouple(page: import('@playwright/test').Page) {
-  await page.goto('/#data');
-  await page.getByRole('button', { name: 'Paar', exact: true }).click();
-  await page.getByRole('button', { name: 'Daten ersetzen …' }).click();
-  const backup = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Sicherung laden und ersetzen' }).click();
-  await backup;
-  await page.waitForLoadState('load');
-}
+const loadCouple = (page: Page) => loadExample(page, 'Paar');
 
 test('survivor pension shows in the household view and can be switched off', async ({ page }) => {
   await loadCouple(page);

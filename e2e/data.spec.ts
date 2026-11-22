@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, test } from '@playwright/test';
+import { markDocument, waitForReload } from './helpers';
 
 test('export, reset and import restore the household with the same gap', async ({ page }) => {
   await page.goto('/#profile');
@@ -30,8 +31,9 @@ test('export, reset and import restore the household with the same gap', async (
   await expect(page.getByText(/Zuletzt exportiert/)).toBeVisible();
 
   await page.getByRole('button', { name: 'Alle Daten löschen …' }).click();
+  await markDocument(page);
   await page.getByRole('button', { name: 'Alles löschen' }).click();
-  await page.waitForLoadState('load');
+  await waitForReload(page);
   await page.goto('/#household');
   await expect(page.getByLabel('Name von Person 1')).toHaveValue('Person 1');
   await expect(page.getByLabel('Name von Person 2')).toHaveCount(0);
@@ -41,11 +43,12 @@ test('export, reset and import restore the household with the same gap', async (
   await expect(
     page.getByText('2: Person 1, Partner').or(page.getByText(/2: .*Partner/)),
   ).toBeVisible();
+  await markDocument(page);
   const backup = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Daten ersetzen …' }).click();
   await page.getByRole('button', { name: 'Sicherung laden und ersetzen' }).click();
   expect((await backup).suggestedFilename()).toMatch(/backup/);
-  await page.waitForLoadState('load');
+  await waitForReload(page);
   await page.goto('/#overview');
   await page.getByRole('radio', { name: 'Haushalt' }).check();
   await expect(page.locator('.kpi').first()).toHaveText(gapBefore ?? '');
@@ -69,10 +72,11 @@ test('an example workspace can be loaded', async ({ page }) => {
   await page.getByRole('button', { name: 'Paar', exact: true }).click();
   await expect(page.getByText('Erfundene Beispieldaten')).toBeVisible();
   await page.getByRole('button', { name: 'Daten ersetzen …' }).click();
+  await markDocument(page);
   const backup = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Sicherung laden und ersetzen' }).click();
   await backup;
-  await page.waitForLoadState('load');
+  await waitForReload(page);
   await page.goto('/#household');
   await expect(page.getByLabel('Name von Person 2')).toHaveValue('Ben Beispiel');
 });

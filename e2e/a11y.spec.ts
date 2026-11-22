@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { loadExample } from './helpers';
 
 const PAGES = [
   'overview',
@@ -14,15 +15,7 @@ const PAGES = [
   'data',
 ];
 
-async function loadCouple(page: Page) {
-  await page.goto('/#data');
-  await page.getByRole('button', { name: 'Paar', exact: true }).click();
-  await page.getByRole('button', { name: 'Daten ersetzen …' }).click();
-  const backup = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Sicherung laden und ersetzen' }).click();
-  await backup;
-  await page.waitForLoadState('load');
-}
+const loadCouple = (page: Page) => loadExample(page, 'Paar');
 
 async function expectNoViolations(page: Page) {
   await expect(page.locator('main')).toBeVisible();

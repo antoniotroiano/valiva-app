@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { loadExample } from './helpers';
 
 // Review 14, AP-03 (B-2): page changes land at the top with the focus on the heading,
 // every page has its own title, and on phones a bottom tab bar replaces the sidebar.
@@ -42,6 +43,7 @@ test.describe('desktop', () => {
 
   test('skip link focuses the content and keeps the page', async ({ page }) => {
     await page.goto('/#profile');
+    await expect(page.locator('main h1')).toBeVisible();
     await page.keyboard.press('Tab');
     await expect(page.getByRole('link', { name: 'Zum Inhalt springen' })).toBeFocused();
     await page.keyboard.press('Enter');
@@ -177,13 +179,7 @@ test.describe('phone', () => {
   });
 
   test('the person switcher sits in the page head, not in the top bar', async ({ page }) => {
-    await page.goto('/#data');
-    await page.getByRole('button', { name: 'Paar', exact: true }).click();
-    await page.getByRole('button', { name: 'Daten ersetzen …' }).click();
-    const backup = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Sicherung laden und ersetzen' }).click();
-    await backup;
-    await page.waitForLoadState('load');
+    await loadExample(page, 'Paar');
     await page.goto('/#overview');
     await expect(page.locator('.mobile-top').getByLabel('Aktive Person')).toHaveCount(0);
     const tabs = page.getByRole('radiogroup', { name: 'Ansicht' });

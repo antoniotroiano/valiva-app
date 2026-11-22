@@ -1,21 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
-import { openRow } from './helpers';
+import { loadExample, openRow } from './helpers';
 
 // Review 14, AP-09: the Rentenplan shows the result first (hero, wish next to it), details are collapsed,
 // important notes stand above the page head, there is one person switcher, and the page stays short.
-
-async function loadExample(page: Page, example: 'Paar' | 'Einzelperson') {
-  await page.goto('/#data');
-  await page.getByRole('button', { name: example, exact: true }).click();
-  await page.getByRole('button', { name: 'Daten ersetzen …' }).click();
-  // The import reloads the page: a marker on `window` disappears with the old document.
-  await page.evaluate(() => ((window as unknown as { __old: boolean }).__old = true));
-  const backup = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Sicherung laden und ersetzen' }).click();
-  await backup;
-  await page.waitForFunction(() => !(window as unknown as { __old?: boolean }).__old);
-  await page.waitForLoadState('load');
-}
 
 const height = (page: Page) => page.evaluate(() => document.documentElement.scrollHeight);
 
