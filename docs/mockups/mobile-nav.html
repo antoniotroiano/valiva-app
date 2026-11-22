@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mockup Smartphone-Navigation</title>
+    <style>
+      /* Tokens wie in apps/web/src/styles.css (docs/design.md) */
+      .t-light {
+        --bg: #f3f6f6;
+        --surface: #ffffff;
+        --surface-2: #eaf0ef;
+        --nav-bg: #fbfcfc;
+        --text: #15201e;
+        --muted: #54635f;
+        --line: #dde5e3;
+        --field-border: #7c8b88;
+        --accent: #0f766e;
+        --accent-soft: #dff1ee;
+        --on-accent: #ffffff;
+        --focus: #0f766e;
+        --scrim: rgb(10 20 18 / 40%);
+      }
+      .t-dark {
+        --bg: #0d1413;
+        --surface: #151e1d;
+        --surface-2: #1e2928;
+        --nav-bg: #111918;
+        --text: #e5eeec;
+        --muted: #9db0ac;
+        --line: #28353a;
+        --field-border: #6d807c;
+        --accent: #4fd1c0;
+        --accent-soft: #17332f;
+        --on-accent: #052420;
+        --focus: #4fd1c0;
+        --scrim: rgb(0 0 0 / 55%);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px 16px 48px;
+        font:
+          15px/1.55 system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        background: #e6e9ea;
+        color: #15201e;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 4px;
+      }
+      h2 {
+        font-size: 15px;
+        margin: 28px 0 10px;
+      }
+      .lead {
+        max-width: 70ch;
+        margin: 0 0 8px;
+      }
+      .notes {
+        max-width: 70ch;
+        font-size: 14px;
+        margin: 0;
+        padding-left: 20px;
+      }
+      .row {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      figure {
+        margin: 0;
+      }
+      figcaption {
+        font-size: 13px;
+        margin-top: 6px;
+        color: #3b4a47;
+      }
+
+      /* Phone frame: 375 x 812 */
+      .phone {
+        position: relative;
+        width: 375px;
+        height: 812px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .status {
+        height: 44px; /* env(safe-area-inset-top) on a notch phone */
+        background: var(--nav-bg);
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        height: 52px;
+        padding: 0 16px;
+        background: var(--nav-bg);
+        border-bottom: 1px solid var(--line);
+      }
+      .topbar strong {
+        font-size: 16px;
+      }
+      .person {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 0 12px;
+        border: 1px solid var(--field-border);
+        border-radius: 22px;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-size: 14px;
+      }
+      .person small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .content {
+        padding: 20px 16px 0;
+        height: calc(812px - 44px - 52px);
+        overflow: hidden;
+      }
+      .content h1 {
+        font-size: 24px;
+        margin: 0 0 4px;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 14px;
+      }
+      .card b {
+        display: block;
+        font-size: 28px;
+        font-variant-numeric: tabular-nums;
+      }
+      .card span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .bar {
+        height: 10px;
+        border-radius: 5px;
+        background: var(--surface-2);
+        margin-top: 10px;
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        width: 63%;
+        background: var(--accent);
+      }
+      .ghost {
+        height: 120px;
+        background: repeating-linear-gradient(
+          135deg,
+          var(--surface-2),
+          var(--surface-2) 8px,
+          var(--surface) 8px,
+          var(--surface) 16px
+        );
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        margin-bottom: 14px;
+      }
+
+      /* Bottom bar: 48 px + safe area (34 px home indicator here) */
+      .tabbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding-bottom: 34px; /* env(safe-area-inset-bottom) */
+        background: var(--nav-bg);
+        border-top: 1px solid var(--line);
+      }
+      .tab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        min-height: 56px; /* >= 48 px */
+        padding: 6px 2px;
+        border: 0;
+        background: none;
+        color: var(--muted);
+        font: inherit;
+        font-size: 12.5px;
+        text-decoration: none;
+      }
+      .tab svg {
+        width: 22px;
+        height: 22px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .tab[aria-current='page'],
+      .tab[aria-expanded='true'] {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .tab[aria-current='page'] span.pill,
+      .tab[aria-expanded='true'] span.pill {
+        background: var(--accent-soft);
+      }
+      .pill {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 28px;
+        border-radius: 14px;
+      }
+      .focus {
+        outline: 3px solid var(--focus);
+        outline-offset: -3px;
+        border-radius: 8px;
+      }
+
+      /* Sheet */
+      .scrim {
+        position: absolute;
+        inset: 0 0 91px 0;
+        background: var(--scrim);
+      }
+      .sheet {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 91px; /* sits above the bar: bar stays visible and reachable */
+        max-height: 80%;
+        padding: 8px 16px 8px;
+        background: var(--surface);
+        border-radius: 20px 20px 0 0;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        box-shadow: 0 -4px 20px rgb(0 0 0 / 18%);
+      }
+      .grab {
+        width: 36px;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--line);
+        margin: 0 auto 8px;
+      }
+      .sheet-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 44px;
+      }
+      .sheet-head h2 {
+        margin: 0;
+        font-size: 17px;
+      }
+      .close {
+        min-height: 44px;
+        padding: 0 12px;
+        border: 0;
+        background: none;
+        color: var(--accent);
+        font: inherit;
+        font-weight: 600;
+      }
+      .group {
+        margin: 6px 0 2px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .sheet ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .sheet li a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+        padding: 0 8px;
+        border-radius: 8px;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .sheet li a[aria-current='page'] {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .sheet li a::after {
+        content: '›';
+        color: var(--muted);
+        font-size: 20px;
+      }
+      .sheet .theme {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 56px;
+        margin-top: 8px;
+        padding: 0 8px;
+        border-top: 1px solid var(--line);
+      }
+      .sheet select {
+        min-height: 44px;
+        padding: 0 10px;
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--text);
+        font: inherit;
+      }
+      .sheet-foot {
+        height: 34px; /* safe area */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Mockup: Navigation auf dem Smartphone (AP-03)</h1>
+    <p class="lead">
+      Bis 900 px Breite: schmale Kopfzeile oben, vier Ziele in einer festen Leiste unten. Auf
+      Desktop (über 900 px) bleibt die Seitenleiste unverändert und die Leiste ist nicht da. Gezeigt
+      bei 375 × 812 px, oben hell, unten dunkel.
+    </p>
+    <ul class="notes">
+      <li>
+        <b>Rentenplan</b> und <b>Haushalt</b> springen direkt zur Seite. <b>Eingaben</b> und
+        <b>Mehr</b>
+        öffnen ein Blatt von unten.
+      </li>
+      <li>
+        <b>Eingaben</b>: Profil, die vier Bausteine, Sparziele. <b>Mehr</b>: Annahmen, Daten,
+        Darstellung (Hell, Dunkel, System).
+      </li>
+      <li>
+        Blatt schließt nach Auswahl, mit „Schließen“, Tippen auf den abgedunkelten Rand und Escape;
+        der Fokus kehrt auf die Taste zurück, die es geöffnet hat. Das aktive Ziel trägt
+        <code>aria-current</code>; steht die aktive Seite im Blatt, ist die Tab-Taste hervorgehoben.
+      </li>
+      <li>
+        Blatt liegt über der Leiste, die Leiste bleibt sichtbar und bedienbar. Leiste: mindestens 48
+        px hoch (hier 56 px) plus <code>env(safe-area-inset-bottom)</code>; der Inhalt bekommt unten
+        gleich viel Abstand. Kopfzeile: Name der App und Auswahlfeld „Aktive Person“ (nur bei mehr
+        als einer Person), 44 px hoch.
+      </li>
+    </ul>
+
+    <!-- ======================= LIGHT ======================= -->
+    <h2>Hell</h2>
+    <div class="row">
+      <figure>
+        <div class="phone t-light">
+          <div class="status"></div>
+          <div class="topbar">
+            <strong>Pathwise</strong>
+            <span class="person"><small>Aktive Person</small> Anna ▾</span>
+          </div>
+          <div class="content">
+            <h1>Rentenplan</h1>
+            <p class="sub">Haushalt: Anna und Ben</p>
+            <div class="card">
+              <span>Gedeckt vom Wunsch</span>
+              <b>63 %</b>
+              <div class="bar"><i></i></div>
+            </div>
+            <div class="ghost"></div>
+            <div class="ghost"></div>
+          </div>
+          <nav class="tabbar" aria-label="Hauptnavigation">
+            <a class="tab" href="#" aria-current="page"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg></span
+              >Rentenplan</a
+            >
+            <button class="tab" type="button" aria-expanded="false" aria-haspopup="dialog">
+              <span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg></span
+              >Eingaben
+            </button>
+            <a class="tab" href="#"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="9" cy="8" r="3" />
+                  <path
+                    d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 5.5a3 3 0 010 5.5M18 14c2 .7 3 2.6 3 6"
+                  /></svg></span
+              >Haushalt</a
+            >
+            <button class="tab" type="button" aria-expanded="false" aria-haspopup="dialog">
+              <span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="1.2" />
+                  <circle cx="12" cy="12" r="1.2" />
+                  <circle cx="19" cy="12" r="1.2" /></svg></span
+              >Mehr
+            </button>
+          </nav>
+        </div>
+        <figcaption>1 · Ruhezustand (Rentenplan aktiv)</figcaption>
+      </figure>
+
+      <figure>
+        <div class="phone t-light">
+          <div class="status"></div>
+          <div class="topbar">
+            <strong>Pathwise</strong>
+            <span class="person"><small>Aktive Person</small> Anna ▾</span>
+          </div>
+          <div class="content">
+            <h1>Rentenplan</h1>
+            <p class="sub">Haushalt: Anna und Ben</p>
+            <div class="card">
+              <span>Gedeckt vom Wunsch</span><b>63 %</b>
+              <div class="bar"><i></i></div>
+            </div>
+            <div class="ghost"></div>
+          </div>
+          <div class="scrim"></div>
+          <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="s1">
+            <div class="grab"></div>
+            <div class="sheet-head">
+              <h2 id="s1">Eingaben</h2>
+              <button class="close" type="button">Schließen</button>
+            </div>
+            <ul>
+              <li><a href="#">Profil</a></li>
+            </ul>
+            <div class="group">Bausteine</div>
+            <ul>
+              <li><a href="#" aria-current="page">ETF-Sparplan</a></li>
+              <li><a href="#">Gesetzliche Rente</a></li>
+              <li><a href="#">Altersvorsorgedepot</a></li>
+              <li><a href="#">Betriebliche AV</a></li>
+            </ul>
+            <div class="group">Sparen</div>
+            <ul>
+              <li><a href="#">Sparziele</a></li>
+            </ul>
+          </div>
+          <nav class="tabbar" aria-hidden="true">
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg></span
+              >Rentenplan</span
+            >
+            <span class="tab" aria-expanded="true" style="color: var(--accent); font-weight: 600"
+              ><span class="pill" style="background: var(--accent-soft)"
+                ><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg></span
+              >Eingaben</span
+            >
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="9" cy="8" r="3" />
+                  <path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6" /></svg></span
+              >Haushalt</span
+            >
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="1.2" />
+                  <circle cx="12" cy="12" r="1.2" />
+                  <circle cx="19" cy="12" r="1.2" /></svg></span
+              >Mehr</span
+            >
+          </nav>
+        </div>
+        <figcaption>2 · „Eingaben“ geöffnet (ETF-Sparplan ist die aktive Seite)</figcaption>
+      </figure>
+
+      <figure>
+        <div class="phone t-light">
+          <div class="status"></div>
+          <div class="topbar">
+            <strong>Pathwise</strong>
+            <span class="person"><small>Aktive Person</small> Anna ▾</span>
+          </div>
+          <div class="content">
+            <h1>Rentenplan</h1>
+            <p class="sub">Haushalt: Anna und Ben</p>
+            <div class="card">
+              <span>Gedeckt vom Wunsch</span><b>63 %</b>
+              <div class="bar"><i></i></div>
+            </div>
+            <div class="ghost"></div>
+          </div>
+          <div class="scrim"></div>
+          <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="s2">
+            <div class="grab"></div>
+            <div class="sheet-head">
+              <h2 id="s2">Mehr</h2>
+              <button class="close focus" type="button">Schließen</button>
+            </div>
+            <ul>
+              <li><a href="#">Annahmen</a></li>
+              <li><a href="#">Daten</a></li>
+            </ul>
+            <div class="theme">
+              <label for="th1">Darstellung</label>
+              <select id="th1">
+                <option>System</option>
+                <option>Hell</option>
+                <option>Dunkel</option>
+              </select>
+            </div>
+          </div>
+          <nav class="tabbar" aria-hidden="true">
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg></span
+              >Rentenplan</span
+            >
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg></span
+              >Eingaben</span
+            >
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="9" cy="8" r="3" />
+                  <path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6" /></svg></span
+              >Haushalt</span
+            >
+            <span class="tab" style="color: var(--accent); font-weight: 600"
+              ><span class="pill" style="background: var(--accent-soft)"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="1.2" />
+                  <circle cx="12" cy="12" r="1.2" />
+                  <circle cx="19" cy="12" r="1.2" /></svg></span
+              >Mehr</span
+            >
+          </nav>
+        </div>
+        <figcaption>3 · „Mehr“ geöffnet (Tastaturfokus am Anfang des Blatts)</figcaption>
+      </figure>
+    </div>
+
+    <!-- ======================= DARK ======================= -->
+    <h2>Dunkel</h2>
+    <div class="row">
+      <figure>
+        <div class="phone t-dark">
+          <div class="status"></div>
+          <div class="topbar">
+            <strong>Pathwise</strong>
+            <span class="person"><small>Aktive Person</small> Anna ▾</span>
+          </div>
+          <div class="content">
+            <h1>Haushalt</h1>
+            <p class="sub">Personen des Haushalts verwalten.</p>
+            <div class="card"><span>Personen</span><b>2</b></div>
+            <div class="ghost"></div>
+            <div class="ghost"></div>
+          </div>
+          <nav class="tabbar" aria-label="Hauptnavigation">
+            <a class="tab" href="#"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg></span
+              >Rentenplan</a
+            >
+            <button class="tab" type="button" aria-expanded="false" aria-haspopup="dialog">
+              <span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg></span
+              >Eingaben
+            </button>
+            <a class="tab" href="#" aria-current="page"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="9" cy="8" r="3" />
+                  <path
+                    d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 5.5a3 3 0 010 5.5M18 14c2 .7 3 2.6 3 6"
+                  /></svg></span
+              >Haushalt</a
+            >
+            <button class="tab" type="button" aria-expanded="false" aria-haspopup="dialog">
+              <span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="1.2" />
+                  <circle cx="12" cy="12" r="1.2" />
+                  <circle cx="19" cy="12" r="1.2" /></svg></span
+              >Mehr
+            </button>
+          </nav>
+        </div>
+        <figcaption>4 · Ruhezustand dunkel (Haushalt aktiv)</figcaption>
+      </figure>
+
+      <figure>
+        <div class="phone t-dark">
+          <div class="status"></div>
+          <div class="topbar">
+            <strong>Pathwise</strong>
+            <span class="person"><small>Aktive Person</small> Anna ▾</span>
+          </div>
+          <div class="content">
+            <h1>Haushalt</h1>
+            <p class="sub">Personen des Haushalts verwalten.</p>
+            <div class="card"><span>Personen</span><b>2</b></div>
+            <div class="ghost"></div>
+          </div>
+          <div class="scrim"></div>
+          <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="s3">
+            <div class="grab"></div>
+            <div class="sheet-head">
+              <h2 id="s3">Eingaben</h2>
+              <button class="close" type="button">Schließen</button>
+            </div>
+            <ul>
+              <li><a href="#">Profil</a></li>
+            </ul>
+            <div class="group">Bausteine</div>
+            <ul>
+              <li><a href="#">ETF-Sparplan</a></li>
+              <li><a href="#">Gesetzliche Rente</a></li>
+              <li><a href="#">Altersvorsorgedepot</a></li>
+              <li><a href="#">Betriebliche AV</a></li>
+            </ul>
+            <div class="group">Sparen</div>
+            <ul>
+              <li><a href="#">Sparziele</a></li>
+            </ul>
+          </div>
+          <nav class="tabbar" aria-hidden="true">
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg></span
+              >Rentenplan</span
+            >
+            <span class="tab" style="color: var(--accent); font-weight: 600"
+              ><span class="pill" style="background: var(--accent-soft)"
+                ><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg></span
+              >Eingaben</span
+            >
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="9" cy="8" r="3" />
+                  <path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6" /></svg></span
+              >Haushalt</span
+            >
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="1.2" />
+                  <circle cx="12" cy="12" r="1.2" />
+                  <circle cx="19" cy="12" r="1.2" /></svg></span
+              >Mehr</span
+            >
+          </nav>
+        </div>
+        <figcaption>5 · „Eingaben“ dunkel</figcaption>
+      </figure>
+
+      <figure>
+        <div class="phone t-dark">
+          <div class="status"></div>
+          <div class="topbar">
+            <strong>Pathwise</strong>
+            <span class="person"><small>Aktive Person</small> Anna ▾</span>
+          </div>
+          <div class="content">
+            <h1>Annahmen</h1>
+            <p class="sub">Rechtswerte und Annahmen.</p>
+            <div class="ghost"></div>
+            <div class="ghost"></div>
+          </div>
+          <div class="scrim"></div>
+          <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="s4">
+            <div class="grab"></div>
+            <div class="sheet-head">
+              <h2 id="s4">Mehr</h2>
+              <button class="close" type="button">Schließen</button>
+            </div>
+            <ul>
+              <li><a href="#" aria-current="page">Annahmen</a></li>
+              <li><a href="#">Daten</a></li>
+            </ul>
+            <div class="theme">
+              <label for="th2">Darstellung</label>
+              <select id="th2">
+                <option>Dunkel</option>
+                <option>System</option>
+                <option>Hell</option>
+              </select>
+            </div>
+          </div>
+          <nav class="tabbar" aria-hidden="true">
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg></span
+              >Rentenplan</span
+            >
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg></span
+              >Eingaben</span
+            >
+            <span class="tab"
+              ><span class="pill"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="9" cy="8" r="3" />
+                  <path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6" /></svg></span
+              >Haushalt</span
+            >
+            <span class="tab" style="color: var(--accent); font-weight: 600"
+              ><span class="pill" style="background: var(--accent-soft)"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="1.2" />
+                  <circle cx="12" cy="12" r="1.2" />
+                  <circle cx="19" cy="12" r="1.2" /></svg></span
+              >Mehr</span
+            >
+          </nav>
+        </div>
+        <figcaption>6 · „Mehr“ dunkel (Annahmen aktiv)</figcaption>
+      </figure>
+    </div>
+  </body>
+</html>

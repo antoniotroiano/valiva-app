@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { de } from './i18n/de';
 import { useEtfPlan } from './useEtfPlan';
 import { useGoals } from './useGoals';
@@ -13,6 +13,8 @@ import { useOccupational } from './useOccupational';
 import { useOverview } from './useOverview';
 import { createStore } from './createStore';
 import { isNewStart, markStarted } from './onboarding';
+import { MobileNav } from './components/MobileNav';
+import { useNarrowScreen } from './useNarrowScreen';
 
 const AssumptionsPage = lazy(() =>
   import('./pages/AssumptionsPage').then((m) => ({ default: m.AssumptionsPage })),
@@ -83,7 +85,7 @@ function pageFromHash(): Page {
 
 export function App() {
   const [page, setPage] = useState<Page>(pageFromHash);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const narrow = useNarrowScreen();
   const [theme, setTheme] = useState<Theme>(() => {
     try {
       return (localStorage.getItem('pathwise.theme') as Theme) || 'system';
@@ -139,6 +141,40 @@ export function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
+  // Page change: back to the top, focus on the new heading (screen readers announce it), page title.
+  const firstPage = useRef(true);
+  useEffect(() => {
+    document.title = de.nav.pageTitle(de.nav[page]);
+    if (firstPage.current) {
+      firstPage.current = false;
+      return;
+    }
+    window.scrollTo(0, 0); // instant on purpose: no smooth scrolling, also with reduced motion
+    const focusHeading = () => {
+      // While a lazy page loads, React keeps the old page hidden in the DOM: skip hidden headings.
+      const h1 = [...document.querySelectorAll<HTMLElement>('main h1')].find(
+        (e) => e.getClientRects().length > 0,
+      );
+      if (!h1) return false;
+      h1.tabIndex = -1;
+      h1.focus({ preventScroll: true });
+      return document.activeElement === h1;
+    };
+    if (focusHeading()) return;
+    // The page is loaded lazily: wait until its heading exists.
+    const main = document.getElementById('main');
+    if (!main) return;
+    const observer = new MutationObserver(() => {
+      if (focusHeading()) observer.disconnect();
+    });
+    observer.observe(main, { childList: true, subtree: true });
+    const stop = window.setTimeout(() => observer.disconnect(), 3000);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(stop);
+    };
+  }, [page]);
+
   useEffect(() => {
     if (theme === 'system') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', theme);
@@ -151,79 +187,88 @@ export function App() {
 
   const go = (p: Page) => {
     window.location.hash = p;
-    setMenuOpen(false);
   };
 
   const navLink = (p: Page) => (
-    <a
-      href={`#${p}`}
-      aria-current={page === p ? 'page' : undefined}
-      onClick={() => setMenuOpen(false)}
-    >
+    <a href={`#${p}`} aria-current={page === p ? 'page' : undefined}>
       {de.nav[p]}
     </a>
   );
 
   return (
     <div className="layout">
-      <a className="skip" href="#main">
+      <a
+        className="skip"
+        href="#main"
+        onClick={(e) => {
+          // "#main" would be read as a page name by the hash router.
+          e.preventDefault();
+          document.getElementById('main')?.focus();
+        }}
+      >
         {de.nav.skip}
       </a>
-      <nav className={menuOpen ? 'open' : ''} aria-label={de.nav.label}>
-        <div className="nav-head">
-          <strong>{de.appName}</strong>
-          <button
-            type="button"
-            className="btn menu-btn"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((o) => !o)}
-          >
-            {menuOpen ? de.nav.close : de.nav.menu}
-          </button>
-        </div>
-        {household.state.household.persons.length > 1 && (
-          <div className="person-switch">
-            <label htmlFor="person">{de.nav.person}</label>
-            <select
-              id="person"
-              value={personId}
-              onChange={(e) => household.setActivePerson(e.target.value)}
-            >
-              {household.state.household.persons.map((p, i) => (
-                <option key={p.id} value={p.id}>
-                  {p.name.trim() || de.household.newPersonName(i + 1)}
-                </option>
-              ))}
+      {narrow ? (
+        <MobileNav
+          page={page}
+          persons={household.state.household.persons.map((p, i) => ({
+            id: p.id,
+            label: p.name.trim() || de.household.newPersonName(i + 1),
+          }))}
+          activePersonId={personId}
+          onPersonChange={household.setActivePerson}
+          theme={theme}
+          onThemeChange={setTheme}
+        />
+      ) : (
+        <nav className="sidebar" aria-label={de.nav.label}>
+          <div className="nav-head">
+            <strong>{de.appName}</strong>
+          </div>
+          {household.state.household.persons.length > 1 && (
+            <div className="person-switch">
+              <label htmlFor="person">{de.nav.person}</label>
+              <select
+                id="person"
+                value={personId}
+                onChange={(e) => household.setActivePerson(e.target.value)}
+              >
+                {household.state.household.persons.map((p, i) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name.trim() || de.household.newPersonName(i + 1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          <ul className="nav-list">
+            {NAV.map((entry) =>
+              typeof entry === 'string' ? (
+                <li key={entry}>{navLink(entry)}</li>
+              ) : (
+                <li key={entry.group}>
+                  <span className="nav-group" id={`nav-${entry.group}`}>
+                    {de.nav[entry.group]}
+                  </span>
+                  <ul className="nav-sub" aria-labelledby={`nav-${entry.group}`}>
+                    {entry.items.map((p) => (
+                      <li key={p}>{navLink(p)}</li>
+                    ))}
+                  </ul>
+                </li>
+              ),
+            )}
+          </ul>
+          <div className="theme">
+            <label htmlFor="theme">{de.nav.theme}</label>
+            <select id="theme" value={theme} onChange={(e) => setTheme(e.target.value as Theme)}>
+              <option value="system">{de.nav.themeSystem}</option>
+              <option value="light">{de.nav.themeLight}</option>
+              <option value="dark">{de.nav.themeDark}</option>
             </select>
           </div>
-        )}
-        <ul className="nav-list">
-          {NAV.map((entry) =>
-            typeof entry === 'string' ? (
-              <li key={entry}>{navLink(entry)}</li>
-            ) : (
-              <li key={entry.group}>
-                <span className="nav-group" id={`nav-${entry.group}`}>
-                  {de.nav[entry.group]}
-                </span>
-                <ul className="nav-sub" aria-labelledby={`nav-${entry.group}`}>
-                  {entry.items.map((p) => (
-                    <li key={p}>{navLink(p)}</li>
-                  ))}
-                </ul>
-              </li>
-            ),
-          )}
-        </ul>
-        <div className="theme">
-          <label htmlFor="theme">{de.nav.theme}</label>
-          <select id="theme" value={theme} onChange={(e) => setTheme(e.target.value as Theme)}>
-            <option value="system">{de.nav.themeSystem}</option>
-            <option value="light">{de.nav.themeLight}</option>
-            <option value="dark">{de.nav.themeDark}</option>
-          </select>
-        </div>
-      </nav>
+        </nav>
+      )}
       <main id="main" tabIndex={-1}>
         <p className="print-only print-header">
           {de.printHeader(de.nav[page], new Date().toLocaleDateString('de-DE'))}

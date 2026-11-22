@@ -271,7 +271,7 @@ Aus `PROGRESS.md`, `07`, `12`, `13`:
 |---|---|---|---|---|---|
 | 01 | Git einrichten und Aufräumen | P0 | Repo-Link und privater SSH-Alias vom Autor | Wurzel, `PROGRESS.md` | [x] erledigt 2026-11-22 (Commit/Push offen beim Autor) |
 | 02 | Smartphone-Layout reparieren | P0 | – | `styles.css`, Tabellen in Seiten, Playwright | [x] erledigt 2026-11-22 (Commit offen beim Autor) |
-| 03 | Navigation: Scroll, Fokus, Titel, untere Tab-Leiste | P0 | 02 | `App.tsx`, `PageShell`, CSS | [ ] offen |
+| 03 | Navigation: Scroll, Fokus, Titel, untere Tab-Leiste | P0 | 02 | `App.tsx`, `PageShell`, CSS | [x] erledigt 2026-11-22 (Commit offen beim Autor) |
 | 04 | Robustheit: Eingaben, Speichern, Daten | P0 | – | Hooks, Kern (Validierung), `DataPage` | [ ] offen |
 | 05 | Kern-Ordnerstruktur | P1 | 04, 01 | alle Dateien in `packages/core` | [ ] offen |
 | 06 | Web-Ordnerstruktur, i18n- und CSS-Split | P1 | 02, 03, 04, 05 | alle Dateien in `apps/web` | [ ] offen |
@@ -335,17 +335,17 @@ Status: erledigt (2026-11-22) · Rest beim Autor: Commit (GitHub Desktop)
 **Hinweis:** Erst die Ursachen (Grid, Fieldset, Tabellen) beheben, dann messen. Mit Test-CSS in der Konsole ließ sich das bereits bestätigen.
 
 ### AP-03 Navigation: Scroll, Fokus, Titel, Smartphone-Leiste
-Status: offen · Voraussetzung: AP-02
+Status: erledigt (2026-11-22) · Rest beim Autor: Commit (GitHub Desktop)
 
 **Warum:** B-2 und Smartphone-Befund "Navigation scrollt mit".
 
 **Aufgaben:**
-- [ ] Bei Seitenwechsel (`hashchange`) nach oben scrollen und den Fokus auf die `h1` (mit `tabIndex={-1}`) oder `main` setzen; `prefers-reduced-motion` beachten (kein weiches Scrollen).
-- [ ] `document.title` je Seite ("ETF-Sparplan – Pathwise"); Name aus `appConfig`, Seitentitel aus `de.nav`.
-- [ ] Skip-Link und Fokusreihenfolge nach dem Wechsel prüfen.
-- [ ] Smartphone: **untere Tab-Leiste** (Entscheidung des Autors, Abschnitt 9, Frage 5) mit vier Zielen: Rentenplan, Eingaben, Haushalt, Mehr (öffnet das volle Menü mit allen Bausteinen, Annahmen, Daten, Profil). Darüber eine schmale Kopfzeile mit Name und aktiver Person. Leiste auf Desktop ausgeblendet; `env(safe-area-inset-bottom)` beachten, Mindesthöhe 48 px, Inhalt bekommt unten Abstand, damit nichts verdeckt wird. **Vorher kleines Mockup der Leiste** (`docs/mockups/mobile-nav.html`) zur Freigabe; AP-07 übernimmt die Leiste dann in das Gesamtdesign.
-- [ ] Das "Mehr"-Menü schließt nach Auswahl und per Escape; Fokus kehrt zur "Mehr"-Taste zurück; aktives Ziel hat `aria-current`.
-- [ ] E2E-Test: Seite scrollen, Menüpunkt wählen, `scrollY === 0` und Fokus auf der Überschrift.
+- [x] Bei Seitenwechsel (`hashchange`) nach oben scrollen und den Fokus auf die `h1` (mit `tabIndex={-1}`) oder `main` setzen; `prefers-reduced-motion` beachten (kein weiches Scrollen).
+- [x] `document.title` je Seite ("ETF-Sparplan – Pathwise"); Name aus `appConfig`, Seitentitel aus `de.nav`.
+- [x] Skip-Link und Fokusreihenfolge nach dem Wechsel prüfen.
+- [x] Smartphone: **untere Tab-Leiste** (Entscheidung des Autors, Abschnitt 9, Frage 5) mit vier Zielen: Rentenplan, Eingaben, Haushalt, Mehr (öffnet das volle Menü mit allen Bausteinen, Annahmen, Daten, Profil). Darüber eine schmale Kopfzeile mit Name und aktiver Person. Leiste auf Desktop ausgeblendet; `env(safe-area-inset-bottom)` beachten, Mindesthöhe 48 px, Inhalt bekommt unten Abstand, damit nichts verdeckt wird. **Vorher kleines Mockup der Leiste** (`docs/mockups/mobile-nav.html`) zur Freigabe; AP-07 übernimmt die Leiste dann in das Gesamtdesign.
+- [x] Das "Mehr"-Menü schließt nach Auswahl und per Escape; Fokus kehrt zur "Mehr"-Taste zurück; aktives Ziel hat `aria-current`.
+- [x] E2E-Test: Seite scrollen, Menüpunkt wählen, `scrollY === 0` und Fokus auf der Überschrift.
 
 **Fertig wenn:** Seitenwechsel landet immer oben, Screenreader-Fokus steht auf der neuen Überschrift, die Navigation ist auf langen Smartphone-Seiten jederzeit erreichbar (untere Leiste, ohne Seitenverlust beim Scrollen), E2E und axe grün.
 
@@ -612,6 +612,12 @@ Status: offen · Voraussetzung: AP-02, AP-06
 - (AP-02) `theme-color` folgt nur der Systemeinstellung (`prefers-color-scheme`), nicht dem manuellen Hell/Dunkel-Umschalter der App. Für die Umschaltung per Hand müsste das Meta-Tag per Skript gesetzt werden (AP-03/AP-08).
 - (AP-02) Textlinks (`.link`) und Checkboxen/Radios haben weiterhin weniger als 44 px Tippfläche (AP-02 verlangt es nur für `summary`, Schaltflächen, Eingaben, Menü-Taste, Segmentschalter).
 
+- (AP-03) Die Bausteinseiten und `ViewSwitch` im Rentenplan zeigen die aktive Person weiter doppelt (Auswahlfeld in der Kopfzeile und Reiter "Haushalt, Anna, Ben"): U-E, gehört zu AP-09.
+- (AP-03) `theme-color` folgt dem manuellen Hell/Dunkel-Umschalter weiterhin nicht (Backlog AP-02 bleibt offen): das Meta-Tag müsste per Skript gesetzt werden, passt zu AP-08.
+- (AP-03) Das "Eingaben"-Blatt und die Seitenleiste führen die Seitenliste je einmal in `App.tsx` (`NAV`) und `MobileNav.tsx` (Seitengruppen). Bei neuen Seiten (AP-14/AP-19) an beiden Stellen nachziehen oder die Liste zusammenführen (AP-06/AP-08).
+- (AP-03) Kein Wisch-nach-unten zum Schließen der Blätter (nur Schließen-Taste, Rand, Escape). Falls gewünscht, in AP-08.
+- (AP-03) Der `webServer` in `playwright.config.ts` (Port 5173, `reuseExistingServer`) hat wieder mit einem fremden Dev-Server (`fitness-app`) kollidiert; E2E lief über eine temporäre Konfiguration auf Port 5199 (gelöscht). Siehe Backlog AP-02.
+
 ## 9. Entscheidungen des Autors
 
 Stand 2026-11-22. Entschieden = in den Paketen eingearbeitet.
@@ -646,3 +652,4 @@ Format: `JJJJ-MM-TT – AP-xx – was gemacht – Abweichungen – was offen bli
 
 - 2026-11-22 – AP-02 – Ursachen behoben: `.grid`/`.target-grid` einspaltig mit `minmax(0, 1fr)`, `min-width: 0` für Grid-Kinder, `.card`, `fieldset`; `.input-row`-Felder schrumpfbar (Sparziele: Schaltfläche "Datum entfernen" sprengte die Breite). Neue Komponente `ScrollTable` (`role="region"`, `tabIndex=0`, `aria-label`) ersetzt alle Tabellen-Wrapper, auch die schon vorhandenen `.table-wrap` (waren nicht fokussierbar); lange Tabellenüberschriften brechen um und bleiben beim Seitwärtsscrollen stehen. Eingaben 16 px, Tippflächen mindestens 44 px (`summary`, `.btn`, Menü-Taste, Eingaben, Segmentschalter; auf Smartphone-Breite), Segmentschalter füllt die Breite. `theme-color` hell/dunkel, `viewport-fit=cover`, `env(safe-area-inset-*)` für Kopfleiste und Inhalt. Neuer `e2e/mobile.spec.ts` (22 Tests: 10 Seiten × hell/dunkel bei 375 px, Rentenplan und Depot bei 320 px; prüft Seitenbreite, fokussierbare Scrollbereiche, 16 px, 44 px, Aufklapp-Dreiecke). Sichtprüfung 375 px (alle zehn Seiten) und 320 px (Rentenplan, Depot), hell und dunkel, per Screenshot: nichts abgeschnitten außer bewusst scrollenden Tabellen und langen Auswahltexten (Backlog). Eigene Regression beim Bauen gefunden und behoben: `display: flex` auf `summary` entfernte das Aufklapp-Dreieck. Gemessen vorher: bis 679 px, nachher überall = Fensterbreite. `typecheck`, `lint`, `format:check`, 547 Unit-Tests grün; E2E 98/98 grün, aber über temporäre Konfiguration auf Port 5199, weil Port 5173 von einem fremden Dev-Server (`fitness-app`) belegt war (Backlog). Abweichungen: `ScrollTable` auch für die bereits gewrappten Tabellen (Konzept nannte nur die ungewrappten); Backlog um sieben Punkte ergänzt. Offen: Commit durch den Autor; AP-03 kann folgen. Commit-Vorschlag: `fix(web): repair phone layout (grid min-width, ScrollTable, 16px inputs, 44px targets) and add mobile e2e test`. Geänderte Ordner: `apps/web/` (`index.html`, `src/styles.css`, `src/components/`, `src/pages/`), `e2e/` (neu `mobile.spec.ts`), `concept/` (dieser Bericht, `PROGRESS.md`).
 
+- 2026-11-22 – AP-03 – Mockup `docs/mockups/mobile-nav.html` vom Autor mit "Ja, bauen" freigegeben; Rückfragen vorab: "Eingaben" öffnet ein Blatt (Profil, vier Bausteine, Sparziele), "Mehr" enthält Annahmen, Daten, Darstellung; Leiste bis 900 px (wie das bisherige einspaltige Layout). Umgesetzt: Seitenwechsel scrollt sofort nach oben (kein weiches Scrollen, also auch mit `prefers-reduced-motion`) und fokussiert die sichtbare `h1` (`tabIndex=-1`; wartet bei lazy geladenen Seiten, weil React die alte Seite versteckt im DOM lässt); `document.title` "Seite – Pathwise" (`de.nav.pageTitle`, Name aus `appConfig` über `de.appName`); neue Komponente `MobileNav` (schmale Kopfzeile mit Name und Auswahlfeld "Aktive Person", feste untere Leiste mit Rentenplan, Eingaben, Haushalt, Mehr, mindestens 56 px plus `env(safe-area-inset-bottom)`, Inhalt bekommt unten gleich viel Abstand); Blätter liegen über der Leiste, schließen nach Auswahl, per Escape, Schließen-Taste und Rand, Fokus kehrt zur Taste zurück, aktives Ziel hat `aria-current`, Seite dahinter ist `inert`. Das alte Hamburger-Menü entfällt (Texte `nav.menu`/`nav.close` entfernt). Es wird immer nur eine der beiden Navigationen gerendert (`useNarrowScreen`), sonst gäbe es doppelte Beschriftungen. Skip-Link: war ein Fehler (`#main` wurde vom Hash-Router als unbekannte Seite gelesen und sprang zum Rentenplan), jetzt Fokus auf `main` ohne Hash-Änderung. Neuer `e2e/navigation.spec.ts` (16 Tests: Scroll, Fokus, Titel, Leiste, Blätter, Escape, Fokus-Rückgabe, inert, Personenwechsel, Skip-Link, axe mit und ohne Blatt, hell und dunkel). Sichtprüfung 375 px hell und dunkel (Rentenplan, beide Blätter) per Screenshot. `typecheck`, `lint`, `format:check`, 547 Unit-Tests grün; E2E 114/114 grün, aber über temporäre Konfiguration auf Port 5199 (Port 5173 von `fitness-app` belegt, Backlog). Abweichungen: (1) Blatt ist nicht-modal (`role="dialog"` ohne `aria-modal`), damit die Leiste bedienbar bleibt; stattdessen `inert` auf Inhalt und Kopfzeile. (2) Nach einer Auswahl steht der Fokus auf der neuen Überschrift (B-2), nicht auf der "Mehr"-Taste; dorthin kehrt er bei Abbruch zurück. (3) Zusätzlich Darstellung (Hell/Dunkel/System) in "Mehr" und Personenauswahl in der Kopfzeile, beides im Mockup gezeigt. Offen: Commit durch den Autor; Backlog um vier Punkte ergänzt. Commit-Vorschlag: `feat(web): add phone bottom tab bar with sheets, scroll reset, heading focus and page titles`. Geänderte Ordner: `apps/web/` (`src/App.tsx`, `src/components/MobileNav.tsx` neu, `src/i18n/de.ts`, `src/styles.css`), `e2e/` (neu `navigation.spec.ts`), `docs/mockups/` (neu `mobile-nav.html`), `concept/` (dieser Bericht, `PROGRESS.md`).
