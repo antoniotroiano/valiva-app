@@ -289,6 +289,7 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-22 – Review 14 AP-04: Robustheit (Rentenbeginn in der Vergangenheit als Fehler über `validateRetirementTiming`, bewusst nicht in `validateProfile`; zentrale Speicherfunktion mit Warnleiste, Hinweis bei Änderung in anderem Tab, Flush bei `pagehide`, `todayLocal()`, Exportmahnung nach WebKit-Regel); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 - 2026-11-22 – Review 14 AP-05 nicht umgesetzt: neuer App-Name Valiva, Umbenennung kommt vor AP-05; Dateizuordnung für den Kern vom Autor freigegeben. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 - 2026-11-22 – Review 14 AP-05a: Umbenennung auf Valiva (Pakete `@valiva/*`, Speicher-Präfix `valiva.*` mit Migration, Export-Kennung `valiva-workspace`, Doku); AP-05 folgt in neuer Session. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+- 2026-11-22 – Review 14 AP-05: Kern in Ordner gegliedert (`shared`, `tax`, `etf`, `goals`, `pension`, `household`, `overview`, `workspace`), Tests gespiegelt, `docs/architecture.md` neu; 572 Unit- und 123 E2E-Tests unverändert grün; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 ## Offene Fragen aus dem Bau
 - (leer)

@@ -38,7 +38,7 @@ type Workspace = {
 - `HouseholdState.schemaVersion` (heute 2, `valiva.household.v2`) und `Workspace.schemaVersion` (1) sind getrennt; die Migration aus 4b bleibt bestehen
 
 ## 4. Kern (5a)
-Neue Datei `packages/core/src/workspace.ts` (rein, ohne `localStorage`, `File`, `Blob`):
+Neue Datei `packages/core/src/workspace/workspace.ts` (rein, ohne `localStorage`, `File`, `Blob`):
 - `buildWorkspace(state, blocks, meta)`, `serializeWorkspace(workspace)` (stabile Schlüsselreihenfolge, 2 Leerzeichen Einrückung)
 - `parseWorkspace(raw, currentYear)` → `{status: 'ok', workspace, warnings} | {status: 'error', issues}`
 - Prüfreihenfolge (`06` §7): Größe ≤ 2 MB → JSON → `format` → `schemaVersion` (neuer als bekannt: Meldung "Datei stammt aus neuerer Version", kein Import) → Migrationskette → `validateHousehold` (eindeutige IDs, aktive Person vorhanden) → Block-Validatoren → Zahlenbereiche (endlich, kein `NaN`), Stringlängen, Personenzahl ≤ 20

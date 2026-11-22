@@ -40,7 +40,7 @@ Playwright uses the locally installed Google Chrome. Without Chrome (for example
 
 ## Structure
 
-- `packages/core` – pure calculation functions (no UI, DB or HTTP), including the workspace file format
+- `packages/core` – pure calculation functions (no UI, DB or HTTP), including the workspace file format; folder map and data flow in `docs/architecture.md`
 - `apps/web` – React + Vite UI; all UI texts in `apps/web/src/i18n/de.ts`
 - `config/` – legal parameters with `value`, `validFrom`, `validTo`, `source`, `status`
 - `examples/` – invented example workspaces
