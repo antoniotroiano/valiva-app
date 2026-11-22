@@ -1,0 +1,3556 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mockup Design v2</title>
+    <style>
+      /* ===== Tokens (Vorschlag AP-07). Jede Farbe einmal als light-dark(hell, dunkel). ===== */
+      :root {
+        color-scheme: light dark;
+        --page: light-dark(#e6e9ea, #080d0c); /* nur Mockup-Hintergrund */
+        --bg: light-dark(#f3f6f6, #0d1413);
+        --surface: light-dark(#ffffff, #151e1d);
+        --surface-2: light-dark(#eaf0ef, #1e2928);
+        --nav-bg: light-dark(#fbfcfc, #111918);
+        --text: light-dark(#15201e, #e5eeec);
+        --muted: light-dark(#54635f, #9db0ac);
+        --line: light-dark(#dde5e3, #28353a); /* nur Dekoration */
+        --field-border: light-dark(#76847f, #6d807c); /* Bedienelemente, >= 3:1 */
+        --accent: light-dark(#0f766e, #4fd1c0);
+        --accent-soft: light-dark(#dff1ee, #17332f);
+        --on-accent: light-dark(#ffffff, #052420);
+        --focus: light-dark(#0f766e, #4fd1c0);
+        --scrim: light-dark(rgb(10 20 18 / 40%), rgb(0 0 0 / 55%));
+        /* Bausteine */
+        --b-etf: light-dark(#1d4ed8, #7aa2ff);
+        --b-stat: light-dark(#475569, #a9b8b4);
+        --b-dep: light-dark(#a21caf, #f08fd0);
+        --b-bav: light-dark(#b45309, #e0a24a);
+        --on-block: light-dark(#ffffff, #0d1413);
+        /* Szenarien (zusätzlich Linienstil) */
+        --c-pess: light-dark(#c2410c, #f59e5b);
+        --c-neu: light-dark(#0f766e, #4fd1c0);
+        --c-opt: light-dark(#4f46e5, #a5a0ff);
+        --wish: light-dark(#b42318, #ff8a80);
+        /* Status: Text, Fläche, Rahmen */
+        --ok-fg: light-dark(#166534, #7fdca0);
+        --ok-bg: light-dark(#e2f4e7, #12301f);
+        --ok-bd: light-dark(#9fd0ae, #245b3a);
+        --hint-fg: light-dark(#3b4a47, #c0cdca);
+        --hint-bg: light-dark(#eaf0ef, #1e2928);
+        --hint-bd: light-dark(#cfdad8, #36464a);
+        --warn-fg: light-dark(#8a4b00, #f0b46a);
+        --warn-bg: light-dark(#fdf1e4, #2e2214);
+        --warn-bd: light-dark(#ecc08a, #6b4a1d);
+        --bad-fg: light-dark(#b42318, #ff8a80);
+        --bad-bg: light-dark(#fde9e7, #3a1714);
+        --bad-bd: light-dark(#f1aaa3, #7a2f29);
+        /* Form */
+        --r: 14px;
+        --r-sm: 8px;
+        --shadow:
+          0 1px 2px light-dark(rgb(16 40 36 / 6%), rgb(0 0 0 / 30%)),
+          0 6px 20px light-dark(rgb(16 40 36 / 7%), transparent);
+        /* Abstände */
+        --s1: 4px;
+        --s2: 8px;
+        --s3: 12px;
+        --s4: 16px;
+        --s5: 24px;
+        --s6: 32px;
+        --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      }
+      :root[data-theme='light'] {
+        color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--page);
+        color: var(--text);
+        font: 16px/1.5 var(--font);
+        font-variant-numeric: tabular-nums;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      a {
+        color: var(--accent);
+      }
+      code {
+        font-size: 13px;
+      }
+      :focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 2px;
+      }
+      .ic {
+        width: 20px;
+        height: 20px;
+        flex: none;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .ic.sm {
+        width: 16px;
+        height: 16px;
+      }
+      .ic.lg {
+        width: 24px;
+        height: 24px;
+      }
+
+      /* ===== Mockup-Rahmen (gehört nicht zur App) ===== */
+      .mock-bar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 24px;
+        padding: 8px 24px;
+        background: var(--nav-bg);
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+      }
+      .mock-bar strong {
+        font-size: 16px;
+      }
+      .mock-bar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+      }
+      .mock-bar label.chk {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 32px;
+      }
+      .wrap {
+        max-width: 1264px;
+        margin: 0 auto;
+        padding: 32px 24px 64px;
+      }
+      .intro {
+        max-width: 78ch;
+      }
+      .intro h1 {
+        font-size: 28px;
+        line-height: 1.2;
+        margin-bottom: 8px;
+      }
+      .intro ul {
+        margin: 8px 0 0;
+        padding-left: 20px;
+      }
+      .sec {
+        margin-top: 64px;
+      }
+      .sec > h2 {
+        font-size: 22px;
+        line-height: 1.3;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .sec > .note {
+        color: var(--muted);
+        font-size: 14px;
+        max-width: 80ch;
+        margin-bottom: 16px;
+      }
+      .scrollx {
+        overflow-x: auto;
+        padding-bottom: 8px;
+      }
+      .cap {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      .phones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      /* ===== Typografie ===== */
+      .t-display {
+        font-size: 48px;
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .t-h1 {
+        font-size: 28px;
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .t-h2 {
+        font-size: 22px;
+        line-height: 1.3;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .t-h3 {
+        font-size: 18px;
+        line-height: 1.35;
+        font-weight: 600;
+      }
+      .t-body {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .t-small {
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      .t-cap {
+        font-size: 13px;
+        line-height: 1.4;
+        font-weight: 600;
+      }
+
+      /* ===== App-Rahmen Desktop ===== */
+      .desk {
+        width: 1200px;
+        display: grid;
+        grid-template-columns: 248px 1fr;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .side {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 24px 16px;
+        background: var(--nav-bg);
+        border-right: 1px solid var(--line);
+      }
+      .brand {
+        padding: 0 12px 16px;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .grp {
+        padding: 16px 12px 4px;
+        font-size: 13px;
+        line-height: 1.4;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .nl {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 40px;
+        padding: 0 12px;
+        border-radius: 10px;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nl:hover {
+        background: var(--surface-2);
+      }
+      .nl[aria-current='page'] {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .nl .dot {
+        margin-left: auto;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--bk);
+      }
+      .side .spacer {
+        flex: 1;
+        min-height: 24px;
+      }
+      .theme-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 12px 12px 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .desk .page {
+        padding: 32px;
+      }
+
+      /* ===== Seite (Container-Abfragen: gleiche Seite, breit und schmal) ===== */
+      .page {
+        container: pg / inline-size;
+      }
+      .page-in {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .ph {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .ph h1 {
+        font-size: 28px;
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .sub {
+        margin-top: 4px;
+        font-size: 14px;
+        line-height: 1.45;
+        color: var(--muted);
+      }
+      .head-tools {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-end;
+      }
+      .block-h {
+        font-size: 22px;
+        line-height: 1.3;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin-bottom: 12px;
+      }
+      .stack-16 {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      /* Karten */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        padding: 24px;
+      }
+      .card.hero {
+        padding: 32px;
+        box-shadow: var(--shadow);
+      }
+      .card h3 {
+        font-size: 18px;
+        line-height: 1.35;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 24px;
+        align-items: start;
+      }
+      .eyebrow {
+        font-size: 14px;
+        line-height: 1.45;
+        color: var(--muted);
+      }
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .hero-num {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        margin-top: 16px;
+      }
+      .display {
+        font-size: 48px;
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .display.dim {
+        color: var(--muted);
+      }
+      .unit {
+        font-size: 18px;
+        color: var(--muted);
+      }
+      .hero-num .chip {
+        align-self: center;
+        margin-left: 4px;
+      }
+      .range {
+        margin-top: 8px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .verdict {
+        margin-top: 24px;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .verdict a {
+        font-weight: 600;
+      }
+
+      /* Chips */
+      .chip {
+        --c-fg: var(--hint-fg);
+        --c-bg: var(--hint-bg);
+        --c-bd: var(--hint-bd);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 28px;
+        padding: 2px 12px 2px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--c-bd);
+        background: var(--c-bg);
+        color: var(--c-fg);
+        font-size: 13px;
+        line-height: 1.4;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .chip.sm {
+        min-height: 24px;
+        padding: 0 10px 0 6px;
+      }
+      .chip.lg {
+        min-height: 36px;
+        padding: 4px 16px 4px 12px;
+        font-size: 16px;
+      }
+      .chip.ok {
+        --c-fg: var(--ok-fg);
+        --c-bg: var(--ok-bg);
+        --c-bd: var(--ok-bd);
+      }
+      .chip.warn {
+        --c-fg: var(--warn-fg);
+        --c-bg: var(--warn-bg);
+        --c-bd: var(--warn-bd);
+      }
+      .chip.bad {
+        --c-fg: var(--bad-fg);
+        --c-bg: var(--bad-bg);
+        --c-bd: var(--bad-bd);
+      }
+
+      /* Hinweise */
+      .notice {
+        display: flex;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: var(--r-sm);
+        border: 1px solid var(--c-bd);
+        background: var(--c-bg);
+        font-size: 14px;
+        line-height: 1.45;
+        --c-bg: var(--hint-bg);
+        --c-bd: var(--hint-bd);
+      }
+      .notice .ic {
+        color: var(--c-fg, var(--hint-fg));
+        margin-top: 1px;
+      }
+      .notice.warn {
+        --c-bg: var(--warn-bg);
+        --c-bd: var(--warn-bd);
+        --c-fg: var(--warn-fg);
+      }
+
+      /* Segmentschalter */
+      .seg {
+        display: inline-flex;
+        padding: 3px;
+        gap: 2px;
+        border: 1px solid var(--field-border);
+        border-radius: 999px;
+        background: var(--surface-2);
+      }
+      .seg label {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        padding: 0 16px;
+        border-radius: 999px;
+        font-size: 14px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .seg input {
+        position: absolute;
+        opacity: 0;
+        inset: 0;
+        margin: 0;
+        cursor: pointer;
+      }
+      .seg label:has(input:checked) {
+        background: var(--surface);
+        color: var(--accent);
+        font-weight: 600;
+        box-shadow:
+          0 0 0 1px var(--accent),
+          var(--shadow);
+      }
+      .seg label:has(input:focus-visible) {
+        outline: 3px solid var(--focus);
+        outline-offset: 2px;
+      }
+
+      /* Felder */
+      .f {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .f {
+        min-width: 0;
+      }
+      .f .lb {
+        font-size: 14px;
+        line-height: 1.45;
+        font-weight: 600;
+      }
+      .hint {
+        font-size: 14px;
+        line-height: 1.45;
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .in {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        border: 1px solid var(--field-border);
+        border-radius: var(--r-sm);
+        background: var(--surface);
+      }
+      .in input,
+      select.sel {
+        min-width: 0;
+        flex: 1;
+        min-height: 42px;
+        padding: 0 12px;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+      }
+      .in input:focus-visible {
+        outline: none;
+      }
+      .in:focus-within,
+      .in.is-focus {
+        outline: 3px solid var(--focus);
+        outline-offset: 2px;
+      }
+      .in .suf {
+        padding: 0 12px 0 0;
+        color: var(--muted);
+      }
+      .in.err {
+        border-color: var(--bad-fg);
+      }
+      .in.xl {
+        min-height: 56px;
+      }
+      .in.xl input {
+        font-size: 24px;
+        font-weight: 600;
+        min-height: 54px;
+      }
+      select.sel {
+        border: 1px solid var(--field-border);
+        border-radius: var(--r-sm);
+        background: var(--surface);
+        min-height: 44px;
+      }
+      .msg {
+        display: flex;
+        gap: 6px;
+        align-items: flex-start;
+        font-size: 14px;
+        color: var(--bad-fg);
+      }
+      fieldset.fs {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-width: 0;
+      }
+      fieldset.fs + fieldset.fs {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+      }
+      fieldset.fs legend {
+        padding: 0;
+        margin-bottom: 12px;
+        font-size: 18px;
+        line-height: 1.35;
+        font-weight: 600;
+        float: left;
+        width: 100%;
+      }
+      fieldset.fs legend + * {
+        clear: both;
+      }
+      .two-f {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      /* Knöpfe */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 20px;
+        border: 1px solid var(--field-border);
+        border-radius: var(--r-sm);
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .btn.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--on-accent);
+      }
+      .btn.quiet {
+        border-color: transparent;
+        background: transparent;
+        color: var(--accent);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      /* Balken */
+      .bar-axis {
+        display: flex;
+        justify-content: space-between;
+        margin: 24px 0 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .stack {
+        display: flex;
+        gap: 2px;
+        height: 32px;
+      }
+      .stack.sm {
+        height: 28px;
+      }
+      .sg {
+        position: relative;
+        flex-basis: 0;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bk);
+        color: var(--on-block);
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        border-radius: 3px;
+      }
+      .sg:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+      .sg:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+      .sg.hatch {
+        background: var(--surface);
+        color: var(--text);
+        box-shadow: inset 0 0 0 1.5px var(--bk);
+      }
+      .sg.hatch svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .sg.hatch span {
+        position: relative;
+        padding: 0 6px;
+        border-radius: 4px;
+        background: var(--surface);
+      }
+      .sg.gap {
+        background: transparent;
+        color: var(--warn-fg);
+        border: 2px dashed var(--warn-fg);
+      }
+      .sg.void {
+        background: transparent;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        margin: 16px 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: 14px;
+      }
+      .legend li {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .legend b {
+        font-weight: 600;
+      }
+      .sw {
+        position: relative;
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        background: var(--bk);
+        flex: none;
+        overflow: hidden;
+      }
+      .sw.hatch {
+        background: var(--surface);
+        box-shadow: inset 0 0 0 1.5px var(--bk);
+      }
+      .sw.hatch svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .sw.gap {
+        background: transparent;
+        border: 2px dashed var(--warn-fg);
+      }
+      .sw.line {
+        height: 0;
+        width: 22px;
+        border-radius: 0;
+        background: none;
+        border-top: 3px solid var(--bk);
+      }
+      .sw.line.dash {
+        border-top-style: dashed;
+      }
+      .sw.line.dot {
+        border-top-style: dotted;
+      }
+      .rowbar {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr) 72px;
+        gap: 12px;
+        align-items: center;
+      }
+      .rowbar + .rowbar {
+        margin-top: 12px;
+      }
+      .rowbar .who-n {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+      }
+      .rowbar .tot {
+        text-align: right;
+        font-weight: 600;
+      }
+
+      /* Details */
+      .dts {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        overflow: hidden;
+      }
+      details.dt + details.dt {
+        border-top: 1px solid var(--line);
+      }
+      details.dt > summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 56px;
+        padding: 0 24px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        list-style: none;
+      }
+      details.dt > summary::-webkit-details-marker {
+        display: none;
+      }
+      details.dt > summary .meta {
+        margin-left: auto;
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--muted);
+      }
+      details.dt > summary .chev {
+        color: var(--muted);
+      }
+      details.dt[open] > summary .chev {
+        transform: rotate(180deg);
+      }
+      .dt-body {
+        padding: 0 24px 24px;
+      }
+      .dt-body > * + * {
+        margin-top: 16px;
+      }
+
+      /* Tabellen */
+      .scroll {
+        overflow-x: auto;
+      }
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      .tbl th,
+      .tbl td {
+        padding: 10px 12px 10px 0;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+      }
+      .tbl thead th {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        border-bottom-color: var(--field-border);
+        white-space: nowrap;
+      }
+      .tbl .num {
+        text-align: right;
+        padding-right: 0;
+        padding-left: 12px;
+        white-space: nowrap;
+      }
+      .tbl tbody th {
+        font-weight: 400;
+      }
+      .tbl tfoot th,
+      .tbl tfoot td {
+        font-weight: 600;
+        border-bottom: 0;
+        border-top: 1px solid var(--field-border);
+      }
+      .tbl .k {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Diagramm */
+      .chart svg {
+        display: block;
+        width: 100%;
+        overflow: visible;
+      }
+      .chart text {
+        font-size: 13px;
+        fill: var(--muted);
+      }
+
+      /* Link-Karte */
+      .linkcard {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 24px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        color: var(--text);
+        text-decoration: none;
+      }
+      .linkcard .ic.lg {
+        color: var(--accent);
+      }
+      .linkcard small {
+        display: block;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .linkcard .go {
+        margin-left: auto;
+        color: var(--accent);
+      }
+      .disc {
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      /* Bausteinseite */
+      .depot-grid {
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+      .col-h {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .col-h .no {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 1.5px solid var(--muted);
+      }
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+      }
+      .kpis dt {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .kpis dd {
+        margin: 2px 0 0;
+        font-size: 22px;
+        line-height: 1.3;
+        font-weight: 600;
+      }
+      .res-col > * + * {
+        margin-top: 24px;
+      }
+      .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      /* Schritte und leere Zustände */
+      .steps {
+        display: flex;
+        gap: 24px;
+        margin: 0 0 24px;
+        padding: 0;
+        list-style: none;
+      }
+      .steps li {
+        flex: 1;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        font-size: 14px;
+        line-height: 1.45;
+        color: var(--muted);
+      }
+      .steps .n {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1.5px solid var(--field-border);
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .steps li.done .n {
+        background: var(--ok-bg);
+        border-color: var(--ok-fg);
+        color: var(--ok-fg);
+      }
+      .steps li.now {
+        color: var(--text);
+        font-weight: 600;
+      }
+      .steps li.now .n {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--on-accent);
+      }
+      .steps small {
+        display: block;
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .empty h2 {
+        font-size: 22px;
+        line-height: 1.3;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin-bottom: 8px;
+      }
+      .empty p {
+        max-width: 60ch;
+        margin-bottom: 24px;
+      }
+      .card.ghost {
+        border-style: dashed;
+        border-color: var(--field-border);
+        background: transparent;
+        box-shadow: none;
+      }
+
+      /* Schmal (Smartphone-Breite der Seite) */
+      @container pg (max-width: 759px) {
+        .page-in {
+          gap: 24px;
+        }
+        .ph {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .ph h1 {
+          font-size: 24px;
+        }
+        .head-tools {
+          align-items: stretch;
+        }
+        .head-tools .chip {
+          align-self: flex-start;
+        }
+        .head-tools .who {
+          display: none;
+        }
+        .seg {
+          display: flex;
+        }
+        .seg label {
+          flex: 1;
+          padding: 0 8px;
+        }
+        .hero-grid,
+        .depot-grid {
+          grid-template-columns: 1fr;
+        }
+        .depot-grid .res-col {
+          order: -1;
+        }
+        .card.hero {
+          padding: 24px;
+        }
+        .card {
+          padding: 16px;
+        }
+        .card.hero {
+          padding: 20px;
+        }
+        .display {
+          font-size: 40px;
+        }
+        .rowbar {
+          grid-template-columns: 1fr auto;
+          gap: 6px 12px;
+        }
+        .rowbar .stack {
+          grid-column: 1 / -1;
+          grid-row: 2;
+        }
+        .kpis {
+          grid-template-columns: 1fr 1fr;
+        }
+        .steps {
+          flex-direction: column;
+          gap: 16px;
+        }
+        details.dt > summary {
+          padding: 0 16px;
+        }
+        .dt-body {
+          padding: 0 16px 16px;
+        }
+        .linkcard {
+          padding: 16px;
+        }
+        .two-f {
+          grid-template-columns: 1fr;
+        }
+        .hide-narrow,
+        .col-h .no {
+          display: none;
+        }
+      }
+
+      /* ===== Smartphone-Rahmen (AP-03 freigegeben, hier mit dem Gesamtdesign) ===== */
+      .phone {
+        position: relative;
+        width: 375px;
+        height: 812px;
+        overflow: hidden;
+        border: 1px solid var(--field-border);
+        border-radius: 28px;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .phone .status {
+        height: 44px; /* env(safe-area-inset-top) */
+        background: var(--nav-bg);
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        height: 52px;
+        padding: 0 16px;
+        background: var(--nav-bg);
+        border-bottom: 1px solid var(--line);
+      }
+      .topbar strong {
+        font-size: 18px;
+        letter-spacing: -0.02em;
+      }
+      .person {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 0 12px;
+        border: 1px solid var(--field-border);
+        border-radius: 22px;
+        background: var(--surface);
+        font-size: 14px;
+      }
+      .person small {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .phone .area {
+        height: calc(812px - 44px - 52px);
+        overflow-y: auto;
+        padding: 20px 16px 120px;
+      }
+      .phone.full {
+        height: auto;
+        overflow: visible;
+      }
+      .phone.full .area {
+        height: auto;
+        overflow: visible;
+        padding-bottom: 24px;
+      }
+      .phone.full .tabbar {
+        position: static;
+      }
+      .tabbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding-bottom: 34px; /* env(safe-area-inset-bottom) */
+        background: var(--nav-bg);
+        border-top: 1px solid var(--line);
+      }
+      .tab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        min-height: 56px;
+        padding: 6px 2px;
+        border: 0;
+        background: none;
+        color: var(--muted);
+        font: inherit;
+        font-size: 13px;
+        line-height: 1.3;
+        text-decoration: none;
+      }
+      .tab .ic {
+        width: 22px;
+        height: 22px;
+      }
+      .pill {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 28px;
+        border-radius: 14px;
+      }
+      .tab.on {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .tab.on .pill {
+        background: var(--accent-soft);
+      }
+      .scrim {
+        position: absolute;
+        inset: 0 0 91px 0;
+        background: var(--scrim);
+      }
+      .sheet {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 91px;
+        padding: 8px 16px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -4px 20px rgb(0 0 0 / 18%);
+      }
+      .grab {
+        width: 36px;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--field-border);
+        margin: 0 auto 8px;
+      }
+      .sheet-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 44px;
+      }
+      .sheet-head h2 {
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .close {
+        min-height: 44px;
+        padding: 0 12px;
+        border: 0;
+        background: none;
+        color: var(--accent);
+        font: inherit;
+        font-weight: 600;
+      }
+      .sheet .grp {
+        padding: 8px 8px 2px;
+      }
+      .sheet ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .sheet li a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 48px;
+        padding: 0 8px;
+        border-radius: 10px;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .sheet li a[aria-current='page'] {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .sheet li a .go {
+        margin-left: auto;
+        color: var(--muted);
+      }
+      .sheet .theme {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 56px;
+        margin-top: 8px;
+        padding: 0 8px;
+        border-top: 1px solid var(--line);
+      }
+      .sheet .theme select {
+        min-width: 140px;
+      }
+      .sheet .theme {
+        gap: 12px;
+      }
+      .sheet-foot {
+        height: 8px;
+      }
+
+      /* ===== Grundlagen-Tabellen ===== */
+      .spec {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 24px;
+      }
+      .spec .card {
+        padding: 24px;
+      }
+      .spec h3 {
+        margin-bottom: 12px;
+      }
+      .ty {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2px;
+        align-items: baseline;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .ty small {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .sp {
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        align-items: center;
+        gap: 12px;
+        padding: 4px 0;
+        font-size: 14px;
+      }
+      .sp i {
+        display: block;
+        height: 16px;
+        background: var(--accent);
+        border-radius: 2px;
+      }
+      .pal {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      .pal th,
+      .pal td {
+        padding: 6px 12px 6px 0;
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--line);
+      }
+      .pal thead th {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .pal tr.grp th {
+        padding-top: 20px;
+        font-size: 14px;
+        color: var(--text);
+        border-bottom-color: var(--field-border);
+        background: none;
+      }
+      .pal .num {
+        white-space: nowrap;
+      }
+      .pal tbody th {
+        font-weight: 400;
+      }
+      .pairs {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .pair {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 28px;
+        border: 1px solid #8884;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .icons {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+      }
+      .icons div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        font-size: 14px;
+        background: var(--surface);
+      }
+      .cmp {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 12px;
+      }
+      .cmp b {
+        color: var(--text);
+      }
+      @media (max-width: 1100px) {
+        .mock-bar {
+          position: static;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Linien-Icons als Inline-SVG (keine Bibliothek); in der App wird daraus eine kleine Komponente -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <pattern
+          id="h-etf"
+          width="7"
+          height="7"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <rect width="7" height="7" style="fill: var(--surface)" />
+          <rect width="2.4" height="7" style="fill: var(--b-etf)" />
+        </pattern>
+        <pattern
+          id="h-stat"
+          width="7"
+          height="7"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <rect width="7" height="7" style="fill: var(--surface)" />
+          <rect width="2.4" height="7" style="fill: var(--b-stat)" />
+        </pattern>
+        <pattern
+          id="h-dep"
+          width="7"
+          height="7"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <rect width="7" height="7" style="fill: var(--surface)" />
+          <rect width="2.4" height="7" style="fill: var(--b-dep)" />
+        </pattern>
+        <pattern
+          id="h-bav"
+          width="7"
+          height="7"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <rect width="7" height="7" style="fill: var(--surface)" />
+          <rect width="2.4" height="7" style="fill: var(--b-bav)" />
+        </pattern>
+        <pattern
+          id="h-neutral"
+          width="7"
+          height="7"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <rect width="7" height="7" style="fill: var(--surface)" />
+          <rect width="2.4" height="7" style="fill: var(--muted)" />
+        </pattern>
+        <symbol id="i-rentenplan" viewBox="0 0 24 24">
+          <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
+        </symbol>
+        <symbol id="i-eingaben" viewBox="0 0 24 24">
+          <path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" />
+        </symbol>
+        <symbol id="i-haushalt" viewBox="0 0 24 24">
+          <circle cx="9" cy="8" r="3" />
+          <path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 5.5a3 3 0 010 5.5M18 14c2 .7 3 2.6 3 6" />
+        </symbol>
+        <symbol id="i-mehr" viewBox="0 0 24 24">
+          <circle cx="5" cy="12" r="1.2" />
+          <circle cx="12" cy="12" r="1.2" />
+          <circle cx="19" cy="12" r="1.2" />
+        </symbol>
+        <symbol id="i-profil" viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="3.5" />
+          <path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5" />
+        </symbol>
+        <symbol id="i-etf" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-9M15 6h6v6" /></symbol>
+        <symbol id="i-gesetzlich" viewBox="0 0 24 24">
+          <path d="M3 9l9-5 9 5M5 10v8M9.7 10v8M14.3 10v8M19 10v8M3 20h18" />
+        </symbol>
+        <symbol id="i-depot" viewBox="0 0 24 24">
+          <ellipse cx="12" cy="6" rx="8" ry="3" />
+          <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
+        </symbol>
+        <symbol id="i-bav" viewBox="0 0 24 24">
+          <rect x="3" y="7" width="18" height="13" rx="2" />
+          <path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2M3 13h18" />
+        </symbol>
+        <symbol id="i-ziele" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="5" />
+          <circle cx="12" cy="12" r="1.2" />
+        </symbol>
+        <symbol id="i-annahmen" viewBox="0 0 24 24">
+          <path d="M4 7h8M18 7h2M4 17h2M12 17h8" />
+          <circle cx="15" cy="7" r="2.2" />
+          <circle cx="9" cy="17" r="2.2" />
+        </symbol>
+        <symbol id="i-daten" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M4 20h16" /></symbol>
+        <symbol id="i-ok" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M8 12.5l3 3 5-6" />
+        </symbol>
+        <symbol id="i-warn" viewBox="0 0 24 24">
+          <path d="M12 4l9.5 16h-19zM12 10v4.5M12 17.5v.01" />
+        </symbol>
+        <symbol id="i-info" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 11v5M12 8v.01" />
+        </symbol>
+        <symbol id="i-err" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M9 9l6 6M15 9l-6 6" />
+        </symbol>
+        <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></symbol>
+        <symbol id="i-go" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></symbol>
+        <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></symbol>
+      </defs>
+    </svg>
+
+    <div class="mock-bar">
+      <strong>Mockup Design v2 (AP-07)</strong>
+      <span class="seg" role="radiogroup" aria-label="Darstellung">
+        <label><input type="radio" name="theme" value="light" checked />Hell</label>
+        <label><input type="radio" name="theme" value="dark" />Dunkel</label>
+        <label><input type="radio" name="theme" value="system" />System</label>
+      </span>
+      <label class="chk"><input type="checkbox" id="full" />Smartphone: ganze Seite zeigen</label>
+      <nav aria-label="Abschnitte im Mockup">
+        <a href="#grundlagen">Grundlagen</a><a href="#rente">Rentenplan</a><a href="#depot">Depot</a
+        ><a href="#leer">Leerer Zustand</a><a href="#phone">Smartphone</a>
+      </nav>
+    </div>
+
+    <div class="wrap">
+      <header class="intro">
+        <h1>Design v2: Entwurf zur Freigabe</h1>
+        <p>
+          Beispieldaten sind erfunden (Paar „Anna und Ben“). Nichts davon ist freigegeben. Gezeigt
+          werden die acht Vorschläge aus Review 14, Abschnitt 2.5, auf Rentenplan, Bausteinseite,
+          leerem Zustand und Smartphone, jeweils hell und dunkel (Umschalter oben). Die Seiten sind
+          jeweils einmal geschrieben und passen sich per Container-Abfrage der Breite an: Desktop
+          und Smartphone zeigen also denselben Inhalt.
+        </p>
+        <ul>
+          <li>
+            Keine Animationen, keine Verläufe, keine Illustrationen, keine Webfonts, keine
+            Icon-Bibliothek.
+          </li>
+          <li>
+            Bewusst nicht dargestellt: Fortschritt in der Seitenleiste (AP-13), Rentner-Modus
+            (AP-19).
+          </li>
+        </ul>
+      </header>
+
+      <!-- ====================== GRUNDLAGEN ====================== -->
+      <section class="sec" id="grundlagen">
+        <h2>Grundlagen</h2>
+        <p class="note">
+          Typografie, Abstände, Palette mit gerechnetem Kontrast, Bausteinfarben, Status, Icons und
+          Bedienelemente. Die Kontrastwerte in der Tabelle stehen hell und dunkel nebeneinander und
+          hängen nicht vom Umschalter ab.
+        </p>
+        <div class="spec">
+          <div class="card">
+            <h3>Typografie (Systemschrift, 16 px Basis)</h3>
+            <div class="ty">
+              <span class="t-display">3.453 €</span
+              ><small>Hero-Zahl 48/1,05 · 700 (Smartphone 40)</small>
+            </div>
+            <div class="ty">
+              <span class="t-h1">Rentenplan</span><small>H1 28/1,2 · 700 (Smartphone 24)</small>
+            </div>
+            <div class="ty">
+              <span class="t-h2">Zusammensetzung</span><small>H2 22/1,3 · 600</small>
+            </div>
+            <div class="ty"><span class="t-h3">Eingaben</span><small>H3 18/1,35 · 600</small></div>
+            <div class="ty">
+              <span class="t-body">Fließtext, Felder, Tabellen</span
+              ><small>Text 16/1,5 · 400</small>
+            </div>
+            <div class="ty">
+              <span class="t-small">Hilfetexte, Tabellen, Legenden</span
+              ><small>Klein 14/1,45 · 400</small>
+            </div>
+            <div class="ty">
+              <span class="t-cap">Gruppe, Chip, Achsenwert</span
+              ><small>Beschriftung 13/1,4 · 600</small>
+            </div>
+            <p class="cmp">
+              Zahlen immer mit <b>tabellarischen Ziffern</b>, Überschriften leicht enger (−0,01 bis
+              −0,02 em). Gewichte 400, 600, 700. Mindestgröße 13 px, Eingaben 16 px (kein iOS-Zoom).
+            </p>
+          </div>
+          <div class="card">
+            <h3>Abstandsskala und Form</h3>
+            <div class="sp"><span>4</span><i style="width: 4px"></i></div>
+            <div class="sp"><span>8</span><i style="width: 8px"></i></div>
+            <div class="sp"><span>12</span><i style="width: 12px"></i></div>
+            <div class="sp"><span>16</span><i style="width: 16px"></i></div>
+            <div class="sp"><span>24</span><i style="width: 24px"></i></div>
+            <div class="sp"><span>32</span><i style="width: 32px"></i></div>
+            <p class="cmp">
+              <b>4</b> Icon–Text im Chip, <b>8</b> Abstand in Gruppen, <b>12</b> zwischen Feldern
+              und in Segmentschaltern, <b>16</b> Kartenpolster (Smartphone) und Feldabstand,
+              <b>24</b> Kartenpolster und Abstand zwischen Gruppen, <b>32</b> Abstand zwischen
+              Abschnitten und Seitenrand (Desktop). Radien wie heute: Karte 14, Feld 8, dazu Pille.
+              Karten haben eine 1-px-Linie und <b>keinen</b> Schatten; Schatten tragen nur
+              Hero-Karte, aktiver Segmentschalter und Blatt.
+            </p>
+          </div>
+        </div>
+
+        <h3 class="t-h3" style="margin: 32px 0 8px">Palette und gerechneter Kontrast</h3>
+        <p class="note" style="margin-bottom: 8px">
+          Kontrast nach WCAG 2.x (hell · dunkel). Text mindestens 4,5:1, Bedienelemente, Fokus und
+          Diagrammflächen mindestens 3:1. Die Karten- und Trennlinie ist bewusst nur Dekoration
+          (1,3:1) und trägt keine Information: Alles, was etwas bedeutet, hat eine stärkere Linie
+          (Feldrahmen, Diagrammachse) oder Text.
+        </p>
+        <div class="scrollx">
+          <table class="pal" style="min-width: 900px">
+            <thead>
+              <tr>
+                <th scope="col">Paarung</th>
+                <th scope="col">Hell (Vordergrund / Fläche)</th>
+                <th scope="col">Dunkel (Vordergrund / Fläche)</th>
+                <th scope="col">Kontrast hell · dunkel</th>
+                <th scope="col">Soll</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="grp">
+                <th colspan="5" scope="colgroup">Text</th>
+              </tr>
+              <tr>
+                <th scope="row">Text auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #15201e">Aa</span
+                    ><code>#15201e / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #e5eeec">Aa</span
+                    ><code>#e5eeec / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">16,7 · 14,4</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Text auf Hintergrund</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #f3f6f6; color: #15201e">Aa</span
+                    ><code>#15201e / #f3f6f6</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #0d1413; color: #e5eeec">Aa</span
+                    ><code>#e5eeec / #0d1413</code></span
+                  >
+                </td>
+                <td class="num">15,4 · 15,8</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Gedämpfter Text auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #54635f">Aa</span
+                    ><code>#54635f / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #9db0ac">Aa</span
+                    ><code>#9db0ac / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">6,3 · 7,5</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Gedämpfter Text auf Hintergrund</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #f3f6f6; color: #54635f">Aa</span
+                    ><code>#54635f / #f3f6f6</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #0d1413; color: #9db0ac">Aa</span
+                    ><code>#9db0ac / #0d1413</code></span
+                  >
+                </td>
+                <td class="num">5,8 · 8,2</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Gedämpfter Text auf Fläche 2</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #eaf0ef; color: #54635f">Aa</span
+                    ><code>#54635f / #eaf0ef</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1e2928; color: #9db0ac">Aa</span
+                    ><code>#9db0ac / #1e2928</code></span
+                  >
+                </td>
+                <td class="num">5,5 · 6,6</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Gedämpfter Text auf Seitenleiste und Tab-Leiste</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #fbfcfc; color: #54635f">Aa</span
+                    ><code>#54635f / #fbfcfc</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #111918; color: #9db0ac">Aa</span
+                    ><code>#9db0ac / #111918</code></span
+                  >
+                </td>
+                <td class="num">6,1 · 7,9</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Akzent als Text oder Link auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #0f766e">Aa</span
+                    ><code>#0f766e / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #4fd1c0">Aa</span
+                    ><code>#4fd1c0 / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">5,5 · 9,1</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Navigation aktiv (Akzent auf Pille)</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #dff1ee; color: #0f766e">Aa</span
+                    ><code>#0f766e / #dff1ee</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #17332f; color: #4fd1c0">Aa</span
+                    ><code>#4fd1c0 / #17332f</code></span
+                  >
+                </td>
+                <td class="num">4,7 · 7,2</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Knopftext auf Akzent</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #0f766e; color: #ffffff">Aa</span
+                    ><code>#ffffff / #0f766e</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #4fd1c0; color: #052420">Aa</span
+                    ><code>#052420 / #4fd1c0</code></span
+                  >
+                </td>
+                <td class="num">5,5 · 8,8</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Beschriftung im Segment: ETF</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1d4ed8; color: #ffffff">Aa</span
+                    ><code>#ffffff / #1d4ed8</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #7aa2ff; color: #0d1413">Aa</span
+                    ><code>#0d1413 / #7aa2ff</code></span
+                  >
+                </td>
+                <td class="num">6,7 · 7,5</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Beschriftung im Segment: Gesetzliche Rente</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #475569; color: #ffffff">Aa</span
+                    ><code>#ffffff / #475569</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #a9b8b4; color: #0d1413">Aa</span
+                    ><code>#0d1413 / #a9b8b4</code></span
+                  >
+                </td>
+                <td class="num">7,6 · 9,1</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Beschriftung im Segment: Depot</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #a21caf; color: #ffffff">Aa</span
+                    ><code>#ffffff / #a21caf</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #f08fd0; color: #0d1413">Aa</span
+                    ><code>#0d1413 / #f08fd0</code></span
+                  >
+                </td>
+                <td class="num">6,3 · 8,5</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Beschriftung im Segment: bAV</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #b45309; color: #ffffff">Aa</span
+                    ><code>#ffffff / #b45309</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #e0a24a; color: #0d1413">Aa</span
+                    ><code>#0d1413 / #e0a24a</code></span
+                  >
+                </td>
+                <td class="num">5,0 · 8,4</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Chip ok: Text auf Chipfläche</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #e2f4e7; color: #166534">Aa</span
+                    ><code>#166534 / #e2f4e7</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #12301f; color: #7fdca0">Aa</span
+                    ><code>#7fdca0 / #12301f</code></span
+                  >
+                </td>
+                <td class="num">6,2 · 8,6</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Chip Hinweis: Text auf Chipfläche</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #eaf0ef; color: #3b4a47">Aa</span
+                    ><code>#3b4a47 / #eaf0ef</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1e2928; color: #c0cdca">Aa</span
+                    ><code>#c0cdca / #1e2928</code></span
+                  >
+                </td>
+                <td class="num">8,1 · 9,1</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Chip Warnung: Text auf Chipfläche</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #fdf1e4; color: #8a4b00">Aa</span
+                    ><code>#8a4b00 / #fdf1e4</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #2e2214; color: #f0b46a">Aa</span
+                    ><code>#f0b46a / #2e2214</code></span
+                  >
+                </td>
+                <td class="num">6,1 · 8,4</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Chip Fehler: Text auf Chipfläche</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #fde9e7; color: #b42318">Aa</span
+                    ><code>#b42318 / #fde9e7</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #3a1714; color: #ff8a80">Aa</span
+                    ><code>#ff8a80 / #3a1714</code></span
+                  >
+                </td>
+                <td class="num">5,6 · 7,0</td>
+                <td>
+                  ≥ 4,5
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr class="grp">
+                <th colspan="5" scope="colgroup">Bedienelemente und Grafik</th>
+              </tr>
+              <tr>
+                <th scope="row">Feldrahmen auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #76847f">▭</span
+                    ><code>#76847f / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #6d807c">▭</span
+                    ><code>#6d807c / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">3,9 · 4,1</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Feldrahmen auf Hintergrund</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #f3f6f6; color: #76847f">▭</span
+                    ><code>#76847f / #f3f6f6</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #0d1413; color: #6d807c">▭</span
+                    ><code>#6d807c / #0d1413</code></span
+                  >
+                </td>
+                <td class="num">3,6 · 4,5</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Feldrahmen auf Fläche 2</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #eaf0ef; color: #76847f">▭</span
+                    ><code>#76847f / #eaf0ef</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1e2928; color: #6d807c">▭</span
+                    ><code>#6d807c / #1e2928</code></span
+                  >
+                </td>
+                <td class="num">3,4 · 3,6</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Fokusring auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #0f766e">◯</span
+                    ><code>#0f766e / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #4fd1c0">◯</span
+                    ><code>#4fd1c0 / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">5,5 · 9,1</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Fokusring auf Hintergrund</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #f3f6f6; color: #0f766e">◯</span
+                    ><code>#0f766e / #f3f6f6</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #0d1413; color: #4fd1c0">◯</span
+                    ><code>#4fd1c0 / #0d1413</code></span
+                  >
+                </td>
+                <td class="num">5,0 · 10,0</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Balken (Akzent) gegen Spur</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #eaf0ef; color: #0f766e">▬</span
+                    ><code>#0f766e / #eaf0ef</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1e2928; color: #4fd1c0">▬</span
+                    ><code>#4fd1c0 / #1e2928</code></span
+                  >
+                </td>
+                <td class="num">4,7 · 8,0</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Wunschlinie und Fehlerrahmen auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #b42318">┄</span
+                    ><code>#b42318 / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #ff8a80">┄</span
+                    ><code>#ff8a80 / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">6,6 · 7,4</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Baustein ETF-Sparplan auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #1d4ed8">■</span
+                    ><code>#1d4ed8 / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #7aa2ff">■</span
+                    ><code>#7aa2ff / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">6,7 · 6,8</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Baustein Gesetzliche Rente auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #475569">■</span
+                    ><code>#475569 / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #a9b8b4">■</span
+                    ><code>#a9b8b4 / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">7,6 · 8,3</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Baustein Altersvorsorgedepot auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #a21caf">■</span
+                    ><code>#a21caf / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #f08fd0">■</span
+                    ><code>#f08fd0 / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">6,3 · 7,7</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Baustein Betriebliche AV auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #b45309">■</span
+                    ><code>#b45309 / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #e0a24a">■</span
+                    ><code>#e0a24a / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">5,0 · 7,6</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Baustein ETF-Sparplan auf Fläche 2</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #eaf0ef; color: #1d4ed8">■</span
+                    ><code>#1d4ed8 / #eaf0ef</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1e2928; color: #7aa2ff">■</span
+                    ><code>#7aa2ff / #1e2928</code></span
+                  >
+                </td>
+                <td class="num">5,8 · 6,0</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Baustein Gesetzliche Rente auf Fläche 2</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #eaf0ef; color: #475569">■</span
+                    ><code>#475569 / #eaf0ef</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1e2928; color: #a9b8b4">■</span
+                    ><code>#a9b8b4 / #1e2928</code></span
+                  >
+                </td>
+                <td class="num">6,6 · 7,3</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Baustein Altersvorsorgedepot auf Fläche 2</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #eaf0ef; color: #a21caf">■</span
+                    ><code>#a21caf / #eaf0ef</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1e2928; color: #f08fd0">■</span
+                    ><code>#f08fd0 / #1e2928</code></span
+                  >
+                </td>
+                <td class="num">5,5 · 6,8</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Baustein Betriebliche AV auf Fläche 2</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #eaf0ef; color: #b45309">■</span
+                    ><code>#b45309 / #eaf0ef</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #1e2928; color: #e0a24a">■</span
+                    ><code>#e0a24a / #1e2928</code></span
+                  >
+                </td>
+                <td class="num">4,4 · 6,7</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Szenariolinie pessimistisch auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #c2410c">━</span
+                    ><code>#c2410c / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #f59e5b">━</span
+                    ><code>#f59e5b / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">5,2 · 8,0</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Szenariolinie neutral auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #0f766e">━</span
+                    ><code>#0f766e / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #4fd1c0">━</span
+                    ><code>#4fd1c0 / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">5,5 · 9,1</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Szenariolinie optimistisch auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #4f46e5">━</span
+                    ><code>#4f46e5 / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #a5a0ff">━</span
+                    ><code>#a5a0ff / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">6,3 · 7,3</td>
+                <td>
+                  ≥ 3
+                  <span class="chip ok sm"
+                    ><svg class="ic"><use href="#i-ok" /></svg>erfüllt</span
+                  >
+                </td>
+              </tr>
+              <tr class="grp">
+                <th colspan="5" scope="colgroup">Nur Dekoration (keine Anforderung)</th>
+              </tr>
+              <tr>
+                <th scope="row">Karten- und Trennlinie auf Karte</th>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #ffffff; color: #dde5e3">─</span
+                    ><code>#dde5e3 / #ffffff</code></span
+                  >
+                </td>
+                <td>
+                  <span class="pairs"
+                    ><span class="pair" style="background: #151e1d; color: #28353a">─</span
+                    ><code>#28353a / #151e1d</code></span
+                  >
+                </td>
+                <td class="num">1,3 · 1,3</td>
+                <td>– <span class="chip hint sm">nur Dekoration</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="spec" style="margin-top: 32px">
+          <div class="card">
+            <h3>Bausteine nebeneinander</h3>
+            <div data-demo="blocks"></div>
+            <p class="cmp">
+              Vier Farben, die alle mindestens 3:1 gegen die Karte haben, können untereinander nicht
+              ebenfalls 3:1 erreichen (Farbkontrast der Nachbarn hell 1,06 bis 1,51, dunkel 1,01 bis
+              1,24). Deshalb:
+              <b>2 px Lücke</b> in Kartenfarbe, <b>jedes Segment beschriftet</b> oder in der Legende
+              mit Wert, Tabelle als Alternative. Farbtöne sind für Rot-Grün- und Blau-Gelb-Schwäche
+              gewählt: kleinster Farbabstand (ΔE, Simulation Deuteranopie, Protanopie, Tritanopie)
+              hell 16 (ETF / Depot), dunkel 13 (Depot / bAV, Gesetzl. / Depot).
+            </p>
+          </div>
+          <div class="card">
+            <h3>Personenmuster und Status</h3>
+            <div data-demo="persons"></div>
+            <p class="cmp">
+              <b>Person 1</b> gefüllt, <b>Person 2</b> schräg schraffiert (gleiche Bausteinfarbe),
+              jeweils mit Name. Eine dritte Person: gepunktet (nicht dargestellt).
+            </p>
+            <div class="actions" style="margin-top: 16px">
+              <span class="chip ok"
+                ><svg class="ic sm"><use href="#i-ok" /></svg>Ziel erreicht</span
+              >
+              <span class="chip hint"
+                ><svg class="ic sm"><use href="#i-info" /></svg>Beispielwerte</span
+              >
+              <span class="chip warn"
+                ><svg class="ic sm"><use href="#i-warn" /></svg>Lücke 1.047 €</span
+              >
+              <span class="chip bad"
+                ><svg class="ic sm"><use href="#i-err" /></svg>Ungültig</span
+              >
+            </div>
+            <p class="cmp">
+              Chip = Icon + Text + Farbe, nie Farbe allein. Status der Rechtswerte:
+              <span class="chip ok sm"
+                ><svg class="ic sm"><use href="#i-ok" /></svg>bestätigt</span
+              >
+              <span class="chip hint sm"
+                ><svg class="ic sm"><use href="#i-info" /></svg>ungeprüft</span
+              >
+            </p>
+            <div class="notice warn" style="margin-top: 16px">
+              <svg class="ic"><use href="#i-warn" /></svg>
+              <div>Dein Rentenbeginn liegt in der Vergangenheit. Der Rentner-Modus folgt.</div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Bedienelemente</h3>
+            <div class="stack-16">
+              <div class="actions">
+                <button class="btn primary" type="button">Gesetzliche Rente eintragen</button>
+                <button class="btn" type="button">Abbrechen</button>
+                <button class="btn quiet" type="button">Mit Beispieldaten ausprobieren</button>
+              </div>
+              <div class="two-f">
+                <label class="f"
+                  ><span class="lb">Normal</span
+                  ><span class="in"
+                    ><input value="150" inputmode="decimal" /><span class="suf">€</span></span
+                  ></label
+                >
+                <label class="f"
+                  ><span class="lb">Fokus (Ring 3 px)</span
+                  ><span class="in is-focus"
+                    ><input value="150" inputmode="decimal" /><span class="suf">€</span></span
+                  ></label
+                >
+              </div>
+              <label class="f"
+                ><span class="lb">Fehler</span
+                ><span class="in err"
+                  ><input value="-50" inputmode="decimal" aria-invalid="true" /><span class="suf"
+                    >€</span
+                  ></span
+                ><span class="msg"
+                  ><svg class="ic sm"><use href="#i-err" /></svg>Der Wert darf nicht negativ
+                  sein.</span
+                ></label
+              >
+              <div class="seg" role="radiogroup" aria-label="Beispiel">
+                <label><input type="radio" name="d1" checked />Haushalt</label
+                ><label><input type="radio" name="d1" />Anna</label
+                ><label><input type="radio" name="d1" />Ben</label>
+              </div>
+            </div>
+            <p class="cmp">
+              Felder 44 px hoch, 16 px Schrift; Segmentschalter: aktiver Eintrag mit Akzentrahmen
+              und fett (nicht nur Farbe).
+            </p>
+          </div>
+          <div class="card">
+            <h3>Navigations-Icons (Linie, 24er Raster, Strich 1,8)</h3>
+            <div class="icons">
+              <div>
+                <svg class="ic"><use href="#i-rentenplan" /></svg>Rentenplan
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-haushalt" /></svg>Haushalt
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-eingaben" /></svg>Eingaben
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-mehr" /></svg>Mehr
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-profil" /></svg>Profil
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-etf" /></svg>ETF-Sparplan
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-gesetzlich" /></svg>Gesetzl. Rente
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-depot" /></svg>Depot
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-bav" /></svg>Betriebl. AV
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-ziele" /></svg>Sparziele
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-annahmen" /></svg>Annahmen
+              </div>
+              <div>
+                <svg class="ic"><use href="#i-daten" /></svg>Daten
+              </div>
+            </div>
+            <p class="cmp">
+              Rentenplan, Haushalt, Eingaben und Mehr sind die in AP-03 freigegebenen Icons der
+              Tab-Leiste, unverändert. Aktiver Eintrag: getönte Pille.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== RENTENPLAN ====================== -->
+      <section class="sec" id="rente">
+        <h2>(a) Rentenplan, Haushalt mit zwei Personen</h2>
+        <p class="note">
+          Ergebnis zuerst: Hero mit großer Zahl, Status-Chip, Balken und einem Satz; das
+          Wunscheinkommen direkt daneben, weil es über Lücke oder Überschuss entscheidet. Danach die
+          Zusammensetzung nach Baustein und einklappbare Details. Sparziele erscheinen nur noch als
+          Link (Entscheidung Frage 4); der alte ETF-Endwert entfällt.
+          <b>Zur Entscheidung (AP-09):</b> die Seitenleiste hat hier keine „Aktive Person“-Auswahl
+          mehr; Haushalt/Anna/Ben wird einmal über der Hero-Karte gewählt.
+        </p>
+        <div class="scrollx"><div class="desk" id="d-rente"></div></div>
+      </section>
+
+      <!-- ====================== DEPOT ====================== -->
+      <section class="sec" id="depot">
+        <h2>(b) Bausteinseite Altersvorsorgedepot: Eingaben | Ergebnis | Rechenweg</h2>
+        <p class="note">
+          Vorlage für alle Bausteinseiten (AP-10, AP-11). Auf dem Desktop stehen die
+          <b>Eingaben</b> links und das <b>Ergebnis</b> rechts oben, der <b>Rechenweg</b> darunter
+          eingeklappt. Auf dem Smartphone kommt zuerst das Ergebnis. Die aktive Person steht in der
+          Überschrift („Eingaben für Anna“) und lässt sich dort wechseln.
+        </p>
+        <div class="scrollx"><div class="desk" id="d-depot"></div></div>
+      </section>
+
+      <!-- ====================== LEER ====================== -->
+      <section class="sec" id="leer">
+        <h2>(c) Leerer Zustand mit nächstem Schritt</h2>
+        <p class="note">
+          Profil ist ausgefüllt, aber noch kein Baustein eingetragen. Statt eines Satzes Text: der
+          nächste Schritt als einziger Hauptknopf, dazu die drei Schritte mit Fortschritt.
+        </p>
+        <div class="scrollx"><div class="desk" id="d-leer"></div></div>
+      </section>
+
+      <!-- ====================== SMARTPHONE ====================== -->
+      <section class="sec" id="phone">
+        <h2>(d) Smartphone 375 px mit der freigegebenen unteren Tab-Leiste</h2>
+        <p class="note">
+          Kopfzeile mit Name und aktiver Person, feste Tab-Leiste (mindestens 56 px plus
+          Notch-Abstand) mit den vier Zielen aus AP-03, Blätter „Eingaben“ und „Mehr“ über der
+          Leiste. Verhalten unverändert wie freigegeben; neu sind Icons in den Blattzeilen,
+          Bausteinpunkte und die Tönung. Die Seitenbereiche scrollen im Rahmen; „ganze Seite zeigen“
+          (oben) klappt die Rahmen auf volle Länge auf.
+        </p>
+        <div class="phones">
+          <figure style="margin: 0">
+            <div class="phone" data-full="1" id="p-rente"></div>
+            <figcaption class="cap">1 · Rentenplan</figcaption>
+          </figure>
+          <figure style="margin: 0">
+            <div class="phone" data-full="1" id="p-depot"></div>
+            <figcaption class="cap">2 · Altersvorsorgedepot (Ergebnis zuerst)</figcaption>
+          </figure>
+          <figure style="margin: 0">
+            <div class="phone" data-full="1" id="p-leer"></div>
+            <figcaption class="cap">3 · Leerer Zustand</figcaption>
+          </figure>
+          <figure style="margin: 0">
+            <div class="phone" id="p-sheet-in"></div>
+            <figcaption class="cap">4 · Blatt „Eingaben“ (Depot aktiv)</figcaption>
+          </figure>
+          <figure style="margin: 0">
+            <div class="phone" id="p-sheet-more"></div>
+            <figcaption class="cap">5 · Blatt „Mehr“ (Annahmen aktiv)</figcaption>
+          </figure>
+        </div>
+      </section>
+    </div>
+
+    <!-- ====================== SEITEN (je einmal) ====================== -->
+    <template id="src-rente">
+      <div class="page">
+        <div class="page-in">
+          <header class="ph">
+            <div>
+              <h1>Rentenplan</h1>
+              <p class="sub">Gesamtsicht im Ruhestand · Anna und Ben</p>
+            </div>
+            <div class="head-tools">
+              <span class="chip hint"
+                ><svg class="ic sm"><use href="#i-info" /></svg>Prognose, keine Garantie</span
+              >
+              <span class="seg" role="radiogroup" aria-label="Ansicht">
+                <label><input type="radio" name="view-r" checked />Haushalt</label>
+                <label><input type="radio" name="view-r" />Anna</label>
+                <label><input type="radio" name="view-r" />Ben</label>
+              </span>
+            </div>
+          </header>
+
+          <section class="hero-grid" aria-label="Ergebnis">
+            <article class="card hero">
+              <div class="hero-top">
+                <p class="eyebrow">
+                  Netto-Rente des Haushalts ab 2055 (wenn beide in Rente sind), Kaufkraft von heute
+                </p>
+              </div>
+              <div class="hero-num">
+                <span class="display">3.453 €</span><span class="unit">pro Monat</span>
+                <span class="chip warn lg"
+                  ><svg class="ic"><use href="#i-warn" /></svg>Lücke 1.047 €</span
+                >
+              </div>
+              <p class="range">Neutrales Szenario · Spanne 3.222 € bis 3.771 €</p>
+              <div data-bar="hero"></div>
+              <p class="verdict">
+                Es fehlen etwa 1.047 € pro Monat. Gedeckt sind 77 % des Wunsches (Anna 52 %, Ben 25
+                %).
+                <a href="#" data-open="gap">So lässt sich die Lücke schließen</a>
+              </p>
+            </article>
+            <aside class="card">
+              <h3>Wunscheinkommen</h3>
+              <label class="f">
+                <span class="lb">Gewünschtes Netto-Einkommen pro Monat (Kaufkraft von heute)</span>
+                <span class="in xl"
+                  ><input value="4.500" inputmode="decimal" /><span class="suf">€</span></span
+                >
+                <span class="hint"
+                  >Gemeinsamer Wunsch des Haushalts. Er entscheidet, ob eine Lücke oder ein
+                  Überschuss entsteht.</span
+                >
+              </label>
+            </aside>
+          </section>
+
+          <section aria-labelledby="zus">
+            <h2 class="block-h">Zusammensetzung nach Baustein</h2>
+            <div class="card">
+              <div data-bar="compose"></div>
+              <details class="dt" style="margin-top: 16px; border-top: 1px solid var(--line)">
+                <summary style="padding: 0; min-height: 48px">
+                  Als Tabelle anzeigen<svg class="ic chev"><use href="#i-chev" /></svg>
+                </summary>
+                <div class="dt-body" style="padding: 0 0 8px">
+                  <div
+                    class="scroll"
+                    role="region"
+                    tabindex="0"
+                    aria-label="Zusammensetzung nach Person und Baustein, netto pro Monat"
+                  >
+                    <div data-table="compose"></div>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <section aria-label="Weitere Auswertungen">
+            <h2 class="block-h">Mehr dazu</h2>
+            <div class="dts">
+              <details class="dt" open>
+                <summary>
+                  Verlauf nach Kalenderjahr<span class="meta hide-narrow"
+                    >Netto pro Monat, drei Szenarien</span
+                  ><svg class="ic chev"><use href="#i-chev" /></svg>
+                </summary>
+                <div class="dt-body"><div class="chart" data-chart="verlauf"></div></div>
+              </details>
+              <details class="dt" data-k="gap">
+                <summary>
+                  Lücke schließen<span class="meta hide-narrow">1.047 € pro Monat</span
+                  ><svg class="ic chev"><use href="#i-chev" /></svg>
+                </summary>
+                <div class="dt-body">
+                  <p>
+                    Mit einer höheren ETF-Rate von Anna: etwa
+                    <b>560 € mehr Sparrate pro Monat</b> (neutral; 430 € bis 920 €). Neue Rate: 760
+                    €.
+                  </p>
+                  <a class="btn" href="#"
+                    >Zum ETF-Sparplan von Anna<svg class="ic sm"><use href="#i-go" /></svg
+                  ></a>
+                </div>
+              </details>
+              <details class="dt">
+                <summary>
+                  Was wäre wenn<span class="meta hide-narrow">Rentenbeginn Anna</span
+                  ><svg class="ic chev"><use href="#i-chev" /></svg>
+                </summary>
+                <div class="dt-body">
+                  <div
+                    class="scroll"
+                    role="region"
+                    tabindex="0"
+                    aria-label="Was wäre wenn: Rentenbeginn von Anna"
+                  >
+                    <table class="tbl">
+                      <thead>
+                        <tr>
+                          <th scope="col">Rentenbeginn Anna</th>
+                          <th scope="col" class="num">Netto Haushalt</th>
+                          <th scope="col" class="num">Lücke</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">mit 65</th>
+                          <td class="num">3.292 €</td>
+                          <td class="num">1.208 €</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">mit 67 (jetzt)</th>
+                          <td class="num">3.453 €</td>
+                          <td class="num">1.047 €</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">mit 69</th>
+                          <td class="num">3.601 €</td>
+                          <td class="num">899 €</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </details>
+              <details class="dt">
+                <summary>
+                  Bausteine in der Gesamtsicht<span class="meta hide-narrow">4 von 4</span
+                  ><svg class="ic chev"><use href="#i-chev" /></svg>
+                </summary>
+                <div class="dt-body">
+                  <label style="display: flex; gap: 8px; min-height: 32px"
+                    ><input type="checkbox" checked />ETF-Sparplan</label
+                  >
+                  <label style="display: flex; gap: 8px; min-height: 32px"
+                    ><input type="checkbox" checked />Gesetzliche Rente</label
+                  >
+                  <label style="display: flex; gap: 8px; min-height: 32px"
+                    ><input type="checkbox" checked />Altersvorsorgedepot</label
+                  >
+                  <label style="display: flex; gap: 8px; min-height: 32px"
+                    ><input type="checkbox" checked />Betriebliche AV</label
+                  >
+                </div>
+              </details>
+              <details class="dt">
+                <summary>
+                  Hinweise und Annahmen<svg class="ic chev"><use href="#i-chev" /></svg>
+                </summary>
+                <div class="dt-body">
+                  <p class="hint">
+                    Steuer und Abgaben sind pauschal angesetzt (Steuersatz im Alter 20 %, KVdR).
+                  </p>
+                  <p class="hint">
+                    Beitragsfreiheit des Altersvorsorgedepots in der Krankenversicherung ist eine
+                    Annahme.
+                    <span class="chip hint sm"
+                      ><svg class="ic sm"><use href="#i-info" /></svg>ungeprüft</span
+                    >
+                  </p>
+                  <p class="hint"><a href="#">Alle Annahmen ansehen</a></p>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <a class="linkcard" href="#">
+            <svg class="ic lg"><use href="#i-ziele" /></svg>
+            <span
+              ><b>Sparziele</b
+              ><small>Kurzfristige Ziele wie Urlaub oder Auto, getrennt von der Rente.</small></span
+            >
+            <svg class="ic go"><use href="#i-go" /></svg>
+          </a>
+          <p class="disc">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+        </div>
+      </div>
+    </template>
+
+    <template id="src-depot">
+      <div class="page">
+        <div class="page-in">
+          <header class="ph">
+            <div>
+              <h1>Altersvorsorgedepot</h1>
+              <p class="sub">
+                Eingaben für Anna · Was wird aus deinen Beiträgen plus staatlicher Zulage, und was
+                bleibt nach Steuer als Monatsrente?
+              </p>
+            </div>
+            <div class="head-tools">
+              <span class="chip hint"
+                ><svg class="ic sm"><use href="#i-info" /></svg>Prognose, keine Garantie</span
+              >
+              <label class="who"
+                >Person<select class="sel" aria-label="Person">
+                  <option>Anna</option>
+                  <option>Ben</option>
+                </select></label
+              >
+            </div>
+          </header>
+
+          <div class="depot-grid">
+            <section aria-label="Eingaben">
+              <p class="col-h"><span class="no" aria-hidden="true">1</span>Eingaben</p>
+              <div class="card">
+                <fieldset class="fs">
+                  <legend>Beitrag</legend>
+                  <label class="f"
+                    ><span class="lb">Eigenbeitrag pro Monat (€)</span
+                    ><span class="in"
+                      ><input value="150" inputmode="decimal" /><span class="suf">€</span></span
+                    ><span class="hint"
+                      >Höchstens 570 € im Monat. Die volle Grundzulage gibt es ab 150 € im
+                      Monat.</span
+                    ></label
+                  >
+                  <label class="f"
+                    ><span class="lb">Beitragsbeginn (Monat)</span
+                    ><span class="in"><input value="01.2027" inputmode="numeric" /></span
+                    ><span class="hint">Frühestens im Januar 2027.</span></label
+                  >
+                </fieldset>
+                <fieldset class="fs">
+                  <legend>Produkt und Kosten</legend>
+                  <label class="f"
+                    ><span class="lb">Variante</span
+                    ><select class="sel">
+                      <option>Standarddepot (Kosten bis 1,0 %)</option>
+                    </select></label
+                  >
+                  <label class="f"
+                    ><span class="lb">Kosten pro Jahr (%)</span
+                    ><span class="in"
+                      ><input value="1,0" inputmode="decimal" /><span class="suf">%</span></span
+                    ></label
+                  >
+                </fieldset>
+                <fieldset class="fs">
+                  <legend>Auszahlphase</legend>
+                  <div class="two-f">
+                    <label class="f"
+                      ><span class="lb">Auszahlbeginn (Alter)</span
+                      ><span class="in"><input value="67" inputmode="numeric" /></span
+                    ></label>
+                    <label class="f"
+                      ><span class="lb">Auszahlplan bis (Alter)</span
+                      ><span class="in"><input value="85" inputmode="numeric" /></span
+                    ></label>
+                  </div>
+                  <label class="f"
+                    ><span class="lb">Einmalauszahlung zu Beginn (% des Kapitals)</span
+                    ><span class="in"
+                      ><input value="0" inputmode="decimal" /><span class="suf">%</span></span
+                    ><span class="hint"
+                      >0 bis 30 %. Der Rest wird als Auszahlplan verteilt.</span
+                    ></label
+                  >
+                </fieldset>
+              </div>
+            </section>
+
+            <div class="res-col">
+              <section aria-label="Ergebnis">
+                <p class="col-h"><span class="no" aria-hidden="true">2</span>Ergebnis</p>
+                <article class="card hero">
+                  <p class="eyebrow">
+                    Netto pro Monat ab Auszahlbeginn 2052, Kaufkraft von heute · neutrales Szenario
+                  </p>
+                  <div class="hero-num">
+                    <span class="display">288 €</span><span class="unit">pro Monat</span>
+                    <span class="chip ok lg"
+                      ><svg class="ic"><use href="#i-ok" /></svg>Volle Grundzulage</span
+                    >
+                  </div>
+                  <p class="range">Pessimistisch 217 € · Optimistisch 386 €</p>
+                  <dl class="kpis">
+                    <div>
+                      <dt>Kapital 2052</dt>
+                      <dd>109.205 €</dd>
+                    </div>
+                    <div>
+                      <dt>Eigenbeiträge</dt>
+                      <dd>45.000 €</dd>
+                    </div>
+                    <div>
+                      <dt>Zulagen</dt>
+                      <dd>18.000 €</dd>
+                    </div>
+                  </dl>
+                  <p class="verdict">
+                    Aus 63.000 € Beiträgen und Zulagen werden bis 2052 im neutralen Szenario 109.205
+                    € (pessimistisch 82.348 €, optimistisch 146.653 €).
+                  </p>
+                </article>
+              </section>
+
+              <section aria-label="Rechenweg">
+                <p class="col-h"><span class="no" aria-hidden="true">3</span>Rechenweg</p>
+                <div class="dts">
+                  <details class="dt" open>
+                    <summary>
+                      So wird aus dem Kapital die Nettorente<svg class="ic chev">
+                        <use href="#i-chev" />
+                      </svg>
+                    </summary>
+                    <div class="dt-body">
+                      <div
+                        class="scroll"
+                        role="region"
+                        tabindex="0"
+                        aria-label="Rechenweg vom Kapital zur Nettorente"
+                      >
+                        <table class="tbl">
+                          <thead>
+                            <tr>
+                              <th scope="col">Schritt</th>
+                              <th scope="col" class="num">Pro Monat nominal</th>
+                              <th scope="col" class="num">Kaufkraft heute</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">Kapital bei Auszahlbeginn, verteilt bis 85</th>
+                              <td class="num">109.205 € gesamt</td>
+                              <td class="num"></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Brutto-Rente</th>
+                              <td class="num">602 €</td>
+                              <td class="num">359 €</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Steuer (20 % pauschal)</th>
+                              <td class="num">−119 €</td>
+                              <td class="num">−71 €</td>
+                            </tr>
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <th scope="row">Netto</th>
+                              <td class="num">483 €</td>
+                              <td class="num">288 €</td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </details>
+                  <details class="dt">
+                    <summary>
+                      Kapitalverlauf<span class="meta hide-narrow">drei Szenarien</span
+                      ><svg class="ic chev"><use href="#i-chev" /></svg>
+                    </summary>
+                    <div class="dt-body"><div class="chart" data-chart="depot"></div></div>
+                  </details>
+                  <details class="dt">
+                    <summary>
+                      Szenarien im Vergleich<svg class="ic chev"><use href="#i-chev" /></svg>
+                    </summary>
+                    <div class="dt-body">
+                      <div
+                        class="scroll"
+                        role="region"
+                        tabindex="0"
+                        aria-label="Szenarien im Vergleich"
+                      >
+                        <table class="tbl">
+                          <thead>
+                            <tr>
+                              <th scope="col">Szenario</th>
+                              <th scope="col" class="num">Kapital 2052</th>
+                              <th scope="col" class="num">Netto/Monat heute</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">Pessimistisch (3 %)</th>
+                              <td class="num">82.348 €</td>
+                              <td class="num">217 €</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Neutral (5 %)</th>
+                              <td class="num">109.205 €</td>
+                              <td class="num">288 €</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Optimistisch (7 %)</th>
+                              <td class="num">146.653 €</td>
+                              <td class="num">386 €</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </details>
+                  <details class="dt">
+                    <summary>
+                      Zulagen je Kalenderjahr<svg class="ic chev"><use href="#i-chev" /></svg>
+                    </summary>
+                    <div class="dt-body">
+                      <div
+                        class="scroll"
+                        role="region"
+                        tabindex="0"
+                        aria-label="Zulagen je Kalenderjahr"
+                      >
+                        <table class="tbl">
+                          <thead>
+                            <tr>
+                              <th scope="col">Jahr</th>
+                              <th scope="col" class="num">Eigenbeitrag</th>
+                              <th scope="col" class="num">Grundzulage</th>
+                              <th scope="col" class="num">Kinderzulage</th>
+                              <th scope="col" class="num">Zulage gesamt</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">2027</th>
+                              <td class="num">1.800 €</td>
+                              <td class="num">540 €</td>
+                              <td class="num">600 €</td>
+                              <td class="num">1.140 €</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">2028 bis 2032, je Jahr</th>
+                              <td class="num">1.800 €</td>
+                              <td class="num">540 €</td>
+                              <td class="num">600 €</td>
+                              <td class="num">1.140 €</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </details>
+                  <details class="dt">
+                    <summary>
+                      Annahmen aus dem Profil<svg class="ic chev"><use href="#i-chev" /></svg>
+                    </summary>
+                    <div class="dt-body">
+                      <p class="hint">
+                        Rendite 3 % / 5 % / 7 %, Auszahlphase 2,0 %, Inflation 2,0 %, Steuersatz im
+                        Alter 20 %, KVdR, Kinder geboren 2015 und 2018.
+                        <a href="#">Im Profil ändern</a>
+                      </p>
+                      <div class="notice">
+                        <svg class="ic"><use href="#i-info" /></svg>
+                        <div>
+                          Nicht berechnet: Sonderausgabenabzug, Günstigerprüfung, Ehegattenzulage
+                          und die lebenslange Rente.
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </section>
+            </div>
+          </div>
+          <p class="disc">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+        </div>
+      </div>
+    </template>
+
+    <template id="src-leer">
+      <div class="page">
+        <div class="page-in">
+          <header class="ph">
+            <div>
+              <h1>Rentenplan</h1>
+              <p class="sub">Gesamtsicht im Ruhestand · Anna</p>
+            </div>
+            <div class="head-tools">
+              <span class="chip hint"
+                ><svg class="ic sm"><use href="#i-info" /></svg>Prognose, keine Garantie</span
+              >
+            </div>
+          </header>
+          <article class="card ghost hero">
+            <p class="eyebrow">Netto-Rente im Ruhestand, Kaufkraft von heute</p>
+            <div class="hero-num">
+              <span class="display dim">– €</span><span class="unit">pro Monat</span>
+            </div>
+            <p class="range">Hier erscheint dein Ergebnis, sobald ein Baustein eingetragen ist.</p>
+          </article>
+          <section class="card empty" aria-labelledby="next">
+            <ol class="steps">
+              <li class="done">
+                <span class="n"
+                  ><svg class="ic sm"><use href="#i-ok" /></svg></span
+                ><span>Profil ausfüllen<small>erledigt</small></span>
+              </li>
+              <li class="now">
+                <span class="n">2</span><span>Bausteine eintragen<small>jetzt dran</small></span>
+              </li>
+              <li>
+                <span class="n">3</span><span>Rentenlücke ansehen<small>danach</small></span>
+              </li>
+            </ol>
+            <h2 id="next">Nächster Schritt: gesetzliche Rente eintragen</h2>
+            <p>
+              Sie ist bei den meisten die Basis der Rente. Den Wert findest du in deiner
+              Renteninformation.
+            </p>
+            <div class="actions">
+              <a class="btn primary" href="#"
+                >Gesetzliche Rente eintragen<svg class="ic sm"><use href="#i-go" /></svg
+              ></a>
+              <a class="btn quiet" href="#">Mit Beispieldaten ausprobieren</a>
+            </div>
+            <p class="hint" style="margin: 16px 0 0">
+              Beispieldaten sind erfunden und ersetzen deine Eingaben erst nach Bestätigung. Deine
+              Daten bleiben nur in diesem Browser.
+            </p>
+          </section>
+          <p class="disc">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+        </div>
+      </div>
+    </template>
+
+    <script>
+      /* ===== Beispieldaten (erfunden), alle Summen werden gerechnet ===== */
+      const BL = [
+        ['etf', 'ETF-Sparplan', 'i-etf'],
+        ['stat', 'Gesetzliche Rente', 'i-gesetzlich'],
+        ['dep', 'Altersvorsorgedepot', 'i-depot'],
+        ['bav', 'Betriebliche AV', 'i-bav'],
+      ];
+      const P = [
+        { n: 'Anna', v: { etf: 640, stat: 1395, dep: 288, bav: 0 }, hatch: false },
+        { n: 'Ben', v: { etf: 0, stat: 940, dep: 0, bav: 190 }, hatch: true },
+      ];
+      const WISH = 4500;
+      const sum = (o) => BL.reduce((s, [k]) => s + (o[k] || 0), 0);
+      const HH = Object.fromEntries(BL.map(([k]) => [k, P[0].v[k] + P[1].v[k]]));
+      const TOT = sum(HH);
+      const fmt = (n) => new Intl.NumberFormat('de-DE').format(Math.round(n)) + ' €';
+      const NAME = Object.fromEntries(BL.map(([k, n]) => [k, n]));
+
+      const seg = (k, v, total, w, hatch) => {
+        const show = (w * v) / total >= 64;
+        const label = show ? fmt(v) : '';
+        const cls = hatch ? 'sg hatch' : 'sg';
+        const pat = hatch
+          ? `<svg aria-hidden="true"><rect width="100%" height="100%" fill="url(#h-${k})"/></svg>`
+          : '';
+        const inner = hatch ? (show ? `<span>${label}</span>` : '') : label;
+        return `<div class="${cls}" style="flex-grow:${v};--bk:var(--b-${k})" title="${NAME[k]}: ${fmt(v)}">${pat}${inner}</div>`;
+      };
+      const legendBlocks = () =>
+        '<ul class="legend">' +
+        BL.map(
+          ([k, n]) =>
+            `<li><i class="sw" style="--bk:var(--b-${k})"></i>${n} <b>${fmt(HH[k])}</b></li>`,
+        ).join('') +
+        '</ul>';
+
+      const renderBar = (el) => {
+        const w = el.clientWidth || 340;
+        const type = el.dataset.bar;
+        if (type === 'hero') {
+          const gap = Math.max(WISH - TOT, 0);
+          el.innerHTML =
+            `<div class="bar-axis"><span>0 €</span><span>Wunsch ${fmt(WISH)}</span></div>` +
+            '<div class="stack" role="img" aria-label="Zusammensetzung der Netto-Rente gegen den Wunsch">' +
+            BL.filter(([k]) => HH[k] > 0)
+              .map(([k]) => seg(k, HH[k], WISH, w, false))
+              .join('') +
+            `<div class="sg gap" style="flex-grow:${gap}" title="Lücke ${fmt(gap)}">${(w * gap) / WISH >= 90 ? 'Lücke ' + fmt(gap) : ''}</div></div>` +
+            legendBlocks().replace(
+              '</ul>',
+              `<li><i class="sw gap"></i>Lücke <b>${fmt(gap)}</b></li></ul>`,
+            );
+        } else if (type === 'compose') {
+          el.innerHTML =
+            P.map((p) => {
+              const t = sum(p.v);
+              const items = BL.filter(([k]) => p.v[k] > 0)
+                .map(([k]) => seg(k, p.v[k], WISH, w - 180, p.hatch))
+                .join('');
+              const key = p.hatch
+                ? '<i class="sw hatch" style="--bk:var(--muted)"><svg aria-hidden="true"><rect width="100%" height="100%" fill="url(#h-neutral)"/></svg></i>'
+                : '<i class="sw" style="--bk:var(--muted)"></i>';
+              return `<div class="rowbar"><span class="who-n">${key}${p.n}</span><div class="stack sm">${items}<div class="sg void" style="flex-grow:${WISH - t}"></div></div><span class="tot">${fmt(t)}</span></div>`;
+            }).join('') +
+            legendBlocks().replace(
+              '</ul>',
+              '<li><span class="hint">Anna gefüllt, Ben schraffiert</span></li></ul>',
+            );
+        }
+      };
+      const renderTable = (el) => {
+        const rows = BL.map(
+          ([k, n]) =>
+            `<tr><th scope="row"><span class="k"><i class="sw" style="--bk:var(--b-${k})"></i>${n}</span></th><td class="num">${fmt(P[0].v[k])}</td><td class="num">${fmt(P[1].v[k])}</td><td class="num">${fmt(HH[k])}</td></tr>`,
+        ).join('');
+        el.innerHTML = `<table class="tbl"><thead><tr><th scope="col">Baustein</th><th scope="col" class="num">Anna</th><th scope="col" class="num">Ben</th><th scope="col" class="num">Haushalt</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><th scope="row">Summe</th><td class="num">${fmt(sum(P[0].v))}</td><td class="num">${fmt(sum(P[1].v))}</td><td class="num">${fmt(TOT)}</td></tr></tfoot></table>`;
+      };
+
+      /* ===== Liniendiagramm: 1:1 gerendert, damit die Schrift in jeder Breite 13 px bleibt ===== */
+      const line = (pts, x, y) =>
+        pts.map((p, i) => (i ? 'L' : 'M') + x(p[0]).toFixed(1) + ' ' + y(p[1]).toFixed(1)).join('');
+      const chart = (el, cfg) => {
+        const w = Math.max(el.clientWidth, 260);
+        const h = w < 520 ? 230 : 280;
+        const m = { l: cfg.ml, r: 12, t: 12, b: 28 };
+        const x = (v) => m.l + ((v - cfg.x0) / (cfg.x1 - cfg.x0)) * (w - m.l - m.r);
+        const y = (v) => h - m.b - ((v - cfg.y0) / (cfg.y1 - cfg.y0)) * (h - m.t - m.b);
+        let g = '';
+        cfg.yt.forEach((v) => {
+          g += `<line x1="${m.l}" x2="${w - m.r}" y1="${y(v)}" y2="${y(v)}" style="stroke:${v === cfg.y0 ? 'var(--field-border)' : 'var(--line)'}"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${new Intl.NumberFormat('de-DE').format(v)}</text>`;
+        });
+        cfg.xt.forEach((v) => {
+          g += `<text x="${x(v)}" y="${h - 8}" text-anchor="middle">${v}</text>`;
+        });
+        cfg.series.forEach((s) => {
+          g += `<path d="${line(s.pts, x, y)}" fill="none" style="stroke:var(${s.c})" stroke-width="${s.w || 3}" ${s.d ? `stroke-dasharray="${s.d}"` : ''} stroke-linecap="round" stroke-linejoin="round"/>`;
+        });
+        el.innerHTML =
+          `<svg viewBox="0 0 ${w} ${h}" height="${h}" role="img" aria-label="${cfg.aria}">${g}</svg>` +
+          '<ul class="legend">' +
+          cfg.series
+            .map(
+              (s) =>
+                `<li><i class="sw line ${s.cls || ''}" style="--bk:var(${s.c})"></i>${s.name}</li>`,
+            )
+            .join('') +
+          '</ul>' +
+          `<p class="hint" style="margin-top:12px">Textzusammenfassung: ${cfg.text}</p>`;
+      };
+      const renderChart = (el) => {
+        if (!el.clientWidth) return;
+        if (el.dataset.chart === 'verlauf') {
+          const st = (a, t) => [
+            [2050, 0],
+            [2052, 0],
+            [2052, a],
+            [2055, a],
+            [2055, t],
+            [2075, t],
+          ];
+          chart(el, {
+            x0: 2050,
+            x1: 2075,
+            y0: 0,
+            y1: 5000,
+            ml: 48,
+            xt: [2050, 2060, 2070, 2075],
+            yt: [0, 1000, 2000, 3000, 4000, 5000],
+            aria: 'Liniendiagramm: Netto-Rente des Haushalts pro Monat nach Kalenderjahr. Ab 2052 steigt sie mit Annas Rente, ab 2055 mit Bens Rente auf 3.453 Euro im neutralen Szenario; der Wunsch liegt bei 4.500 Euro.',
+            text: 'Ab 2052 bezieht Anna 2.323 €, ab 2055 kommt Ben dazu: 3.453 € neutral (3.222 € pessimistisch, 3.771 € optimistisch). Der Wunsch liegt bei 4.500 €.',
+            series: [
+              {
+                name: 'Wunsch 4.500 €',
+                c: '--wish',
+                w: 2,
+                d: '3 5',
+                pts: [
+                  [2050, 4500],
+                  [2075, 4500],
+                ],
+                cls: 'dot',
+              },
+              { name: 'pessimistisch', c: '--c-pess', d: '9 6', pts: st(2092, 3222), cls: 'dash' },
+              { name: 'neutral', c: '--c-neu', pts: st(2323, 3453) },
+              { name: 'optimistisch', c: '--c-opt', d: '1 6', pts: st(2641, 3771), cls: 'dot' },
+            ],
+          });
+        } else if (el.dataset.chart === 'depot') {
+          const cap = (F, r) =>
+            Array.from({ length: 26 }, (_, t) => [
+              2027 + t,
+              (F * ((1 + r) ** t - 1)) / ((1 + r) ** 25 - 1),
+            ]);
+          chart(el, {
+            x0: 2027,
+            x1: 2052,
+            y0: 0,
+            y1: 150000,
+            ml: 56,
+            xt: [2027, 2035, 2043, 2052],
+            yt: [0, 50000, 100000, 150000],
+            aria: 'Liniendiagramm: Kapitalverlauf des Altersvorsorgedepots von 2027 bis 2052. Eingezahlt werden 63.000 Euro, das Kapital wächst neutral auf 109.205 Euro.',
+            text: 'Aus 63.000 € Beiträgen und Zulagen werden bis 2052 neutral 109.205 € (pessimistisch 82.348 €, optimistisch 146.653 €).',
+            series: [
+              {
+                name: 'Eingezahlt inkl. Zulagen',
+                c: '--muted',
+                w: 2,
+                pts: [
+                  [2027, 0],
+                  [2052, 63000],
+                ],
+              },
+              {
+                name: 'pessimistisch',
+                c: '--c-pess',
+                d: '9 6',
+                pts: cap(82348, 0.03),
+                cls: 'dash',
+              },
+              { name: 'neutral', c: '--c-neu', pts: cap(109205, 0.05) },
+              { name: 'optimistisch', c: '--c-opt', d: '1 6', pts: cap(146653, 0.07), cls: 'dot' },
+            ],
+          });
+        }
+      };
+      const renderDemo = (el) => {
+        if (el.dataset.demo === 'blocks') {
+          el.innerHTML =
+            '<div class="stack">' +
+            BL.map(
+              ([k]) =>
+                `<div class="sg" style="flex-grow:1;--bk:var(--b-${k})">${{ etf: 'ETF', stat: 'Gesetzl.', dep: 'Depot', bav: 'bAV' }[k]}</div>`,
+            ).join('') +
+            '</div>' +
+            legendBlocks();
+        } else if (el.dataset.demo === 'persons') {
+          el.innerHTML = '<div data-bar="compose"></div>';
+          renderBar(el.firstChild);
+        }
+      };
+      const renderAll = () => {
+        document.querySelectorAll('[data-bar]').forEach(renderBar);
+        document.querySelectorAll('[data-table]').forEach(renderTable);
+        document.querySelectorAll('[data-chart]').forEach(renderChart);
+      };
+
+      /* ===== Seiten einsetzen ===== */
+      const tpl = (id) => document.getElementById(id).content.cloneNode(true);
+      const navLink = (href, ic, text, cur, dot) =>
+        `<a class="nl" href="#" ${cur ? 'aria-current="page"' : ''}><svg class="ic"><use href="#${ic}"/></svg>${text}${dot ? `<i class="dot" style="--bk:var(--b-${dot})"></i>` : ''}</a>`;
+      const sidebar = (cur) =>
+        `<nav class="side" aria-label="Hauptnavigation"><div class="brand">Valiva</div>` +
+        navLink('', 'i-rentenplan', 'Rentenplan', cur === 'rente') +
+        navLink('', 'i-haushalt', 'Haushalt', false) +
+        '<div class="grp">Eingaben</div>' +
+        navLink('', 'i-profil', 'Profil', false) +
+        '<div class="grp">Bausteine</div>' +
+        navLink('', 'i-etf', 'ETF-Sparplan', false, 'etf') +
+        navLink('', 'i-gesetzlich', 'Gesetzliche Rente', false, 'stat') +
+        navLink('', 'i-depot', 'Altersvorsorgedepot', cur === 'depot', 'dep') +
+        navLink('', 'i-bav', 'Betriebliche AV', false, 'bav') +
+        '<div class="grp">Sparen</div>' +
+        navLink('', 'i-ziele', 'Sparziele', false) +
+        '<div class="spacer"></div>' +
+        navLink('', 'i-annahmen', 'Annahmen', false) +
+        navLink('', 'i-daten', 'Daten', false) +
+        '<label class="theme-row">Darstellung<select class="sel js-theme" aria-label="Darstellung"><option value="system">System</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></label></nav>';
+      const desk = (id, src, cur) => {
+        const el = document.getElementById(id);
+        el.innerHTML = sidebar(cur) + '<main style="min-width:0"></main>';
+        el.querySelector('main').append(tpl(src));
+      };
+      const tab = (ic, text, on) =>
+        `<a class="tab ${on ? 'on' : ''}" href="#" ${on ? 'aria-current="page"' : ''}><span class="pill"><svg class="ic"><use href="#${ic}"/></svg></span>${text}</a>`;
+      const tabbar = (on) =>
+        `<nav class="tabbar" aria-label="Hauptnavigation">${tab('i-rentenplan', 'Rentenplan', on === 'rente')}${tab('i-eingaben', 'Eingaben', on === 'in')}${tab('i-haushalt', 'Haushalt', false)}${tab('i-mehr', 'Mehr', on === 'more')}</nav>`;
+      const topHtml =
+        '<div class="status"></div><div class="topbar"><strong>Valiva</strong><span class="person"><small>Aktive Person</small> Anna ▾</span></div>';
+      const phone = (id, src, on) => {
+        const el = document.getElementById(id);
+        el.innerHTML = topHtml + '<div class="area"></div>' + tabbar(on);
+        el.querySelector('.area').append(tpl(src));
+        el.querySelectorAll('details[open]').forEach((d) => (d.open = false));
+      };
+      const li = (ic, text, cur, dot) =>
+        `<li><a href="#" ${cur ? 'aria-current="page"' : ''}><svg class="ic"><use href="#${ic}"/></svg>${text}${dot ? `<i class="dot" style="--bk:var(--b-${dot});width:8px;height:8px;border-radius:50%;background:var(--bk)"></i>` : ''}<svg class="ic sm go"><use href="#i-next"/></svg></a></li>`;
+      const sheet = (id, src, on, title, body, tabOn) => {
+        const el = document.getElementById(id);
+        el.innerHTML =
+          topHtml +
+          '<div class="area"></div><div class="scrim"></div>' +
+          `<div class="sheet" role="dialog" aria-modal="true" aria-label="${title}"><div class="grab"></div><div class="sheet-head"><h2>${title}</h2><button class="close" type="button">Schließen</button></div>${body}<div class="sheet-foot"></div></div>` +
+          tabbar(tabOn);
+        el.querySelector('.area').append(tpl(src));
+        el.querySelectorAll('details[open]').forEach((d) => (d.open = false));
+      };
+
+      desk('d-rente', 'src-rente', 'rente');
+      desk('d-depot', 'src-depot', 'depot');
+      desk('d-leer', 'src-leer', 'rente');
+      phone('p-rente', 'src-rente', 'rente');
+      phone('p-depot', 'src-depot', 'in');
+      phone('p-leer', 'src-leer', 'rente');
+      sheet(
+        'p-sheet-in',
+        'src-depot',
+        'in',
+        'Eingaben',
+        `<ul>${li('i-profil', 'Profil')}</ul><div class="grp">Bausteine</div><ul>${li('i-etf', 'ETF-Sparplan', false, 'etf')}${li('i-gesetzlich', 'Gesetzliche Rente', false, 'stat')}${li('i-depot', 'Altersvorsorgedepot', true, 'dep')}${li('i-bav', 'Betriebliche AV', false, 'bav')}</ul><div class="grp">Sparen</div><ul>${li('i-ziele', 'Sparziele')}</ul>`,
+        'in',
+      );
+      sheet(
+        'p-sheet-more',
+        'src-rente',
+        'more',
+        'Mehr',
+        `<ul>${li('i-annahmen', 'Annahmen', true)}${li('i-daten', 'Daten')}</ul><label class="theme">Darstellung<select class="sel js-theme" aria-label="Darstellung"><option value="system">System</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></label>`,
+        'more',
+      );
+      document.querySelectorAll('[data-demo]').forEach(renderDemo);
+      renderAll();
+
+      /* ===== Umschalter ===== */
+      const setTheme = (v) => {
+        if (v === 'system') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.dataset.theme = v;
+        document.querySelectorAll('.js-theme').forEach((s) => (s.value = v));
+        document.querySelectorAll('input[name=theme]').forEach((r) => (r.checked = r.value === v));
+      };
+      document
+        .querySelectorAll('input[name=theme]')
+        .forEach((r) => r.addEventListener('change', () => setTheme(r.value)));
+      document.addEventListener('change', (e) => {
+        if (e.target.classList.contains('js-theme')) setTheme(e.target.value);
+      });
+      setTheme('light');
+      document.getElementById('full').addEventListener('change', (e) => {
+        document
+          .querySelectorAll('.phone[data-full]')
+          .forEach((p) => p.classList.toggle('full', e.target.checked));
+        renderAll();
+      });
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('a[data-open]');
+        if (!a) return;
+        e.preventDefault();
+        const d = a.closest('.page').querySelector(`details[data-k="${a.dataset.open}"]`);
+        if (d) {
+          d.open = true;
+          d.scrollIntoView({ block: 'center' });
+        }
+      });
+      document.addEventListener('toggle', renderAll, true);
+      window.addEventListener('resize', renderAll);
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a[href="#"]')) e.preventDefault();
+      });
+    </script>
+  </body>
+</html>
