@@ -11,6 +11,7 @@ import { markStarted } from '../onboarding';
 import { CURRENT_YEAR } from '../useHousehold';
 import type { HouseholdApi } from '../useHousehold';
 import { downloadText, workspaceFileName } from '../workspaceFiles';
+import { ScrollTable } from '../components/ScrollTable';
 
 type Pending = { name: string; workspace: Workspace; warnings: WorkspaceWarning[] };
 type Message = { kind: 'ok' | 'error'; text: string };
@@ -169,46 +170,48 @@ export function DataPage({ household }: { household: HouseholdApi }) {
         {pending && (
           <div className="preview">
             <h3>{t.previewTitle(pending.name)}</h3>
-            <table>
-              <tbody>
-                <tr>
-                  <th scope="row">{t.previewExportedAt}</th>
-                  <td>
-                    {t.previewExportedValue(
-                      formatWhen(pending.workspace.exportedAt),
-                      pending.workspace.appVersion,
-                    )}
-                    {pending.workspace.meta?.synthetic ? ` · ${t.previewSynthetic}` : ''}
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">{t.previewPersons}</th>
-                  <td>
-                    {t.previewPersonsValue(
-                      pending.workspace.household.persons.length,
-                      pending.workspace.household.persons
-                        .map((p) => personName(pending.workspace, p.id))
-                        .join(', '),
-                    )}
-                  </td>
-                </tr>
-                {pending.workspace.household.persons.map((p) => {
-                  const blocks = pending.workspace.byPerson[p.id] ?? {};
-                  const labels = Object.keys(blocks)
-                    .filter((b) => b !== 'etfPayout' && b !== 'etfTarget' && b !== 'overview')
-                    .map((b) => {
-                      const goals = b === 'goals' ? blocks.goals?.goals.length : undefined;
-                      return `${t.blocks[b] ?? b}${goals !== undefined ? ` (${goals})` : ''}`;
-                    });
-                  return (
-                    <tr key={p.id}>
-                      <th scope="row">{personName(pending.workspace, p.id)}</th>
-                      <td>{labels.length > 0 ? labels.join(', ') : t.previewNothing}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <ScrollTable label={t.previewTitle(pending.name)}>
+              <table>
+                <tbody>
+                  <tr>
+                    <th scope="row">{t.previewExportedAt}</th>
+                    <td>
+                      {t.previewExportedValue(
+                        formatWhen(pending.workspace.exportedAt),
+                        pending.workspace.appVersion,
+                      )}
+                      {pending.workspace.meta?.synthetic ? ` · ${t.previewSynthetic}` : ''}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">{t.previewPersons}</th>
+                    <td>
+                      {t.previewPersonsValue(
+                        pending.workspace.household.persons.length,
+                        pending.workspace.household.persons
+                          .map((p) => personName(pending.workspace, p.id))
+                          .join(', '),
+                      )}
+                    </td>
+                  </tr>
+                  {pending.workspace.household.persons.map((p) => {
+                    const blocks = pending.workspace.byPerson[p.id] ?? {};
+                    const labels = Object.keys(blocks)
+                      .filter((b) => b !== 'etfPayout' && b !== 'etfTarget' && b !== 'overview')
+                      .map((b) => {
+                        const goals = b === 'goals' ? blocks.goals?.goals.length : undefined;
+                        return `${t.blocks[b] ?? b}${goals !== undefined ? ` (${goals})` : ''}`;
+                      });
+                    return (
+                      <tr key={p.id}>
+                        <th scope="row">{personName(pending.workspace, p.id)}</th>
+                        <td>{labels.length > 0 ? labels.join(', ') : t.previewNothing}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </ScrollTable>
             {pending.warnings.length > 0 && (
               <div className="notice">
                 <b>{t.warningsTitle}</b>

@@ -11,6 +11,7 @@ import { de, issueMessage } from '../i18n/de';
 import { useNarrowScreen } from '../useNarrowScreen';
 import { HORIZON_YEARS } from '../useGoals';
 import type { GoalsApi } from '../useGoals';
+import { ScrollTable } from '../components/ScrollTable';
 
 type Props = {
   api: GoalsApi;
@@ -201,30 +202,32 @@ function BudgetCard({ api, etfMonthly }: { api: GoalsApi; etfMonthly: number }) 
         value={budget ?? Number.NaN}
         onChange={(v) => api.setBudget(Number.isFinite(v) && v >= 0 ? v : undefined)}
       />
-      <table>
-        <tbody>
-          <tr>
-            <th scope="row" className="left">
-              {t.goalsSum(api.state.goals.length)}
-            </th>
-            <td>{formatEur(goalsSum)}</td>
-          </tr>
-          <tr>
-            <th scope="row" className="left">
-              {t.etfRate}
-            </th>
-            <td>{formatEur(finite(etfMonthly))}</td>
-          </tr>
-          {rest !== undefined && (
-            <tr className="sum">
+      <ScrollTable label={t.goalsSum(api.state.goals.length)}>
+        <table>
+          <tbody>
+            <tr>
               <th scope="row" className="left">
-                {t.rest}
+                {t.goalsSum(api.state.goals.length)}
               </th>
-              <td>{formatEur(rest)}</td>
+              <td>{formatEur(goalsSum)}</td>
             </tr>
-          )}
-        </tbody>
-      </table>
+            <tr>
+              <th scope="row" className="left">
+                {t.etfRate}
+              </th>
+              <td>{formatEur(finite(etfMonthly))}</td>
+            </tr>
+            {rest !== undefined && (
+              <tr className="sum">
+                <th scope="row" className="left">
+                  {t.rest}
+                </th>
+                <td>{formatEur(rest)}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </ScrollTable>
     </>
   );
   // On narrow screens the block is collapsed by default so the key facts stay close to the top.
@@ -461,7 +464,7 @@ function ResultsView({ goal, projection }: { goal: SavingsGoal; projection: Goal
         <KpiTile label={k.tax} value={formatEur2(projection.tax)} />
       </div>
       <GoalChart projection={projection} targetAmount={goal.targetAmount} />
-      <div className="card table-wrap">
+      <ScrollTable label={t.table.title} className="card">
         <table>
           <caption>{t.table.title}</caption>
           <thead>
@@ -485,7 +488,7 @@ function ResultsView({ goal, projection }: { goal: SavingsGoal; projection: Goal
             ))}
           </tbody>
         </table>
-      </div>
+      </ScrollTable>
     </>
   );
 }

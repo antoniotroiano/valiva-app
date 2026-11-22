@@ -8,6 +8,7 @@ import { CURRENT_YEAR } from '../useProfile';
 import { currentTaxAssumptions } from '../taxConfig';
 import { FieldGroup } from './FieldGroup';
 import { NumberField } from './NumberField';
+import { ScrollTable } from './ScrollTable';
 
 type Stored = EtfTargetState;
 
@@ -80,7 +81,7 @@ export function EtfTargetSection({
         <div aria-live="polite">
           {result.ok ? (
             <>
-              <div className="table-wrap">
+              <ScrollTable label={t.tableTitle(formatEur(result.currentMonthly))}>
                 <table>
                   <caption>{t.tableTitle(formatEur(result.currentMonthly))}</caption>
                   <thead>
@@ -117,7 +118,7 @@ export function EtfTargetSection({
                     })}
                   </tbody>
                 </table>
-              </div>
+              </ScrollTable>
               <p className="hint">
                 {stored.basis === 'real' ? t.note(formatEur(result.targetNominal)) : t.noteNominal}
               </p>

@@ -21,6 +21,7 @@ import { warningText } from '../warningText';
 import type { ProfileApi } from '../useProfile';
 import { CURRENT_YEAR } from '../useProfile';
 import type { StatutoryApi } from '../useStatutory';
+import { ScrollTable } from '../components/ScrollTable';
 
 type Props = {
   api: StatutoryApi;
@@ -317,7 +318,7 @@ function StepsTable({
     </tr>
   );
   return (
-    <div className="card table-wrap">
+    <ScrollTable label={t.title} className="card">
       <table>
         <caption>{t.title}</caption>
         <thead>
@@ -372,7 +373,7 @@ function StepsTable({
         </tbody>
       </table>
       <p className="hint">{t.note}</p>
-    </div>
+    </ScrollTable>
   );
 }
 
@@ -381,7 +382,7 @@ function PathTable({ details }: { details: StatutoryDetails }) {
   const path = details.path;
   const rows = path.filter((_, i) => i % 5 === 0 || i === path.length - 1);
   return (
-    <div className="card table-wrap">
+    <ScrollTable label={t.title} className="card">
       <table>
         <caption>{t.title}</caption>
         <thead>
@@ -403,6 +404,6 @@ function PathTable({ details }: { details: StatutoryDetails }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollTable>
   );
 }

@@ -14,6 +14,7 @@ import {
 import { formatEur } from '../format';
 import { de } from '../i18n/de';
 import { NumberField } from './NumberField';
+import { ScrollTable } from './ScrollTable';
 
 type Props = {
   value: Stored;
@@ -141,7 +142,7 @@ export function WithdrawalChart({
       <p className="hint">{summary}</p>
       <details className="group">
         <summary>{t.details}</summary>
-        <div className="group-body table-wrap">
+        <ScrollTable label={t.tableCaption} className="group-body">
           <table>
             <caption>{t.tableCaption}</caption>
             <thead>
@@ -163,7 +164,7 @@ export function WithdrawalChart({
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollTable>
       </details>
     </div>
   );

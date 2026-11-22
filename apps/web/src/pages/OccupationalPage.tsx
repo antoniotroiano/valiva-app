@@ -22,6 +22,7 @@ import { warningText } from '../warningText';
 import type { OccupationalApi } from '../useOccupational';
 import type { ProfileApi } from '../useProfile';
 import { CURRENT_YEAR } from '../useProfile';
+import { ScrollTable } from '../components/ScrollTable';
 
 type Props = {
   api: OccupationalApi;
@@ -439,7 +440,7 @@ function EffortTable({
   const t = de.occupational.effort;
   const e = result.details.netEffort;
   return (
-    <div className="card table-wrap">
+    <ScrollTable label={t.title(formatEur(e.gross), formatEur(e.net))} className="card">
       <table>
         <caption>{t.title(formatEur(e.gross), formatEur(e.net))}</caption>
         <thead>
@@ -482,7 +483,7 @@ function EffortTable({
         </tbody>
       </table>
       <p className="hint">{t.note(formatEur(result.details.subsidyMonthly))}</p>
-    </div>
+    </ScrollTable>
   );
 }
 
@@ -500,7 +501,7 @@ function ScenarioTable({
     ['optimistic', t.optimistic(formatNumber(a.returnScenarios.optimistic))],
   ];
   return (
-    <div className="card table-wrap">
+    <ScrollTable label={t.title} className="card">
       <table>
         <caption>{t.title}</caption>
         <thead>
@@ -529,7 +530,7 @@ function ScenarioTable({
           })}
         </tbody>
       </table>
-    </div>
+    </ScrollTable>
   );
 }
 
@@ -568,7 +569,7 @@ function StepsTable({
     ? legal.social.careRateChildlessPercent
     : legal.social.careRatePercent;
   return (
-    <div className="card table-wrap">
+    <ScrollTable label={t.title} className="card">
       <table>
         <caption>{t.title}</caption>
         <thead>
@@ -608,6 +609,6 @@ function StepsTable({
         </tbody>
       </table>
       <p className="hint">{t.note}</p>
-    </div>
+    </ScrollTable>
   );
 }

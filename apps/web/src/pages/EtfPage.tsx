@@ -19,6 +19,7 @@ import type { EtfPayoutState, EtfRetirement } from '../etfRetirement';
 import { de, issueMessage } from '../i18n/de';
 import { WithdrawalChart, WithdrawalFields, ageText } from '../components/WithdrawalFields';
 import { advanceLumpSumParameters } from '../taxConfig';
+import { ScrollTable } from '../components/ScrollTable';
 
 type Props = {
   personId: string;
@@ -414,31 +415,33 @@ function RetirementCard({
               outcome.results.neutral.details.durationYears,
             )}
           </p>
-          <table>
-            <caption>{t.caption}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{t.row}</th>
-                {SCENARIO_NAMES.map((s) => (
-                  <th key={s} scope="col">
-                    {scenarios[s]}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map(([label, pick]) => (
-                <tr key={label}>
-                  <th scope="row">{label}</th>
+          <ScrollTable label={t.caption}>
+            <table>
+              <caption>{t.caption}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">{t.row}</th>
                   {SCENARIO_NAMES.map((s) => (
-                    <td key={s} className="num">
-                      {pick(outcome.results[s])}
-                    </td>
+                    <th key={s} scope="col">
+                      {scenarios[s]}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {rows.map(([label, pick]) => (
+                  <tr key={label}>
+                    <th scope="row">{label}</th>
+                    {SCENARIO_NAMES.map((s) => (
+                      <td key={s} className="num">
+                        {pick(outcome.results[s])}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </ScrollTable>
           {outcome.results.neutral.details.savingMonths !== ownDuration * 12 && (
             <p className="hint">
               {t.durationNote(ownDuration, outcome.results.neutral.details.savingMonths)}

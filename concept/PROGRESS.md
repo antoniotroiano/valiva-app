@@ -284,6 +284,7 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-22 – Review 14: Entscheidungen des Autors eingearbeitet. Details: `PROGRESS-notes-archive.md` Nr. 69.
 - 2026-11-22 – Review 14 (Nachtrag): Sparziele raus aus dem Rentenplan, Splitting ja. Details: `PROGRESS-notes-archive.md` Nr. 70.
 - 2026-11-22 – Review 14 AP-01: Git lokal eingerichtet (`main`, `origin` privat), Notizen nach `PROGRESS-notes-archive.md` ausgelagert, `arningText.ts` gelöscht; Commit/Push beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+- 2026-11-22 – Review 14 AP-02: Smartphone-Layout repariert (Grid, `ScrollTable`, 16 px/44 px, `theme-color`), neuer `e2e/mobile.spec.ts`, Sichtprüfung 375/320 px hell und dunkel; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 ## Offene Fragen aus dem Bau
 - (leer)

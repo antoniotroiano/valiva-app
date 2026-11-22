@@ -3,6 +3,7 @@ import type { OverviewApi } from '../useOverview';
 import { useId, useMemo, useState } from 'react';
 import { formatEur, formatNumber } from '../format';
 import { de } from '../i18n/de';
+import { ScrollTable } from './ScrollTable';
 
 const signed = (v: number, unit: string) =>
   `${v > 0 ? '+' : v < 0 ? '−' : ''}${formatNumber(Math.abs(v))}${unit}`;
@@ -70,53 +71,55 @@ export function WhatIfCard({ api }: { api: OverviewApi }) {
       ) : (
         changed?.ok && (
           <>
-            <table>
-              <caption>{t.caption(base.result.targetRetirementAge)}</caption>
-              <thead>
-                <tr>
-                  <th scope="col">{de.overview.retirement.row}</th>
-                  {SCENARIO_NAMES.map((s) => (
-                    <th key={s} scope="col">
-                      {sc[s]}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">{t.current}</th>
-                  {SCENARIO_NAMES.map((s) => (
-                    <td key={s} className="num">
-                      {formatEur(base.result.scenarios[s].snapshot.netMonthlyPensionReal)}
-                    </td>
-                  ))}
-                </tr>
-                <tr>
-                  <th scope="row">{t.changed}</th>
-                  {SCENARIO_NAMES.map((s) => (
-                    <td key={s} className="num">
-                      {formatEur(changed.result.scenarios[s].snapshot.netMonthlyPensionReal)}
-                    </td>
-                  ))}
-                </tr>
-                <tr>
-                  <th scope="row">{t.difference}</th>
-                  {SCENARIO_NAMES.map((s) => {
-                    const d =
-                      changed.result.scenarios[s].snapshot.netMonthlyPensionReal -
-                      base.result.scenarios[s].snapshot.netMonthlyPensionReal;
-                    return (
-                      <td
-                        key={s}
-                        className={`num ${Math.round(d) < 0 ? 'gap-text' : Math.round(d) > 0 ? 'ok-text' : ''}`}
-                      >
-                        {signedEur(d)}
+            <ScrollTable label={t.caption(base.result.targetRetirementAge)}>
+              <table>
+                <caption>{t.caption(base.result.targetRetirementAge)}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">{de.overview.retirement.row}</th>
+                    {SCENARIO_NAMES.map((s) => (
+                      <th key={s} scope="col">
+                        {sc[s]}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">{t.current}</th>
+                    {SCENARIO_NAMES.map((s) => (
+                      <td key={s} className="num">
+                        {formatEur(base.result.scenarios[s].snapshot.netMonthlyPensionReal)}
                       </td>
-                    );
-                  })}
-                </tr>
-              </tbody>
-            </table>
+                    ))}
+                  </tr>
+                  <tr>
+                    <th scope="row">{t.changed}</th>
+                    {SCENARIO_NAMES.map((s) => (
+                      <td key={s} className="num">
+                        {formatEur(changed.result.scenarios[s].snapshot.netMonthlyPensionReal)}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <th scope="row">{t.difference}</th>
+                    {SCENARIO_NAMES.map((s) => {
+                      const d =
+                        changed.result.scenarios[s].snapshot.netMonthlyPensionReal -
+                        base.result.scenarios[s].snapshot.netMonthlyPensionReal;
+                      return (
+                        <td
+                          key={s}
+                          className={`num ${Math.round(d) < 0 ? 'gap-text' : Math.round(d) > 0 ? 'ok-text' : ''}`}
+                        >
+                          {signedEur(d)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                </tbody>
+              </table>
+            </ScrollTable>
             {base.result.desiredMonthlyIncomeToday !== undefined && (
               <p>
                 {t.gapLine(

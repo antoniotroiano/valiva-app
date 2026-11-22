@@ -22,6 +22,7 @@ import { warningText } from '../warningText';
 import type { DepotApi } from '../useDepot';
 import type { ProfileApi } from '../useProfile';
 import { CURRENT_YEAR } from '../useProfile';
+import { ScrollTable } from '../components/ScrollTable';
 
 type Props = {
   api: DepotApi;
@@ -459,7 +460,7 @@ function ScenarioTable({
           ['optimistic', t.optimistic(formatNumber(a.returnScenarios.optimistic))],
         ];
   return (
-    <div className="card table-wrap">
+    <ScrollTable label={t.title} className="card">
       <table>
         <caption>{t.title}</caption>
         <thead>
@@ -488,7 +489,7 @@ function ScenarioTable({
           })}
         </tbody>
       </table>
-    </div>
+    </ScrollTable>
   );
 }
 
@@ -497,7 +498,7 @@ function AllowanceTable({ details: d }: { details: DepotProjection['details'] })
   const sum = (f: (y: (typeof d.yearly)[number]) => number) =>
     d.yearly.reduce((s, y) => s + f(y), 0);
   return (
-    <div className="card table-wrap" tabIndex={0} role="region" aria-label={t.title}>
+    <ScrollTable label={t.title} className="card">
       <table>
         <caption>{t.title}</caption>
         <thead>
@@ -535,7 +536,7 @@ function AllowanceTable({ details: d }: { details: DepotProjection['details'] })
         </tbody>
       </table>
       <p className="hint">{t.note}</p>
-    </div>
+    </ScrollTable>
   );
 }
 
@@ -568,7 +569,7 @@ function StepsTable({
     </tr>
   );
   return (
-    <div className="card table-wrap">
+    <ScrollTable label={t.title} className="card">
       <table>
         <caption>{t.title}</caption>
         <thead>
@@ -600,6 +601,6 @@ function StepsTable({
         </tbody>
       </table>
       <p className="hint">{t.note}</p>
-    </div>
+    </ScrollTable>
   );
 }

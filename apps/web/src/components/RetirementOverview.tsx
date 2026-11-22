@@ -16,6 +16,7 @@ import { de, issueMessage } from '../i18n/de';
 import { warningText, warningWeight } from '../warningText';
 import type { OverviewApi, OverviewBlock } from '../useOverview';
 import { OVERVIEW_BLOCKS } from '../useOverview';
+import { ScrollTable } from './ScrollTable';
 
 type Target = 'profile' | 'etf' | 'statutory' | 'depot' | 'occupational' | 'assumptions';
 
@@ -161,63 +162,69 @@ function Result({
         {desired !== undefined && <GapBar net={chosen.netMonthlyPensionReal} desired={desired} />}
       </div>
 
-      <table>
-        <caption>{t.snapshotCaption(result.targetRetirementAge)}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{t.row}</th>
-            {SCENARIO_NAMES.map((s) => (
-              <th key={s} scope="col">
-                {t.scenarios[s]}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {hasWish && (
+      <ScrollTable label={t.snapshotCaption(result.targetRetirementAge)}>
+        <table>
+          <caption>{t.snapshotCaption(result.targetRetirementAge)}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{t.row}</th>
+              {SCENARIO_NAMES.map((s) => (
+                <th key={s} scope="col">
+                  {t.scenarios[s]}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {hasWish && (
+              <Row
+                label={t.desired}
+                values={SCENARIO_NAMES.map(() => result.desiredMonthlyIncomeToday)}
+              />
+            )}
             <Row
-              label={t.desired}
-              values={SCENARIO_NAMES.map(() => result.desiredMonthlyIncomeToday)}
+              label={t.gross}
+              values={SCENARIO_NAMES.map(
+                (s) => result.scenarios[s].snapshot.grossMonthlyPensionReal,
+              )}
             />
-          )}
-          <Row
-            label={t.gross}
-            values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.grossMonthlyPensionReal)}
-          />
-          <Row
-            label={t.tax}
-            values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.taxAndContributionsReal)}
-          />
-          <Row
-            label={t.net}
-            strong
-            values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.netMonthlyPensionReal)}
-          />
-          {hasWish && (
-            <>
-              <Row
-                label={t.gap}
-                strong
-                values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.gap)}
-              />
-              <Row
-                label={t.surplus}
-                values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.surplus)}
-              />
-              <Row
-                label={t.totalGap}
-                values={SCENARIO_NAMES.map((s) => result.scenarios[s].totalGapReal)}
-              />
-            </>
-          )}
-          {neutral.snapshot.lumpSumNetReal > 0 && (
             <Row
-              label={t.lumpSum}
-              values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.lumpSumNetReal)}
+              label={t.tax}
+              values={SCENARIO_NAMES.map(
+                (s) => result.scenarios[s].snapshot.taxAndContributionsReal,
+              )}
             />
-          )}
-        </tbody>
-      </table>
+            <Row
+              label={t.net}
+              strong
+              values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.netMonthlyPensionReal)}
+            />
+            {hasWish && (
+              <>
+                <Row
+                  label={t.gap}
+                  strong
+                  values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.gap)}
+                />
+                <Row
+                  label={t.surplus}
+                  values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.surplus)}
+                />
+                <Row
+                  label={t.totalGap}
+                  values={SCENARIO_NAMES.map((s) => result.scenarios[s].totalGapReal)}
+                />
+              </>
+            )}
+            {neutral.snapshot.lumpSumNetReal > 0 && (
+              <Row
+                label={t.lumpSum}
+                values={SCENARIO_NAMES.map((s) => result.scenarios[s].snapshot.lumpSumNetReal)}
+              />
+            )}
+          </tbody>
+        </table>
+      </ScrollTable>
       <NumberField
         label={de.overview.wish.label}
         hint={hasWish ? undefined : de.overview.wish.hint}
@@ -286,43 +293,45 @@ function GapTile({
         <>
           <p>{t.intro(formatEur(gap.desiredMonthlyIncomeToday), formatEur(gap.currentMonthly))}</p>
           {!etfEnabled && <p className="hint">{t.etfOff}</p>}
-          <table>
-            <caption>{t.caption}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{de.overview.retirement.row}</th>
-                {SCENARIO_NAMES.map((s) => (
-                  <th key={s} scope="col">
-                    {de.overview.retirement.scenarios[s]}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">{t.row}</th>
-                {SCENARIO_NAMES.map((s) => {
-                  const r = gap.scenarios[s];
-                  return (
-                    <td key={s} className="num">
-                      {r.status === 'ok' ? <b>{formatEur(r.monthly)}</b> : t.status[r.status]}
-                    </td>
-                  );
-                })}
-              </tr>
-              <tr>
-                <th scope="row">{t.newRow}</th>
-                {SCENARIO_NAMES.map((s) => {
-                  const r = gap.scenarios[s];
-                  return (
-                    <td key={s} className="num">
-                      {r.status === 'unreachable' ? '–' : formatEur(r.newMonthly)}
-                    </td>
-                  );
-                })}
-              </tr>
-            </tbody>
-          </table>
+          <ScrollTable label={t.caption}>
+            <table>
+              <caption>{t.caption}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">{de.overview.retirement.row}</th>
+                  {SCENARIO_NAMES.map((s) => (
+                    <th key={s} scope="col">
+                      {de.overview.retirement.scenarios[s]}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">{t.row}</th>
+                  {SCENARIO_NAMES.map((s) => {
+                    const r = gap.scenarios[s];
+                    return (
+                      <td key={s} className="num">
+                        {r.status === 'ok' ? <b>{formatEur(r.monthly)}</b> : t.status[r.status]}
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <th scope="row">{t.newRow}</th>
+                  {SCENARIO_NAMES.map((s) => {
+                    const r = gap.scenarios[s];
+                    return (
+                      <td key={s} className="num">
+                        {r.status === 'unreachable' ? '–' : formatEur(r.newMonthly)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              </tbody>
+            </table>
+          </ScrollTable>
           <BudgetHint gap={gap} budget={budget} />
         </>
       )}
@@ -374,34 +383,36 @@ function PathTable({ result, scenario }: { result: OverviewResult; scenario: Sce
   const hasWish = result.desiredMonthlyIncomeToday !== undefined;
   const kinds = result.products.filter((p) => p.status !== 'disabled' && p.status !== 'invalid');
   return (
-    <table>
-      <caption>{t.pathCaption(t.scenarios[scenario])}</caption>
-      <thead>
-        <tr>
-          <th scope="col">{t.age}</th>
-          {kinds.map((k) => (
-            <th key={k.productId} scope="col">
-              {productName(k.productId)}
-            </th>
-          ))}
-          <th scope="col">{t.net}</th>
-          {hasWish && <th scope="col">{t.gap}</th>}
-        </tr>
-      </thead>
-      <tbody>
-        {result.scenarios[scenario].path.map((pt) => (
-          <tr key={pt.age}>
-            <th scope="row">{pt.age}</th>
+    <ScrollTable label={t.pathCaption(t.scenarios[scenario])}>
+      <table>
+        <caption>{t.pathCaption(t.scenarios[scenario])}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{t.age}</th>
             {kinds.map((k) => (
-              <td key={k.productId} className="num">
-                {formatEur(pt.byProduct[k.productId] ?? 0)}
-              </td>
+              <th key={k.productId} scope="col">
+                {productName(k.productId)}
+              </th>
             ))}
-            <td className="num">{formatEur(pt.total)}</td>
-            {hasWish && <td className="num">{pt.gap === undefined ? '–' : formatEur(pt.gap)}</td>}
+            <th scope="col">{t.net}</th>
+            {hasWish && <th scope="col">{t.gap}</th>}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {result.scenarios[scenario].path.map((pt) => (
+            <tr key={pt.age}>
+              <th scope="row">{pt.age}</th>
+              {kinds.map((k) => (
+                <td key={k.productId} className="num">
+                  {formatEur(pt.byProduct[k.productId] ?? 0)}
+                </td>
+              ))}
+              <td className="num">{formatEur(pt.total)}</td>
+              {hasWish && <td className="num">{pt.gap === undefined ? '–' : formatEur(pt.gap)}</td>}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </ScrollTable>
   );
 }

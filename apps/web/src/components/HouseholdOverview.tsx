@@ -9,6 +9,7 @@ import { GapBar, ScenarioSwitch } from './RetirementCharts';
 import { HouseholdPathChart, PersonCompositionChart } from './HouseholdCharts';
 import { warningText } from '../warningText';
 import { PageShell } from './PageShell';
+import { ScrollTable } from './ScrollTable';
 
 export function HouseholdOverview({
   household,
@@ -124,35 +125,37 @@ function Result({
 
       <h3>{t.compositionTitle}</h3>
       <PersonCompositionChart result={result} scenario={scenario} />
-      <table>
-        <caption>{t.compositionCaption(r.scenarios[scenario])}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{t.person}</th>
-            {(['statutory', 'etf', 'retirementDepot', 'occupational'] as const).map((k) => (
-              <th key={k} scope="col">
-                {r.productNames[k]}
-              </th>
-            ))}
-            <th scope="col">{t.total}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {result.persons.map((p) => (
-            <tr key={p.personId}>
-              <th scope="row">{p.name}</th>
+      <ScrollTable label={t.compositionCaption(r.scenarios[scenario])}>
+        <table>
+          <caption>{t.compositionCaption(r.scenarios[scenario])}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{t.person}</th>
               {(['statutory', 'etf', 'retirementDepot', 'occupational'] as const).map((k) => (
-                <td key={k} className="num">
-                  {formatEur(chosen.byPersonProduct[p.personId]?.[k] ?? 0)}
-                </td>
+                <th key={k} scope="col">
+                  {r.productNames[k]}
+                </th>
               ))}
-              <td className="num">
-                <b>{formatEur(chosen.byPerson[p.personId] ?? 0)}</b>
-              </td>
+              <th scope="col">{t.total}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {result.persons.map((p) => (
+              <tr key={p.personId}>
+                <th scope="row">{p.name}</th>
+                {(['statutory', 'etf', 'retirementDepot', 'occupational'] as const).map((k) => (
+                  <td key={k} className="num">
+                    {formatEur(chosen.byPersonProduct[p.personId]?.[k] ?? 0)}
+                  </td>
+                ))}
+                <td className="num">
+                  <b>{formatEur(chosen.byPerson[p.personId] ?? 0)}</b>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollTable>
       {result.persons.map((p) => {
         const lump = chosen.lumpSumNetReal[p.personId] ?? 0;
         return lump > 0 ? <p key={p.personId}>{t.lumpSum(p.name, formatEur(lump))}</p> : null;
@@ -252,43 +255,45 @@ function GapTile({
       {gap.ok && (
         <>
           <p>{t.intro(formatEur(gap.desiredMonthlyIncomeToday), formatEur(gap.currentMonthly))}</p>
-          <table>
-            <caption>{t.caption}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{de.overview.retirement.row}</th>
-                {SCENARIO_NAMES.map((s) => (
-                  <th key={s} scope="col">
-                    {de.overview.retirement.scenarios[s]}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">{t.row}</th>
-                {SCENARIO_NAMES.map((s) => {
-                  const x = gap.scenarios[s];
-                  return (
-                    <td key={s} className="num">
-                      {x.status === 'ok' ? <b>{formatEur(x.monthly)}</b> : t.status[x.status]}
-                    </td>
-                  );
-                })}
-              </tr>
-              <tr>
-                <th scope="row">{t.newRow}</th>
-                {SCENARIO_NAMES.map((s) => {
-                  const x = gap.scenarios[s];
-                  return (
-                    <td key={s} className="num">
-                      {x.status === 'unreachable' ? '–' : formatEur(x.newMonthly)}
-                    </td>
-                  );
-                })}
-              </tr>
-            </tbody>
-          </table>
+          <ScrollTable label={t.caption}>
+            <table>
+              <caption>{t.caption}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">{de.overview.retirement.row}</th>
+                  {SCENARIO_NAMES.map((s) => (
+                    <th key={s} scope="col">
+                      {de.overview.retirement.scenarios[s]}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">{t.row}</th>
+                  {SCENARIO_NAMES.map((s) => {
+                    const x = gap.scenarios[s];
+                    return (
+                      <td key={s} className="num">
+                        {x.status === 'ok' ? <b>{formatEur(x.monthly)}</b> : t.status[x.status]}
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <th scope="row">{t.newRow}</th>
+                  {SCENARIO_NAMES.map((s) => {
+                    const x = gap.scenarios[s];
+                    return (
+                      <td key={s} className="num">
+                        {x.status === 'unreachable' ? '–' : formatEur(x.newMonthly)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              </tbody>
+            </table>
+          </ScrollTable>
           {rest !== undefined && (
             <p className="hint">
               {rest >= 0 ? t.budgetRest(formatEur(rest)) : t.budgetOver(formatEur(-rest))}

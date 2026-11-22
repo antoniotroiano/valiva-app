@@ -270,7 +270,7 @@ Aus `PROGRESS.md`, `07`, `12`, `13`:
 | AP | Titel | Stufe | Voraussetzung | Ändert | Status |
 |---|---|---|---|---|---|
 | 01 | Git einrichten und Aufräumen | P0 | Repo-Link und privater SSH-Alias vom Autor | Wurzel, `PROGRESS.md` | [x] erledigt 2026-11-22 (Commit/Push offen beim Autor) |
-| 02 | Smartphone-Layout reparieren | P0 | – | `styles.css`, Tabellen in Seiten, Playwright | [ ] offen |
+| 02 | Smartphone-Layout reparieren | P0 | – | `styles.css`, Tabellen in Seiten, Playwright | [x] erledigt 2026-11-22 (Commit offen beim Autor) |
 | 03 | Navigation: Scroll, Fokus, Titel, untere Tab-Leiste | P0 | 02 | `App.tsx`, `PageShell`, CSS | [ ] offen |
 | 04 | Robustheit: Eingaben, Speichern, Daten | P0 | – | Hooks, Kern (Validierung), `DataPage` | [ ] offen |
 | 05 | Kern-Ordnerstruktur | P1 | 04, 01 | alle Dateien in `packages/core` | [ ] offen |
@@ -317,18 +317,18 @@ Status: erledigt (2026-11-22) · Rest beim Autor: erster Commit, Tag `baseline-2
 **Nicht Teil davon:** Commit, Push, Tag, CI-Lauf, GitHub-Einstellungen (AP-17).
 
 ### AP-02 Smartphone-Layout reparieren
-Status: offen
+Status: erledigt (2026-11-22) · Rest beim Autor: Commit (GitHub Desktop)
 
 **Warum:** B-1 und Abschnitt 2.2: sechs Seiten laufen auf 375 px seitlich über.
 
 **Aufgaben:**
-- [ ] `.grid` auf `grid-template-columns: minmax(0, 1fr)` (einspaltig) und `.grid > * { min-width: 0 }`; `fieldset { min-width: 0 }`; `.card { min-width: 0 }`.
-- [ ] Alle `<table>` in einen gemeinsamen Wrapper (Komponente `ScrollTable` oder Klasse `.table-wrap` überall): `RetirementOverview` (3), `HouseholdOverview` (2), `WhatIfCard`, `DataPage`, `EtfPage.tsx:417`, `GoalsPage.tsx:204`. Wrapper ist fokussierbar und hat eine Beschriftung (`role="region"`, `tabIndex={0}`, `aria-label`), wie in `DepotPage` schon vorhanden.
-- [ ] Eingabefelder und Auswahlfelder auf mindestens 16 px Schrift (verhindert iOS-Zoom).
-- [ ] Tippflächen mindestens 44 px hoch: `summary`, `.btn`, Eingaben, Menü-Taste, Segmentschalter.
-- [ ] `<meta name="theme-color">` (hell und dunkel) und `viewport-fit=cover` mit `env(safe-area-inset-*)` für Kopfleiste und Fuß.
-- [ ] Neuer E2E-Test `e2e/mobile.spec.ts` (Playwright-Projekt oder `test.use` mit 375 × 812): lädt das Beispiel "Paar", ruft alle zehn Seiten auf und prüft `document.documentElement.scrollWidth <= clientWidth`. Zusätzlich 320 px für Rentenplan und Depot.
-- [ ] Sichtprüfung Smartphone hell und dunkel (je Seite ein Screenshot), Notiz in `PROGRESS.md`.
+- [x] `.grid` auf `grid-template-columns: minmax(0, 1fr)` (einspaltig) und `.grid > * { min-width: 0 }`; `fieldset { min-width: 0 }`; `.card { min-width: 0 }`.
+- [x] Alle `<table>` in einen gemeinsamen Wrapper (Komponente `ScrollTable` oder Klasse `.table-wrap` überall): `RetirementOverview` (3), `HouseholdOverview` (2), `WhatIfCard`, `DataPage`, `EtfPage.tsx:417`, `GoalsPage.tsx:204`. Wrapper ist fokussierbar und hat eine Beschriftung (`role="region"`, `tabIndex={0}`, `aria-label`), wie in `DepotPage` schon vorhanden.
+- [x] Eingabefelder und Auswahlfelder auf mindestens 16 px Schrift (verhindert iOS-Zoom).
+- [x] Tippflächen mindestens 44 px hoch: `summary`, `.btn`, Eingaben, Menü-Taste, Segmentschalter.
+- [x] `<meta name="theme-color">` (hell und dunkel) und `viewport-fit=cover` mit `env(safe-area-inset-*)` für Kopfleiste und Fuß.
+- [x] Neuer E2E-Test `e2e/mobile.spec.ts` (Playwright-Projekt oder `test.use` mit 375 × 812): lädt das Beispiel "Paar", ruft alle zehn Seiten auf und prüft `document.documentElement.scrollWidth <= clientWidth`. Zusätzlich 320 px für Rentenplan und Depot.
+- [x] Sichtprüfung Smartphone hell und dunkel (je Seite ein Screenshot), Notiz in `PROGRESS.md`.
 
 **Fertig wenn:** Der neue Test ist grün auf allen zehn Seiten, die Messung zeigt `scrollWidth` gleich Fensterbreite, kein Abschneiden von Labels, Hilfetexten oder Feldern.
 **Nicht Teil davon:** neues Design, neue Navigation (AP-03/08).
@@ -604,6 +604,14 @@ Status: offen · Voraussetzung: AP-02, AP-06
 - (AP-01) In `PROGRESS.md` standen unter "Notizen und Abweichungen" im Abschnitt "Offene Fragen aus dem Bau" weitere Notizen ohne eigene Überschrift. Beim Archivieren sind alle 70 Notizen in einer Reihe gelandet, "Offene Fragen aus dem Bau" ist wieder ein eigener, leerer Abschnitt.
 - (AP-01) Die Checkliste Phase 5d in `PROGRESS.md` ("`git init`, erster Commit, …") bleibt bewusst offen bis AP-17; `git init` ist erledigt, der Rest nicht.
 
+- (AP-02) `playwright.config.ts` fest auf Port 5173 mit `reuseExistingServer: !CI`: Läuft dort der Dev-Server eines anderen Projekts (so geschehen mit `fitness-app`), testet `npm run e2e` stillschweigend die falsche App und hängt. Vorschlag: eigener Port für dieses Projekt oder `reuseExistingServer: false`. Diese Session hat die Konfiguration nicht angefasst und mit einer temporären Konfiguration auf Port 5199 getestet.
+- (AP-02) Auswahlfelder zeigen lange Optionstexte abgeschnitten ("Standarddepot (Kosten höch…", "Automatisch: 15 % auf den sozialabg…"). Lösung wäre kürzere Optionstexte (Texte: AP-11/AP-12).
+- (AP-02) Annahmen-Seite auf dem Smartphone: Tabellen scrollen seitlich ("Gültig ab" angeschnitten) und die Zeilen sind sehr hoch (Ursache nicht untersucht, vermutlich die Mindestbreite von 14em in `.assumptions`). Lesbar, aber unschön; gehört zu AP-12.
+- (AP-02) Segmentschalter "Pessimistisch | Neutral | Optimistisch" ist bei 320 px eng (Beschriftungen berühren fast die Ränder). Reicht für die Abnahme, passt besser in das neue Design (AP-08).
+- (AP-02) Schaltflächen auf der Seite "Daten" ("Paar", "Paar mit Rentenlücke") sitzen ohne Abstand nebeneinander (`.btn` hat nur `margin-top`). Optik, AP-08.
+- (AP-02) `theme-color` folgt nur der Systemeinstellung (`prefers-color-scheme`), nicht dem manuellen Hell/Dunkel-Umschalter der App. Für die Umschaltung per Hand müsste das Meta-Tag per Skript gesetzt werden (AP-03/AP-08).
+- (AP-02) Textlinks (`.link`) und Checkboxen/Radios haben weiterhin weniger als 44 px Tippfläche (AP-02 verlangt es nur für `summary`, Schaltflächen, Eingaben, Menü-Taste, Segmentschalter).
+
 ## 9. Entscheidungen des Autors
 
 Stand 2026-11-22. Entschieden = in den Paketen eingearbeitet.
@@ -635,3 +643,6 @@ Format: `JJJJ-MM-TT – AP-xx – was gemacht – Abweichungen – was offen bli
 - 2026-11-22 – Entscheidungen nachgetragen: Frage 4 ja (Sparziele raus aus Rentenplan), Frage 7 ja (Splitting als ausdrückliche Paar-Frage, Single unberührt, kein stilles Vorbelegen). Name der App wird in separater Session des Autors geklärt; Repo-Name blockiert AP-01 nicht. Kein Code geändert.
 
 - 2026-11-22 – AP-01 – Datenscan (keine echten Nutzerdaten, keine Schlüssel; Treffer nur Testcode für Import-Härtung; Beispiele `synthetic`, xlsx-Metadaten ohne Autor; `settings.local.json` ignoriert); `.gitignore` geprüft, unverändert; `git init -b main`, `origin` = `git@github.com-privat:antoniotroiano/valiva-app.git` (privater Alias aus `~/.ssh/config`, auf Wunsch des Autors gelesen, Schlüssel nicht angefasst), kein `add`/`commit`/`fetch`/`push`; `CLAUDE.md` und `CONTRIBUTING.md` angepasst; `apps/web/src/arningText.ts` gelöscht (B-8); 70 Notizen aus `PROGRESS.md` wortgleich nach `concept/PROGRESS-notes-archive.md` (per `cmp` geprüft), `PROGRESS.md` von 68 KB auf 20 KB; `typecheck`, `lint`, `format:check` und 547 Tests grün (kein E2E, keine UI-Änderung). Commit-Identität erst nicht, auf Wunsch des Autors dann doch lokal gesetzt (`user.name`, noreply-`user.email`). Offen: erster Commit, Tag `baseline-2026-11-22`, Push durch den Autor; erst danach AP-02. Commit-Vorschlag: `chore: prepare local git repository, add contribution rules and archive progress notes`. Geänderte Ordner: Wurzel (`CLAUDE.md`, `CONTRIBUTING.md`, neu `.git/`), `concept/` (`PROGRESS.md`, `PROGRESS-notes-archive.md`, dieser Bericht), `apps/web/src/` (eine leere Datei gelöscht).
+
+- 2026-11-22 – AP-02 – Ursachen behoben: `.grid`/`.target-grid` einspaltig mit `minmax(0, 1fr)`, `min-width: 0` für Grid-Kinder, `.card`, `fieldset`; `.input-row`-Felder schrumpfbar (Sparziele: Schaltfläche "Datum entfernen" sprengte die Breite). Neue Komponente `ScrollTable` (`role="region"`, `tabIndex=0`, `aria-label`) ersetzt alle Tabellen-Wrapper, auch die schon vorhandenen `.table-wrap` (waren nicht fokussierbar); lange Tabellenüberschriften brechen um und bleiben beim Seitwärtsscrollen stehen. Eingaben 16 px, Tippflächen mindestens 44 px (`summary`, `.btn`, Menü-Taste, Eingaben, Segmentschalter; auf Smartphone-Breite), Segmentschalter füllt die Breite. `theme-color` hell/dunkel, `viewport-fit=cover`, `env(safe-area-inset-*)` für Kopfleiste und Inhalt. Neuer `e2e/mobile.spec.ts` (22 Tests: 10 Seiten × hell/dunkel bei 375 px, Rentenplan und Depot bei 320 px; prüft Seitenbreite, fokussierbare Scrollbereiche, 16 px, 44 px, Aufklapp-Dreiecke). Sichtprüfung 375 px (alle zehn Seiten) und 320 px (Rentenplan, Depot), hell und dunkel, per Screenshot: nichts abgeschnitten außer bewusst scrollenden Tabellen und langen Auswahltexten (Backlog). Eigene Regression beim Bauen gefunden und behoben: `display: flex` auf `summary` entfernte das Aufklapp-Dreieck. Gemessen vorher: bis 679 px, nachher überall = Fensterbreite. `typecheck`, `lint`, `format:check`, 547 Unit-Tests grün; E2E 98/98 grün, aber über temporäre Konfiguration auf Port 5199, weil Port 5173 von einem fremden Dev-Server (`fitness-app`) belegt war (Backlog). Abweichungen: `ScrollTable` auch für die bereits gewrappten Tabellen (Konzept nannte nur die ungewrappten); Backlog um sieben Punkte ergänzt. Offen: Commit durch den Autor; AP-03 kann folgen. Commit-Vorschlag: `fix(web): repair phone layout (grid min-width, ScrollTable, 16px inputs, 44px targets) and add mobile e2e test`. Geänderte Ordner: `apps/web/` (`index.html`, `src/styles.css`, `src/components/`, `src/pages/`), `e2e/` (neu `mobile.spec.ts`), `concept/` (dieser Bericht, `PROGRESS.md`).
+

@@ -10,6 +10,7 @@ import {
 } from '../legalConfig';
 import { de } from '../i18n/de';
 import { formatNumber } from '../format';
+import { ScrollTable } from './ScrollTable';
 
 const taxKeys = [
   'capitalGainsTaxRate',
@@ -43,7 +44,7 @@ function ConfigTable({
   const a = de.assumptions;
   const anyUnverified = keys.some((k) => values[k]?.status === 'unverified');
   return (
-    <div className="card table-wrap">
+    <ScrollTable label={title} className="card">
       <table className="assumptions">
         <caption>{title}</caption>
         <thead>
@@ -82,7 +83,7 @@ function ConfigTable({
         </tbody>
       </table>
       {anyUnverified && <p className="hint">{a.unverifiedNote}</p>}
-    </div>
+    </ScrollTable>
   );
 }
 
