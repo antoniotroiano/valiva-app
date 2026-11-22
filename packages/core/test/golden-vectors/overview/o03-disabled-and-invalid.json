@@ -1,0 +1,733 @@
+{
+  "name": "o03-disabled-and-invalid",
+  "description": "One product disabled, one invalid: neither counts",
+  "synthetic": true,
+  "profile": {
+    "birthYear": 1985,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": [],
+    "desiredMonthlyIncomeToday": 2200
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "products": [
+    {
+      "productId": "statutory",
+      "enabled": true,
+      "payoutStartAge": 67,
+      "valid": true,
+      "results": {
+        "pessimistic": {
+          "monthlyPensionReal": 1950.0,
+          "taxableMonthlyReal": 1660.0,
+          "contributionsMonthlyReal": 240.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "neutral": {
+          "monthlyPensionReal": 1950.0,
+          "taxableMonthlyReal": 1660.0,
+          "contributionsMonthlyReal": 240.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "optimistic": {
+          "monthlyPensionReal": 1950.0,
+          "taxableMonthlyReal": 1660.0,
+          "contributionsMonthlyReal": 240.0,
+          "fixedTaxMonthlyReal": 0.0
+        }
+      }
+    },
+    {
+      "productId": "retirementDepot",
+      "enabled": false,
+      "payoutStartAge": 67,
+      "payoutEndAge": 85,
+      "valid": true,
+      "results": {
+        "pessimistic": {
+          "monthlyPensionReal": 288.0,
+          "taxableMonthlyReal": 288.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "neutral": {
+          "monthlyPensionReal": 360.0,
+          "taxableMonthlyReal": 360.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "optimistic": {
+          "monthlyPensionReal": 450.0,
+          "taxableMonthlyReal": 450.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 0.0
+        }
+      }
+    },
+    {
+      "productId": "occupational",
+      "enabled": true,
+      "payoutStartAge": 67,
+      "payoutEndAge": 85,
+      "valid": false
+    }
+  ],
+  "expected": {
+    "firstPayoutEndAge": null,
+    "scenarios": {
+      "pessimistic": {
+        "net": 1641.0833333333333,
+        "gross": 1950.0,
+        "taxAndContributions": 308.9166666666667,
+        "gap": 558.9166666666667,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 137767.12487056627,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 1950.0,
+            "taxAndContributionsReal": 308.9166666666667,
+            "netReal": 1641.0833333333333
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 1641.0833333333333,
+            "byProduct": {
+              "statutory": 1641.0833333333333
+            },
+            "gap": 558.9166666666667
+          },
+          {
+            "age": 68,
+            "total": 1646.3823529411764,
+            "byProduct": {
+              "statutory": 1646.3823529411764
+            },
+            "gap": 553.6176470588236
+          },
+          {
+            "age": 69,
+            "total": 1651.555795847751,
+            "byProduct": {
+              "statutory": 1651.555795847751
+            },
+            "gap": 548.4442041522491
+          },
+          {
+            "age": 70,
+            "total": 1656.8538634744552,
+            "byProduct": {
+              "statutory": 1656.8538634744552
+            },
+            "gap": 543.1461365255448
+          },
+          {
+            "age": 71,
+            "total": 1662.1100915633826,
+            "byProduct": {
+              "statutory": 1662.1100915633826
+            },
+            "gap": 537.8899084366174
+          },
+          {
+            "age": 72,
+            "total": 1667.3246835154905,
+            "byProduct": {
+              "statutory": 1667.3246835154905
+            },
+            "gap": 532.6753164845095
+          },
+          {
+            "age": 73,
+            "total": 1672.6645103954684,
+            "byProduct": {
+              "statutory": 1672.6645103954684
+            },
+            "gap": 527.3354896045316
+          },
+          {
+            "age": 74,
+            "total": 1677.9631109366226,
+            "byProduct": {
+              "statutory": 1677.9631109366226
+            },
+            "gap": 522.0368890633774
+          },
+          {
+            "age": 75,
+            "total": 1683.3873582124556,
+            "byProduct": {
+              "statutory": 1683.3873582124556
+            },
+            "gap": 516.6126417875444
+          },
+          {
+            "age": 76,
+            "total": 1688.8541263082684,
+            "byProduct": {
+              "statutory": 1688.8541263082684
+            },
+            "gap": 511.1458736917316
+          },
+          {
+            "age": 77,
+            "total": 1694.2802903261195,
+            "byProduct": {
+              "statutory": 1694.2802903261195
+            },
+            "gap": 505.7197096738805
+          },
+          {
+            "age": 78,
+            "total": 1699.8327263898093,
+            "byProduct": {
+              "statutory": 1699.8327263898093
+            },
+            "gap": 500.1672736101907
+          },
+          {
+            "age": 79,
+            "total": 1705.42831164989,
+            "byProduct": {
+              "statutory": 1705.42831164989
+            },
+            "gap": 494.57168835011
+          },
+          {
+            "age": 80,
+            "total": 1711.0672576220304,
+            "byProduct": {
+              "statutory": 1711.0672576220304
+            },
+            "gap": 488.9327423779696
+          },
+          {
+            "age": 81,
+            "total": 1716.7497768587396,
+            "byProduct": {
+              "statutory": 1716.7497768587396
+            },
+            "gap": 483.25022314126045
+          },
+          {
+            "age": 82,
+            "total": 1722.4760829544525,
+            "byProduct": {
+              "statutory": 1722.4760829544525
+            },
+            "gap": 477.5239170455475
+          },
+          {
+            "age": 83,
+            "total": 1728.246390550634,
+            "byProduct": {
+              "statutory": 1728.246390550634
+            },
+            "gap": 471.75360944936597
+          },
+          {
+            "age": 84,
+            "total": 1734.0609153409148,
+            "byProduct": {
+              "statutory": 1734.0609153409148
+            },
+            "gap": 465.9390846590852
+          },
+          {
+            "age": 85,
+            "total": 1739.919874076246,
+            "byProduct": {
+              "statutory": 1739.919874076246
+            },
+            "gap": 460.08012592375394
+          },
+          {
+            "age": 86,
+            "total": 1745.823484570084,
+            "byProduct": {
+              "statutory": 1745.823484570084
+            },
+            "gap": 454.176515429916
+          },
+          {
+            "age": 87,
+            "total": 1751.7719657035973,
+            "byProduct": {
+              "statutory": 1751.7719657035973
+            },
+            "gap": 448.2280342964027
+          },
+          {
+            "age": 88,
+            "total": 1757.7655374309024,
+            "byProduct": {
+              "statutory": 1757.7655374309024
+            },
+            "gap": 442.23446256909756
+          },
+          {
+            "age": 89,
+            "total": 1763.8044207843222,
+            "byProduct": {
+              "statutory": 1763.8044207843222
+            },
+            "gap": 436.19557921567775
+          },
+          {
+            "age": 90,
+            "total": 1769.88883787967,
+            "byProduct": {
+              "statutory": 1769.88883787967
+            },
+            "gap": 430.11116212032994
+          }
+        ]
+      },
+      "neutral": {
+        "net": 1641.0833333333333,
+        "gross": 1950.0,
+        "taxAndContributions": 308.9166666666667,
+        "gap": 558.9166666666667,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 137767.12487056627,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 1950.0,
+            "taxAndContributionsReal": 308.9166666666667,
+            "netReal": 1641.0833333333333
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 1641.0833333333333,
+            "byProduct": {
+              "statutory": 1641.0833333333333
+            },
+            "gap": 558.9166666666667
+          },
+          {
+            "age": 68,
+            "total": 1646.3823529411764,
+            "byProduct": {
+              "statutory": 1646.3823529411764
+            },
+            "gap": 553.6176470588236
+          },
+          {
+            "age": 69,
+            "total": 1651.555795847751,
+            "byProduct": {
+              "statutory": 1651.555795847751
+            },
+            "gap": 548.4442041522491
+          },
+          {
+            "age": 70,
+            "total": 1656.8538634744552,
+            "byProduct": {
+              "statutory": 1656.8538634744552
+            },
+            "gap": 543.1461365255448
+          },
+          {
+            "age": 71,
+            "total": 1662.1100915633826,
+            "byProduct": {
+              "statutory": 1662.1100915633826
+            },
+            "gap": 537.8899084366174
+          },
+          {
+            "age": 72,
+            "total": 1667.3246835154905,
+            "byProduct": {
+              "statutory": 1667.3246835154905
+            },
+            "gap": 532.6753164845095
+          },
+          {
+            "age": 73,
+            "total": 1672.6645103954684,
+            "byProduct": {
+              "statutory": 1672.6645103954684
+            },
+            "gap": 527.3354896045316
+          },
+          {
+            "age": 74,
+            "total": 1677.9631109366226,
+            "byProduct": {
+              "statutory": 1677.9631109366226
+            },
+            "gap": 522.0368890633774
+          },
+          {
+            "age": 75,
+            "total": 1683.3873582124556,
+            "byProduct": {
+              "statutory": 1683.3873582124556
+            },
+            "gap": 516.6126417875444
+          },
+          {
+            "age": 76,
+            "total": 1688.8541263082684,
+            "byProduct": {
+              "statutory": 1688.8541263082684
+            },
+            "gap": 511.1458736917316
+          },
+          {
+            "age": 77,
+            "total": 1694.2802903261195,
+            "byProduct": {
+              "statutory": 1694.2802903261195
+            },
+            "gap": 505.7197096738805
+          },
+          {
+            "age": 78,
+            "total": 1699.8327263898093,
+            "byProduct": {
+              "statutory": 1699.8327263898093
+            },
+            "gap": 500.1672736101907
+          },
+          {
+            "age": 79,
+            "total": 1705.42831164989,
+            "byProduct": {
+              "statutory": 1705.42831164989
+            },
+            "gap": 494.57168835011
+          },
+          {
+            "age": 80,
+            "total": 1711.0672576220304,
+            "byProduct": {
+              "statutory": 1711.0672576220304
+            },
+            "gap": 488.9327423779696
+          },
+          {
+            "age": 81,
+            "total": 1716.7497768587396,
+            "byProduct": {
+              "statutory": 1716.7497768587396
+            },
+            "gap": 483.25022314126045
+          },
+          {
+            "age": 82,
+            "total": 1722.4760829544525,
+            "byProduct": {
+              "statutory": 1722.4760829544525
+            },
+            "gap": 477.5239170455475
+          },
+          {
+            "age": 83,
+            "total": 1728.246390550634,
+            "byProduct": {
+              "statutory": 1728.246390550634
+            },
+            "gap": 471.75360944936597
+          },
+          {
+            "age": 84,
+            "total": 1734.0609153409148,
+            "byProduct": {
+              "statutory": 1734.0609153409148
+            },
+            "gap": 465.9390846590852
+          },
+          {
+            "age": 85,
+            "total": 1739.919874076246,
+            "byProduct": {
+              "statutory": 1739.919874076246
+            },
+            "gap": 460.08012592375394
+          },
+          {
+            "age": 86,
+            "total": 1745.823484570084,
+            "byProduct": {
+              "statutory": 1745.823484570084
+            },
+            "gap": 454.176515429916
+          },
+          {
+            "age": 87,
+            "total": 1751.7719657035973,
+            "byProduct": {
+              "statutory": 1751.7719657035973
+            },
+            "gap": 448.2280342964027
+          },
+          {
+            "age": 88,
+            "total": 1757.7655374309024,
+            "byProduct": {
+              "statutory": 1757.7655374309024
+            },
+            "gap": 442.23446256909756
+          },
+          {
+            "age": 89,
+            "total": 1763.8044207843222,
+            "byProduct": {
+              "statutory": 1763.8044207843222
+            },
+            "gap": 436.19557921567775
+          },
+          {
+            "age": 90,
+            "total": 1769.88883787967,
+            "byProduct": {
+              "statutory": 1769.88883787967
+            },
+            "gap": 430.11116212032994
+          }
+        ]
+      },
+      "optimistic": {
+        "net": 1641.0833333333333,
+        "gross": 1950.0,
+        "taxAndContributions": 308.9166666666667,
+        "gap": 558.9166666666667,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 137767.12487056627,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 1950.0,
+            "taxAndContributionsReal": 308.9166666666667,
+            "netReal": 1641.0833333333333
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 1641.0833333333333,
+            "byProduct": {
+              "statutory": 1641.0833333333333
+            },
+            "gap": 558.9166666666667
+          },
+          {
+            "age": 68,
+            "total": 1646.3823529411764,
+            "byProduct": {
+              "statutory": 1646.3823529411764
+            },
+            "gap": 553.6176470588236
+          },
+          {
+            "age": 69,
+            "total": 1651.555795847751,
+            "byProduct": {
+              "statutory": 1651.555795847751
+            },
+            "gap": 548.4442041522491
+          },
+          {
+            "age": 70,
+            "total": 1656.8538634744552,
+            "byProduct": {
+              "statutory": 1656.8538634744552
+            },
+            "gap": 543.1461365255448
+          },
+          {
+            "age": 71,
+            "total": 1662.1100915633826,
+            "byProduct": {
+              "statutory": 1662.1100915633826
+            },
+            "gap": 537.8899084366174
+          },
+          {
+            "age": 72,
+            "total": 1667.3246835154905,
+            "byProduct": {
+              "statutory": 1667.3246835154905
+            },
+            "gap": 532.6753164845095
+          },
+          {
+            "age": 73,
+            "total": 1672.6645103954684,
+            "byProduct": {
+              "statutory": 1672.6645103954684
+            },
+            "gap": 527.3354896045316
+          },
+          {
+            "age": 74,
+            "total": 1677.9631109366226,
+            "byProduct": {
+              "statutory": 1677.9631109366226
+            },
+            "gap": 522.0368890633774
+          },
+          {
+            "age": 75,
+            "total": 1683.3873582124556,
+            "byProduct": {
+              "statutory": 1683.3873582124556
+            },
+            "gap": 516.6126417875444
+          },
+          {
+            "age": 76,
+            "total": 1688.8541263082684,
+            "byProduct": {
+              "statutory": 1688.8541263082684
+            },
+            "gap": 511.1458736917316
+          },
+          {
+            "age": 77,
+            "total": 1694.2802903261195,
+            "byProduct": {
+              "statutory": 1694.2802903261195
+            },
+            "gap": 505.7197096738805
+          },
+          {
+            "age": 78,
+            "total": 1699.8327263898093,
+            "byProduct": {
+              "statutory": 1699.8327263898093
+            },
+            "gap": 500.1672736101907
+          },
+          {
+            "age": 79,
+            "total": 1705.42831164989,
+            "byProduct": {
+              "statutory": 1705.42831164989
+            },
+            "gap": 494.57168835011
+          },
+          {
+            "age": 80,
+            "total": 1711.0672576220304,
+            "byProduct": {
+              "statutory": 1711.0672576220304
+            },
+            "gap": 488.9327423779696
+          },
+          {
+            "age": 81,
+            "total": 1716.7497768587396,
+            "byProduct": {
+              "statutory": 1716.7497768587396
+            },
+            "gap": 483.25022314126045
+          },
+          {
+            "age": 82,
+            "total": 1722.4760829544525,
+            "byProduct": {
+              "statutory": 1722.4760829544525
+            },
+            "gap": 477.5239170455475
+          },
+          {
+            "age": 83,
+            "total": 1728.246390550634,
+            "byProduct": {
+              "statutory": 1728.246390550634
+            },
+            "gap": 471.75360944936597
+          },
+          {
+            "age": 84,
+            "total": 1734.0609153409148,
+            "byProduct": {
+              "statutory": 1734.0609153409148
+            },
+            "gap": 465.9390846590852
+          },
+          {
+            "age": 85,
+            "total": 1739.919874076246,
+            "byProduct": {
+              "statutory": 1739.919874076246
+            },
+            "gap": 460.08012592375394
+          },
+          {
+            "age": 86,
+            "total": 1745.823484570084,
+            "byProduct": {
+              "statutory": 1745.823484570084
+            },
+            "gap": 454.176515429916
+          },
+          {
+            "age": 87,
+            "total": 1751.7719657035973,
+            "byProduct": {
+              "statutory": 1751.7719657035973
+            },
+            "gap": 448.2280342964027
+          },
+          {
+            "age": 88,
+            "total": 1757.7655374309024,
+            "byProduct": {
+              "statutory": 1757.7655374309024
+            },
+            "gap": 442.23446256909756
+          },
+          {
+            "age": 89,
+            "total": 1763.8044207843222,
+            "byProduct": {
+              "statutory": 1763.8044207843222
+            },
+            "gap": 436.19557921567775
+          },
+          {
+            "age": 90,
+            "total": 1769.88883787967,
+            "byProduct": {
+              "statutory": 1769.88883787967
+            },
+            "gap": 430.11116212032994
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Gesamtsicht (Rentenplan)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <style>
+    .seg {
+      display: inline-flex;
+      border: 1px solid var(--field-border, #6b7788);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 0 0 12px;
+    }
+    .seg label {
+      padding: 6px 14px;
+      cursor: pointer;
+    }
+    .seg input {
+      position: absolute;
+      opacity: 0;
+    }
+    .seg label:has(input:checked) {
+      background: #1a5fb4;
+      color: #fff;
+    }
+    .gapbar {
+      display: flex;
+      height: 28px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #e6e9ee;
+      margin: 8px 0;
+    }
+    .gapbar i {
+      display: block;
+      height: 100%;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      margin: 6px 0;
+      font-size: 0.9rem;
+    }
+    .legend span::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
+      vertical-align: -1px;
+    }
+    .l-etf::before {
+      background: #1a5fb4;
+    }
+    .l-stat::before {
+      background: #566272;
+    }
+    .l-dep::before {
+      background: #15803d;
+    }
+    .l-bav::before {
+      background: #b45309;
+    }
+    .l-wish::before {
+      background: transparent;
+      border-top: 2px dashed #b42318;
+      height: 0 !important;
+      vertical-align: 4px !important;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      max-width: 720px;
+    }
+    .cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+  </style>
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="gesamtsicht.html" aria-current="page">Rentenplan</a
+    ><a href="etf.html">ETF-Sparplan</a><a href="rente.html">Gesetzliche Rente</a
+    ><a href="depot.html">Altersvorsorgedepot</a><a href="bav.html">Betriebliche AV</a
+    ><a href="sparziele.html">Sparziele</a><a href="annahmen.html">Annahmen</a>
+  </nav>
+  <main>
+    <h1>Rentenplan</h1>
+    <p class="sub">
+      Deine Gesamtsicht im Ruhestand <span class="badge">Prognose, keine Garantie</span>
+    </p>
+
+    <div class="seg" role="radiogroup" aria-label="Szenario">
+      <label><input type="radio" name="s" /> Pessimistisch</label
+      ><label><input type="radio" name="s" checked /> Neutral</label
+      ><label><input type="radio" name="s" /> Optimistisch</label>
+    </div>
+
+    <div class="card kpi">
+      <span>Netto-Rente ab 67, Kaufkraft von heute (neutral)</span><b>2.140 € pro Monat</b
+      ><span>Spanne: 1.720 € bis 2.610 €. Wunscheinkommen: 3.000 € pro Monat</span>
+    </div>
+
+    <div class="card">
+      <h2>Lücke zum Wunscheinkommen</h2>
+      <div class="gapbar" role="img" aria-label="2.140 € von 3.000 € gedeckt, 860 € fehlen">
+        <i style="width: 71%; background: #1a5fb4"></i>
+      </div>
+      <p><b>Es fehlen etwa 860 € pro Monat.</b> Gedeckt sind 71 % des Wunsches.</p>
+      <div class="notice">
+        <b>Lücke schließen:</b> etwa <b>410 € mehr ETF-Sparrate</b> pro Monat (neutral; 330 € bis
+        690 €). Neue ETF-Rate: 560 €. Mit dem Sparbudget bleiben 40 € übrig.
+        <a href="etf.html">Zum ETF-Sparplan</a>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="card">
+        <h2>Zusammensetzung</h2>
+        <svg
+          viewBox="0 0 320 60"
+          role="img"
+          aria-label="Gestapelter Balken: ETF 620 €, gesetzliche Rente 1.100 €, Depot 280 €, betriebliche AV 140 €"
+        >
+          <rect x="0" y="10" width="92" height="36" fill="#1a5fb4" />
+          <rect x="92" y="10" width="163" height="36" fill="#566272" />
+          <rect x="255" y="10" width="41" height="36" fill="#15803d" />
+          <rect x="296" y="10" width="21" height="36" fill="#b45309" />
+        </svg>
+        <div class="legend">
+          <span class="l-etf">ETF 620 €</span><span class="l-stat">Gesetzliche Rente 1.100 €</span
+          ><span class="l-dep">Depot 280 €</span><span class="l-bav">Betriebliche AV 140 €</span>
+        </div>
+        <p class="hint">Die Tabelle darunter nennt dieselben Werte (Brutto, Steuer, Netto).</p>
+      </div>
+
+      <div class="card">
+        <h2>Bausteine</h2>
+        <ul>
+          <li><b>ETF-Sparplan:</b> zählt ab Alter 67</li>
+          <li><b>Gesetzliche Rente:</b> zählt ab Alter 67</li>
+          <li><b>Altersvorsorgedepot:</b> zählt ab Alter 67, zahlt bis 85</li>
+          <li><b>Betriebliche AV:</b> nicht berechenbar. <a href="bav.html">Zum Baustein</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Verlauf je Alter</h2>
+      <svg
+        viewBox="0 0 720 300"
+        role="img"
+        aria-label="Flächendiagramm: monatliches Netto-Einkommen je Alter von 67 bis 90 mit Wunschlinie bei 3.000 €. Ab Alter 85 sinkt das Einkommen, weil das Depot endet."
+      >
+        <g stroke="#c9d1db" stroke-width="1">
+          <line x1="50" y1="20" x2="710" y2="20" />
+          <line x1="50" y1="90" x2="710" y2="90" />
+          <line x1="50" y1="160" x2="710" y2="160" />
+          <line x1="50" y1="230" x2="710" y2="230" />
+          <line x1="50" y1="260" x2="710" y2="260" stroke="#566272" />
+        </g>
+        <g font-size="12" fill="#566272">
+          <text x="4" y="264">0 €</text>
+          <text x="4" y="234">1.000 €</text>
+          <text x="4" y="164">2.000 €</text>
+          <text x="4" y="94">3.000 €</text>
+          <text x="50" y="282">67</text>
+          <text x="270" y="282">74</text>
+          <text x="490" y="282">81</text>
+          <text x="690" y="282">90</text>
+          <text x="330" y="296">Alter</text>
+        </g>
+        <polygon fill="#566272" points="50,260 50,174 600,160 710,168 710,260" opacity="0.9" />
+        <polygon
+          fill="#1a5fb4"
+          points="50,174 50,131 600,120 710,130 710,168 600,160"
+          opacity="0.9"
+        />
+        <polygon fill="#15803d" points="50,131 50,111 536,100 536,120 600,120" opacity="0.9" />
+        <line
+          x1="50"
+          y1="90"
+          x2="710"
+          y2="90"
+          stroke="#b42318"
+          stroke-width="2"
+          stroke-dasharray="6 4"
+        />
+        <line x1="536" y1="20" x2="536" y2="260" stroke="#1b2430" stroke-dasharray="2 3" />
+        <text x="542" y="34" font-size="12" fill="#1b2430">Depot endet (85)</text>
+      </svg>
+      <div class="legend">
+        <span class="l-stat">Gesetzliche Rente</span><span class="l-etf">ETF</span
+        ><span class="l-dep">Depot</span><span class="l-wish">Wunscheinkommen</span>
+      </div>
+      <p>
+        Die Lücke wächst ab Alter 85, weil das Depot endet. Über alle Rentenjahre fehlen etwa
+        238.000 € (Kaufkraft von heute).
+      </p>
+      <details>
+        <summary>Verlauf als Tabelle</summary>
+        <p class="hint">Alter, Beträge je Baustein, Summe und Lücke, wie bisher.</p>
+      </details>
+    </div>
+
+    <div class="card warn">
+      <b>Hinweise</b>
+      <ul>
+        <li>Ungeprüfter Rechtswert verwendet: pension.pensionValue. Bitte vor Nutzung prüfen.</li>
+        <li>ETF: Die Steuer in der Entnahme ist vereinfacht.</li>
+      </ul>
+    </div>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

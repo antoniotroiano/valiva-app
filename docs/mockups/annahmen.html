@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Annahmen</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Übersicht</a
+    ><a href="etf.html">ETF-Sparplan</a><a href="sparziele.html">Sparziele</a
+    ><a href="annahmen.html" aria-current="page">Annahmen</a>
+  </nav>
+  <main>
+    <h1>Annahmen</h1>
+    <p class="sub">Gesetzliche Werte und Rechenregeln, die die Prognose verwendet.</p>
+    <div class="card">
+      <table>
+        <caption style="text-align: left; font-weight: 600">
+          Steuerwerte (config/tax-de.json)
+        </caption>
+        <tr>
+          <th>Wert</th>
+          <th>Betrag</th>
+          <th>Gültig ab</th>
+          <th>Quelle</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Abgeltungsteuer inkl. Soli</td>
+          <td>26,375 %</td>
+          <td>01.01.2009</td>
+          <td>Ratgeberseiten</td>
+          <td>⚠ ungeprüft</td>
+        </tr>
+        <tr>
+          <td>Teilfreistellung Aktienfonds</td>
+          <td>30 %</td>
+          <td>01.01.2018</td>
+          <td>InvStG, Ratgeber</td>
+          <td>⚠ ungeprüft</td>
+        </tr>
+        <tr>
+          <td>Sparerpauschbetrag</td>
+          <td>1.000 €</td>
+          <td>01.01.2023</td>
+          <td>Ratgeberseiten</td>
+          <td>⚠ ungeprüft</td>
+        </tr>
+      </table>
+      <p class="hint">Ungeprüfte Werte sind nicht gegen amtliche Quellen bestätigt.</p>
+    </div>
+    <div class="card">
+      <h2>Rechenregeln</h2>
+      <ul>
+        <li>Monatlicher Zeitschritt, Rendite geometrisch umgerechnet</li>
+        <li>Nettorendite = Rendite minus TER</li>
+        <li>Steuer nur beim Verkauf am Ende; ohne Kirchensteuer und Vorabpauschale</li>
+        <li>Real = deflationiert mit der Inflation</li>
+      </ul>
+    </div>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

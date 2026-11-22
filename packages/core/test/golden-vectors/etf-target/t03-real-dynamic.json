@@ -1,0 +1,50 @@
+{
+  "name": "t03-real-dynamic",
+  "description": "Real target with dynamic rate and entry fee",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 0,
+    "monthlyContribution": 50,
+    "annualContributionIncreasePercent": 3,
+    "durationYears": 30,
+    "lumpSums": [],
+    "ter": 0,
+    "entryFeePercent": 1,
+    "custodyFeeEurPerYear": 12,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "targetValue": 300000,
+  "basis": "real",
+  "expected": {
+    "targetNominal": 543408.4752310064,
+    "scenarios": {
+      "pessimistic": {
+        "status": "ok",
+        "monthly": 678.42,
+        "differenceToCurrent": 628.42
+      },
+      "neutral": {
+        "status": "ok",
+        "monthly": 519.04,
+        "differenceToCurrent": 469.03999999999996
+      },
+      "optimistic": {
+        "status": "ok",
+        "monthly": 386.4,
+        "differenceToCurrent": 336.4
+      }
+    }
+  }
+}

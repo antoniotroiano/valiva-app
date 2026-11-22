@@ -1,0 +1,95 @@
+{
+  "name": "w02-depletes",
+  "description": "6 %: the capital is used up before the end age",
+  "synthetic": true,
+  "plan": {
+    "initialCapital": 5000,
+    "monthlyContribution": 250,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 10,
+    "lumpSums": [],
+    "ter": 0.2,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "taxUnverified": true,
+  "payoutStartAge": 67,
+  "payoutEndAge": 90,
+  "useGlobalAssumptions": true,
+  "percent": 6,
+  "profile": {
+    "birthYear": 1985,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": []
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "expected": {
+    "pessimistic": {
+      "grossCapital": 124485.096781591,
+      "gainShare": 0.3332535207357116,
+      "monthlyNominal": 622.425483907955,
+      "taxMonthlyNominal": 16.31676329983953,
+      "netReal": 362.1980157912216,
+      "grossReal": 371.94857553470695,
+      "depletionAge": 83.91666666666667,
+      "remainingAtEnd": 0.0,
+      "paidFirstYear": 7469.105806895461,
+      "totalPaid": 147881.37046552636
+    },
+    "neutral": {
+      "grossCapital": 169746.3247997974,
+      "gainShare": 0.5110350689601554,
+      "monthlyNominal": 848.7316239989872,
+      "taxMonthlyNominal": 58.098534414146314,
+      "netReal": 472.4659562383439,
+      "grossReal": 507.18443688331627,
+      "depletionAge": 83.91666666666667,
+      "remainingAtEnd": 0.0,
+      "paidFirstYear": 10184.779487987846,
+      "totalPaid": 201649.19168534986
+    },
+    "optimistic": {
+      "grossCapital": 234872.53574057316,
+      "gainShare": 0.6466168352196058,
+      "monthlyNominal": 1174.3626787028659,
+      "taxMonthlyNominal": 118.21816788884992,
+      "netReal": 631.1300814511084,
+      "grossReal": 701.7748096722347,
+      "depletionAge": 83.91666666666667,
+      "remainingAtEnd": 0.0,
+      "paidFirstYear": 14092.35214443439,
+      "totalPaid": 279015.5076231231
+    }
+  }
+}

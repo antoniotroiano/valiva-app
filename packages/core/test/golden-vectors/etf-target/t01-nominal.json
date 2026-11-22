@@ -1,0 +1,50 @@
+{
+  "name": "t01-nominal",
+  "description": "Nominal target, no tax",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 5000,
+    "monthlyContribution": 100,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 20,
+    "lumpSums": [],
+    "ter": 0,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": false
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "targetValue": 200000,
+  "basis": "nominal",
+  "expected": {
+    "targetNominal": 200000,
+    "scenarios": {
+      "pessimistic": {
+        "status": "ok",
+        "monthly": 582.83,
+        "differenceToCurrent": 482.83000000000004
+      },
+      "neutral": {
+        "status": "ok",
+        "monthly": 458.29,
+        "differenceToCurrent": 358.29
+      },
+      "optimistic": {
+        "status": "ok",
+        "monthly": 353.94,
+        "differenceToCurrent": 253.94
+      }
+    }
+  }
+}

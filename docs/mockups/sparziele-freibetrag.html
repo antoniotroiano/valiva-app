@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Gemeinsamer Sparerpauschbetrag (Review 13 F-6)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Rentenplan</a
+    ><a href="sparziele.html" aria-current="page">Sparziele</a>
+  </nav>
+  <main>
+    <h1>Sparziele</h1>
+
+    <h2>1. Neue Karte oben auf der Seite (vor den Zielen)</h2>
+    <div class="card">
+      <h3>Sparerpauschbetrag für alle Ziele</h3>
+      <label>Sparerpauschbetrag pro Jahr<br /><input value="1.000" size="8" /> €</label>
+      <p class="hint">
+        Gilt gemeinsam für alle Sparziele dieser Person. Die Ziele nutzen ihn nacheinander in der
+        Reihenfolge ihrer Priorität: Ziel 1 zuerst, Ziel 2 bekommt den Rest des Jahres und so
+        weiter. Nutzt du ihn schon anderweitig (zum Beispiel bei einem Tagesgeld), trage hier
+        weniger ein. Der ETF-Sparplan ist nicht eingerechnet, er wird meist Jahre später verkauft.
+      </p>
+      <p class="hint">
+        Voreingestellt ist der Wert aus den Annahmen (ungeprüft). Leer lassen setzt den Standard.
+      </p>
+    </div>
+
+    <h2>2. Im einzelnen Ziel</h2>
+    <div class="card">
+      <label><input type="checkbox" checked /> Steuer auf Zinsen berücksichtigen</label>
+      <p class="hint">
+        Das Feld „Sparerpauschbetrag pro Jahr“ im Ziel entfällt. Stattdessen steht dort eine Zeile:
+        <i
+          >„Freibetrag: 412 € im Jahr 2027 genutzt, der Rest geht an Ziele mit niedrigerer
+          Priorität.“</i
+        >
+        (nur Jahre mit Verbrauch, höchstens die ersten drei, danach „…“).
+      </p>
+    </div>
+
+    <h2>3. Hinweis bei zu wenig Freibetrag</h2>
+    <div class="notice">
+      <b>Hinweis:</b> In diesem Jahr reicht der Freibetrag für Ziel 2 nicht, die Zinsen darüber
+      werden versteuert.
+    </div>
+    <p class="hint">
+      Der Hinweis steht nur, wenn ein Ziel in mindestens einem Jahr mehr Steuer zahlt, weil frühere
+      Ziele den Pool genutzt haben.
+    </p>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

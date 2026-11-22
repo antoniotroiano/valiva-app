@@ -1,0 +1,50 @@
+{
+  "name": "t04-already-reached",
+  "description": "Initial capital alone reaches the nominal target",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 50000,
+    "monthlyContribution": 100,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 20,
+    "lumpSums": [],
+    "ter": 0,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": false
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "targetValue": 60000,
+  "basis": "nominal",
+  "expected": {
+    "targetNominal": 60000,
+    "scenarios": {
+      "pessimistic": {
+        "status": "already_reached",
+        "monthly": 0.0,
+        "differenceToCurrent": -100.0
+      },
+      "neutral": {
+        "status": "already_reached",
+        "monthly": 0.0,
+        "differenceToCurrent": -100.0
+      },
+      "optimistic": {
+        "status": "already_reached",
+        "monthly": 0.0,
+        "differenceToCurrent": -100.0
+      }
+    }
+  }
+}

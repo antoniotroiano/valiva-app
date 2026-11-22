@@ -1,0 +1,79 @@
+{
+  "name": "gs02-priority-order-and-untaxed",
+  "description": "Three goals listed out of priority order, one untaxed, different starts, pool 1,000",
+  "synthetic": true,
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "pool": 1000,
+  "goals": [
+    {
+      "id": "late",
+      "name": "Golden goal",
+      "targetAmount": 40000,
+      "currentAmount": 15000,
+      "monthlyContribution": 150,
+      "accountInterestPercent": 3.5,
+      "priority": 3,
+      "taxEnabled": true,
+      "taxFreeAllowancePerYear": 1000,
+      "startMonth": "2026-11"
+    },
+    {
+      "id": "free",
+      "name": "Golden goal",
+      "targetAmount": 30000,
+      "currentAmount": 10000,
+      "monthlyContribution": 100,
+      "accountInterestPercent": 2,
+      "priority": 2,
+      "taxEnabled": false,
+      "taxFreeAllowancePerYear": 1000,
+      "startMonth": "2026-05"
+    },
+    {
+      "id": "first",
+      "name": "Golden goal",
+      "targetAmount": 60000,
+      "currentAmount": 25000,
+      "monthlyContribution": 250,
+      "accountInterestPercent": 3,
+      "priority": 1,
+      "taxEnabled": true,
+      "taxFreeAllowancePerYear": 1000,
+      "startMonth": "2026-01"
+    }
+  ],
+  "expected": {
+    "first": {
+      "status": "reached",
+      "finalBalance": 60211.45513841374,
+      "interestGross": 10483.318427510643,
+      "tax": 521.8632890968909,
+      "interestNet": 9961.455138413752,
+      "seriesLength": 102,
+      "monthsToReach": 101,
+      "reachedMonth": "2034-06"
+    },
+    "free": {
+      "status": "reached",
+      "finalBalance": 30141.45862723771,
+      "interestGross": 4941.458627237702,
+      "tax": 0.0,
+      "interestNet": 4941.458627237702,
+      "seriesLength": 153,
+      "monthsToReach": 152,
+      "reachedMonth": "2039-01"
+    },
+    "late": {
+      "status": "reached",
+      "finalBalance": 40221.69629086769,
+      "interestGross": 9200.55844887876,
+      "tax": 1828.8621580110948,
+      "interestNet": 7371.696290867666,
+      "seriesLength": 120,
+      "monthsToReach": 119,
+      "reachedMonth": "2036-10"
+    }
+  }
+}

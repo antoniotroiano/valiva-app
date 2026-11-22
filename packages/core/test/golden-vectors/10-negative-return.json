@@ -1,0 +1,54 @@
+{
+  "name": "10-negative-return",
+  "description": "Negative pessimistic return and zero optimistic",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 3000,
+    "monthlyContribution": 100,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 10,
+    "lumpSums": [],
+    "ter": 0,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": -2,
+      "neutral": 1,
+      "optimistic": 3
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "expected": {
+    "pessimistic": {
+      "grossFinalValue": 13307.580338352138,
+      "totalContributions": 15000.0,
+      "gainBeforeTax": -1692.419661647862,
+      "tax": 0.0,
+      "finalValueAfterTax": 13307.580338352138,
+      "finalValueReal": 10916.850906019217
+    },
+    "neutral": {
+      "grossFinalValue": 15936.42242772475,
+      "totalContributions": 15000.0,
+      "gainBeforeTax": 936.4224277247504,
+      "tax": 0.0,
+      "finalValueAfterTax": 15936.42242772475,
+      "finalValueReal": 13073.417044676291
+    },
+    "optimistic": {
+      "grossFinalValue": 18010.94045710192,
+      "totalContributions": 15000.0,
+      "gainBeforeTax": 3010.9404571019186,
+      "tax": 292.1448818924417,
+      "finalValueAfterTax": 17718.79557520948,
+      "finalValueReal": 14535.583825958518
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "g04-start-december",
+  "description": "Start in December, small allowance resets in January",
+  "synthetic": true,
+  "input": {
+    "id": "golden",
+    "name": "Golden goal",
+    "targetAmount": 30000,
+    "currentAmount": 20000,
+    "monthlyContribution": 300,
+    "accountInterestPercent": 3.5,
+    "priority": 1,
+    "taxEnabled": true,
+    "taxFreeAllowancePerYear": 100,
+    "startMonth": "2026-12",
+    "targetMonth": "2029-12"
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "expected": {
+    "status": "reached",
+    "finalBalance": 32895.478212465525,
+    "interestGross": 2738.6800848428143,
+    "tax": 643.2018723772921,
+    "interestNet": 2095.478212465522,
+    "seriesLength": 37,
+    "monthsToReach": 29,
+    "reachedMonth": "2029-05",
+    "requiredMonthlyForTargetMonth": {
+      "status": "ok",
+      "monthly": 222.67
+    }
+  }
+}

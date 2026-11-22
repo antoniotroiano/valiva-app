@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Verständlichkeit (Review 13 U-2, U-3, U-4, U-6)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <style>
+    details {
+      border-top: 1px solid var(--line);
+      padding: 8px 0;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+    summary small {
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 8px;
+    }
+    abbr {
+      text-decoration: underline dotted;
+      cursor: help;
+    }
+    .explain {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 2px 0 8px;
+    }
+  </style>
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="gesamtsicht.html">Rentenplan</a
+    ><a href="profil.html" aria-current="page">Profil</a><a href="etf.html">ETF-Sparplan</a>
+  </nav>
+  <main>
+    <h1>Verständlichkeit: vier kleine Änderungen</h1>
+
+    <h2>U-2 ETF-Seite: Sparplan-Rechner und Ruhestand trennen</h2>
+    <div class="card">
+      <label>Laufzeit<br /><input value="20" /> Jahre</label>
+      <p class="hint">
+        Gilt nur für die Ergebnisse oben („Sparplan-Rechner“). Der Rentenplan und der Abschnitt „ETF
+        im Ruhestand“ rechnen bis zum Entnahmebeginn (27 Jahre) und ignorieren dieses Feld.
+      </p>
+    </div>
+    <div class="card kpi">
+      <span>Sparplan-Rechner: Endwert nach Steuer (neutral), nach 20 Jahren</span><b>103.916 €</b>
+    </div>
+    <div class="card">
+      <h2>ETF im Ruhestand <span class="badge">gilt für den Rentenplan</span></h2>
+      <p class="sub">
+        Eigene Rechnung: Sparphase bis zum Entnahmealter 67 (27 Jahre), nicht bis zur Laufzeit oben.
+      </p>
+      <p>Kapital bei Entnahmebeginn: <b>180.972 €</b></p>
+    </div>
+
+    <h2>U-3 Fachbegriffe: gestrichelt unterstrichen, Erklärung per Hover, Fokus und Tippen</h2>
+    <div class="card">
+      <p>
+        Krankenversicherung:
+        <abbr title="Krankenversicherung der Rentner: Pflichtversicherung für die meisten Rentner"
+          >KVdR</abbr
+        >, mit Kindern
+      </p>
+      <p>
+        <abbr title="betriebliche Altersvorsorge">bAV</abbr> mit
+        <abbr title="Du verzichtest auf Bruttolohn, der Betrag fließt in die Vorsorge"
+          >Entgeltumwandlung</abbr
+        >
+      </p>
+      <p class="explain">
+        Dazu ein kleines Glossar mit allen Begriffen auf der Seite „Annahmen“ (Teilfreistellung,
+        Vorabpauschale, Besteuerungsanteil, Zugangsfaktor, ...).
+      </p>
+    </div>
+
+    <h2>U-4 Profil: Person offen, Rest eingeklappt mit Kurzzusammenfassung</h2>
+    <div class="card">
+      <details open>
+        <summary>Person</summary>
+        <p>Geburtsjahr, Rentenalter, Lebenserwartung, Wunscheinkommen, Kinder ...</p>
+      </details>
+      <details>
+        <summary>
+          Allgemeine Annahmen
+          <small>Erweitert, Standardwerte gesetzt: Rendite 5 % · Inflation 2 %</small>
+        </summary>
+      </details>
+      <details>
+        <summary>
+          Steuer im Alter <small>Erweitert, Standardwerte gesetzt: Einzelveranlagung</small>
+        </summary>
+      </details>
+      <details>
+        <summary>
+          Kranken- und Pflegeversicherung
+          <small>Erweitert, Standardwerte gesetzt: KVdR, mit Kindern</small>
+        </summary>
+      </details>
+    </div>
+
+    <h2>U-6 Kleinigkeiten</h2>
+    <ul>
+      <li>
+        Name überall „Rentenplan“ (Überschrift „Gesamtsicht im Ruhestand“ wird
+        Abschnittsüberschrift).
+      </li>
+      <li>Einfügen von Zahlen mit Tausenderpunkt („123.456,7“) wird korrekt erkannt.</li>
+      <li>
+        Diagrammbeschriftung „Auszahlung endet“ liegt oberhalb der Fläche, auch im Hellmodus lesbar.
+      </li>
+    </ul>
+    <p class="hint">
+      U-5 (Leerzustand bei 0 € Beitrag) ist im Code schon vorhanden: Depot und bAV zeigen dann eine
+      Hinweiskarte statt der Ergebnisse. Kein Umbau nötig.
+    </p>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

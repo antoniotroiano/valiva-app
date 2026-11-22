@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Entnahmestrategien (Review 13 F-16)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Übersicht</a
+    ><a href="etf.html" aria-current="page">ETF-Sparplan</a
+    ><a href="depot.html">Altersvorsorgedepot</a><a href="gesamtsicht.html">Gesamtsicht</a>
+  </nav>
+  <main>
+    <h1>Entnahmestrategien (Vorschlag)</h1>
+    <p class="sub">
+      Fünf Stellen ändern sich. Alles andere bleibt, auch die Annuität als Standard. Zahlen:
+      Beispiel Startkapital 5.000 €, 250 € pro Monat, Entnahme von 67 bis 90, neutral.
+    </p>
+
+    <div class="card">
+      <h2>1. ETF-Seite, Gruppe „Ruhestand“ (neue Auswahl, gleiche Auswahl auf der Depot-Seite)</h2>
+      <fieldset>
+        <legend>Entnahme</legend>
+        <label
+          ><input type="radio" name="strategy" checked style="width: auto" /> Gleichbleibend bis zum
+          Endalter (Annuität)</label
+        ><br />
+        <label
+          ><input type="radio" name="strategy" style="width: auto" /> Prozent vom Kapital bei
+          Rentenbeginn</label
+        >
+      </fieldset>
+      <p class="hint">
+        Annuität: Jeden Monat dieselbe Summe, das Kapital ist am Endalter aufgebraucht.
+      </p>
+      <label for="pct">Entnahme pro Jahr (nur bei „Prozent“)</label>
+      <input id="pct" type="text" value="4" style="width: 6em" /> %
+      <p class="hint">
+        Im ersten Jahr wird dieser Anteil des Kapitals bei Rentenbeginn entnommen, ein Zwölftel pro
+        Monat. Danach steigt die Summe jedes Jahr um die Inflation, die Kaufkraft bleibt also
+        gleich. Erlaubt: größer als 0 und höchstens 100. Die Auswahl „Prozent“ ist auch bei
+        eingeschalteter Vorabpauschale möglich.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2. Karte „ETF im Ruhestand“ (bei „Prozent“ drei Zeilen mehr)</h2>
+      <table>
+        <caption>
+          ETF im Ruhestand, Beträge pro Monat in Kaufkraft von heute
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Zeile</th>
+            <th scope="col">Pessimistisch</th>
+            <th scope="col">Neutral</th>
+            <th scope="col">Optimistisch</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Kapital bei Rentenbeginn</th>
+            <td class="num">120.000 €</td>
+            <td class="num">169.746 €</td>
+            <td class="num">242.000 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Entnahme im ersten Jahr, brutto</th>
+            <td class="num">282 €</td>
+            <td class="num">338 €</td>
+            <td class="num">401 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Steuer</th>
+            <td class="num">12 €</td>
+            <td class="num">19 €</td>
+            <td class="num">27 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Netto im ersten Jahr</th>
+            <td class="num">270 €</td>
+            <td class="num">319 €</td>
+            <td class="num">374 €</td>
+          </tr>
+          <tr>
+            <th scope="row">Kapital reicht bis Alter</th>
+            <td class="num">90 (Ende)</td>
+            <td class="num">90 (Ende)</td>
+            <td class="num">90 (Ende)</td>
+          </tr>
+          <tr>
+            <th scope="row">Restkapital im Endalter (nominal)</th>
+            <td class="num">11.200 €</td>
+            <td class="num">24.037 €</td>
+            <td class="num">41.500 €</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="hint">
+        Die Entnahme steigt jedes Jahr mit der Inflation, in Kaufkraft von heute bleibt sie gleich.
+        Die Steuer ist für das erste Jahr gerechnet (Sparerpauschbetrag fest in Euro, daher wird sie
+        später real etwas höher). Alle Zahlen sind erfunden und nur zur Ansicht.
+      </p>
+      <div class="notice">
+        ⚠ Bei einer Entnahme von 6 % reicht das Kapital im neutralen Fall nur bis Alter 83 und 11
+        Monate. Danach fließt aus dem ETF nichts mehr.
+      </div>
+      <p class="hint">
+        (Der Hinweis erscheint nur, wenn das Kapital in mindestens einem Szenario vor dem Endalter
+        aufgebraucht ist. In der Tabelle steht dann z. B. „83 Jahre 11 Monate“ statt „90 (Ende)“,
+        und das Restkapital ist 0 €.)
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3. Verlauf des Restkapitals (nur bei „Prozent“)</h2>
+      <svg
+        role="img"
+        aria-labelledby="wd-title wd-desc"
+        viewBox="0 0 320 120"
+        width="100%"
+        style="max-width: 520px"
+      >
+        <title id="wd-title">Restkapital im Ruhestand bei 4 % und bei 6 % Entnahme</title>
+        <desc id="wd-desc">
+          Bei 4 % sinkt das Kapital von 169.746 € auf 24.037 € mit 90 Jahren. Bei 6 % ist es mit 83
+          Jahren und 11 Monaten aufgebraucht.
+        </desc>
+        <polyline
+          fill="none"
+          stroke="var(--neu)"
+          stroke-width="2"
+          points="10,10 100,40 200,80 310,100"
+        />
+        <polyline
+          fill="none"
+          stroke="var(--pess)"
+          stroke-width="2"
+          stroke-dasharray="4 3"
+          points="10,10 80,50 150,95 250,110"
+        />
+      </svg>
+      <details open>
+        <summary>Tabelle zum Diagramm</summary>
+        <table>
+          <caption>
+            Restkapital am Jahresende (nominal)
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Alter</th>
+              <th scope="col">Entnahme pro Monat</th>
+              <th scope="col">Restkapital</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">67</th>
+              <td class="num">566 €</td>
+              <td class="num">166.800 €</td>
+            </tr>
+            <tr>
+              <th scope="row">68</th>
+              <td class="num">577 €</td>
+              <td class="num">163.500 €</td>
+            </tr>
+            <tr>
+              <th scope="row">…</th>
+              <td class="num">…</td>
+              <td class="num">…</td>
+            </tr>
+            <tr>
+              <th scope="row">89</th>
+              <td class="num">874 €</td>
+              <td class="num">24.037 €</td>
+            </tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>4. Gesamtsicht</h2>
+      <p>
+        Der ETF-Anteil im Verlauf bleibt bei „Prozent“ in Kaufkraft von heute gleich und fällt mit
+        dem Alter des aufgebrauchten Kapitals auf 0, dann wächst die Lücke. Neuer Warntext in der
+        Warnliste:
+      </p>
+      <div class="notice">
+        ⚠ ETF: Das Kapital ist vor dem Endalter aufgebraucht (neutral mit 83 Jahren und 11 Monaten).
+        Danach zahlt der ETF nichts mehr. Dasselbe gilt für das Altersvorsorgedepot, mit eigenem
+        Text.
+      </div>
+      <p class="hint">
+        Lücke schließen: rechnet wie bisher die Sparrate aus, die Entnahmeart bleibt wie gewählt.
+        Bei „Prozent“ ist die Rente im ersten Jahr der Maßstab. „Kapital wird nie aufgebraucht“ gibt
+        es nicht als Zusage: Das Restkapital am Endalter steht in der Tabelle.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>5. Annahmenseite und Datei</h2>
+      <p class="hint">
+        Annahmenseite: ein Absatz „Entnahmestrategien“ mit den Regeln. Gespeicherte Dateien ohne
+        Entnahme-Angabe laden unverändert (Annuität). Dateiformat-Version bleibt gleich.
+      </p>
+    </div>
+  </main>
+</html>

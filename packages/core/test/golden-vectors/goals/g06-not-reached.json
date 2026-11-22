@@ -1,0 +1,28 @@
+{
+  "name": "g06-not-reached",
+  "description": "No contribution and no interest: not reached within 600 months",
+  "synthetic": true,
+  "input": {
+    "id": "golden",
+    "name": "Golden goal",
+    "targetAmount": 1000,
+    "currentAmount": 100,
+    "monthlyContribution": 0,
+    "accountInterestPercent": 0,
+    "priority": 1,
+    "taxEnabled": false,
+    "taxFreeAllowancePerYear": 1000,
+    "startMonth": "2026-01"
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "expected": {
+    "status": "not_reached",
+    "finalBalance": 100.0,
+    "interestGross": 0.0,
+    "tax": 0.0,
+    "interestNet": 0.0,
+    "seriesLength": 601
+  }
+}

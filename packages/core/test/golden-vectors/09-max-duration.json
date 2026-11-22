@@ -1,0 +1,54 @@
+{
+  "name": "09-max-duration",
+  "description": "60 years, dynamic rate, everything on",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 2000,
+    "monthlyContribution": 200,
+    "annualContributionIncreasePercent": 2,
+    "durationYears": 60,
+    "lumpSums": [],
+    "ter": 0.25,
+    "entryFeePercent": 1,
+    "custodyFeeEurPerYear": 24,
+    "custodyFeePercentPerYear": 0.05,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "expected": {
+    "pessimistic": {
+      "grossFinalValue": 579352.4756832336,
+      "totalContributions": 275723.69460384955,
+      "gainBeforeTax": 303628.78107938403,
+      "tax": 55793.713706781266,
+      "finalValueAfterTax": 523558.7619764523,
+      "finalValueReal": 159571.42609968784
+    },
+    "neutral": {
+      "grossFinalValue": 1146233.2251893794,
+      "totalContributions": 275723.69460384955,
+      "gainBeforeTax": 870509.5305855299,
+      "tax": 160454.07208435342,
+      "finalValueAfterTax": 985779.153105026,
+      "finalValueReal": 300448.0045114523
+    },
+    "optimistic": {
+      "grossFinalValue": 2469220.8387139225,
+      "totalContributions": 275723.69460384955,
+      "gainBeforeTax": 2193497.144110073,
+      "tax": 404710.6602313222,
+      "finalValueAfterTax": 2064510.1784826003,
+      "finalValueReal": 629226.0913257458
+    }
+  }
+}

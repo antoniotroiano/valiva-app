@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Daten</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <style>
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0;
+    }
+    .status {
+      border-left: 4px solid var(--opt);
+      padding: 6px 12px;
+      margin: 8px 0;
+    }
+    .danger {
+      border-color: #b42318;
+    }
+    dialog {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text);
+      max-width: 520px;
+    }
+  </style>
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong>
+    <label
+      >Aktive Person
+      <select>
+        <option>Anna</option>
+        <option>Ben</option>
+      </select></label
+    >
+    <a href="haushalt.html">Rentenplan</a><a href="haushalt.html">Haushalt</a
+    ><a href="profil.html">Profil</a><a href="etf.html">ETF-Sparplan</a
+    ><a href="rente.html">Gesetzliche Rente</a><a href="depot.html">Altersvorsorgedepot</a
+    ><a href="bav.html">Betriebliche AV</a><a href="sparziele.html">Sparziele</a
+    ><a href="annahmen.html">Annahmen</a><a href="daten.html" aria-current="page">Daten</a>
+  </nav>
+  <main>
+    <h1>Daten</h1>
+    <p class="sub">
+      Sichern, wiederherstellen und auf einen anderen Rechner mitnehmen.
+      <span class="badge">Alles bleibt lokal</span>
+    </p>
+
+    <div class="card warn">
+      <b>Noch nie exportiert.</b> Deine Eingaben liegen nur in diesem Browser. Löschst du die
+      Browserdaten, sind sie weg. Exportiere regelmäßig eine Sicherung.
+    </div>
+
+    <div class="card">
+      <h2>Exportieren</h2>
+      <p>
+        Speichert alle Personen und Bausteine in einer Datei
+        (<code>pathwise-2026-11-18.workspace.json</code>).
+      </p>
+      <p class="hint">
+        Die Datei enthält persönliche Finanzdaten und ist nicht verschlüsselt. Bewahre sie sicher
+        auf und gib sie nicht weiter.
+      </p>
+      <div class="actions"><button>Daten exportieren</button></div>
+      <p class="hint">Zuletzt exportiert: 18.11.2026, 21:40 Uhr (Beispielwert)</p>
+      <p class="status" role="status">Export gestartet: pathwise-2026-11-18.workspace.json</p>
+    </div>
+
+    <div class="card">
+      <h2>Importieren</h2>
+      <p>
+        Ersetzt <b>alle</b> aktuellen Daten durch den Inhalt der Datei. Vorher wird eine Sicherung
+        deiner aktuellen Daten heruntergeladen.
+      </p>
+      <p>
+        <label
+          >Datei wählen (<code>.workspace.json</code>)
+          <input type="file" accept=".json,application/json"
+        /></label>
+      </p>
+
+      <h3>Vorschau: pathwise-2026-10-02.workspace.json</h3>
+      <table>
+        <tr>
+          <th>Exportiert am</th>
+          <td>02.10.2026, 18:12 Uhr (Version 0.0.0)</td>
+        </tr>
+        <tr>
+          <th>Personen</th>
+          <td>2: Anna, Ben</td>
+        </tr>
+        <tr>
+          <th>Anna</th>
+          <td>ETF-Sparplan, Gesetzliche Rente, Sparziele (2)</td>
+        </tr>
+        <tr>
+          <th>Ben</th>
+          <td>Gesetzliche Rente, Betriebliche AV</td>
+        </tr>
+      </table>
+      <div class="card warn">
+        <b>Hinweise zur Datei</b>
+        <ul>
+          <li>
+            Ben, Altersvorsorgedepot: Die Angaben waren nicht lesbar und werden durch Standardwerte
+            ersetzt.
+          </li>
+        </ul>
+      </div>
+      <div class="actions"><button>Daten ersetzen …</button><button>Abbrechen</button></div>
+
+      <h3>Fehlerfall</h3>
+      <p class="status danger" role="status">
+        Die Datei konnte nicht gelesen werden: Sie stammt aus einer neueren Version der App. Es
+        wurde nichts geändert.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Beispieldaten laden</h2>
+      <p>
+        Komplett erfundene Haushalte zum Ausprobieren. Sie ersetzen deine aktuellen Daten (mit
+        Vorschau und Bestätigung).
+      </p>
+      <div class="actions">
+        <button>Einzelperson</button><button>Paar</button><button>Paar mit Rentenlücke</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Alle Daten löschen</h2>
+      <p>
+        Entfernt alle Personen, Bausteine und Sparziele aus diesem Browser. Das lässt sich nicht
+        rückgängig machen.
+      </p>
+      <div class="actions"><button>Alle Daten löschen …</button></div>
+    </div>
+
+    <div class="card">
+      <h2>Bestätigungsdialog (Beispiel „Ersetzen“)</h2>
+      <dialog open aria-labelledby="dlg-title" style="position: static">
+        <h3 id="dlg-title">Alle aktuellen Daten ersetzen?</h3>
+        <p>
+          Es werden 2 Personen importiert. Deine aktuellen Daten werden vorher als Sicherung
+          heruntergeladen.
+        </p>
+        <div class="actions">
+          <button>Sicherung laden und ersetzen</button><button autofocus>Abbrechen</button>
+        </div>
+      </dialog>
+      <p class="hint">
+        Fokus liegt zuerst auf „Abbrechen“; Esc schließt; Tab bleibt im Dialog. Beim Löschen bietet
+        der Dialog zuerst „Daten exportieren“ an.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Hinweis</h2>
+      <p class="hint">
+        Die App gibt keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.
+      </p>
+    </div>
+  </main>
+</html>

@@ -1,0 +1,110 @@
+{
+  "name": "b05-custom-subsidy-other-health",
+  "description": "Custom subsidy 25, employer extra 20, other health 11 %, payout 65 to 90",
+  "synthetic": true,
+  "scenario": "neutral",
+  "input": {
+    "employeeContributionMonthlyGross": 200,
+    "employerSubsidyMode": "custom",
+    "employerContributionMonthly": 20,
+    "costPercentPerYear": 1.0,
+    "startMonth": "2027-01",
+    "payoutStartAge": 65,
+    "payoutEndAge": 90,
+    "employerSubsidyCustomMonthly": 25
+  },
+  "profile": {
+    "birthYear": 1985,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": []
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "other",
+      "otherRatePercent": 11,
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "legal": {
+    "pension": {
+      "pensionValue": 42.52,
+      "averageEarningsYearly": 51944,
+      "regularRetirementAge": 67,
+      "regularAgeFromBirthYear": 1964,
+      "regularAgeBeforeRaise": 65,
+      "regularAgeRaiseFirstBirthYear": 1947,
+      "regularAgeRaisePhase1LastBirthYear": 1958,
+      "regularAgeRaisePhase1MonthsPerYear": 1,
+      "regularAgeRaisePhase2MonthsPerYear": 2,
+      "earlyReductionPercentPerMonth": 0.3,
+      "maxEarlyReductionPercent": 14.4,
+      "lateIncreasePercentPerMonth": 0.5,
+      "taxableShareBasePercent": 84,
+      "taxableShareBaseYear": 2026,
+      "taxableShareIncreasePerYear": 0.5,
+      "taxableShareMaxPercent": 100
+    },
+    "social": {
+      "healthGeneralRatePercent": 14.6,
+      "healthAdditionalRatePercent": 2.9,
+      "careRatePercent": 3.6,
+      "careRateChildlessPercent": 4.2,
+      "contributionCeilingPensionMonthly": 8450,
+      "referenceIncomeMonthly": 3955,
+      "occupationalHealthAllowanceMonthly": 197.75,
+      "occupationalCareThresholdMonthly": 197.75,
+      "occupationalSocialInsuranceFreeMonthly": 338,
+      "occupationalTaxFreeMonthly": 676,
+      "employerSubsidyPercent": 15
+    },
+    "incomeTax": {
+      "basicAllowance": 12348,
+      "zone2Limit": 17799,
+      "zone3Limit": 69878,
+      "zone4Limit": 277825,
+      "zone2CoefficientY": 914.51,
+      "zone2CoefficientBase": 1400,
+      "zone3CoefficientZ": 173.1,
+      "zone3CoefficientBase": 2397,
+      "zone3Constant": 1034.87,
+      "zone4RatePercent": 42,
+      "zone4Constant": 11135.63,
+      "zone5RatePercent": 45,
+      "zone5Constant": 19470.38,
+      "pensionIncomeLumpSumDeductionYearly": 102,
+      "specialExpensesLumpSumYearly": 36
+    },
+    "unverified": []
+  },
+  "currentYear": 2026,
+  "expected": {
+    "statutoryLossMonthlyToday": 45.18527645156322,
+    "subsidyMonthly": 25,
+    "intoContractMonthly": 245,
+    "taxSaving": 70.0,
+    "socialSaving": 40.0,
+    "netEffort": 90.0,
+    "capitalAtPayout": 109975.17546484477,
+    "contributedTotal": 67620.0,
+    "monthlyNominal": 465.16594978677756,
+    "grossReal": 289.20366643992116,
+    "tax": 0.0,
+    "health": 51.168254476545535,
+    "care": 0.0,
+    "netNominal": 413.997695310232,
+    "netReal": 257.39126313152985,
+    "taxAndContributionsReal": 31.81240330839133
+  }
+}

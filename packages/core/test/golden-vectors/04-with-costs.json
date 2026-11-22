@@ -1,0 +1,54 @@
+{
+  "name": "04-with-costs",
+  "description": "TER, entry fee, custody fee EUR and percent",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 10000,
+    "monthlyContribution": 400,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 15,
+    "lumpSums": [],
+    "ter": 0.2,
+    "entryFeePercent": 2,
+    "custodyFeeEurPerYear": 12,
+    "custodyFeePercentPerYear": 0.1,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": false
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "expected": {
+    "pessimistic": {
+      "grossFinalValue": 101504.05962069168,
+      "totalContributions": 82000.0,
+      "gainBeforeTax": 19504.05962069168,
+      "tax": 0.0,
+      "finalValueAfterTax": 101504.05962069168,
+      "finalValueReal": 75419.01145180676
+    },
+    "neutral": {
+      "grossFinalValue": 121357.47871772897,
+      "totalContributions": 82000.0,
+      "gainBeforeTax": 39357.47871772897,
+      "tax": 0.0,
+      "finalValueAfterTax": 121357.47871772897,
+      "finalValueReal": 90170.39428154082
+    },
+    "optimistic": {
+      "grossFinalValue": 145719.44687596025,
+      "totalContributions": 82000.0,
+      "gainBeforeTax": 63719.446875960246,
+      "tax": 0.0,
+      "finalValueAfterTax": 145719.44687596025,
+      "finalValueReal": 108271.69547461793
+    }
+  }
+}

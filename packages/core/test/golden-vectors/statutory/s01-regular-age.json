@@ -1,0 +1,103 @@
+{
+  "name": "s01-regular-age",
+  "description": "Retirement at 67, KVdR with children",
+  "synthetic": true,
+  "input": {
+    "projectedMonthlyPensionToday": 1800,
+    "statementYear": 2026,
+    "retirementAge": 67
+  },
+  "profile": {
+    "birthYear": 1985,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": []
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "legal": {
+    "pension": {
+      "pensionValue": 42.52,
+      "averageEarningsYearly": 51944,
+      "regularRetirementAge": 67,
+      "regularAgeFromBirthYear": 1964,
+      "regularAgeBeforeRaise": 65,
+      "regularAgeRaiseFirstBirthYear": 1947,
+      "regularAgeRaisePhase1LastBirthYear": 1958,
+      "regularAgeRaisePhase1MonthsPerYear": 1,
+      "regularAgeRaisePhase2MonthsPerYear": 2,
+      "earlyReductionPercentPerMonth": 0.3,
+      "maxEarlyReductionPercent": 14.4,
+      "lateIncreasePercentPerMonth": 0.5,
+      "taxableShareBasePercent": 84,
+      "taxableShareBaseYear": 2026,
+      "taxableShareIncreasePerYear": 0.5,
+      "taxableShareMaxPercent": 100
+    },
+    "social": {
+      "healthGeneralRatePercent": 14.6,
+      "healthAdditionalRatePercent": 2.9,
+      "careRatePercent": 3.6,
+      "careRateChildlessPercent": 4.2,
+      "contributionCeilingPensionMonthly": 8450,
+      "referenceIncomeMonthly": 3955,
+      "occupationalHealthAllowanceMonthly": 197.75,
+      "occupationalCareThresholdMonthly": 197.75,
+      "occupationalSocialInsuranceFreeMonthly": 338,
+      "occupationalTaxFreeMonthly": 676,
+      "employerSubsidyPercent": 15
+    },
+    "incomeTax": {
+      "basicAllowance": 12348,
+      "zone2Limit": 17799,
+      "zone3Limit": 69878,
+      "zone4Limit": 277825,
+      "zone2CoefficientY": 914.51,
+      "zone2CoefficientBase": 1400,
+      "zone3CoefficientZ": 173.1,
+      "zone3CoefficientBase": 2397,
+      "zone3Constant": 1034.87,
+      "zone4RatePercent": 42,
+      "zone4Constant": 11135.63,
+      "zone5RatePercent": 45,
+      "zone5Constant": 19470.38,
+      "pensionIncomeLumpSumDeductionYearly": 102,
+      "specialExpensesLumpSumYearly": 36
+    },
+    "unverified": []
+  },
+  "currentYear": 2026,
+  "expected": {
+    "retirementYear": 2052,
+    "yearsToRetirement": 26,
+    "monthsFromRegularAge": 0,
+    "adjustmentPercent": 0.0,
+    "factor": 1.0,
+    "grossNominal": 3420.5268614043694,
+    "grossReal": 2044.0359955854578,
+    "taxableSharePercent": 97.0,
+    "tax": 240.69330544792064,
+    "health": 299.29610037288234,
+    "care": 123.1389670105573,
+    "netNominal": 2757.398488573009,
+    "netReal": 1647.7642167973204,
+    "taxableReal": 1982.714915717894,
+    "contributionsReal": 252.43844545480403,
+    "taxAndContributionsReal": 396.2717787881374
+  }
+}

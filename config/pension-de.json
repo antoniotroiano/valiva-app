@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "description": "Statutory pension parameters (Germany). Not tax or pension advice. Review once a year (pension value changes on 1 July).",
+  "values": {
+    "pensionValue": {
+      "value": 42.52,
+      "unit": "EUR",
+      "validFrom": "2026-07-01",
+      "validTo": null,
+      "source": "Aktueller Rentenwert per entitlement point from 2026-07-01 (DRV, Bundesregierung); informational, the projection starts from the pension statement",
+      "sourceDe": "Aktueller Rentenwert je Entgeltpunkt ab 01.07.2026 (DRV, Bundesregierung); nur zur Information, die Prognose startet bei der Renteninformation",
+      "status": "confirmed"
+    },
+    "averageEarningsYearly": {
+      "value": 51944,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Provisional average earnings 2026 (Anlage 1 SGB VI, gesetze-im-internet.de, checked 2026-11-19); one entitlement point equals one year of contributions on this income",
+      "sourceDe": "Vorläufiges Durchschnittsentgelt 2026 (Anlage 1 SGB VI, gesetze-im-internet.de, geprüft am 19.11.2026); ein Entgeltpunkt entspricht einem Beitragsjahr mit diesem Einkommen",
+      "status": "confirmed"
+    },
+    "regularRetirementAge": {
+      "value": 67,
+      "unit": "years",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "Regular retirement age for birth year 1964 and later (DRV)",
+      "sourceDe": "Regelaltersgrenze für Jahrgang 1964 und jünger (DRV)",
+      "status": "confirmed"
+    },
+    "regularAgeFromBirthYear": {
+      "value": 1964,
+      "unit": "year",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "First birth year with regular retirement age 67 (DRV); earlier birth years follow the table of §235 SGB VI",
+      "sourceDe": "Erster Jahrgang mit Regelaltersgrenze 67 (DRV); frühere Jahrgänge nach der Tabelle in §235 SGB VI",
+      "status": "confirmed"
+    },
+    "regularAgeBeforeRaise": {
+      "value": 65,
+      "unit": "years",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "§235 SGB VI, gesetze-im-internet.de, checked 2026-11-19 - Regular retirement age for birth years before the raise",
+      "sourceDe": "§235 SGB VI, gesetze-im-internet.de, geprüft am 19.11.2026 - Regelaltersgrenze für die Jahrgänge vor der Anhebung",
+      "status": "confirmed"
+    },
+    "regularAgeRaiseFirstBirthYear": {
+      "value": 1947,
+      "unit": "year",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "§235 SGB VI, gesetze-im-internet.de, checked 2026-11-19 - First birth year with a higher regular age (1 month)",
+      "sourceDe": "§235 SGB VI, gesetze-im-internet.de, geprüft am 19.11.2026 - Erster Jahrgang mit angehobener Regelaltersgrenze (1 Monat)",
+      "status": "confirmed"
+    },
+    "regularAgeRaisePhase1LastBirthYear": {
+      "value": 1958,
+      "unit": "year",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "§235 SGB VI, gesetze-im-internet.de, checked 2026-11-19 - Last birth year of the 1-month steps (12 months, age 66)",
+      "sourceDe": "§235 SGB VI, gesetze-im-internet.de, geprüft am 19.11.2026 - Letzter Jahrgang der Ein-Monats-Schritte (12 Monate, Alter 66)",
+      "status": "confirmed"
+    },
+    "regularAgeRaisePhase1MonthsPerYear": {
+      "value": 1,
+      "unit": "months",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "§235 SGB VI, gesetze-im-internet.de, checked 2026-11-19 - Raise per birth year until the last year of phase 1",
+      "sourceDe": "§235 SGB VI, gesetze-im-internet.de, geprüft am 19.11.2026 - Anhebung je Jahrgang bis zum letzten Jahrgang der ersten Phase",
+      "status": "confirmed"
+    },
+    "regularAgeRaisePhase2MonthsPerYear": {
+      "value": 2,
+      "unit": "months",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "§235 SGB VI, gesetze-im-internet.de, checked 2026-11-19 - Raise per birth year after phase 1 (up to birth year 1963 = 22 months)",
+      "sourceDe": "§235 SGB VI, gesetze-im-internet.de, geprüft am 19.11.2026 - Anhebung je Jahrgang nach der ersten Phase (bis Jahrgang 1963 = 22 Monate)",
+      "status": "confirmed"
+    },
+    "earlyReductionPercentPerMonth": {
+      "value": 0.3,
+      "unit": "percent_per_month",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "Deduction per month of early retirement, permanent (DRV)",
+      "sourceDe": "Abschlag je Monat vorzeitigen Rentenbeginns, dauerhaft (DRV)",
+      "status": "confirmed"
+    },
+    "maxEarlyReductionPercent": {
+      "value": 14.4,
+      "unit": "percent",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "Maximum deduction, 48 months x 0.3 % (DRV)",
+      "sourceDe": "Höchstabschlag, 48 Monate × 0,3 % (DRV)",
+      "status": "confirmed"
+    },
+    "lateIncreasePercentPerMonth": {
+      "value": 0.5,
+      "unit": "percent_per_month",
+      "validFrom": "2012-01-01",
+      "validTo": null,
+      "source": "Supplement per month after the regular retirement age (DRV)",
+      "sourceDe": "Zuschlag je Monat nach der Regelaltersgrenze (DRV)",
+      "status": "confirmed"
+    },
+    "taxableShareBasePercent": {
+      "value": 84.0,
+      "unit": "percent",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Taxable share of a pension starting in the base year (DRV Rheinland 2026)",
+      "sourceDe": "Besteuerungsanteil bei Rentenbeginn im Basisjahr (DRV Rheinland 2026)",
+      "status": "confirmed"
+    },
+    "taxableShareBaseYear": {
+      "value": 2026,
+      "unit": "year",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Base year of the taxable share (DRV Rheinland 2026)",
+      "sourceDe": "Basisjahr des Besteuerungsanteils (DRV Rheinland 2026)",
+      "status": "confirmed"
+    },
+    "taxableShareIncreasePerYear": {
+      "value": 0.5,
+      "unit": "percentage_points_per_year",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Yearly increase of the taxable share, Wachstumschancengesetz (several sources)",
+      "sourceDe": "Jährlicher Anstieg des Besteuerungsanteils, Wachstumschancengesetz (mehrere Quellen)",
+      "status": "confirmed"
+    },
+    "taxableShareMaxPercent": {
+      "value": 100,
+      "unit": "percent",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Taxable share reaches 100 % for a pension starting in 2058 (several sources)",
+      "sourceDe": "Besteuerungsanteil erreicht 100 % bei Rentenbeginn 2058 (mehrere Quellen)",
+      "status": "confirmed"
+    },
+    "survivorPensionRateNewPercent": {
+      "value": 55,
+      "unit": "percent",
+      "validFrom": "2002-01-01",
+      "validTo": null,
+      "source": "Pension factor of the large widow's/widower's pension after the third month (§67 No. 6 SGB VI, gesetze-im-internet.de, checked 2026-11-20); for marriages from 2002 on",
+      "sourceDe": "Rentenartfaktor der großen Witwen-/Witwerrente nach dem dritten Monat (§67 Nr. 6 SGB VI, gesetze-im-internet.de, geprüft am 20.11.2026); für Ehen ab 2002",
+      "status": "confirmed"
+    },
+    "survivorPensionRateOldPercent": {
+      "value": 60,
+      "unit": "percent",
+      "validFrom": "2002-01-01",
+      "validTo": null,
+      "source": "Pension factor of the large widow's/widower's pension under old law (§255 Abs. 1 SGB VI, checked 2026-11-20): marriage before 2002 and one spouse born before 2 Jan 1962",
+      "sourceDe": "Rentenartfaktor der großen Witwen-/Witwerrente nach altem Recht (§255 Abs. 1 SGB VI, geprüft am 20.11.2026): Ehe vor 2002 und ein Ehegatte vor dem 2.1.1962 geboren",
+      "status": "confirmed"
+    },
+    "survivorIncomeFreeFactor": {
+      "value": 26.4,
+      "unit": "factor",
+      "validFrom": "2002-01-01",
+      "validTo": null,
+      "source": "Non-creditable income of a survivor per month as a multiple of the current pension value (§97 Abs. 2 Satz 1 SGB VI, checked 2026-11-20)",
+      "sourceDe": "Nicht anrechenbares Einkommen je Monat als Vielfaches des aktuellen Rentenwerts (§97 Abs. 2 Satz 1 SGB VI, geprüft am 20.11.2026)",
+      "status": "confirmed"
+    },
+    "survivorIncomeCreditedPercent": {
+      "value": 40,
+      "unit": "percent",
+      "validFrom": "2002-01-01",
+      "validTo": null,
+      "source": "Share of the income above the free amount that is credited against the survivor's pension (§97 Abs. 2 Satz 3 SGB VI, checked 2026-11-20)",
+      "sourceDe": "Anteil des übersteigenden Einkommens, der auf die Hinterbliebenenrente angerechnet wird (§97 Abs. 2 Satz 3 SGB VI, geprüft am 20.11.2026)",
+      "status": "confirmed"
+    }
+  }
+}

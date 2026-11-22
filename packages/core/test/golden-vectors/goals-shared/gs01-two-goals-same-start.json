@@ -1,0 +1,57 @@
+{
+  "name": "gs01-two-goals-same-start",
+  "description": "Two taxed goals, same start, pool 1,000: the first uses it, the second pays more tax",
+  "synthetic": true,
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "pool": 1000,
+  "goals": [
+    {
+      "id": "a",
+      "name": "Golden goal",
+      "targetAmount": 90000,
+      "currentAmount": 40000,
+      "monthlyContribution": 300,
+      "accountInterestPercent": 3,
+      "priority": 1,
+      "taxEnabled": true,
+      "taxFreeAllowancePerYear": 1000,
+      "startMonth": "2026-03"
+    },
+    {
+      "id": "b",
+      "name": "Golden goal",
+      "targetAmount": 80000,
+      "currentAmount": 30000,
+      "monthlyContribution": 200,
+      "accountInterestPercent": 2.5,
+      "priority": 2,
+      "taxEnabled": true,
+      "taxFreeAllowancePerYear": 1000,
+      "startMonth": "2026-03"
+    }
+  ],
+  "expected": {
+    "a": {
+      "status": "reached",
+      "finalBalance": 90135.3416891791,
+      "interestGross": 18086.59618015534,
+      "tax": 2151.254490976167,
+      "interestNet": 15935.341689179171,
+      "seriesLength": 115,
+      "monthsToReach": 114,
+      "reachedMonth": "2035-09"
+    },
+    "b": {
+      "status": "reached",
+      "finalBalance": 80303.27645475446,
+      "interestGross": 19240.89875218238,
+      "tax": 3737.6222974279085,
+      "interestNet": 15503.276454754472,
+      "seriesLength": 175,
+      "monthsToReach": 174,
+      "reachedMonth": "2040-09"
+    }
+  }
+}

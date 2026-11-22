@@ -1,0 +1,256 @@
+{
+  "name": "d10-rising-contribution",
+  "description": "300 EUR rising 8 % every January: later years hit the 570 EUR monthly maximum",
+  "synthetic": true,
+  "scenario": "neutral",
+  "input": {
+    "ownContributionMonthly": 300,
+    "startMonth": "2028-04",
+    "variant": "standard",
+    "costPercentPerYear": 1.0,
+    "payoutStartAge": 67,
+    "payoutEndAge": 85,
+    "lumpSumSharePercent": 0,
+    "annualContributionIncreasePercent": 8
+  },
+  "profile": {
+    "birthYear": 1990,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": [2020]
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "depotLegal": {
+    "basicGrantTier1Limit": 360,
+    "basicGrantTier1RatePercent": 50,
+    "basicGrantTier2Limit": 1800,
+    "basicGrantTier2RatePercent": 25,
+    "childGrantRatePercent": 100,
+    "childGrantContributionLimit": 1800,
+    "childGrantMaxPerChild": 300,
+    "childGrantMaxAge": 18,
+    "youthBonusAmount": 200,
+    "youthBonusMaxAge": 25,
+    "minOwnContributionYearly": 120,
+    "maxContributionYearly": 6840,
+    "firstContributionYear": 2027,
+    "payoutStartAgeMin": 65,
+    "payoutStartAgeMax": 70,
+    "payoutEndAgeMin": 85,
+    "lumpSumMaxPercent": 30,
+    "standardCostCapPercent": 1,
+    "guaranteeLevelLowPercent": 80,
+    "guaranteeLevelHighPercent": 100
+  },
+  "currentYear": 2026,
+  "expected": {
+    "capitalAtPayout": 357433.66474470275,
+    "ownTotal": 180855.20821969945,
+    "allowanceTotal": 18660.0,
+    "modelCapital": 357433.66474470275,
+    "guaranteeFloor": 0.0,
+    "lumpSumGross": 0.0,
+    "planCapital": 357433.66474470275,
+    "monthlyNominal": 1968.815124039569,
+    "grossReal": 1065.6132507506077,
+    "tax": 6.466560855248977,
+    "health": 0.0,
+    "netNominal": 1962.34856318432,
+    "netReal": 1062.1132507506077,
+    "taxAndContributionsReal": 3.5,
+    "lumpNet": 0.0,
+    "lumpNetReal": 0.0,
+    "allowancesByYear": [
+      {
+        "year": 2028,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2029,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2030,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2031,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2032,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2033,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2034,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2035,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2036,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2037,
+        "basic": 540.0,
+        "child": 300,
+        "bonus": 0.0
+      },
+      {
+        "year": 2038,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2039,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2040,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2041,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2042,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2043,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2044,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2045,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2046,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2047,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2048,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2049,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2050,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2051,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2052,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2053,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2054,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2055,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      },
+      {
+        "year": 2056,
+        "basic": 540.0,
+        "child": 0,
+        "bonus": 0.0
+      }
+    ]
+  }
+}

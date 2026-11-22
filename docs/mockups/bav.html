@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Betriebliche Altersvorsorge</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Übersicht</a><a href="profil.html">Profil</a>
+    <span class="group">Bausteine</span>
+    <a class="sub-item" href="etf.html">ETF-Sparplan</a
+    ><a class="sub-item" href="rente.html">Gesetzliche Rente</a
+    ><a class="sub-item" href="depot.html">Altersvorsorgedepot</a
+    ><a class="sub-item" href="bav.html" aria-current="page">Betriebliche AV</a>
+    <a href="sparziele.html">Sparziele</a><a href="annahmen.html">Annahmen</a>
+  </nav>
+  <main>
+    <h1>Betriebliche Altersvorsorge</h1>
+    <p class="sub">
+      Was kostet dich die Entgeltumwandlung wirklich, und was bleibt nach Steuer und Abgaben als
+      Betriebsrente? <span class="badge">Prognose, keine Garantie</span>
+    </p>
+    <p class="note-mock">
+      Mockup, Beispielwerte erfunden und nach den Formeln aus Konzept 09 §5.4 gerechnet. Profil wie
+      in den anderen Mockups: Jahrgang 1985, 2 % Inflation, 20 % Steuersatz im Alter, 35 %
+      Grenzsteuersatz heute, 20 % Arbeitnehmer-Sozialabgaben, KVdR mit 2,9 % Zusatzbeitrag.
+      Umwandlung 200 € brutto pro Monat ab Januar 2027, Zuschuss automatisch (15 %), Kosten 1,0 %,
+      Auszahlbeginn 67, Auszahlplan bis 85 mit 2 % Rendite. Die Ansparphase endet im Dezember 2051,
+      weil die Auszahlung im Jahr 2052 (1985 + 67) beginnt. Unten folgen die weiteren Zustände.
+    </p>
+
+    <div class="grid">
+      <div>
+        <form class="card" aria-label="Eingaben Betriebliche Altersvorsorge">
+          <fieldset>
+            <legend>Beitrag</legend>
+            <label
+              >Entgeltumwandlung pro Monat, brutto (€)<input value="200" inputmode="decimal" /><span
+                class="hint"
+                >Der Betrag, der vor Steuer und Sozialabgaben von deinem Gehalt in die Betriebsrente
+                fließt. Steuerfrei bis 676 € im Monat, sozialabgabenfrei bis 338 € (2026).</span
+              ></label
+            >
+            <label
+              >Arbeitgeberzuschuss<select>
+                <option selected>Automatisch: 15 % auf den sozialabgabenfreien Teil</option>
+                <option>Eigener Betrag</option>
+              </select>
+              <span class="hint"
+                >Gesetzlicher Pflichtzuschuss. Konservativ angesetzt auf höchstens 338 € Umwandlung:
+                hier 30 € im Monat.</span
+              ></label
+            >
+            <label
+              >Zusätzlicher Arbeitgeberbeitrag pro Monat (€, optional)<input
+                value="0"
+                inputmode="decimal"
+              /><span class="hint"
+                >Nur falls dein Arbeitgeber freiwillig mehr zahlt als den Pflichtzuschuss.</span
+              ></label
+            >
+            <label
+              >Beitragsbeginn (Monat)<input value="2027-01" /><span class="hint"
+                >Der Monat, ab dem eingezahlt wird.</span
+              ></label
+            >
+          </fieldset>
+          <fieldset>
+            <legend>Kosten und Garantie</legend>
+            <label
+              >Kosten pro Jahr (%)<input value="1,0" inputmode="decimal" /><span class="hint"
+                >Abschluss-, Verwaltungs- und Fondskosten zusammen, als Abzug von der Rendite. Der
+                Vertrag zeigt sie meist als Effektivkosten.</span
+              ></label
+            >
+            <label
+              >Garantierte Mindestrendite (% p. a., optional)<input placeholder="z. B. 2,0" /><span
+                class="hint"
+                >Leer lassen, wenn dein Vertrag keine Garantie hat. Mit Wert gilt: Die Rendite nach
+                Kosten fällt in keinem Szenario unter diesen Satz.</span
+              ></label
+            >
+          </fieldset>
+          <fieldset>
+            <legend>Auszahlphase</legend>
+            <label
+              >Auszahlbeginn (Alter)<input value="67" inputmode="numeric" /><span class="hint"
+                >62 bis 70. Vorgeschlagen aus dem Profil, hier überschreibbar.</span
+              ></label
+            >
+            <button type="button" class="link">Zurück auf den Vorschlag aus dem Profil</button>
+            <label
+              >Auszahlplan bis (Alter)<input value="85" inputmode="numeric" /><span class="hint"
+                >Vorgeschlagen: deine Lebenserwartung aus dem Profil. Eine lebenslange Rente ist
+                nicht berechnet.</span
+              ></label
+            >
+          </fieldset>
+          <details>
+            <summary>Annahmen aus dem Profil (nur Anzeige)</summary>
+            <dl class="facts">
+              <dt>Rendite pessimistisch / neutral / optimistisch</dt>
+              <dd>3 % / 5 % / 7 %</dd>
+              <dt>Rendite in der Auszahlphase</dt>
+              <dd>2,0 %</dd>
+              <dt>Inflation p. a.</dt>
+              <dd>2,0 %</dd>
+              <dt>Grenzsteuersatz heute</dt>
+              <dd>35 %</dd>
+              <dt>Sozialabgaben Arbeitnehmer heute</dt>
+              <dd>20 %</dd>
+              <dt>Steuersatz im Alter</dt>
+              <dd>20 %</dd>
+              <dt>Krankenversicherung</dt>
+              <dd>KVdR, Zusatzbeitrag 2,9 %, Pflege 3,6 %</dd>
+            </dl>
+            <p><a href="profil.html">Im Profil ändern</a></p>
+          </details>
+        </form>
+
+        <div class="card">
+          <h2 style="margin-top: 0">Vereinfachungen</h2>
+          <p>
+            Nicht berechnet sind die Kapitalauszahlung mit Verbeitragung über 120 Monate, die
+            Doppelverbeitragung bei alten Verträgen, Direktzusage und Unterstützungskasse sowie die
+            lebenslange Rente. Der Netto-Aufwand ist eine Schätzung mit pauschalen Sätzen. Die
+            Krankenkassen-Freigrenzen sind noch nicht gesichert.
+          </p>
+        </div>
+      </div>
+
+      <section>
+        <p class="hint" style="margin-top: 0">Kennzahlen für das neutrale Szenario (5 %).</p>
+        <div class="kpis">
+          <div class="card kpi">
+            <span>Netto-Aufwand pro Monat (heute)</span><b>90 €</b
+            ><small>statt 200 € brutto, geschätzt</small>
+          </div>
+          <div class="card kpi">
+            <span>Einzahlung in den Vertrag pro Monat</span><b>230 €</b
+            ><small>200 € Umwandlung + 30 € Zuschuss</small>
+          </div>
+          <div class="card kpi"><span>Kapital bei Auszahlbeginn (2052)</span><b>117.418 €</b></div>
+          <div class="card kpi">
+            <span>Davon Umwandlung / Zuschuss</span><b>60.000 € / 9.000 €</b>
+          </div>
+          <div class="card kpi"><span>Brutto pro Monat (nominal)</span><b>647 €</b></div>
+          <div class="card kpi"><span>Brutto pro Monat (Kaufkraft heute)</span><b>386 €</b></div>
+          <div class="card kpi"><span>Steuer und Abgaben pro Monat (heute)</span><b>124 €</b></div>
+          <div class="card kpi"><span>Netto pro Monat (Kaufkraft heute)</span><b>262 €</b></div>
+        </div>
+
+        <div class="card">
+          <h2 style="margin-top: 0">Netto-Aufwand: so wird aus 200 € Umwandlung 90 €</h2>
+          <table>
+            <tr>
+              <th>Posten</th>
+              <th>Pro Monat</th>
+            </tr>
+            <tr>
+              <td>Umwandlung brutto</td>
+              <td>200 €</td>
+            </tr>
+            <tr>
+              <td>Steuerersparnis: 200 € (bis 676 €) × 35 % Grenzsteuersatz</td>
+              <td>− 70 €</td>
+            </tr>
+            <tr>
+              <td>Sozialabgaben-Ersparnis: 200 € (bis 338 €) × 20 %</td>
+              <td>− 40 €</td>
+            </tr>
+            <tr class="sum">
+              <td>Netto-Aufwand</td>
+              <td>90 €</td>
+            </tr>
+          </table>
+          <p class="hint">
+            Der Zuschuss des Arbeitgebers von 30 € kommt obendrauf und kostet dich nichts. Die
+            Ersparnis fällt heute an, sinkt aber später durch niedrigere gesetzliche Rente etwas
+            (nicht berechnet). Schätzung mit deinen Sätzen aus dem Profil.
+          </p>
+        </div>
+
+        <div class="card">
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              Szenarien im Vergleich
+            </caption>
+            <tr>
+              <th>Szenario</th>
+              <th>Kapital 2052</th>
+              <th>Brutto/Monat nominal</th>
+              <th>Brutto/Monat heute</th>
+              <th>Netto/Monat heute</th>
+            </tr>
+            <tr>
+              <td>Pessimistisch (3 %)</td>
+              <td>89.358 €</td>
+              <td>492 €</td>
+              <td>294 €</td>
+              <td>208 €</td>
+            </tr>
+            <tr class="sum">
+              <td>Neutral (5 %)</td>
+              <td>117.418 €</td>
+              <td>647 €</td>
+              <td>386 €</td>
+              <td>262 €</td>
+            </tr>
+            <tr>
+              <td>Optimistisch (7 %)</td>
+              <td>156.304 €</td>
+              <td>861 €</td>
+              <td>514 €</td>
+              <td>338 €</td>
+            </tr>
+          </table>
+        </div>
+
+        <div
+          class="card"
+          role="img"
+          aria-label="Liniendiagramm: Eingezahlt werden bis 2051 insgesamt 69.000 Euro inklusive Zuschuss. Das Kapital wächst im neutralen Szenario auf 117.418 Euro, pessimistisch auf 89.358 Euro und optimistisch auf 156.304 Euro."
+        >
+          <svg viewBox="0 0 600 220" width="100%">
+            <rect width="600" height="220" fill="none" stroke="var(--line)" />
+            <polyline
+              fill="none"
+              stroke="var(--muted)"
+              stroke-width="2"
+              points="30,200 150,178 270,156 390,134 510,112 570,100"
+            />
+            <polyline
+              fill="none"
+              stroke="var(--pess)"
+              stroke-width="3"
+              stroke-dasharray="6 4"
+              points="30,200 150,172 270,142 390,114 510,84 570,70"
+            />
+            <polyline
+              fill="none"
+              stroke="var(--neu)"
+              stroke-width="3"
+              points="30,200 150,170 270,134 390,98 510,58 570,42"
+            />
+            <polyline
+              fill="none"
+              stroke="var(--opt)"
+              stroke-width="3"
+              stroke-dasharray="2 4"
+              points="30,200 150,168 270,126 390,80 510,34 570,20"
+            />
+            <text x="40" y="20" fill="var(--text)" font-size="12">
+              grau: Umwandlung plus Zuschuss · - - pessimistisch · — neutral · ··· optimistisch
+              (Platzhalter)
+            </text>
+          </svg>
+          <p class="hint">
+            Textzusammenfassung: Aus 69.000 € Umwandlung und Zuschuss werden bis 2052 im neutralen
+            Szenario 117.418 €, im pessimistischen 89.358 € und im optimistischen 156.304 €.
+          </p>
+        </div>
+
+        <div class="card">
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              So wird aus dem Kapital die Nettorente (neutral)
+            </caption>
+            <tr>
+              <th>Schritt</th>
+              <th>Pro Monat nominal</th>
+              <th>Kaufkraft heute</th>
+            </tr>
+            <tr>
+              <td>Auszahlplan 2052 bis 2070 (216 Monate, 2 % Rendite, Kapital 117.418 €)</td>
+              <td>647 €</td>
+              <td>386 €</td>
+            </tr>
+            <tr>
+              <td>Steuer (voll steuerpflichtig × 20 %)</td>
+              <td>− 129 €</td>
+              <td>− 77 €</td>
+            </tr>
+            <tr>
+              <td>Krankenversicherung: 17,5 % auf den Teil über dem Freibetrag (heute 197,75 €)</td>
+              <td>− 55 €</td>
+              <td>− 33 €</td>
+            </tr>
+            <tr>
+              <td>Pflegeversicherung: 3,6 % auf die gesamte Rente (über der Freigrenze)</td>
+              <td>− 23 €</td>
+              <td>− 14 €</td>
+            </tr>
+            <tr class="sum">
+              <td>Netto</td>
+              <td>439 €</td>
+              <td>262 €</td>
+            </tr>
+          </table>
+          <p class="hint">
+            Freibetrag und Freigrenze (197,75 € im Jahr 2026) werden wie die Rente in Kaufkraft von
+            heute verglichen und steigen im Modell mit der Inflation (Annahme, siehe Abweichung in
+            den Notizen). Die Rate bleibt nominal gleich und verliert in der Auszahlphase an
+            Kaufkraft.
+            <span class="warn"
+              >⚠ Freibetrag, Freigrenze und Bezugsgröße (3.955 €) sind noch nicht gesichert (Status:
+              nicht bestätigt). Die Krankenkasse legt tatsächlich den Satz fest.</span
+            >
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <h2>Zustand: Umwandlung über 338 € (Zuschuss gedeckelt)</h2>
+    <div class="notice info" role="status">
+      <strong>Der Zuschuss steigt nur bis 338 € Umwandlung.</strong> Bei 400 € im Monat sind es
+      50,70 € Zuschuss (15 % von 338 €), nicht 60 €. Der Netto-Aufwand liegt bei 192 € (140 €
+      Steuerersparnis, 68 € Sozialabgaben-Ersparnis auf die ersten 338 €). Kapital 2052 neutral:
+      230.089 €, Netto-Rente heute 481 €.
+    </div>
+
+    <h2>Zustand: Rente unter der Pflege-Freigrenze</h2>
+    <div class="notice info" role="status">
+      <strong>Keine Kranken- und Pflegebeiträge.</strong> Bei 100 € Umwandlung liegt die Rente in
+      Kaufkraft von heute bei 193 € und damit unter 197,75 €. Es fallen weder KV noch Pflege an,
+      netto bleiben 155 € von 193 € brutto. Die Pflege-Freigrenze ist eine harte Kante: Schon bei
+      197,76 € Rente wären 7,12 € Pflegebeitrag fällig, bei 197,75 € 0 €.
+      <span class="warn">⚠ Status: nicht bestätigt.</span>
+    </div>
+
+    <h2>Zustand: Garantie greift</h2>
+    <div class="notice info" role="status">
+      <strong>Garantierte Mindestrendite 2,0 % wirkt.</strong> Im Stresstest mit einem Szenario von
+      −2 % (nach Kosten −3 %) läge das Kapital bei 48.238 €. Mit Garantie rechnet die App mit
+      mindestens 2,0 % nach Kosten: Kapital 89.358 €, Brutto-Rente 492 € im Monat (294 € heute). Die
+      Garantie gilt hier als Untergrenze der Rendite nach Kosten für die ganze Laufzeit, nicht als
+      Kapitalgarantie auf die Beiträge.
+    </div>
+
+    <h2>Zustand: Zusätzlicher Arbeitgeberbeitrag und eigener Zuschuss</h2>
+    <div class="notice info" role="status">
+      <strong>Bei „Eigener Betrag“</strong> gibt es kein automatisches Deckeln auf 338 €: Der
+      eingetragene Zuschuss wird so übernommen. Der Netto-Aufwand ändert sich dadurch nicht, nur die
+      Einzahlung in den Vertrag.
+    </div>
+
+    <h2>Zustand: Eingabefehler</h2>
+    <div class="card">
+      <label
+        >Entgeltumwandlung pro Monat, brutto (€)<input
+          value="800"
+          aria-invalid="true"
+          aria-describedby="e1"
+        /><span id="e1" class="err" role="alert"
+          >Die Umwandlung darf höchstens 676 € im Monat betragen (steuerfreie Grenze 2026).</span
+        ></label
+      >
+      <label
+        >Auszahlbeginn (Alter)<input value="60" aria-invalid="true" aria-describedby="e2" /><span
+          id="e2"
+          class="err"
+          role="alert"
+          >Der Auszahlbeginn muss zwischen 62 und 70 Jahren liegen.</span
+        ></label
+      >
+      <label
+        >Auszahlplan bis (Alter)<input value="66" aria-invalid="true" aria-describedby="e3" /><span
+          id="e3"
+          class="err"
+          role="alert"
+          >Der Auszahlplan muss nach dem Auszahlbeginn enden.</span
+        ></label
+      >
+      <label
+        >Beitragsbeginn (Monat)<input
+          value="2052-03"
+          aria-invalid="true"
+          aria-describedby="e4"
+        /><span id="e4" class="err" role="alert"
+          >Der Beitragsbeginn muss vor dem Auszahlbeginn liegen (2052).</span
+        ></label
+      >
+      <p class="hint">
+        Bei einem Fehler zeigt die rechte Seite keine Kennzahlen, sondern den Hinweis.
+      </p>
+    </div>
+
+    <h2>Zustand: leer</h2>
+    <div class="notice info" role="status">
+      <strong>Noch keine Umwandlung eingetragen.</strong> Trage oben einen Monatsbetrag ein, dann
+      rechnen wir Netto-Aufwand, Kapital und Betriebsrente.
+      <button type="button">Zum Feld springen</button>
+    </div>
+
+    <p class="disclaimer">
+      Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie. Steuer, Sozialabgaben und
+      Freigrenzen sind vereinfachte Pauschalen und können sich ändern; die Krankenkasse legt die
+      tatsächlichen Beiträge fest.
+    </p>
+  </main>
+</html>

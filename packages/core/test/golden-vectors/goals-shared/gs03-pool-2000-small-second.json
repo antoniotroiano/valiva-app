@@ -1,0 +1,57 @@
+{
+  "name": "gs03-pool-2000-small-second",
+  "description": "Pool 2,000 (e.g. a couple's allowance); the second goal fits into what is left",
+  "synthetic": true,
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "pool": 2000,
+  "goals": [
+    {
+      "id": "a",
+      "name": "Golden goal",
+      "targetAmount": 100000,
+      "currentAmount": 50000,
+      "monthlyContribution": 400,
+      "accountInterestPercent": 3,
+      "priority": 1,
+      "taxEnabled": true,
+      "taxFreeAllowancePerYear": 2000,
+      "startMonth": "2026-02"
+    },
+    {
+      "id": "b",
+      "name": "Golden goal",
+      "targetAmount": 35000,
+      "currentAmount": 20000,
+      "monthlyContribution": 100,
+      "accountInterestPercent": 2,
+      "priority": 2,
+      "taxEnabled": true,
+      "taxFreeAllowancePerYear": 2000,
+      "startMonth": "2026-07"
+    }
+  ],
+  "expected": {
+    "a": {
+      "status": "reached",
+      "finalBalance": 100313.2199282992,
+      "interestGross": 15987.549430381781,
+      "tax": 474.32950208256,
+      "interestNet": 15513.21992829922,
+      "seriesLength": 88,
+      "monthsToReach": 87,
+      "reachedMonth": "2033-05"
+    },
+    "b": {
+      "status": "reached",
+      "finalBalance": 35106.79158740959,
+      "interestGross": 4917.084166427211,
+      "tax": 710.2925790176337,
+      "interestNet": 4206.791587409578,
+      "seriesLength": 110,
+      "monthsToReach": 109,
+      "reachedMonth": "2035-08"
+    }
+  }
+}

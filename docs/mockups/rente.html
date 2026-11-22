@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Gesetzliche Rente</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Übersicht</a><a href="profil.html">Profil</a>
+    <span class="group">Bausteine</span>
+    <a class="sub-item" href="etf.html">ETF-Sparplan</a
+    ><a class="sub-item" href="rente.html" aria-current="page">Gesetzliche Rente</a>
+    <a href="sparziele.html">Sparziele</a><a href="annahmen.html">Annahmen</a>
+  </nav>
+  <main>
+    <h1>Gesetzliche Rente</h1>
+    <p class="sub">
+      Was bleibt von deiner Rente aus der Renteninformation, nach Abschlag, Anpassung, Steuer und
+      Abgaben? <span class="badge">Prognose, keine Garantie</span>
+    </p>
+    <p class="note-mock">
+      Mockup, Beispielwerte erfunden und nach den Formeln aus Konzept 09 §5.2 gerechnet (Profil wie
+      im Mockup Profil: Jahrgang 1985, 2,5 % Anpassung, 2 % Inflation, 20 % Steuersatz, KVdR mit
+      Kindern). Keine Szenarien, da die Rente in allen drei gleich ist.
+    </p>
+
+    <div class="grid">
+      <div>
+        <form class="card" aria-label="Eingaben gesetzliche Rente">
+          <fieldset>
+            <legend>Renteninformation</legend>
+            <label
+              >Voraussichtliche Monatsrente laut Renteninformation (€)<input value="1.800" /><span
+                class="hint"
+                >Steht in deiner Renteninformation unter „Regelaltersrente bei Beitragszahlung bis
+                zur Altersgrenze“, in heutigen Werten, ohne künftige Anpassung.</span
+              ></label
+            >
+            <label
+              >Jahr der Renteninformation<input value="2026" inputmode="numeric" /><span
+                class="hint"
+                >Ab diesem Jahr wird die Rente angepasst.</span
+              ></label
+            >
+          </fieldset>
+          <fieldset>
+            <legend>Rentenbeginn</legend>
+            <label
+              >Alter bei Rentenbeginn<input value="67" inputmode="numeric" /><span class="hint"
+                >63 bis 70. Vorgeschlagen aus dem Profil (67); hier überschreibbar.</span
+              ></label
+            >
+            <label
+              >Regelaltersgrenze (Jahre)<input value="67" disabled /><span class="hint"
+                >Für Jahrgang 1985 aus der Konfiguration. Nur bei Jahrgängen vor 1964 selbst
+                einzugeben.</span
+              ></label
+            >
+          </fieldset>
+          <details>
+            <summary>Annahmen aus dem Profil (nur Anzeige)</summary>
+            <dl class="facts">
+              <dt>Rentenanpassung p. a.</dt>
+              <dd>2,5 %</dd>
+              <dt>Inflation p. a.</dt>
+              <dd>2,0 %</dd>
+              <dt>Steuersatz im Alter</dt>
+              <dd>20 %</dd>
+              <dt>Krankenversicherung</dt>
+              <dd>KVdR</dd>
+            </dl>
+            <p><a href="profil.html">Im Profil ändern</a></p>
+          </details>
+        </form>
+
+        <div class="card">
+          <h2 style="margin-top: 0">Vereinfachung</h2>
+          <p>
+            Ein früherer Rentenbeginn senkt in Wirklichkeit auch deine Entgeltpunkte, weil dir
+            Beitragsjahre fehlen. Hier wird nur der Abschlag von 0,3 % je Monat angesetzt. Ein
+            späterer Beginn erhöht keine Entgeltpunkte, nur den Zuschlag von 0,5 % je Monat. Rechne
+            bei frühem Rentenbeginn deshalb mit einem niedrigeren Wert und schau in die
+            Renteninformation, ob dort eine Rente für deinen Wunschtermin steht.
+          </p>
+        </div>
+      </div>
+
+      <section>
+        <div class="kpis">
+          <div class="card kpi"><span>Rentenbeginn</span><b>2052</b></div>
+          <div class="card kpi"><span>Brutto pro Monat (nominal)</span><b>3.421 €</b></div>
+          <div class="card kpi"><span>Brutto pro Monat (Kaufkraft heute)</span><b>2.044 €</b></div>
+          <div class="card kpi"><span>Steuer und Abgaben pro Monat (heute)</span><b>649 €</b></div>
+          <div class="card kpi"><span>Netto pro Monat (Kaufkraft heute)</span><b>1.395 €</b></div>
+        </div>
+
+        <div
+          class="card"
+          role="img"
+          aria-label="Liniendiagramm: Die Hochrechnung der Bruttorente steigt nominal von 1.800 Euro im Jahr 2026 auf 3.421 Euro im Jahr 2052. In Kaufkraft von heute steigt sie von 1.800 Euro auf 2.044 Euro."
+        >
+          <svg viewBox="0 0 600 220" width="100%">
+            <rect width="600" height="220" fill="none" stroke="var(--line)" />
+            <polyline
+              fill="none"
+              stroke="var(--neu)"
+              stroke-width="3"
+              points="30,170 130,160 230,146 330,126 430,100 570,40"
+            />
+            <polyline
+              fill="none"
+              stroke="var(--muted)"
+              stroke-width="3"
+              stroke-dasharray="6 4"
+              points="30,170 130,168 230,166 330,164 430,161 570,157"
+            />
+            <text x="40" y="20" fill="var(--text)" font-size="12">
+              — nominal · - - Kaufkraft von heute (Brutto-Monatsrente bis Rentenbeginn, Platzhalter)
+            </text>
+          </svg>
+          <p class="hint">
+            Textzusammenfassung: Die Hochrechnung der Bruttorente wächst bis 2052 auf 3.421 € im
+            Monat. Nach Abzug der Inflation entspricht das 2.044 € heutiger Kaufkraft.
+          </p>
+        </div>
+
+        <div class="card">
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              So wird aus der Renteninformation die Nettorente
+            </caption>
+            <tr>
+              <th>Schritt</th>
+              <th>Pro Monat nominal</th>
+              <th>Kaufkraft heute</th>
+            </tr>
+            <tr>
+              <td>Renteninformation, heutige Werte</td>
+              <td>1.800 €</td>
+              <td>1.800 €</td>
+            </tr>
+            <tr>
+              <td>Nach Anpassung 2,5 % p. a. über 26 Jahre</td>
+              <td>3.421 €</td>
+              <td>2.044 €</td>
+            </tr>
+            <tr>
+              <td>Faktor Rentenbeginn 67 (Regelalter): × 1,000</td>
+              <td>3.421 €</td>
+              <td>2.044 €</td>
+            </tr>
+            <tr>
+              <td>Steuer (97,0 % steuerpflichtig × 20 %)</td>
+              <td>− 664 €</td>
+              <td>− 397 €</td>
+            </tr>
+            <tr>
+              <td>Krankenversicherung (8,75 %: halber Satz plus halber Zusatzbeitrag)</td>
+              <td>− 299 €</td>
+              <td>− 179 €</td>
+            </tr>
+            <tr>
+              <td>Pflegeversicherung (3,6 %, mit Kindern)</td>
+              <td>− 123 €</td>
+              <td>− 74 €</td>
+            </tr>
+            <tr class="sum">
+              <td>Netto</td>
+              <td>2.335 €</td>
+              <td>1.395 €</td>
+            </tr>
+          </table>
+          <p class="hint">
+            Steuer, KV und Pflege folgen den Sätzen aus Profil und Konfiguration.
+            <span class="warn"
+              >⚠ Der Zusatzbeitrag ist ein Durchschnitt, die Kassen weichen ab. Besteuerungsanteil:
+              bestätigt (Wachstumschancengesetz).</span
+            >
+          </p>
+        </div>
+
+        <div class="card">
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              Verlauf bis Rentenbeginn (Brutto pro Monat)
+            </caption>
+            <tr>
+              <th>Jahr</th>
+              <th>Alter</th>
+              <th>Nominal</th>
+              <th>Kaufkraft heute</th>
+            </tr>
+            <tr>
+              <td>2026</td>
+              <td>41</td>
+              <td>1.800 €</td>
+              <td>1.800 €</td>
+            </tr>
+            <tr>
+              <td>2031</td>
+              <td>46</td>
+              <td>2.037 €</td>
+              <td>1.845 €</td>
+            </tr>
+            <tr>
+              <td>2036</td>
+              <td>51</td>
+              <td>2.304 €</td>
+              <td>1.890 €</td>
+            </tr>
+            <tr>
+              <td>2041</td>
+              <td>56</td>
+              <td>2.607 €</td>
+              <td>1.937 €</td>
+            </tr>
+            <tr>
+              <td>2046</td>
+              <td>61</td>
+              <td>2.950 €</td>
+              <td>1.985 €</td>
+            </tr>
+            <tr>
+              <td>2051</td>
+              <td>66</td>
+              <td>3.337 €</td>
+              <td>2.034 €</td>
+            </tr>
+            <tr class="sum">
+              <td>2052 (Rentenbeginn)</td>
+              <td>67</td>
+              <td>3.421 €</td>
+              <td>2.044 €</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <h2>Zustand: früher Rentenbeginn mit 63</h2>
+    <div class="notice" role="status">
+      <strong>Abschlag von 14,4 %.</strong> Du gehst 48 Monate vor der Regelaltersgrenze in Rente.
+      Die Rente sinkt dauerhaft um 0,3 % je Monat. Brutto bei Beginn 2048: 2.653 € nominal, 1.716 €
+      heutige Kaufkraft; netto 1.178 €. Entgeltpunkte, die dir bis 67 noch zugewachsen wären, sind
+      hier nicht abgezogen (siehe Vereinfachung).
+    </div>
+
+    <h2>Zustand: später Rentenbeginn mit 70</h2>
+    <div class="notice info" role="status">
+      <strong>Zuschlag von 18 %.</strong> Du gehst 36 Monate nach der Regelaltersgrenze in Rente,
+      0,5 % je Monat. Brutto bei Beginn 2055: 4.347 € nominal, 2.448 € heutige Kaufkraft; netto
+      1.663 €. Weitere Entgeltpunkte durch Arbeit nach 67 sind nicht angesetzt.
+    </div>
+
+    <h2>Zustand: Eingabefehler</h2>
+    <div class="card">
+      <label
+        >Alter bei Rentenbeginn<input value="62" aria-invalid="true" aria-describedby="e3" /><span
+          id="e3"
+          class="err"
+          role="alert"
+          >Der Rentenbeginn muss zwischen 63 und 70 liegen.</span
+        ></label
+      >
+      <label
+        >Voraussichtliche Monatsrente (€)<input
+          value="−100"
+          aria-invalid="true"
+          aria-describedby="e4"
+        /><span id="e4" class="err" role="alert">Der Betrag darf nicht negativ sein.</span></label
+      >
+      <p class="hint">
+        Bei einem Fehler zeigt die rechte Seite keine Kennzahlen, sondern den Hinweis.
+      </p>
+    </div>
+
+    <h2>Zustand: leer</h2>
+    <div class="notice info" role="status">
+      <strong>Noch keine Renteninformation eingetragen.</strong> Trage oben den Betrag aus deiner
+      Renteninformation ein, dann rechnen wir Anpassung, Steuer und Abgaben.
+      <button type="button">Zum Feld springen</button>
+    </div>
+
+    <p class="disclaimer">
+      Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie. Die Abgaben- und Steuersätze
+      sind vereinfachte Pauschalen.
+    </p>
+  </main>
+</html>

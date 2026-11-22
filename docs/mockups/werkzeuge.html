@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Was-wäre-wenn und Druckansicht (Review 13 F-8, F-9)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <style>
+    .slider {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 12px;
+      align-items: center;
+      margin: 8px 0;
+    }
+    .slider input[type='range'] {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th,
+    td {
+      text-align: right;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    th:first-child {
+      text-align: left;
+    }
+    .neg {
+      color: #b42318;
+    }
+    .pos {
+      color: #15803d;
+    }
+    .printbox {
+      border: 2px dashed var(--line);
+      padding: 12px;
+      margin: 8px 0;
+      background: #fff;
+      color: #000;
+    }
+  </style>
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="gesamtsicht.html" aria-current="page">Rentenplan</a>
+  </nav>
+  <main>
+    <h1>Rentenplan</h1>
+
+    <h2>F-9 Was wäre, wenn? (Karte unter der Gesamtsicht, eingeklappt)</h2>
+    <div class="card">
+      <details open>
+        <summary>
+          <b>Was wäre, wenn …</b>
+          <span class="hint">Nur zum Ausprobieren, nichts wird gespeichert.</span>
+        </summary>
+        <div class="slider">
+          <label for="r">Rendite aller Szenarien</label><output>−1,0 Prozentpunkte</output>
+          <input id="r" type="range" min="-3" max="3" step="0.5" value="-1" />
+        </div>
+        <div class="slider">
+          <label for="s">ETF-Sparrate</label><output>+50 € pro Monat</output>
+          <input id="s" type="range" min="-200" max="500" step="50" value="50" />
+        </div>
+        <table>
+          <caption>
+            Netto pro Monat im Alter 67, Kaufkraft von heute
+          </caption>
+          <thead>
+            <tr>
+              <th>Monat</th>
+              <th>Pessimistisch</th>
+              <th>Neutral</th>
+              <th>Optimistisch</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Aktuelle Planung</th>
+              <td>2.082 €</td>
+              <td>2.304 €</td>
+              <td>2.637 €</td>
+            </tr>
+            <tr>
+              <th>Mit Änderung</th>
+              <td>1.790 €</td>
+              <td>2.050 €</td>
+              <td>2.400 €</td>
+            </tr>
+            <tr>
+              <th>Unterschied</th>
+              <td class="neg">−292 €</td>
+              <td class="neg">−254 €</td>
+              <td class="neg">−237 €</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Rentenlücke (neutral): 196 € → <b>450 €</b> pro Monat.</p>
+        <button>Zurücksetzen</button>
+        <p class="hint">
+          Die Rendite-Änderung gilt für alle drei Renditeszenarien und die Auszahlungsphase nicht.
+          Gesetzliche Rente bleibt unverändert.
+        </p>
+      </details>
+    </div>
+
+    <h2>F-8 Drucken / Als PDF speichern</h2>
+    <p>Button oben rechts in der Gesamtsicht: <button>Drucken / Als PDF speichern</button></p>
+    <div class="printbox">
+      <b>So sieht der Ausdruck aus</b>
+      <ul>
+        <li>Ohne Seitenleiste, Schalter, Eingabefelder und Buttons.</li>
+        <li>
+          Kopf: „Pathwise – Rentenplan, Stand 20.11.2026“ (der Name kommt aus der Config) und
+          Szenario „Neutral“.
+        </li>
+        <li>Hero, Tabelle, Zusammensetzung, Verlauf und alle Hinweise (aufgeklappt).</li>
+        <li>Fußzeile: „Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.“</li>
+        <li>Keine Personennamen, außer in der Haushaltsansicht, dort wie am Bildschirm.</li>
+        <li>
+          Hinweis im Browser-Druckdialog: „Als PDF speichern“ wählen. Kein neuer Code für PDF.
+        </li>
+      </ul>
+    </div>
+
+    <p class="hint">
+      F-5 (Hinterbliebenenrente) und F-6 (gemeinsamer Sparerpauschbetrag) ändern den Rechenkern und
+      brauchen vorher eine Entscheidung; sie folgen danach und haben kein Mockup.
+    </p>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

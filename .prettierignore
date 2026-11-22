@@ -1,0 +1,6 @@
+node_modules
+dist
+concept
+ETF_Investment_Tracker_Technische_Architektur_und_Umsetzung.md
+package-lock.json
+examples/*.workspace.json

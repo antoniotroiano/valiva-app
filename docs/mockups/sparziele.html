@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Sparziele</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Übersicht</a
+    ><a href="etf.html">ETF-Sparplan</a><a href="sparziele.html" aria-current="page">Sparziele</a
+    ><a href="annahmen.html">Annahmen</a>
+  </nav>
+  <main>
+    <h1>Sparziele</h1>
+    <p class="sub">
+      Wann erreichst du dein Ziel, und welche Rate brauchst du bis zum Wunschtermin?
+      <span class="badge">Prognose, keine Garantie</span>
+    </p>
+    <p class="note-mock">
+      Mockup, Beispielwerte erfunden. Unten folgen die weiteren Zustände: Ziel nicht erreichbar,
+      Abschnitt „Zielvermögen“ auf der ETF-Seite und die Sparziele auf der Übersicht.
+    </p>
+
+    <div class="grid">
+      <div>
+        <section class="card" aria-labelledby="goals-h">
+          <h2 id="goals-h" style="margin-top: 0">Meine Sparziele</h2>
+          <ul class="goal-list">
+            <li aria-current="true">
+              <div class="row"><strong>Neues Fahrrad</strong><span>500 € / 3.000 €</span></div>
+              <div
+                class="progress"
+                role="progressbar"
+                aria-valuenow="17"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-label="Fortschritt Neues Fahrrad"
+              >
+                <span style="width: 17%"></span>
+              </div>
+              <span class="hint">150 € pro Monat · Wunschtermin 12/2027</span>
+            </li>
+            <li>
+              <div class="row"><strong>Auto</strong><span>4.000 € / 12.000 €</span></div>
+              <div
+                class="progress"
+                role="progressbar"
+                aria-valuenow="33"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-label="Fortschritt Auto"
+              >
+                <span style="width: 33%"></span>
+              </div>
+              <span class="hint">300 € pro Monat · Wunschtermin 06/2029</span>
+            </li>
+          </ul>
+          <button type="button">Ziel hinzufügen</button>
+          <p class="hint">Sortiert nach Priorität (nur Anzeige, keine automatische Verteilung).</p>
+        </section>
+
+        <section class="card" aria-labelledby="budget-h">
+          <h2 id="budget-h" style="margin-top: 0">Sparbudget</h2>
+          <label
+            >Monatliches Sparbudget (€, optional)<input value="800" /><span class="hint"
+              >Wie viel du insgesamt pro Monat zurücklegen kannst.</span
+            ></label
+          >
+          <table>
+            <tr>
+              <td>Sparziele (2)</td>
+              <td>450 €</td>
+            </tr>
+            <tr>
+              <td>ETF-Sparplan (aktuelle Rate)</td>
+              <td>250 €</td>
+            </tr>
+            <tr class="sum">
+              <td>Rest zum Budget</td>
+              <td>100 €</td>
+            </tr>
+          </table>
+          <div class="notice" role="status" style="margin: 12px 0 0">
+            <strong>Variante bei Überschreitung (z. B. Budget 600 €):</strong> Deine Raten liegen
+            100 € über dem Budget. Das ist nur ein Hinweis, die Rechnung bleibt unverändert.
+          </div>
+        </section>
+
+        <form class="card" aria-label="Eingaben Ziel Neues Fahrrad">
+          <fieldset>
+            <legend>Ziel</legend>
+            <label>Name<input value="Neues Fahrrad" /></label>
+            <label>Zielbetrag (€)<input value="3.000" /></label>
+            <label>Aktueller Stand (€)<input value="500" /></label>
+            <label
+              >Monatliche Sparrate (€)<input value="150" /><span class="hint"
+                >Wird zu Monatsbeginn eingezahlt.</span
+              ></label
+            >
+            <label
+              >Wunschtermin (optional)<input type="month" value="2027-12" /><span class="hint"
+                >Ohne Datum rechnen wir nur, wann das Ziel erreicht wird.</span
+              ></label
+            >
+            <label>Startmonat<input type="month" value="2026-11" /></label>
+            <label>Priorität<input value="1" /></label>
+          </fieldset>
+          <details open>
+            <summary>Zins</summary>
+            <label
+              >Zins p. a. (%)<input value="2,5" /><span class="hint"
+                >Effektiver Jahreszins, wird auf Monate umgerechnet.</span
+              ></label
+            >
+            <p><strong>Zinsänderungen</strong></p>
+            <div class="row-inline">
+              <label>Ab Monat<input type="month" value="2027-07" /></label>
+              <label>Zins p. a. (%)<input value="2,0" /></label>
+            </div>
+            <button type="button">Zinsänderung hinzufügen</button>
+          </details>
+          <details open>
+            <summary>Steuer</summary>
+            <label
+              ><input type="checkbox" checked style="width: auto" /> Steuer auf Zinsen
+              berücksichtigen</label
+            >
+            <label
+              >Sparerpauschbetrag pro Jahr (€)<input value="1.000" /><span class="hint"
+                >Gilt nur für dieses Ziel. Er wird nicht mit anderen Zielen oder dem ETF-Sparplan
+                geteilt; wenn du ihn schon anderweitig nutzt, trage hier weniger ein.</span
+              ></label
+            >
+            <p class="hint">
+              Vereinfacht: 26,375 % auf Zinsen über dem Pauschbetrag, ohne Kirchensteuer. Werte noch
+              nicht gegen amtliche Quellen geprüft.
+            </p>
+          </details>
+          <button type="button">Ziel löschen</button>
+        </form>
+      </div>
+
+      <section>
+        <div class="notice" role="status">
+          <strong>Der Wunschtermin 12/2027 wird mit 150 € pro Monat verfehlt.</strong> Das Ziel wird
+          voraussichtlich im April 2028 erreicht. Für den Wunschtermin brauchst du 188,53 € pro
+          Monat.
+        </div>
+        <div class="kpis">
+          <div class="card kpi"><span>Ziel erreicht im</span><b>04/2028</b></div>
+          <div class="card kpi"><span>Dauer</span><b>17 Monate</b></div>
+          <div class="card kpi"><span>Rate für den Wunschtermin</span><b>188,53 €</b></div>
+          <div class="card kpi"><span>Zinsen nach Steuer</span><b>65,60 €</b></div>
+          <div class="card kpi"><span>Steuer auf Zinsen</span><b>0 €</b></div>
+        </div>
+        <div
+          class="card"
+          role="img"
+          aria-label="Liniendiagramm: Saldo steigt von 500 Euro auf etwa 3.100 Euro und schneidet im April 2028 die Linie des Zielbetrags von 3.000 Euro"
+        >
+          <svg viewBox="0 0 600 220" width="100%">
+            <rect width="600" height="220" fill="none" stroke="var(--line)" />
+            <line
+              x1="20"
+              y1="40"
+              x2="580"
+              y2="40"
+              stroke="var(--muted)"
+              stroke-width="2"
+              stroke-dasharray="6 4"
+            />
+            <polyline
+              fill="none"
+              stroke="var(--neu)"
+              stroke-width="3"
+              points="20,176 130,150 240,124 350,98 460,72 560,40"
+            />
+            <line x1="560" y1="30" x2="560" y2="200" stroke="var(--opt)" stroke-width="1" />
+            <text x="30" y="20" fill="var(--text)" font-size="12">
+              — Saldo · - - Zielbetrag 3.000 € · Linie rechts: Ziel erreicht (Platzhalter)
+            </text>
+          </svg>
+          <p class="hint">
+            Textzusammenfassung: Der Saldo wächst von 500 € auf etwa 3.116 € und überschreitet den
+            Zielbetrag im April 2028.
+          </p>
+        </div>
+        <div class="card">
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              Verlauf je Kalenderjahr
+            </caption>
+            <tr>
+              <th>Jahr</th>
+              <th>Eingezahlt</th>
+              <th>Saldo</th>
+              <th>Zinsen</th>
+              <th>Steuer</th>
+            </tr>
+            <tr>
+              <td>2026 (ab Nov.)</td>
+              <td>800 €</td>
+              <td>803 €</td>
+              <td>3 €</td>
+              <td>0 €</td>
+            </tr>
+            <tr>
+              <td>2027</td>
+              <td>2.600 €</td>
+              <td>2.647 €</td>
+              <td>44 €</td>
+              <td>0 €</td>
+            </tr>
+            <tr>
+              <td>2028 (bis Apr.)</td>
+              <td>3.050 €</td>
+              <td>3.116 €</td>
+              <td>19 €</td>
+              <td>0 €</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <h2>Zustand: Ziel nicht erreichbar</h2>
+    <div class="notice" role="alert">
+      <strong>Mit diesen Angaben wird das Ziel in den nächsten 50 Jahren nicht erreicht.</strong>
+      Erhöhe die Monatsrate oder den Zins, oder senke den Zielbetrag. Kennzahlen und Diagramm zeigen
+      dann nur den Verlauf über 50 Jahre.
+    </div>
+
+    <h2>Seite ETF-Sparplan: Abschnitt „Zielvermögen“</h2>
+    <details class="card" open>
+      <summary>Zielvermögen</summary>
+      <div class="grid" style="grid-template-columns: 340px 1fr; margin-top: 12px">
+        <div>
+          <label>Zielvermögen am Ende der Laufzeit (€)<input value="150.000" /></label>
+          <fieldset style="margin-top: 8px">
+            <legend>Angabe in</legend>
+            <label
+              ><input type="radio" name="basis" checked style="width: auto" /> Kaufkraft von
+              heute</label
+            >
+            <label
+              ><input type="radio" name="basis" style="width: auto" /> Nominal (Euro am
+              Laufzeitende)</label
+            >
+          </fieldset>
+          <p class="hint">
+            Die Rate ändert deinen Sparplan oben nicht. Die jährliche Steigerung gilt weiter.
+          </p>
+        </div>
+        <div>
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              Benötigte monatliche Startrate (aktuell 250 €)
+            </caption>
+            <tr>
+              <th>Szenario</th>
+              <th>Benötigte Rate</th>
+              <th>Unterschied zu heute</th>
+            </tr>
+            <tr>
+              <td>pessimistisch (3 %)</td>
+              <td>688,15 €</td>
+              <td>+438,15 €</td>
+            </tr>
+            <tr>
+              <td>neutral (5 %)</td>
+              <td>560,07 €</td>
+              <td>+310,07 €</td>
+            </tr>
+            <tr>
+              <td>optimistisch (7 %)</td>
+              <td>447,21 €</td>
+              <td>+197,21 €</td>
+            </tr>
+          </table>
+          <p class="hint">
+            Ziel in Kaufkraft von heute, nach Steuer. Entspricht nominal etwa 222.900 € bei 2 %
+            Inflation und 20 Jahren. Hinweis „bereits erreicht“ erscheint, wenn schon das
+            Startkapital reicht.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <h2>Seite Übersicht: Sparziele</h2>
+    <section class="card" aria-labelledby="ov-goals">
+      <h3 id="ov-goals" style="margin-top: 0">Sparziele</h3>
+      <ul class="goal-list">
+        <li>
+          <div class="row"><strong>Neues Fahrrad</strong><span>500 € von 3.000 € (17 %)</span></div>
+          <div
+            class="progress"
+            role="progressbar"
+            aria-valuenow="17"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Fortschritt Neues Fahrrad"
+          >
+            <span style="width: 17%"></span>
+          </div>
+          <span class="hint">voraussichtlich 04/2028 · Wunschtermin 12/2027 verfehlt</span>
+        </li>
+        <li>
+          <div class="row"><strong>Auto</strong><span>4.000 € von 12.000 € (33 %)</span></div>
+          <div
+            class="progress"
+            role="progressbar"
+            aria-valuenow="33"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Fortschritt Auto"
+          >
+            <span style="width: 33%"></span>
+          </div>
+          <span class="hint">voraussichtlich 01/2029 · Wunschtermin 06/2029</span>
+        </li>
+      </ul>
+      <p class="hint">Ohne Ziele: „Du hast noch kein Sparziel.“ mit Button „Sparziel anlegen“.</p>
+    </section>
+
+    <details class="card">
+      <summary>Annahmen anzeigen</summary>
+      <p class="hint">
+        Zins als effektiver Jahreszins, geometrisch auf Monate umgerechnet. Steuer bei jeder
+        Zinsgutschrift, Pauschbetrag je Kalenderjahr. Werte mit Quelle und Status auf der Seite
+        Annahmen.
+      </p>
+    </details>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

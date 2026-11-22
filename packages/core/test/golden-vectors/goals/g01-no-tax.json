@@ -1,0 +1,35 @@
+{
+  "name": "g01-no-tax",
+  "description": "No tax, desired month set",
+  "synthetic": true,
+  "input": {
+    "id": "golden",
+    "name": "Golden goal",
+    "targetAmount": 6000,
+    "currentAmount": 500,
+    "monthlyContribution": 150,
+    "accountInterestPercent": 2.5,
+    "priority": 1,
+    "taxEnabled": false,
+    "taxFreeAllowancePerYear": 1000,
+    "startMonth": "2026-01",
+    "targetMonth": "2028-06"
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "expected": {
+    "status": "reached",
+    "finalBalance": 6149.255857946683,
+    "interestGross": 249.25585794668297,
+    "tax": 0.0,
+    "interestNet": 249.25585794668297,
+    "seriesLength": 37,
+    "monthsToReach": 36,
+    "reachedMonth": "2029-01",
+    "requiredMonthlyForTargetMonth": {
+      "status": "ok",
+      "monthly": 182.84
+    }
+  }
+}

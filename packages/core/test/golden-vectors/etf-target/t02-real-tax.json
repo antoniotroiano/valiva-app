@@ -1,0 +1,50 @@
+{
+  "name": "t02-real-tax",
+  "description": "Real target (today's purchasing power), with tax and costs",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 2000,
+    "monthlyContribution": 100,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 25,
+    "lumpSums": [],
+    "ter": 0.2,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "targetValue": 150000,
+  "basis": "real",
+  "expected": {
+    "targetNominal": 246090.8991697096,
+    "scenarios": {
+      "pessimistic": {
+        "status": "ok",
+        "monthly": 593.43,
+        "differenceToCurrent": 493.42999999999995
+      },
+      "neutral": {
+        "status": "ok",
+        "monthly": 460.65,
+        "differenceToCurrent": 360.65
+      },
+      "optimistic": {
+        "status": "ok",
+        "monthly": 349.22,
+        "differenceToCurrent": 249.22000000000003
+      }
+    }
+  }
+}

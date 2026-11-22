@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Vorabpauschale (Review 13 F-7b)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Übersicht</a
+    ><a href="etf.html" aria-current="page">ETF-Sparplan</a><a href="sparziele.html">Sparziele</a
+    ><a href="annahmen.html">Annahmen</a>
+  </nav>
+  <main>
+    <h1>Vorabpauschale beim ETF (Vorschlag)</h1>
+    <p class="sub">
+      Vier Stellen ändern sich. Alles andere bleibt. Zahlen: Beispiel Startkapital 5.000 €, 250 €
+      pro Monat, 20 Jahre, neutral.
+    </p>
+
+    <div class="card">
+      <h2>1. ETF-Seite, Gruppe „Steuer“ (neue Option, Standard aus)</h2>
+      <label
+        ><input type="checkbox" checked style="width: auto" /> Steuer am Ende berücksichtigen</label
+      >
+      <p class="hint">
+        Vereinfacht: Kirchensteuer nur, wenn im Profil gewählt. Standardmäßig ohne Vorabpauschale.
+      </p>
+      <label
+        ><input type="checkbox" style="width: auto" /> Vorabpauschale jedes Jahr
+        berücksichtigen</label
+      >
+      <p class="hint">
+        Der Fonds gilt jedes Jahr als teilweise verkauft: Die Steuer darauf wird jeweils aus dem
+        Depot bezahlt und beim Verkauf am Ende angerechnet. Der Sparerpauschbetrag gilt dann in
+        jedem Jahr, nicht nur einmal am Ende. Der Basiszins steht auf der Seite Annahmen.
+      </p>
+      <div class="notice">
+        ⚠ Der Basiszins ist für die Jahre 2018 bis 2026 amtlich bestätigt (BMF). Für spätere Jahre
+        nimmt die App 3,20 % an. Das ist nicht gesichert, der echte Satz wird jedes Jahr im Januar
+        neu festgelegt.
+      </div>
+      <p class="hint">
+        (Der Hinweis erscheint nur bei eingeschalteter Option und nur, wenn die Laufzeit Jahre ab
+        2027 enthält. Ohne Steuer am Ende ist die Option gesperrt.)
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2. ETF-Seite, Ergebnis (nur bei eingeschalteter Option)</h2>
+      <div class="kpis">
+        <div class="card kpi">
+          <span>Endwert nach Steuer (neutral)</span><b>107.360 €</b
+          ><small>ohne Option 103.916 €</small>
+        </div>
+        <div class="card kpi"><span>Einzahlungen</span><b>65.000 €</b></div>
+        <div class="card kpi"><span>Gewinn vor Steuer</span><b>47.354 €</b></div>
+        <div class="card kpi"><span>Steuer beim Verkauf</span><b>4.398 €</b></div>
+        <div class="card kpi">
+          <span>Steuer auf Vorabpauschalen</span><b>595 €</b><small>jährlich aus dem Depot</small>
+        </div>
+        <div class="card kpi"><span>Kaufkraft von heute</span><b>72.250 €</b></div>
+      </div>
+      <p class="hint">
+        Der Endwert kann mit Vorabpauschale höher liegen, weil der Sparerpauschbetrag dann jedes
+        Jahr genutzt wird. Ohne Freibetrag wäre er etwas niedriger, weil die Steuer früher fällig
+        wird.
+      </p>
+      <table>
+        <caption style="text-align: left; font-weight: 600">
+          Jahrestabelle (neutral, eingeklappt, zwei Spalten mehr bei Option an)
+        </caption>
+        <tr>
+          <th>Jahr</th>
+          <th>Einzahlungen</th>
+          <th>Wert</th>
+          <th>Wert real</th>
+          <th>Vorabpauschale</th>
+          <th>Steuer darauf</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>8.000 €</td>
+          <td>8.317 €</td>
+          <td>8.154 €</td>
+          <td>148 €</td>
+          <td>0 €</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>11.000 €</td>
+          <td>11.794 €</td>
+          <td>11.336 €</td>
+          <td>223 €</td>
+          <td>0 €</td>
+        </tr>
+        <tr>
+          <td>…</td>
+          <td>…</td>
+          <td>…</td>
+          <td>…</td>
+          <td>…</td>
+          <td>…</td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>65.000 €</td>
+          <td>111.758 €</td>
+          <td>75.210 €</td>
+          <td>2.363 €</td>
+          <td>173 €</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>3. Rentenplan: „ETF im Ruhestand“ und Gesamtsicht</h2>
+      <p class="hint">
+        Gilt dieselbe Option des ETF-Plans. Die Steuer in der Entnahme wird als Durchschnitt über
+        alle Auszahlungsmonate gezeigt.
+      </p>
+      <table>
+        <tr>
+          <th>Zeile (nur bei Option an)</th>
+          <th>Beispiel</th>
+        </tr>
+        <tr>
+          <td>Vorabpauschalen in der Sparphase</td>
+          <td>22.104 € (Steuer darauf 595 € aus dem Depot; Sparphase von 20 Jahren)</td>
+        </tr>
+        <tr>
+          <td>Vorabpauschalen in der Entnahme</td>
+          <td>Summe in € (Platzhalter; Steuer im Durchschnitt der Monate in der Steuerzeile)</td>
+        </tr>
+      </table>
+      <div class="notice info">
+        Hinweis in der Gesamtsicht (ersetzt „keine Vorabpauschale“ bei Option an): „ETF: Steuer in
+        der Entnahme ist vereinfacht (konstanter Gewinnanteil). Die Vorabpauschale wird jährlich
+        berechnet, der Basiszins ab 2027 ist angenommen.“ Ohne Option bleibt der Text wie bisher.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>4. Seite Annahmen: neue Tabelle „Basiszins (Vorabpauschale)“</h2>
+      <table>
+        <tr>
+          <th>Jahr</th>
+          <th>Basiszins</th>
+          <th>Quelle</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>2021</td>
+          <td>−0,45 % (keine Vorabpauschale)</td>
+          <td>BMF-Schreiben 06.01.2021</td>
+          <td>✓ bestätigt</td>
+        </tr>
+        <tr>
+          <td>2025</td>
+          <td>2,53 %</td>
+          <td>BMF-Schreiben 10.01.2025</td>
+          <td>✓ bestätigt</td>
+        </tr>
+        <tr>
+          <td>2026</td>
+          <td>3,20 %</td>
+          <td>BMF-Schreiben 13.01.2026</td>
+          <td>✓ bestätigt</td>
+        </tr>
+        <tr>
+          <td>ab 2027</td>
+          <td>3,20 % (Annahme)</td>
+          <td>Wert von 2026 fortgeschrieben</td>
+          <td>⚠ ungeprüft</td>
+        </tr>
+        <tr>
+          <td>Basisertragsfaktor</td>
+          <td>70 %</td>
+          <td>§18 Abs. 1 InvStG</td>
+          <td>✓ bestätigt</td>
+        </tr>
+      </table>
+      <p class="hint">
+        Alle neun Jahre 2018 bis 2026 stehen in der echten Tabelle (hier gekürzt). Rechenregeln auf
+        der Seite: „Steuer nur beim Verkauf am Ende“ wird zu „Steuer beim Verkauf am Ende, optional
+        mit jährlicher Vorabpauschale“. Das Glossar nennt die Vorabpauschale nicht mehr „nicht
+        berechnet“, sondern erklärt die Option.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Entscheidungen, die dieses Mockup festhält</h2>
+      <ul>
+        <li>Option je ETF-Plan (je Person), Standard aus; bestehende Ergebnisse bleiben gleich</li>
+        <li>Steuer auf die Vorabpauschale wird aus dem Depot bezahlt (Sparphase)</li>
+        <li>Entnahme: Steuer auf Vorabpauschale und Verkaufsgewinn mit einem Freibetrag je Jahr</li>
+        <li>Beim Verkauf mindern die versteuerten Vorabpauschalen den Gewinn</li>
+        <li>Nicht modelliert: Steuer beim Verkauf der Anteile, die die Steuer bezahlen</li>
+      </ul>
+    </div>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

@@ -1,0 +1,63 @@
+{
+  "name": "03-lump-sums",
+  "description": "Two lump sums, one in the last month",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 0,
+    "monthlyContribution": 150,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 8,
+    "lumpSums": [
+      {
+        "month": 13,
+        "amount": 2000
+      },
+      {
+        "month": 96,
+        "amount": 500
+      }
+    ],
+    "ter": 0,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": false
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "expected": {
+    "pessimistic": {
+      "grossFinalValue": 19226.111998919463,
+      "totalContributions": 16900.0,
+      "gainBeforeTax": 2326.111998919463,
+      "tax": 0.0,
+      "finalValueAfterTax": 19226.111998919463,
+      "finalValueReal": 16409.301466500427
+    },
+    "neutral": {
+      "grossFinalValue": 20966.683076261375,
+      "totalContributions": 16900.0,
+      "gainBeforeTax": 4066.6830762613754,
+      "tax": 0.0,
+      "finalValueAfterTax": 20966.683076261375,
+      "finalValueReal": 17894.86212138375
+    },
+    "optimistic": {
+      "grossFinalValue": 22875.028621451456,
+      "totalContributions": 16900.0,
+      "gainBeforeTax": 5975.028621451456,
+      "tax": 0.0,
+      "finalValueAfterTax": 22875.028621451456,
+      "finalValueReal": 19523.61666910703
+    }
+  }
+}

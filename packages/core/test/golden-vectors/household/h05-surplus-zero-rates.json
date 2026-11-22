@@ -1,0 +1,713 @@
+{
+  "name": "h05-surplus-zero-rates",
+  "description": "Zero inflation and adjustment, income above the wish: gap 0",
+  "synthetic": true,
+  "persons": [
+    {
+      "id": "a",
+      "name": "a",
+      "birthYear": 1984,
+      "targetRetirementAge": 67,
+      "lifeExpectancyAge": 85,
+      "childrenBirthYears": []
+    },
+    {
+      "id": "b",
+      "name": "b",
+      "birthYear": 1984,
+      "targetRetirementAge": 67,
+      "lifeExpectancyAge": 85,
+      "childrenBirthYears": []
+    }
+  ],
+  "assumptions": {
+    "inflationPercent": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 0,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "desiredMonthlyIncomeToday": 2500,
+  "currentYear": 2026,
+  "products": {
+    "a": [
+      {
+        "productId": "statutory",
+        "enabled": true,
+        "payoutStartAge": 67,
+        "valid": true,
+        "results": {
+          "pessimistic": {
+            "monthlyPensionReal": 2500.0,
+            "taxableMonthlyReal": 2125.0,
+            "contributionsMonthlyReal": 310.0,
+            "fixedTaxMonthlyReal": 0.0
+          },
+          "neutral": {
+            "monthlyPensionReal": 2500.0,
+            "taxableMonthlyReal": 2125.0,
+            "contributionsMonthlyReal": 310.0,
+            "fixedTaxMonthlyReal": 0.0
+          },
+          "optimistic": {
+            "monthlyPensionReal": 2500.0,
+            "taxableMonthlyReal": 2125.0,
+            "contributionsMonthlyReal": 310.0,
+            "fixedTaxMonthlyReal": 0.0
+          }
+        }
+      }
+    ],
+    "b": [
+      {
+        "productId": "statutory",
+        "enabled": true,
+        "payoutStartAge": 67,
+        "valid": true,
+        "results": {
+          "pessimistic": {
+            "monthlyPensionReal": 2100.0,
+            "taxableMonthlyReal": 1785.0,
+            "contributionsMonthlyReal": 260.0,
+            "fixedTaxMonthlyReal": 0.0
+          },
+          "neutral": {
+            "monthlyPensionReal": 2100.0,
+            "taxableMonthlyReal": 1785.0,
+            "contributionsMonthlyReal": 260.0,
+            "fixedTaxMonthlyReal": 0.0
+          },
+          "optimistic": {
+            "monthlyPensionReal": 2100.0,
+            "taxableMonthlyReal": 1785.0,
+            "contributionsMonthlyReal": 260.0,
+            "fixedTaxMonthlyReal": 0.0
+          }
+        }
+      }
+    ]
+  },
+  "expected": {
+    "firstYear": 2051,
+    "snapshotYear": 2051,
+    "lastYear": 2069,
+    "scenarios": {
+      "pessimistic": {
+        "net": 3771.4166666666665,
+        "byPerson": {
+          "a": 2024.9166666666665,
+          "b": 1746.5
+        },
+        "gap": 0.0,
+        "surplus": 1271.4166666666665,
+        "totalGapReal": 0.0,
+        "path": [
+          {
+            "year": 2051,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2052,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2053,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2054,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2055,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2056,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2057,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2058,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2059,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2060,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2061,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2062,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2063,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2064,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2065,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2066,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2067,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2068,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2069,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          }
+        ]
+      },
+      "neutral": {
+        "net": 3771.4166666666665,
+        "byPerson": {
+          "a": 2024.9166666666665,
+          "b": 1746.5
+        },
+        "gap": 0.0,
+        "surplus": 1271.4166666666665,
+        "totalGapReal": 0.0,
+        "path": [
+          {
+            "year": 2051,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2052,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2053,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2054,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2055,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2056,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2057,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2058,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2059,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2060,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2061,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2062,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2063,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2064,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2065,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2066,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2067,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2068,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2069,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          }
+        ]
+      },
+      "optimistic": {
+        "net": 3771.4166666666665,
+        "byPerson": {
+          "a": 2024.9166666666665,
+          "b": 1746.5
+        },
+        "gap": 0.0,
+        "surplus": 1271.4166666666665,
+        "totalGapReal": 0.0,
+        "path": [
+          {
+            "year": 2051,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2052,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2053,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2054,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2055,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2056,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2057,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2058,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2059,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2060,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2061,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2062,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2063,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2064,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2065,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2066,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2067,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2068,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          },
+          {
+            "year": 2069,
+            "total": 3771.4166666666665,
+            "byPerson": {
+              "a": 2024.9166666666665,
+              "b": 1746.5
+            },
+            "desired": 2500,
+            "gap": 0.0
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Altersvorsorgedepot</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Übersicht</a><a href="profil.html">Profil</a>
+    <span class="group">Bausteine</span>
+    <a class="sub-item" href="etf.html">ETF-Sparplan</a
+    ><a class="sub-item" href="rente.html">Gesetzliche Rente</a
+    ><a class="sub-item" href="depot.html" aria-current="page">Altersvorsorgedepot</a>
+    <a href="sparziele.html">Sparziele</a><a href="annahmen.html">Annahmen</a>
+  </nav>
+  <main>
+    <h1>Altersvorsorgedepot</h1>
+    <p class="sub">
+      Was wird aus deinen Beiträgen plus staatlicher Zulage, und was bleibt nach Steuer als
+      Monatsrente? <span class="badge">Prognose, keine Garantie</span>
+    </p>
+    <p class="note-mock">
+      Mockup, Beispielwerte erfunden und nach den Formeln aus Konzept 09 §5.3 gerechnet. Profil wie
+      im Mockup Profil: Jahrgang 1985, Kinder geboren 2015 und 2018, 2 % Inflation, 20 % Steuersatz
+      im Alter, KVdR. Beitrag 150 € pro Monat ab Januar 2027, Standarddepot mit 1,0 % Kosten,
+      Auszahlbeginn 67, Auszahlplan bis 85 mit 2 % Rendite. Unten folgen die weiteren Zustände.
+    </p>
+
+    <div class="grid">
+      <div>
+        <form class="card" aria-label="Eingaben Altersvorsorgedepot">
+          <fieldset>
+            <legend>Beitrag</legend>
+            <label
+              >Eigenbeitrag pro Monat (€)<input value="150" inputmode="decimal" /><span class="hint"
+                >Höchstens 6.840 € im Jahr (570 € im Monat). Die volle Grundzulage gibt es ab 1.800
+                € im Jahr (150 € im Monat). Unter 120 € im Jahr gibt es gar keine Zulage.</span
+              ></label
+            >
+            <label
+              >Beitragsbeginn (Monat)<input value="2027-01" /><span class="hint"
+                >Das Altersvorsorgedepot startet frühestens im Januar 2027.</span
+              ></label
+            >
+          </fieldset>
+          <fieldset>
+            <legend>Produktvariante und Kosten</legend>
+            <label
+              >Variante<select>
+                <option selected>Standarddepot (Kosten höchstens 1,0 %)</option>
+                <option>Garantie 80 % der Beiträge</option>
+                <option>Garantie 100 % der Beiträge</option>
+                <option>Depot ohne Garantie</option>
+              </select>
+              <span class="hint"
+                >Die Varianten unterscheiden sich hier nur bei Kosten und Garantie. Ein Wechsel der
+                Anlage vor dem Rentenbeginn (Glide Path) ist nicht berechnet.</span
+              ></label
+            >
+            <label
+              >Kosten pro Jahr (%)<input value="1,0" inputmode="decimal" /><span class="hint"
+                >Beim Standarddepot ist 1,0 % die gesetzliche Obergrenze.</span
+              ></label
+            >
+          </fieldset>
+          <fieldset>
+            <legend>Auszahlphase</legend>
+            <label
+              >Auszahlbeginn (Alter)<input value="67" inputmode="numeric" /><span class="hint"
+                >65 bis 70. Vorgeschlagen aus dem Profil, hier überschreibbar.</span
+              ></label
+            >
+            <label
+              >Auszahlplan bis (Alter)<input value="85" inputmode="numeric" /><span class="hint"
+                >Mindestens 85. Eine lebenslange Rente ist nicht berechnet.</span
+              ></label
+            >
+            <label
+              >Einmalauszahlung zu Beginn (% des Kapitals)<input
+                value="0"
+                inputmode="decimal"
+              /><span class="hint">0 bis 30 %. Der Rest wird als Auszahlplan verteilt.</span></label
+            >
+          </fieldset>
+          <details>
+            <summary>Annahmen aus dem Profil (nur Anzeige)</summary>
+            <dl class="facts">
+              <dt>Rendite pessimistisch / neutral / optimistisch</dt>
+              <dd>3 % / 5 % / 7 %</dd>
+              <dt>Rendite in der Auszahlphase</dt>
+              <dd>2,0 %</dd>
+              <dt>Inflation p. a.</dt>
+              <dd>2,0 %</dd>
+              <dt>Steuersatz im Alter</dt>
+              <dd>20 %</dd>
+              <dt>Krankenversicherung</dt>
+              <dd>KVdR (auf diese Leistung keine Beiträge angenommen)</dd>
+              <dt>Kinder (für Kinderzulage)</dt>
+              <dd>geboren 2015, 2018</dd>
+            </dl>
+            <p><a href="profil.html">Im Profil ändern</a></p>
+          </details>
+        </form>
+
+        <div class="card">
+          <h2 style="margin-top: 0">Vereinfachungen</h2>
+          <p>
+            Nicht berechnet sind Sonderausgabenabzug und Günstigerprüfung, Ehegattenzulage, der
+            Wechsel aus einem Riester-Vertrag und die lebenslange Rente. Die Steuer auf die
+            Auszahlungen ist eine Pauschale, die Beitragsfreiheit in der Krankenversicherung eine
+            Annahme.
+          </p>
+        </div>
+      </div>
+
+      <section>
+        <p class="hint" style="margin-top: 0">Kennzahlen für das neutrale Szenario (5 %).</p>
+        <div class="kpis">
+          <div class="card kpi"><span>Kapital bei Auszahlbeginn (2052)</span><b>109.205 €</b></div>
+          <div class="card kpi"><span>Davon Eigenbeiträge</span><b>45.000 €</b></div>
+          <div class="card kpi"><span>Davon Zulagen</span><b>18.000 €</b></div>
+          <div class="card kpi"><span>Brutto pro Monat (nominal)</span><b>602 €</b></div>
+          <div class="card kpi"><span>Brutto pro Monat (Kaufkraft heute)</span><b>359 €</b></div>
+          <div class="card kpi"><span>Steuer pro Monat (heute)</span><b>72 €</b></div>
+          <div class="card kpi"><span>Netto pro Monat (Kaufkraft heute)</span><b>288 €</b></div>
+        </div>
+
+        <div class="card">
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              Szenarien im Vergleich
+            </caption>
+            <tr>
+              <th>Szenario</th>
+              <th>Kapital 2052</th>
+              <th>Brutto/Monat nominal</th>
+              <th>Brutto/Monat heute</th>
+              <th>Netto/Monat heute</th>
+            </tr>
+            <tr>
+              <td>Pessimistisch (3 %)</td>
+              <td>82.348 €</td>
+              <td>454 €</td>
+              <td>271 €</td>
+              <td>217 €</td>
+            </tr>
+            <tr class="sum">
+              <td>Neutral (5 %)</td>
+              <td>109.205 €</td>
+              <td>602 €</td>
+              <td>359 €</td>
+              <td>288 €</td>
+            </tr>
+            <tr>
+              <td>Optimistisch (7 %)</td>
+              <td>146.653 €</td>
+              <td>808 €</td>
+              <td>483 €</td>
+              <td>386 €</td>
+            </tr>
+          </table>
+        </div>
+
+        <div
+          class="card"
+          role="img"
+          aria-label="Liniendiagramm: Eingezahlt wird bis 2051 ein Betrag von 63.000 Euro inklusive Zulagen. Das Kapital wächst im neutralen Szenario auf 109.205 Euro, pessimistisch auf 82.348 Euro und optimistisch auf 146.653 Euro."
+        >
+          <svg viewBox="0 0 600 220" width="100%">
+            <rect width="600" height="220" fill="none" stroke="var(--line)" />
+            <polyline
+              fill="none"
+              stroke="var(--muted)"
+              stroke-width="2"
+              points="30,200 150,176 270,152 390,128 510,104 570,92"
+            />
+            <polyline
+              fill="none"
+              stroke="var(--pess)"
+              stroke-width="3"
+              stroke-dasharray="6 4"
+              points="30,200 150,170 270,138 390,108 510,76 570,64"
+            />
+            <polyline
+              fill="none"
+              stroke="var(--neu)"
+              stroke-width="3"
+              points="30,200 150,168 270,130 390,92 510,50 570,38"
+            />
+            <polyline
+              fill="none"
+              stroke="var(--opt)"
+              stroke-width="3"
+              stroke-dasharray="2 4"
+              points="30,200 150,166 270,122 390,74 510,28 570,18"
+            />
+            <text x="40" y="20" fill="var(--text)" font-size="12">
+              grau: Eigenbeiträge plus Zulagen · - - pessimistisch · — neutral · ··· optimistisch
+              (Platzhalter)
+            </text>
+          </svg>
+          <p class="hint">
+            Textzusammenfassung: Aus 63.000 € Eigenbeiträgen und Zulagen werden bis 2052 im
+            neutralen Szenario 109.205 €, im pessimistischen 82.348 € und im optimistischen 146.653
+            €.
+          </p>
+        </div>
+
+        <div class="card">
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              Zulagen je Kalenderjahr (Beitrag 1.800 € im Jahr)
+            </caption>
+            <tr>
+              <th>Jahr</th>
+              <th>Eigenbeitrag</th>
+              <th>Grundzulage</th>
+              <th>Kinderzulage</th>
+              <th>Bonus unter 25</th>
+              <th>Zulage gesamt</th>
+              <th>Kapital Jahresende</th>
+            </tr>
+            <tr>
+              <td>2027</td>
+              <td>1.800 €</td>
+              <td>540 €</td>
+              <td>600 €</td>
+              <td>0 €</td>
+              <td>1.140 €</td>
+              <td>2.979 €</td>
+            </tr>
+            <tr>
+              <td>2028 bis 2032 (je Jahr)</td>
+              <td>1.800 €</td>
+              <td>540 €</td>
+              <td>600 €</td>
+              <td>0 €</td>
+              <td>1.140 €</td>
+              <td>bis 19.758 €</td>
+            </tr>
+            <tr>
+              <td>2033 bis 2035 (je Jahr)</td>
+              <td>1.800 €</td>
+              <td>540 €</td>
+              <td>300 €</td>
+              <td>0 €</td>
+              <td>840 €</td>
+              <td>bis 30.587 €</td>
+            </tr>
+            <tr>
+              <td>2036 bis 2051 (je Jahr)</td>
+              <td>1.800 €</td>
+              <td>540 €</td>
+              <td>0 €</td>
+              <td>0 €</td>
+              <td>540 €</td>
+              <td>bis 109.205 €</td>
+            </tr>
+            <tr class="sum">
+              <td>Summe 2027 bis 2051</td>
+              <td>45.000 €</td>
+              <td>13.500 €</td>
+              <td>4.500 €</td>
+              <td>0 €</td>
+              <td>18.000 €</td>
+              <td>109.205 €</td>
+            </tr>
+          </table>
+          <p class="hint">
+            Die Zeilen sind hier zusammengefasst, in der App steht jedes Jahr einzeln. Zulagen
+            werden zum Jahresende gutgeschrieben und ab dann verzinst. Die Kinderzulage läuft bis
+            zum 18. Lebensjahr des Kindes.
+            <span class="warn"
+              >⚠ Altersgrenze der Kinderzulage und „einmalig“ beim Bonus sind noch nicht gesichert
+              (Status: nicht bestätigt).</span
+            >
+          </p>
+        </div>
+
+        <div class="card">
+          <table>
+            <caption style="text-align: left; font-weight: 600">
+              So wird aus dem Kapital die Nettorente (neutral)
+            </caption>
+            <tr>
+              <th>Schritt</th>
+              <th>Pro Monat nominal</th>
+              <th>Kaufkraft heute</th>
+            </tr>
+            <tr>
+              <td>Kapital 2052: 109.205 €, Garantie nicht relevant</td>
+              <td colspan="2">–</td>
+            </tr>
+            <tr>
+              <td>Auszahlplan 2052 bis 2070 (216 Monate, 2 % Rendite)</td>
+              <td>602 €</td>
+              <td>359 €</td>
+            </tr>
+            <tr>
+              <td>Steuer (voll steuerpflichtig × 20 %)</td>
+              <td>− 120 €</td>
+              <td>− 72 €</td>
+            </tr>
+            <tr>
+              <td>Kranken- und Pflegeversicherung (angenommen: keine Beiträge)</td>
+              <td>− 0 €</td>
+              <td>− 0 €</td>
+            </tr>
+            <tr class="sum">
+              <td>Netto</td>
+              <td>481 €</td>
+              <td>288 €</td>
+            </tr>
+          </table>
+          <p class="hint">
+            Die Rate bleibt nominal gleich und verliert deshalb in der Auszahlphase an Kaufkraft.
+            <span class="warn"
+              >⚠ Besteuerung der Leistungen und Beitragsfreiheit in der Krankenversicherung sind
+              Annahmen (Status: nicht bestätigt).</span
+            >
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <h2>Zustand: Beitrag unter 1.800 € (Zulage bleibt liegen)</h2>
+    <div class="notice" role="status">
+      <strong>Du lässt Zulage liegen.</strong> Mit 50 € im Monat (600 € im Jahr) bekommst du 240 €
+      Grundzulage plus 600 € Kinderzulage (2 Kinder). Bei 150 € im Monat wären es 540 € Grundzulage,
+      also 300 € mehr im Jahr für 1.200 € zusätzlichen Eigenbeitrag. Kapital 2052 neutral: 45.660 €
+      statt 109.205 €. Die Kinderzulage ist bei 600 € Eigenbeitrag schon voll ausgeschöpft.
+    </div>
+
+    <h2>Zustand: Beitrag unter 120 € im Jahr</h2>
+    <div class="notice" role="status">
+      <strong>Keine Zulage.</strong> Der Mindesteigenbeitrag beträgt 120 € im Jahr (10 € im Monat).
+      Darunter gibt es weder Grund- noch Kinderzulage. Bei genau 120 € im Jahr gibt es 60 €
+      Grundzulage und 240 € Kinderzulage.
+    </div>
+
+    <h2>Zustand: Garantie greift</h2>
+    <div class="notice info" role="status">
+      <strong>Garantie 80 % wirkt.</strong> Im pessimistischen Stresstest (−2 % Rendite) liegt das
+      Modellkapital bei 43.463 €. Die Garantie sichert 80 % von 63.000 € (Eigenbeiträge plus
+      Zulagen), also 50.400 €. Das Kapital bei Auszahlbeginn ist 50.400 €, die Brutto-Rente 278 € im
+      Monat. Die Rendite von Garantieprodukten kannst du im Feld „Rendite überschreiben“ eintragen,
+      sie liegt meist unter der eines reinen Depots.
+    </div>
+    <div class="card">
+      <label
+        >Rendite überschreiben (% p. a., nur Garantievarianten, optional)<input
+          placeholder="z. B. 2,5"
+        /><span class="hint"
+          >Leer lassen, dann gelten die Szenarien aus dem Profil. Mit Wert gelten alle drei
+          Szenarien gleich.</span
+        ></label
+      >
+    </div>
+
+    <h2>Zustand: Einmalauszahlung 30 %</h2>
+    <div class="notice info" role="status">
+      <strong>Einmalauszahlung: 32.761 € brutto</strong> (19.578 € in Kaufkraft heute), nach Steuer
+      26.209 €. Der Rest von 76.444 € ergibt 421 € Brutto-Rente im Monat (252 € heute), netto 201 €
+      heute. Die Einmalauszahlung wird mit demselben Steuersatz von 20 % angesetzt (Vereinfachung).
+    </div>
+
+    <h2>Zustand: Eingabefehler</h2>
+    <div class="card">
+      <label
+        >Eigenbeitrag pro Monat (€)<input
+          value="700"
+          aria-invalid="true"
+          aria-describedby="e1"
+        /><span id="e1" class="err" role="alert"
+          >Der Beitrag darf höchstens 6.840 € im Jahr betragen (570 € im Monat).</span
+        ></label
+      >
+      <label
+        >Auszahlplan bis (Alter)<input value="80" aria-invalid="true" aria-describedby="e2" /><span
+          id="e2"
+          class="err"
+          role="alert"
+          >Der Auszahlplan muss mindestens bis Alter 85 laufen.</span
+        ></label
+      >
+      <label
+        >Beitragsbeginn (Monat)<input
+          value="2026-12"
+          aria-invalid="true"
+          aria-describedby="e3"
+        /><span id="e3" class="err" role="alert"
+          >Das Altersvorsorgedepot startet frühestens im Januar 2027.</span
+        ></label
+      >
+      <p class="hint">
+        Bei einem Fehler zeigt die rechte Seite keine Kennzahlen, sondern den Hinweis.
+      </p>
+    </div>
+
+    <h2>Zustand: Bonus unter 25</h2>
+    <div class="notice info" role="status">
+      <strong>200 € Bonus im ersten Beitragsjahr.</strong> Bist du zu Beginn des Beitragsjahres noch
+      nicht 25, kommen 200 € einmalig dazu (hier: nur im ersten Beitragsjahr). In der Zulagentabelle
+      steht der Bonus in der Spalte „Bonus unter 25“.
+    </div>
+
+    <h2>Zustand: leer</h2>
+    <div class="notice info" role="status">
+      <strong>Noch kein Beitrag eingetragen.</strong> Trage oben einen Monatsbeitrag ein, dann
+      rechnen wir Zulagen, Kapital und Auszahlplan.
+      <button type="button">Zum Feld springen</button>
+    </div>
+
+    <p class="disclaimer">
+      Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie. Gesetzliche Regeln zum
+      Altersvorsorgedepot können sich noch ändern, Steuer und Abgaben sind vereinfachte Pauschalen.
+    </p>
+  </main>
+</html>

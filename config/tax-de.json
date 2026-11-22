@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "description": "Simplified German tax parameters for ETF (equity fund) sales. Church tax values only matter if a person chooses church tax. Not tax advice.",
+  "values": {
+    "capitalGainsTaxRate": {
+      "value": 26.375,
+      "unit": "percent",
+      "validFrom": "2009-01-01",
+      "validTo": null,
+      "source": "Abgeltungsteuer 25 % (§32d Abs. 1 EStG) plus 5.5 % solidarity surcharge on it (§4 SolzG 1995), checked 2026-11-19 on gesetze-im-internet.de; church tax not included",
+      "sourceDe": "Abgeltungsteuer 25 % (§32d Abs. 1 EStG) zuzüglich 5,5 % Solidaritätszuschlag darauf (§4 SolzG 1995), geprüft am 19.11.2026 auf gesetze-im-internet.de; ohne Kirchensteuer",
+      "status": "confirmed"
+    },
+    "partialExemptionRate": {
+      "value": 30,
+      "unit": "percent",
+      "validFrom": "2018-01-01",
+      "validTo": null,
+      "source": "Partial exemption for equity funds 30 % (§20 Abs. 1 InvStG), checked 2026-11-19 on gesetze-im-internet.de",
+      "sourceDe": "Teilfreistellung für Aktienfonds 30 % (§20 Abs. 1 InvStG), geprüft am 19.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed"
+    },
+    "taxFreeAllowance": {
+      "value": 1000,
+      "unit": "EUR",
+      "validFrom": "2023-01-01",
+      "validTo": null,
+      "source": "Sparer-Pauschbetrag 1,000 EUR, 2,000 EUR for joint assessment (§20 Abs. 9 EStG), checked 2026-11-19 on gesetze-im-internet.de",
+      "sourceDe": "Sparer-Pauschbetrag 1.000 €, 2.000 € bei Zusammenveranlagung (§20 Abs. 9 EStG), geprüft am 19.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed"
+    },
+    "capitalGainsBaseRate": {
+      "value": 25,
+      "unit": "percent",
+      "validFrom": "2009-01-01",
+      "validTo": null,
+      "source": "Abgeltungsteuer 25 % (§32d Abs. 1 Satz 1 EStG), checked 2026-11-20 on gesetze-im-internet.de; basis of the church tax formula",
+      "sourceDe": "Abgeltungsteuer 25 % (§32d Abs. 1 Satz 1 EStG), geprüft am 20.11.2026 auf gesetze-im-internet.de; Grundlage der Kirchensteuer-Formel",
+      "status": "confirmed"
+    },
+    "solidaritySurchargeRate": {
+      "value": 5.5,
+      "unit": "percent",
+      "validFrom": "1995-01-01",
+      "validTo": null,
+      "source": "Solidarity surcharge 5.5 % of the income tax (§4 SolzG 1995), checked 2026-11-19 on gesetze-im-internet.de; basis of the church tax formula",
+      "sourceDe": "Solidaritätszuschlag 5,5 % der Einkommensteuer (§4 SolzG 1995), geprüft am 19.11.2026 auf gesetze-im-internet.de; Grundlage der Kirchensteuer-Formel",
+      "status": "confirmed"
+    },
+    "churchTaxRateLow": {
+      "value": 8,
+      "unit": "percent",
+      "validFrom": "2009-01-01",
+      "validTo": null,
+      "source": "Church tax rate 8 % in Baden-Wuerttemberg and Bavaria (state church tax laws), not yet checked against an official source",
+      "sourceDe": "Kirchensteuersatz 8 % in Baden-Württemberg und Bayern (Kirchensteuergesetze der Länder), noch nicht gegen eine amtliche Quelle geprüft",
+      "status": "unverified"
+    },
+    "churchTaxRateHigh": {
+      "value": 9,
+      "unit": "percent",
+      "validFrom": "2009-01-01",
+      "validTo": null,
+      "source": "Church tax rate 9 % in the other federal states (state church tax laws), not yet checked against an official source",
+      "sourceDe": "Kirchensteuersatz 9 % in den übrigen Bundesländern (Kirchensteuergesetze der Länder), noch nicht gegen eine amtliche Quelle geprüft",
+      "status": "unverified"
+    }
+  },
+  "advanceLumpSum": {
+    "description": "Advance lump-sum tax (Vorabpauschale, §18 InvStG) on accumulating funds. The base interest is published by the BMF every January and applies to the advance lump sum of that calendar year; it can be zero or negative (then no advance lump sum). Years after the last published rate use the assumed rate.",
+    "baseEarningsFactor": {
+      "value": 70,
+      "unit": "percent",
+      "validFrom": "2018-01-01",
+      "validTo": null,
+      "source": "Base earnings = redemption price at the start of the year x 70 % of the base interest (§18 Abs. 1 Satz 2 InvStG), checked 2026-11-20 on gesetze-im-internet.de",
+      "sourceDe": "Basisertrag = Rücknahmepreis zu Jahresbeginn × 70 % des Basiszinses (§18 Abs. 1 Satz 2 InvStG), geprüft am 20.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed"
+    },
+    "baseInterest": [
+      {
+        "year": 2018,
+        "value": 0.87,
+        "unit": "percent",
+        "validFrom": "2018-01-01",
+        "validTo": "2018-12-31",
+        "source": "Base interest 2018 (BMF letter of 2018-01-04, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2018 (BMF-Schreiben vom 04.01.2018, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      },
+      {
+        "year": 2019,
+        "value": 0.52,
+        "unit": "percent",
+        "validFrom": "2019-01-01",
+        "validTo": "2019-12-31",
+        "source": "Base interest 2019 (BMF letter of 2019-01-09, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2019 (BMF-Schreiben vom 09.01.2019, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      },
+      {
+        "year": 2020,
+        "value": 0.07,
+        "unit": "percent",
+        "validFrom": "2020-01-01",
+        "validTo": "2020-12-31",
+        "source": "Base interest 2020 (BMF letter of 2020-01-29, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2020 (BMF-Schreiben vom 29.01.2020, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      },
+      {
+        "year": 2021,
+        "value": -0.45,
+        "unit": "percent",
+        "validFrom": "2021-01-01",
+        "validTo": "2021-12-31",
+        "source": "Base interest 2021, negative, so no advance lump sum (BMF letter of 2021-01-06, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2021, negativ, daher keine Vorabpauschale (BMF-Schreiben vom 06.01.2021, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      },
+      {
+        "year": 2022,
+        "value": -0.05,
+        "unit": "percent",
+        "validFrom": "2022-01-01",
+        "validTo": "2022-12-31",
+        "source": "Base interest 2022, negative, so no advance lump sum (BMF letter of 2022-01-07, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2022, negativ, daher keine Vorabpauschale (BMF-Schreiben vom 07.01.2022, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      },
+      {
+        "year": 2023,
+        "value": 2.55,
+        "unit": "percent",
+        "validFrom": "2023-01-01",
+        "validTo": "2023-12-31",
+        "source": "Base interest 2023 (BMF letter of 2023-01-04, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2023 (BMF-Schreiben vom 04.01.2023, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      },
+      {
+        "year": 2024,
+        "value": 2.29,
+        "unit": "percent",
+        "validFrom": "2024-01-01",
+        "validTo": "2024-12-31",
+        "source": "Base interest 2024 (BMF letter of 2024-01-05, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2024 (BMF-Schreiben vom 05.01.2024, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      },
+      {
+        "year": 2025,
+        "value": 2.53,
+        "unit": "percent",
+        "validFrom": "2025-01-01",
+        "validTo": "2025-12-31",
+        "source": "Base interest 2025 (BMF letter of 2025-01-10, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2025 (BMF-Schreiben vom 10.01.2025, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      },
+      {
+        "year": 2026,
+        "value": 3.2,
+        "unit": "percent",
+        "validFrom": "2026-01-01",
+        "validTo": "2026-12-31",
+        "source": "Base interest 2026 (BMF letter of 2026-01-13, §18 Abs. 4 InvStG), read 2026-11-20 in the BMF letter",
+        "sourceDe": "Basiszins 2026 (BMF-Schreiben vom 13.01.2026, §18 Abs. 4 InvStG), am 20.11.2026 im BMF-Schreiben gelesen",
+        "status": "confirmed"
+      }
+    ],
+    "baseInterestAssumed": {
+      "value": 3.2,
+      "unit": "percent",
+      "validFrom": "2027-01-01",
+      "validTo": null,
+      "source": "Assumption for all years after the last published base interest: the 2026 rate carried forward. The real rate is set each January and can differ a lot (2021: -0.45 %, 2026: 3.20 %)",
+      "sourceDe": "Annahme für alle Jahre nach dem letzten veröffentlichten Basiszins: der Wert von 2026 wird fortgeschrieben. Der echte Satz wird jeden Januar neu festgelegt und kann stark abweichen (2021: −0,45 %, 2026: 3,20 %)",
+      "status": "unverified"
+    }
+  }
+}

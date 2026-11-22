@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Profil</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="uebersicht.html">Übersicht</a
+    ><a href="profil.html" aria-current="page">Profil</a>
+    <span class="group">Bausteine</span>
+    <a class="sub-item" href="etf.html">ETF-Sparplan</a
+    ><a class="sub-item" href="rente.html">Gesetzliche Rente</a>
+    <a href="sparziele.html">Sparziele</a><a href="annahmen.html">Annahmen</a>
+  </nav>
+  <main>
+    <h1>Profil</h1>
+    <p class="sub">
+      Angaben zu dir und die Annahmen, die alle Rentenbausteine gemeinsam nutzen.
+      <span class="badge">Prognose, keine Garantie</span>
+    </p>
+    <p class="note-mock">
+      Mockup, Beispielwerte erfunden. Menüpunkte für Depot und bAV erscheinen erst in 3b und 3c. Die
+      Werte werden lokal im Browser gemerkt (<code>pathwise.profile.v1</code>), nichts wird
+      übertragen.
+    </p>
+
+    <div class="grid">
+      <div>
+        <form class="card" aria-label="Eingaben Profil">
+          <details open>
+            <summary><strong>Person</strong></summary>
+            <label>Geburtsjahr<input value="1985" inputmode="numeric" /></label>
+            <label
+              >Gewünschtes Rentenalter<input value="67" inputmode="numeric" /><span class="hint"
+                >Zwischen 55 und 75. Die gesetzliche Rente lässt einen Beginn von 63 bis 70
+                zu.</span
+              ></label
+            >
+            <label
+              >Planungshorizont: Alter (Lebenserwartung)<input
+                value="90"
+                inputmode="numeric"
+              /><span class="hint"
+                >Bis zu diesem Alter laufen spätere Auszahlpläne. Eine Annahme, keine
+                Prognose.</span
+              ></label
+            >
+            <label
+              >Geburtsjahre der Kinder (mit Komma getrennt, optional)<input
+                value="2015, 2018"
+              /><span class="hint"
+                >Wird ab Teilphase 3b für Kinderzulagen genutzt. Es werden nur Jahre gespeichert,
+                keine Namen.</span
+              ></label
+            >
+          </details>
+
+          <details open>
+            <summary><strong>Allgemeine Annahmen</strong></summary>
+            <label
+              >Inflation p. a. (%)<input value="2,0" /><span class="hint"
+                >Für Kaufkraft von heute. Die ETF-Seite behält vorerst ihre eigene Inflation.</span
+              ></label
+            >
+            <label
+              >Rentenanpassung p. a. (%)<input value="2,5" /><span class="hint"
+                >Wie stark die gesetzliche Rente bis zum Rentenbeginn steigt. Annahme, kein
+                Gesetzeswert.</span
+              ></label
+            >
+            <label
+              >Rendite in der Rentenphase p. a. (%)<input value="2,0" /><span class="hint"
+                >Für Auszahlpläne (ab Teilphase 3b).</span
+              ></label
+            >
+            <label>Renditeszenarien p. a. (%)</label>
+            <div class="row-inline">
+              <label>pessimistisch<input value="3" /></label>
+              <label>neutral<input value="5" /></label>
+              <label>optimistisch<input value="7" /></label>
+            </div>
+          </details>
+
+          <details open>
+            <summary><strong>Steuer im Alter</strong></summary>
+            <label
+              >Pauschaler Steuersatz auf Renteneinkommen (%)<input value="20" /><span class="hint"
+                >Wird auf den steuerpflichtigen Teil der Rente angewendet. Dein tatsächlicher Satz
+                hängt von allen Einkünften ab. Als Orientierung: Je niedriger das übrige Einkommen,
+                desto niedriger der Satz.</span
+              ></label
+            >
+            <label
+              >Grenzsteuersatz heute (%)<input value="35" /><span class="hint"
+                >Für die Betriebsrente (ab Teilphase 3c).</span
+              ></label
+            >
+            <label
+              >Sozialabgabensatz Arbeitnehmer (%)<input value="20" /><span class="hint"
+                >Annahme für die Entgeltumwandlung (ab 3c).</span
+              ></label
+            >
+          </details>
+
+          <details open>
+            <summary><strong>Kranken- und Pflegeversicherung im Alter</strong></summary>
+            <fieldset>
+              <legend>Versicherungsstatus</legend>
+              <label
+                ><input type="radio" name="health" checked style="width: auto" /> Pflichtversichert
+                in der gesetzlichen Krankenversicherung der Rentner (KVdR)</label
+              >
+              <label
+                ><input type="radio" name="health" style="width: auto" /> Andere (z. B. privat oder
+                freiwillig versichert)</label
+              >
+            </fieldset>
+            <label
+              >Zusatzbeitrag Ø (%)<input value="2,9" /><span class="hint"
+                >Aus der Konfiguration übernommen. Dein Beitrag hängt von deiner Kasse ab. Rentner
+                tragen die Hälfte.</span
+              ></label
+            >
+            <label
+              ><input type="checkbox" style="width: auto" /> Kinderlos (Pflegeversicherung 4,2 %
+              statt 3,6 %)</label
+            >
+            <label
+              >Eigener Gesamtsatz bei „Andere“ (%)<input value="" disabled /><span class="hint"
+                >Nur aktiv bei „Andere“. Gilt als Anteil an der Bruttorente.</span
+              ></label
+            >
+          </details>
+          <button type="button">Auf Standardwerte zurücksetzen</button>
+        </form>
+      </div>
+
+      <section>
+        <div class="card">
+          <h2 style="margin-top: 0">Was daraus folgt</h2>
+          <dl class="facts">
+            <dt>Rentenbeginn (Jahr)</dt>
+            <dd>2052</dd>
+            <dt>Jahre bis zum Rentenbeginn (ab 2026)</dt>
+            <dd>26</dd>
+            <dt>Regelaltersgrenze für Jahrgang 1985</dt>
+            <dd>67 Jahre</dd>
+            <dt>Besteuerungsanteil bei Rentenbeginn 2052</dt>
+            <dd>97,0 %</dd>
+            <dt>Versicherung im Alter</dt>
+            <dd>KVdR, mit Kindern</dd>
+          </dl>
+          <p class="hint">
+            Der Besteuerungsanteil ist kein Steuersatz. Er sagt nur, welcher Teil der Rente
+            steuerpflichtig ist. Der Steuersatz darauf kommt aus deiner Eingabe oben.
+          </p>
+        </div>
+
+        <div class="notice info" role="status">
+          <strong>Ungeprüfte Werte.</strong> Der Abgabensatz für Betriebsrenten und private
+          Altersvorsorge ist noch nicht gegen amtliche Quellen bestätigt. Alle Rechtswerte stehen
+          mit Quelle und Status auf der Seite <a href="annahmen.html">Annahmen</a>.
+        </div>
+
+        <div class="card">
+          <h2 style="margin-top: 0">Zustand: Eingabefehler</h2>
+          <label
+            >Geburtsjahr<input value="2030" aria-invalid="true" aria-describedby="e1" /><span
+              id="e1"
+              class="err"
+              role="alert"
+              >Das Geburtsjahr muss zwischen 1900 und 2026 liegen.</span
+            ></label
+          >
+          <label
+            >Planungshorizont: Alter<input
+              value="60"
+              aria-invalid="true"
+              aria-describedby="e2"
+            /><span id="e2" class="err" role="alert"
+              >Der Planungshorizont muss höher sein als das Rentenalter (67).</span
+            ></label
+          >
+          <p class="hint">
+            Fehler stehen direkt am Feld. Solange einer besteht, rechnen die Bausteinseiten mit den
+            letzten gültigen Werten nicht weiter, sondern zeigen den Hinweis „Profil prüfen“.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2 style="margin-top: 0">Zustand: Rentenalter außerhalb 63 bis 70</h2>
+          <div class="notice" role="status" style="margin: 0">
+            Rentenalter 62 liegt außerhalb dessen, was die gesetzliche Rente abbildet (63 bis 70).
+            Das Profil akzeptiert den Wert, die Seite Gesetzliche Rente meldet dort einen Fehler.
+          </div>
+        </div>
+      </section>
+    </div>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

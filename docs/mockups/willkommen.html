@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Willkommen (Erststart, Review 13 U-1)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <style>
+    .steps {
+      margin: 8px 0 16px;
+      padding-left: 22px;
+    }
+    .steps li {
+      margin: 4px 0;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .actions a {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      text-decoration: none;
+      color: var(--accent);
+    }
+    .actions a.primary {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+    }
+    .sample {
+      border-color: var(--pess);
+      color: var(--pess);
+    }
+    .wish {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: end;
+    }
+    .wish input {
+      width: 140px;
+      padding: 6px 8px;
+    }
+  </style>
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="gesamtsicht.html" aria-current="page">Rentenplan</a
+    ><a href="profil.html">Profil</a><a href="etf.html">ETF-Sparplan</a
+    ><a href="rente.html">Gesetzliche Rente</a><a href="depot.html">Altersvorsorgedepot</a
+    ><a href="bav.html">Betriebliche AV</a><a href="daten.html">Daten</a>
+  </nav>
+  <main>
+    <h1>Rentenplan</h1>
+    <p class="sub">
+      Deine Gesamtsicht im Ruhestand <span class="badge">Prognose, keine Garantie</span>
+    </p>
+
+    <p class="hint"><b>Zustand A:</b> Erststart, nichts gespeichert (Willkommenskarte).</p>
+    <div class="card">
+      <h2>Willkommen</h2>
+      <p>Mit dieser App planst du deine Altersvorsorge:</p>
+      <ul>
+        <li>
+          Prognose für ETF-Sparplan, gesetzliche Rente, Altersvorsorgedepot und betriebliche AV
+        </li>
+        <li>Gesamtsicht: Wie viel bleibt im Ruhestand netto pro Monat?</li>
+        <li>Rentenlücke zum Wunscheinkommen und was sie schließen würde</li>
+      </ul>
+      <ol class="steps">
+        <li><a href="profil.html">Profil ausfüllen</a> (Geburtsjahr, Rentenalter)</li>
+        <li>Bausteine eintragen (ETF, gesetzliche Rente, Depot, betriebliche AV)</li>
+        <li>Rentenlücke ansehen</li>
+      </ol>
+      <div class="actions">
+        <a class="primary" href="profil.html">Mit meinen Daten beginnen</a>
+        <a href="daten.html">Mit Beispieldaten ausprobieren</a>
+      </div>
+      <p class="hint">
+        Beispieldaten sind erfunden und ersetzen deine Eingaben erst nach Bestätigung. Deine Daten
+        bleiben nur in diesem Browser.
+      </p>
+    </div>
+
+    <hr />
+
+    <p class="hint">
+      <b>Zustand B:</b> Noch nichts geändert, Ergebnisse stammen aus Standardwerten. Wunscheinkommen
+      direkt abfragen (statt Verweis auf das Profil).
+    </p>
+    <div class="card kpi">
+      <span
+        >Netto-Rente ab 67, Kaufkraft von heute (neutral)
+        <span class="badge">Beispielwerte</span></span
+      ><b>445 € pro Monat</b
+      ><span>Diese Zahlen stammen aus vorbelegten Werten, nicht aus deinen Angaben.</span>
+    </div>
+    <div class="card">
+      <h2>Wunscheinkommen</h2>
+      <div class="wish">
+        <label
+          >Gewünschtes Netto-Einkommen pro Monat (Kaufkraft von heute)<br /><input
+            type="text"
+            inputmode="decimal"
+            value="3.000"
+        /></label>
+        <span>€</span>
+      </div>
+      <p class="hint">Ohne diesen Wert kann die Lücke nicht berechnet werden.</p>
+    </div>
+
+    <hr />
+
+    <p class="hint">
+      <b>Zustand C:</b> Eigene Eingaben vorhanden, noch kein Export. Einmaliger, schließbarer
+      Hinweis.
+    </p>
+    <div class="notice">
+      <b>Deine Daten liegen nur in diesem Browser.</b> Beim Löschen der Browserdaten gehen sie
+      verloren. <a href="daten.html">Jetzt exportieren</a>
+    </div>
+
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

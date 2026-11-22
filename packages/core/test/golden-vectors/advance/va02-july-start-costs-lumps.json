@@ -1,0 +1,105 @@
+{
+  "name": "va02-july-start-costs-lumps",
+  "description": "Start in July, lump sums, entry and custody fees, rate increase",
+  "synthetic": true,
+  "plan": {
+    "initialCapital": 5000,
+    "monthlyContribution": 250,
+    "annualContributionIncreasePercent": 3,
+    "durationYears": 15,
+    "lumpSums": [
+      {
+        "month": 3,
+        "amount": 4000
+      },
+      {
+        "month": 30,
+        "amount": 2000
+      }
+    ],
+    "ter": 0.2,
+    "entryFeePercent": 1,
+    "custodyFeeEurPerYear": 12,
+    "custodyFeePercentPerYear": 0.1,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true,
+    "advanceLumpSum": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000,
+    "advanceLumpSum": {
+      "baseEarningsFactorPercent": 70,
+      "baseInterestByYear": {
+        "2018": 0.87,
+        "2019": 0.52,
+        "2020": 0.07,
+        "2021": -0.45,
+        "2022": -0.05,
+        "2023": 2.55,
+        "2024": 2.29,
+        "2025": 2.53,
+        "2026": 3.2
+      },
+      "assumedBaseInterestPercent": 3.2,
+      "startYear": 2026,
+      "startMonth": 7
+    }
+  },
+  "expected": {
+    "pessimistic": {
+      "grossFinalValue": 82782.03799737628,
+      "totalContributions": 66796.74166007641,
+      "advanceLumpSumTotal": 13103.436189962928,
+      "advanceTaxPaid": 70.8414276216848,
+      "gainBeforeTax": 16056.137764921548,
+      "tax": 281.3925282767354,
+      "finalValueAfterTax": 82500.64546909955,
+      "finalValueReal": 61299.194817101525,
+      "yearlyAdvanceLumpSum": [
+        95.27, 272.7102424817911, 352.1015174918262, 472.6513111748538, 557.9179441867261,
+        647.6681339753635, 742.088324295691, 841.3719530859023, 945.7197000778981,
+        1055.339742855195, 1170.4480216392121, 1291.2685130940174, 1418.033513449083,
+        1550.9839312493611, 1689.863340906007
+      ]
+    },
+    "neutral": {
+      "grossFinalValue": 98464.94658166969,
+      "totalContributions": 66796.74166007641,
+      "advanceLumpSumTotal": 14540.183589171127,
+      "advanceTaxPaid": 207.81221832187967,
+      "gainBeforeTax": 31876.01713991516,
+      "tax": 2936.8782693061166,
+      "finalValueAfterTax": 95528.06831236357,
+      "finalValueReal": 70978.76188343561,
+      "yearlyAdvanceLumpSum": [
+        95.27, 274.57453121980865, 359.4916215023355, 487.4102637774201, 582.8024831832192,
+        684.8570529400437, 793.9522903925795, 910.4862409273012, 1034.8776632060865,
+        1167.567062427588, 1309.0177739244436, 1459.7170995143565, 1620.0486931015218,
+        1790.0111132646675, 1970.0996997897573
+      ]
+    },
+    "optimistic": {
+      "grossFinalValue": 117650.56182641993,
+      "totalContributions": 66796.74166007641,
+      "advanceLumpSumTotal": 16187.363572596772,
+      "advanceTaxPaid": 407.94038550354975,
+      "gainBeforeTax": 51261.76055184707,
+      "tax": 6211.8605422940855,
+      "finalValueAfterTax": 111438.70128412584,
+      "finalValueReal": 82800.59654489598,
+      "yearlyAdvanceLumpSum": [
+        95.27, 276.41880805277464, 366.93071503559196, 502.51127342618594, 608.6373317157011,
+        724.0497315965551, 849.4355228382502, 985.52970591597, 1133.1185004133047,
+        1293.0428339555888, 1466.2020664875597, 1653.402340435986, 1855.0430981151462,
+        2072.1117036494034, 2305.6599409587557
+      ]
+    }
+  }
+}

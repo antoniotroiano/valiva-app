@@ -1,0 +1,35 @@
+{
+  "name": "g02-tax-allowance",
+  "description": "Tax with yearly allowance exceeded, crosses a year change",
+  "synthetic": true,
+  "input": {
+    "id": "golden",
+    "name": "Golden goal",
+    "targetAmount": 60000,
+    "currentAmount": 40000,
+    "monthlyContribution": 500,
+    "accountInterestPercent": 3,
+    "priority": 1,
+    "taxEnabled": true,
+    "taxFreeAllowancePerYear": 1000,
+    "startMonth": "2026-03",
+    "targetMonth": "2029-03"
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "expected": {
+    "status": "reached",
+    "finalBalance": 62246.6164843389,
+    "interestGross": 4547.3510262566315,
+    "tax": 300.7345419177258,
+    "interestNet": 4246.616484338906,
+    "seriesLength": 37,
+    "monthsToReach": 33,
+    "reachedMonth": "2028-12",
+    "requiredMonthlyForTargetMonth": {
+      "status": "ok",
+      "monthly": 439.84
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "08-initial-only",
+  "description": "No contributions, only initial capital",
+  "synthetic": true,
+  "input": {
+    "initialCapital": 20000,
+    "monthlyContribution": 0,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 12,
+    "lumpSums": [],
+    "ter": 0,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "expected": {
+    "pessimistic": {
+      "grossFinalValue": 28515.217736923925,
+      "totalContributions": 20000.0,
+      "gainBeforeTax": 8515.217736923925,
+      "tax": 1308.3720746795798,
+      "finalValueAfterTax": 27206.845662244345,
+      "finalValueReal": 21452.41213378305
+    },
+    "neutral": {
+      "grossFinalValue": 35917.12652044284,
+      "totalContributions": 20000.0,
+      "gainBeforeTax": 15917.126520442842,
+      "tax": 2674.9494838367596,
+      "finalValueAfterTax": 33242.17703660608,
+      "finalValueReal": 26211.22973484114
+    },
+    "optimistic": {
+      "grossFinalValue": 45043.83177921647,
+      "totalContributions": 20000.0,
+      "gainBeforeTax": 25043.831779216467,
+      "tax": 4359.967442237839,
+      "finalValueAfterTax": 40683.86433697863,
+      "finalValueReal": 32078.949385997574
+    }
+  }
+}

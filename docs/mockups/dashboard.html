@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Dashboard-Ansicht (Review 13 D-1 bis D-3)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <style>
+    .hero b.big {
+      display: block;
+      font-size: 2.6rem;
+      line-height: 1.1;
+    }
+    .hero .gapbar {
+      display: flex;
+      height: 22px;
+      border-radius: 11px;
+      overflow: hidden;
+      background: #f4c7c3;
+      margin: 12px 0 6px;
+    }
+    .hero .gapbar i {
+      display: block;
+      background: #1a5fb4;
+    }
+    .gap-text {
+      color: #b42318;
+      font-weight: 600;
+    }
+    .ok-text {
+      color: #15803d;
+      font-weight: 600;
+    }
+    details {
+      border-top: 1px solid var(--line);
+      padding: 8px 0;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      border-radius: 10px;
+      padding: 0 8px;
+      margin-right: 6px;
+      border: 1px solid var(--line);
+    }
+    .tag.important {
+      border-color: #b45309;
+      color: #b45309;
+    }
+  </style>
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="gesamtsicht.html" aria-current="page">Rentenplan</a
+    ><a href="etf.html">ETF-Sparplan</a>
+  </nav>
+  <main>
+    <h1>Rentenplan</h1>
+    <p class="sub">Gesamtsicht im Ruhestand</p>
+
+    <p class="hint">
+      <b>D-1 Hero-Bereich</b> (ersetzt Kennzahl und Lückenbalken, gilt für das gewählte Szenario)
+    </p>
+    <div class="card hero">
+      <span>Netto-Rente ab 67, Kaufkraft von heute (Neutral)</span>
+      <b class="big">2.140 € pro Monat</b>
+      <span class="hint">Spanne: 1.720 € bis 2.610 €. Wunscheinkommen: 3.000 € pro Monat</span>
+      <div class="gapbar" role="img" aria-label="2.140 € von 3.000 € gedeckt, 860 € fehlen">
+        <i style="width: 71%"></i>
+      </div>
+      <p>
+        <b>71 %</b> des Wunscheinkommens sind gedeckt.
+        <span class="gap-text">Es fehlen 860 € pro Monat.</span>
+      </p>
+      <p class="hint">
+        Bei Überschuss: <span class="ok-text">Es bleiben 240 € pro Monat über.</span> (Balken grün,
+        voll)
+      </p>
+    </div>
+
+    <p class="hint">
+      <b>Zusammensetzung:</b> ab zwei Bausteinen mit Betrag der Balken wie bisher. Bei nur einem
+      Baustein stattdessen ein Satz: „Dein Netto kommt vollständig aus: ETF-Sparplan (620 €).“
+    </p>
+
+    <p class="hint"><b>D-2 Jahrestabelle der ETF-Seite</b> standardmäßig eingeklappt</p>
+    <div class="card">
+      <details>
+        <summary>Jahrestabelle anzeigen (20 Jahre)</summary>
+      </details>
+    </div>
+
+    <p class="hint">
+      <b>D-3 Hinweise</b> einklappbar, mit Gewicht. „Wichtig“ steht vorn und ist beim Öffnen sofort
+      lesbar.
+    </p>
+    <div class="card">
+      <details open>
+        <summary>Hinweise und Annahmen (4)</summary>
+        <ul>
+          <li>
+            <span class="tag important">Wichtig</span>Der Wert „Grundzulage“ ist ungeprüft
+            (unverified).
+          </li>
+          <li>
+            <span class="tag important">Wichtig</span>Der Beitrag wurde auf das Maximum gekappt.
+          </li>
+          <li><span class="tag">Info</span>Die ETF-Steuer ist vereinfacht berechnet.</li>
+          <li><span class="tag">Info</span>Die Grenzen wachsen mit der Inflation.</li>
+        </ul>
+      </details>
+      <p class="hint">
+        Geschlossen zeigt die Kopfzeile nur „Hinweise und Annahmen (4), davon 2 wichtig“. Gestartet
+        wird eingeklappt, wenn es keinen wichtigen Hinweis gibt, sonst offen.
+      </p>
+    </div>
+
+    <p class="hint">
+      D-4 (Logo, Kontrast): Kontrast ≥ 4,5:1 wird bei den neuen Farben (Grün und Rot für Lücke und
+      Überschuss) geprüft; das Logo bleibt.
+    </p>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

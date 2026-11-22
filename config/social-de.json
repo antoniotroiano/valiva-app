@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "description": "Social insurance parameters (Germany) for pensioners and occupational pensions. Not advice. Review once a year.",
+  "values": {
+    "healthGeneralRatePercent": {
+      "value": 14.6,
+      "unit": "percent",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "General health insurance rate; pensioners pay half (BMG, DRV)",
+      "sourceDe": "Allgemeiner Beitragssatz Krankenversicherung; Rentner tragen die Hälfte (BMG, DRV)",
+      "status": "confirmed"
+    },
+    "healthAdditionalRatePercent": {
+      "value": 2.9,
+      "unit": "percent",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Average additional contribution rate for 2026 and 2027 (BMG, 2026-10-30); actual rates depend on the fund",
+      "sourceDe": "Durchschnittlicher Zusatzbeitrag für 2026 und 2027 (BMG, 30.10.2026); der tatsächliche Satz hängt von der Kasse ab",
+      "status": "confirmed"
+    },
+    "careRatePercent": {
+      "value": 3.6,
+      "unit": "percent",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Long-term care insurance rate, paid in full by pensioners (DRV, BMG)",
+      "sourceDe": "Beitragssatz Pflegeversicherung, Rentner tragen den vollen Beitrag (DRV, BMG)",
+      "status": "confirmed"
+    },
+    "careRateChildlessPercent": {
+      "value": 4.2,
+      "unit": "percent",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Long-term care insurance rate for childless people (DRV, BMG)",
+      "sourceDe": "Beitragssatz Pflegeversicherung für Kinderlose (DRV, BMG)",
+      "status": "confirmed"
+    },
+    "contributionCeilingPensionMonthly": {
+      "value": 8450,
+      "unit": "EUR_per_month",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Contribution ceiling statutory pension insurance 2026 (DRV)",
+      "sourceDe": "Beitragsbemessungsgrenze Rentenversicherung 2026 (DRV)",
+      "status": "confirmed"
+    },
+    "referenceIncomeMonthly": {
+      "value": 3955,
+      "unit": "EUR_per_month",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Reference income (Bezugsgröße) 2026: 47,460 EUR per year = 3,955 EUR per month (§1 Sozialversicherungsrechengrößen-Verordnung 2026), checked 2026-11-19 on gesetze-im-internet.de",
+      "sourceDe": "Bezugsgröße 2026: 47.460 € im Jahr = 3.955 € im Monat (§1 Sozialversicherungsrechengrößen-Verordnung 2026), geprüft am 19.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed"
+    },
+    "occupationalHealthAllowanceMonthly": {
+      "value": 197.75,
+      "unit": "EUR_per_month",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Health insurance allowance for company pensions: 1/20 of the reference income, only for compulsory members, only if the pension exceeds it (§226 Abs. 2 SGB V), checked 2026-11-19 on gesetze-im-internet.de",
+      "sourceDe": "KV-Freibetrag für Betriebsrenten: ein Zwanzigstel der Bezugsgröße, nur für Pflichtversicherte und nur wenn die Rente ihn übersteigt (§226 Abs. 2 SGB V), geprüft am 19.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed"
+    },
+    "occupationalCareThresholdMonthly": {
+      "value": 197.75,
+      "unit": "EUR_per_month",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Care insurance threshold for company pensions: 1/20 of the reference income, all or nothing, no allowance (§57 Abs. 1 SGB XI with §226 Abs. 2 Satz 1 SGB V), checked 2026-11-19 on gesetze-im-internet.de",
+      "sourceDe": "Pflege-Freigrenze für Betriebsrenten: ein Zwanzigstel der Bezugsgröße, alles oder nichts, ohne Freibetrag (§57 Abs. 1 SGB XI mit §226 Abs. 2 Satz 1 SGB V), geprüft am 19.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed"
+    },
+    "occupationalSocialInsuranceFreeMonthly": {
+      "value": 338,
+      "unit": "EUR_per_month",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Social-insurance-free conversion, 4 % of 8,450 EUR (several sources)",
+      "sourceDe": "Sozialversicherungsfreie Entgeltumwandlung, 4 % von 8.450 € (mehrere Quellen)",
+      "status": "confirmed"
+    },
+    "occupationalTaxFreeMonthly": {
+      "value": 676,
+      "unit": "EUR_per_month",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Tax-free conversion, 8 % of 8,450 EUR (several sources)",
+      "sourceDe": "Steuerfreie Entgeltumwandlung, 8 % von 8.450 € (mehrere Quellen)",
+      "status": "confirmed"
+    },
+    "employerSubsidyPercent": {
+      "value": 15,
+      "unit": "percent",
+      "validFrom": "2019-01-01",
+      "validTo": null,
+      "source": "Mandatory employer subsidy on salary conversion, § 1a BetrAVG; dates in § 26a not checked",
+      "sourceDe": "Pflichtzuschuss des Arbeitgebers bei Entgeltumwandlung, § 1a BetrAVG; Stichtage in § 26a nicht geprüft",
+      "status": "confirmed"
+    }
+  }
+}

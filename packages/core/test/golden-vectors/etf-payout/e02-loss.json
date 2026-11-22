@@ -1,0 +1,95 @@
+{
+  "name": "e02-loss",
+  "description": "Loss: no tax, own negative returns",
+  "synthetic": true,
+  "plan": {
+    "initialCapital": 5000,
+    "monthlyContribution": 250,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 10,
+    "lumpSums": [],
+    "ter": 0.2,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": -6,
+      "neutral": -5,
+      "optimistic": -4
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000
+  },
+  "taxUnverified": true,
+  "payoutStartAge": 67,
+  "payoutEndAge": 90,
+  "useGlobalAssumptions": false,
+  "profile": {
+    "birthYear": 1985,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": []
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "currentMonth": 1,
+  "expected": {
+    "pessimistic": {
+      "durationYears": 26,
+      "savingMonths": 312,
+      "grossCapital": 38841.40873523033,
+      "totalContributions": 83000.0,
+      "gainShare": 0.0,
+      "monthlyNominal": 175.3472244340543,
+      "taxMonthlyNominal": 0.0,
+      "grossReal": 104.7838689745163,
+      "taxReal": 0.0,
+      "netReal": 104.7838689745163
+    },
+    "neutral": {
+      "durationYears": 26,
+      "savingMonths": 312,
+      "grossCapital": 43317.6424184003,
+      "totalContributions": 83000.0,
+      "gainShare": 0.0,
+      "monthlyNominal": 195.55491457249548,
+      "taxMonthlyNominal": 0.0,
+      "grossReal": 116.85956599554548,
+      "taxReal": 0.0,
+      "netReal": 116.85956599554548
+    },
+    "optimistic": {
+      "durationYears": 26,
+      "savingMonths": 312,
+      "grossCapital": 48558.96966531264,
+      "totalContributions": 83000.0,
+      "gainShare": 0.0,
+      "monthlyNominal": 219.21657399791826,
+      "taxMonthlyNominal": 0.0,
+      "grossReal": 130.9992835129196,
+      "taxReal": 0.0,
+      "netReal": 130.9992835129196
+    }
+  }
+}

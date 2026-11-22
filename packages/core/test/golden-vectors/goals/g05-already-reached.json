@@ -1,0 +1,35 @@
+{
+  "name": "g05-already-reached",
+  "description": "Current amount is above the target",
+  "synthetic": true,
+  "input": {
+    "id": "golden",
+    "name": "Golden goal",
+    "targetAmount": 4000,
+    "currentAmount": 5000,
+    "monthlyContribution": 150,
+    "accountInterestPercent": 2.5,
+    "priority": 1,
+    "taxEnabled": false,
+    "taxFreeAllowancePerYear": 1000,
+    "startMonth": "2026-01",
+    "targetMonth": "2026-09"
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "expected": {
+    "status": "reached_at_start",
+    "finalBalance": 6294.16665603361,
+    "interestGross": 94.16665603360939,
+    "tax": 0.0,
+    "interestNet": 94.16665603360939,
+    "seriesLength": 9,
+    "monthsToReach": 0,
+    "reachedMonth": "2026-01",
+    "requiredMonthlyForTargetMonth": {
+      "status": "already_reached",
+      "monthly": 0.0
+    }
+  }
+}

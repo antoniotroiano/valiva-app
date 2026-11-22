@@ -1,0 +1,45 @@
+{
+  "name": "g03-interest-changes",
+  "description": "Two interest changes",
+  "synthetic": true,
+  "input": {
+    "id": "golden",
+    "name": "Golden goal",
+    "targetAmount": 9000,
+    "currentAmount": 2000,
+    "monthlyContribution": 200,
+    "accountInterestPercent": 2,
+    "priority": 1,
+    "taxEnabled": false,
+    "taxFreeAllowancePerYear": 1000,
+    "startMonth": "2026-06",
+    "interestChanges": [
+      {
+        "fromMonth": "2027-01",
+        "percent": 1.5
+      },
+      {
+        "fromMonth": "2028-07",
+        "percent": 3
+      }
+    ],
+    "targetMonth": "2029-06"
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375
+  },
+  "expected": {
+    "status": "reached",
+    "finalBalance": 9589.590324180841,
+    "interestGross": 389.59032418084445,
+    "tax": 0.0,
+    "interestNet": 389.59032418084445,
+    "seriesLength": 37,
+    "monthsToReach": 34,
+    "reachedMonth": "2029-04",
+    "requiredMonthlyForTargetMonth": {
+      "status": "ok",
+      "monthly": 184.2
+    }
+  }
+}

@@ -1,0 +1,942 @@
+{
+  "name": "o01-three-products",
+  "description": "Statutory, depot (ends 85) and company pension (ends 80), gap against 2,800",
+  "synthetic": true,
+  "profile": {
+    "birthYear": 1985,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": [],
+    "desiredMonthlyIncomeToday": 2800
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "products": [
+    {
+      "productId": "statutory",
+      "enabled": true,
+      "payoutStartAge": 67,
+      "valid": true,
+      "results": {
+        "pessimistic": {
+          "monthlyPensionReal": 2100.0,
+          "taxableMonthlyReal": 1785.0,
+          "contributionsMonthlyReal": 260.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "neutral": {
+          "monthlyPensionReal": 2100.0,
+          "taxableMonthlyReal": 1785.0,
+          "contributionsMonthlyReal": 260.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "optimistic": {
+          "monthlyPensionReal": 2100.0,
+          "taxableMonthlyReal": 1785.0,
+          "contributionsMonthlyReal": 260.0,
+          "fixedTaxMonthlyReal": 0.0
+        }
+      }
+    },
+    {
+      "productId": "retirementDepot",
+      "enabled": true,
+      "payoutStartAge": 67,
+      "payoutEndAge": 85,
+      "valid": true,
+      "results": {
+        "pessimistic": {
+          "monthlyPensionReal": 384.0,
+          "taxableMonthlyReal": 384.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 0.0,
+          "lumpSum": {
+            "grossReal": 9600.0
+          }
+        },
+        "neutral": {
+          "monthlyPensionReal": 480.0,
+          "taxableMonthlyReal": 480.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 0.0,
+          "lumpSum": {
+            "grossReal": 12000.0
+          }
+        },
+        "optimistic": {
+          "monthlyPensionReal": 600.0,
+          "taxableMonthlyReal": 600.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 0.0,
+          "lumpSum": {
+            "grossReal": 15000.0
+          }
+        }
+      }
+    },
+    {
+      "productId": "occupational",
+      "enabled": true,
+      "payoutStartAge": 67,
+      "payoutEndAge": 80,
+      "valid": true,
+      "results": {
+        "pessimistic": {
+          "monthlyPensionReal": 264.0,
+          "taxableMonthlyReal": 264.0,
+          "contributionsMonthlyReal": 36.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "neutral": {
+          "monthlyPensionReal": 330.0,
+          "taxableMonthlyReal": 330.0,
+          "contributionsMonthlyReal": 45.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "optimistic": {
+          "monthlyPensionReal": 412.5,
+          "taxableMonthlyReal": 412.5,
+          "contributionsMonthlyReal": 56.25,
+          "fixedTaxMonthlyReal": 0.0
+        }
+      }
+    }
+  ],
+  "expected": {
+    "firstPayoutEndAge": 80,
+    "scenarios": {
+      "pessimistic": {
+        "net": 2203.25,
+        "gross": 2748.0,
+        "taxAndContributions": 544.75,
+        "gap": 596.75,
+        "surplus": 0.0,
+        "lumpNetReal": 6884.0,
+        "lumpGrossReal": 9600.0,
+        "totalGapReal": 197397.29494122387,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 2100.0,
+            "taxAndContributionsReal": 442.49845869297167,
+            "netReal": 1657.5015413070282
+          },
+          {
+            "productId": "retirementDepot",
+            "grossReal": 384.0,
+            "taxAndContributionsReal": 39.260172626387174,
+            "netReal": 344.7398273736128
+          },
+          {
+            "productId": "occupational",
+            "grossReal": 264.0,
+            "taxAndContributionsReal": 62.99136868064119,
+            "netReal": 201.0086313193588
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 2203.25,
+            "byProduct": {
+              "statutory": 1657.5015413070282,
+              "retirementDepot": 344.7398273736128,
+              "occupational": 201.0086313193588
+            },
+            "gap": 596.75
+          },
+          {
+            "age": 68,
+            "total": 2199.436274509804,
+            "byProduct": {
+              "statutory": 1664.5056770445053,
+              "retirementDepot": 337.91094228880445,
+              "occupational": 197.01965517649427
+            },
+            "gap": 600.5637254901958
+          },
+          {
+            "age": 69,
+            "total": 2195.902056901192,
+            "byProduct": {
+              "statutory": 1671.569886168319,
+              "retirementDepot": 331.2202944340386,
+              "occupational": 193.11187629883403
+            },
+            "gap": 604.0979430988082
+          },
+          {
+            "age": 70,
+            "total": 2192.476283631484,
+            "byProduct": {
+              "statutory": 1678.5693352611677,
+              "retirementDepot": 324.6403273564503,
+              "occupational": 189.266621013866
+            },
+            "gap": 607.523716368516
+          },
+          {
+            "age": 71,
+            "total": 2189.404649350034,
+            "byProduct": {
+              "statutory": 1685.690450398031,
+              "retirementDepot": 318.2060055045675,
+              "occupational": 185.50819344743564
+            },
+            "gap": 610.5953506499659
+          },
+          {
+            "age": 72,
+            "total": 2186.4329384629864,
+            "byProduct": {
+              "statutory": 1692.7445797224696,
+              "retirementDepot": 311.87832171519636,
+              "occupational": 181.81003702532053
+            },
+            "gap": 613.5670615370136
+          },
+          {
+            "age": 73,
+            "total": 2183.807023399506,
+            "byProduct": {
+              "statutory": 1699.9208455807832,
+              "retirementDepot": 305.690754119956,
+              "occupational": 178.19542369876683
+            },
+            "gap": 616.1929766004941
+          },
+          {
+            "age": 74,
+            "total": 2181.3561962454687,
+            "byProduct": {
+              "statutory": 1707.092260756935,
+              "retirementDepot": 299.61724558141316,
+              "occupational": 174.64668990712067
+            },
+            "gap": 618.6438037545313
+          },
+          {
+            "age": 75,
+            "total": 2179.0765004106006,
+            "byProduct": {
+              "statutory": 1714.2578055133954,
+              "retirementDepot": 293.6559100800292,
+              "occupational": 171.16278481717606
+            },
+            "gap": 620.9234995893994
+          },
+          {
+            "age": 76,
+            "total": 2177.047395661755,
+            "byProduct": {
+              "statutory": 1721.4815625363706,
+              "retirementDepot": 287.8157171536595,
+              "occupational": 167.75011597172517
+            },
+            "gap": 622.9526043382448
+          },
+          {
+            "age": 77,
+            "total": 2175.1817565216807,
+            "byProduct": {
+              "statutory": 1728.698320266887,
+              "retirementDepot": 282.0835407705476,
+              "occupational": 164.3998954842459
+            },
+            "gap": 624.8182434783193
+          },
+          {
+            "age": 78,
+            "total": 2173.5592040326464,
+            "byProduct": {
+              "statutory": 1735.9730010234045,
+              "retirementDepot": 276.46795402465193,
+              "occupational": 161.1182489845898
+            },
+            "gap": 626.4407959673536
+          },
+          {
+            "age": 79,
+            "total": 2172.0927708843155,
+            "byProduct": {
+              "statutory": 1743.2396310018064,
+              "retirementDepot": 270.9563817501918,
+              "occupational": 157.89675813231722
+            },
+            "gap": 627.9072291156845
+          },
+          {
+            "age": 80,
+            "total": 2041.3608175203333,
+            "byProduct": {
+              "statutory": 1772.5337208613214,
+              "retirementDepot": 268.8270966590119,
+              "occupational": 0.0
+            },
+            "gap": 758.6391824796667
+          },
+          {
+            "age": 81,
+            "total": 2042.9019369780128,
+            "byProduct": {
+              "statutory": 1779.5120609263795,
+              "retirementDepot": 263.38987605163334,
+              "occupational": 0.0
+            },
+            "gap": 757.0980630219872
+          },
+          {
+            "age": 82,
+            "total": 2044.6042991827603,
+            "byProduct": {
+              "statutory": 1786.5395001676538,
+              "retirementDepot": 258.06479901510636,
+              "occupational": 0.0
+            },
+            "gap": 755.3957008172397
+          },
+          {
+            "age": 83,
+            "total": 2046.3825639749405,
+            "byProduct": {
+              "statutory": 1793.5431081688598,
+              "retirementDepot": 252.83945580608068,
+              "occupational": 0.0
+            },
+            "gap": 753.6174360250595
+          },
+          {
+            "age": 84,
+            "total": 2048.40143620522,
+            "byProduct": {
+              "statutory": 1800.6695811980817,
+              "retirementDepot": 247.73185500713797,
+              "occupational": 0.0
+            },
+            "gap": 751.5985637947801
+          },
+          {
+            "age": 85,
+            "total": 1850.8811315596256,
+            "byProduct": {
+              "statutory": 1850.8811315596256,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 949.1188684403744
+          },
+          {
+            "age": 86,
+            "total": 1857.1472972372053,
+            "byProduct": {
+              "statutory": 1857.1472972372053,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 942.8527027627947
+          },
+          {
+            "age": 87,
+            "total": 1863.4617447726816,
+            "byProduct": {
+              "statutory": 1863.4617447726816,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 936.5382552273184
+          },
+          {
+            "age": 88,
+            "total": 1869.8247108418286,
+            "byProduct": {
+              "statutory": 1869.8247108418286,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 930.1752891581714
+          },
+          {
+            "age": 89,
+            "total": 1876.2364332805962,
+            "byProduct": {
+              "statutory": 1876.2364332805962,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 923.7635667194038
+          },
+          {
+            "age": 90,
+            "total": 1882.6971510907947,
+            "byProduct": {
+              "statutory": 1882.6971510907947,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 917.3028489092053
+          }
+        ]
+      },
+      "neutral": {
+        "net": 2315.0833333333335,
+        "gross": 2910.0,
+        "taxAndContributions": 594.9166666666667,
+        "gap": 484.9166666666665,
+        "surplus": 0.0,
+        "lumpNetReal": 8477.0,
+        "lumpGrossReal": 12000.0,
+        "totalGapReal": 178733.5251440968,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 2100.0,
+            "taxAndContributionsReal": 459.4224470134875,
+            "netReal": 1640.5775529865125
+          },
+          {
+            "productId": "retirementDepot",
+            "grossReal": 480.0,
+            "taxAndContributionsReal": 53.626204238921005,
+            "netReal": 426.373795761079
+          },
+          {
+            "productId": "occupational",
+            "grossReal": 330.0,
+            "taxAndContributionsReal": 81.8680154142582,
+            "netReal": 248.1319845857418
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 2315.0833333333335,
+            "byProduct": {
+              "statutory": 1640.5775529865125,
+              "retirementDepot": 426.373795761079,
+              "occupational": 248.1319845857418
+            },
+            "gap": 484.9166666666665
+          },
+          {
+            "age": 68,
+            "total": 2309.0196078431377,
+            "byProduct": {
+              "statutory": 1647.7448203077267,
+              "retirementDepot": 418.0103316113981,
+              "occupational": 243.26445592401265
+            },
+            "gap": 490.9803921568623
+          },
+          {
+            "age": 69,
+            "total": 2303.294213763937,
+            "byProduct": {
+              "statutory": 1654.9828128517986,
+              "retirementDepot": 409.81570137353935,
+              "occupational": 238.49569953859896
+            },
+            "gap": 496.705786236063
+          },
+          {
+            "age": 70,
+            "total": 2297.8182674838486,
+            "byProduct": {
+              "statutory": 1662.2328232498157,
+              "retirementDepot": 401.77182180068127,
+              "occupational": 233.81362243335136
+            },
+            "gap": 502.18173251615144
+          },
+          {
+            "age": 71,
+            "total": 2292.586332865424,
+            "byProduct": {
+              "statutory": 1669.493500752156,
+              "retirementDepot": 393.87607483523635,
+              "occupational": 229.21675727803182
+            },
+            "gap": 507.4136671345759
+          },
+          {
+            "age": 72,
+            "total": 2287.593085700297,
+            "byProduct": {
+              "statutory": 1676.7635296150484,
+              "retirementDepot": 386.12589186820423,
+              "occupational": 224.7036642170442
+            },
+            "gap": 512.4069142997032
+          },
+          {
+            "age": 73,
+            "total": 2282.9166448739934,
+            "byProduct": {
+              "statutory": 1684.101927797504,
+              "retirementDepot": 378.5324025332551,
+              "occupational": 220.28231454323424
+            },
+            "gap": 517.0833551260066
+          },
+          {
+            "age": 74,
+            "total": 2278.551903573398,
+            "byProduct": {
+              "statutory": 1691.5088563868833,
+              "retirementDepot": 371.09229939208336,
+              "occupational": 215.95074779443118
+            },
+            "gap": 521.4480964266022
+          },
+          {
+            "age": 75,
+            "total": 2274.3271938693542,
+            "byProduct": {
+              "statutory": 1698.8620083325675,
+              "retirementDepot": 363.7761494757582,
+              "occupational": 211.68903606102873
+            },
+            "gap": 525.6728061306458
+          },
+          {
+            "age": 76,
+            "total": 2270.404284673605,
+            "byProduct": {
+              "statutory": 1706.2821664200578,
+              "retirementDepot": 356.60806235129905,
+              "occupational": 207.51405590224846
+            },
+            "gap": 529.5957153263948
+          },
+          {
+            "age": 77,
+            "total": 2266.6950464025795,
+            "byProduct": {
+              "statutory": 1713.7073777312075,
+              "retirementDepot": 349.57235091303926,
+              "occupational": 203.41531775833255
+            },
+            "gap": 533.3049535974205
+          },
+          {
+            "age": 78,
+            "total": 2263.278115680586,
+            "byProduct": {
+              "statutory": 1721.199058704776,
+              "retirementDepot": 342.67904813926407,
+              "occupational": 199.40000883654602
+            },
+            "gap": 536.7218843194141
+          },
+          {
+            "age": 79,
+            "total": 2260.065560081642,
+            "byProduct": {
+              "statutory": 1728.6943898672066,
+              "retirementDepot": 335.9131040685096,
+              "occupational": 195.45806614592584
+            },
+            "gap": 539.9344399183578
+          },
+          {
+            "age": 80,
+            "total": 2096.0719399280188,
+            "byProduct": {
+              "statutory": 1761.9982525702812,
+              "retirementDepot": 334.0736873577373,
+              "occupational": 0.0
+            },
+            "gap": 703.9280600719812
+          },
+          {
+            "age": 81,
+            "total": 2096.491272671822,
+            "byProduct": {
+              "statutory": 1769.1324217697738,
+              "retirementDepot": 327.3588509020481,
+              "occupational": 0.0
+            },
+            "gap": 703.5087273281779
+          },
+          {
+            "age": 82,
+            "total": 2097.1003799283244,
+            "byProduct": {
+              "statutory": 1776.3187854976886,
+              "retirementDepot": 320.78159443063595,
+              "occupational": 0.0
+            },
+            "gap": 702.8996200716756
+          },
+          {
+            "age": 83,
+            "total": 2097.8966954248403,
+            "byProduct": {
+              "statutory": 1783.5576626216784,
+              "retirementDepot": 314.3390328031618,
+              "occupational": 0.0
+            },
+            "gap": 702.1033045751597
+          },
+          {
+            "age": 84,
+            "total": 2098.794375535187,
+            "byProduct": {
+              "statutory": 1790.777936268235,
+              "retirementDepot": 308.01643926695203,
+              "occupational": 0.0
+            },
+            "gap": 701.2056244648129
+          },
+          {
+            "age": 85,
+            "total": 1850.8811315596256,
+            "byProduct": {
+              "statutory": 1850.8811315596256,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 949.1188684403744
+          },
+          {
+            "age": 86,
+            "total": 1857.1472972372053,
+            "byProduct": {
+              "statutory": 1857.1472972372053,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 942.8527027627947
+          },
+          {
+            "age": 87,
+            "total": 1863.4617447726816,
+            "byProduct": {
+              "statutory": 1863.4617447726816,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 936.5382552273184
+          },
+          {
+            "age": 88,
+            "total": 1869.8247108418286,
+            "byProduct": {
+              "statutory": 1869.8247108418286,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 930.1752891581714
+          },
+          {
+            "age": 89,
+            "total": 1876.2364332805962,
+            "byProduct": {
+              "statutory": 1876.2364332805962,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 923.7635667194038
+          },
+          {
+            "age": 90,
+            "total": 1882.6971510907947,
+            "byProduct": {
+              "statutory": 1882.6971510907947,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 917.3028489092053
+          }
+        ]
+      },
+      "optimistic": {
+        "net": 2453.3333333333335,
+        "gross": 3112.5,
+        "taxAndContributions": 659.1666666666666,
+        "gap": 346.6666666666665,
+        "surplus": 0.0,
+        "lumpNetReal": 10401.0,
+        "lumpGrossReal": 15000.0,
+        "totalGapReal": 155589.312897688,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 2100.0,
+            "taxAndContributionsReal": 478.8047363717605,
+            "netReal": 1621.1952636282394
+          },
+          {
+            "productId": "retirementDepot",
+            "grossReal": 600.0,
+            "taxAndContributionsReal": 73.54781054512958,
+            "netReal": 526.4521894548704
+          },
+          {
+            "productId": "occupational",
+            "grossReal": 412.5,
+            "taxAndContributionsReal": 106.81411974977658,
+            "netReal": 305.6858802502234
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 2453.3333333333335,
+            "byProduct": {
+              "statutory": 1621.1952636282394,
+              "retirementDepot": 526.4521894548704,
+              "occupational": 305.6858802502234
+            },
+            "gap": 346.6666666666665
+          },
+          {
+            "age": 68,
+            "total": 2444.686274509804,
+            "byProduct": {
+              "statutory": 1628.6270639834884,
+              "retirementDepot": 516.2703818369454,
+              "occupational": 299.78882868937046
+            },
+            "gap": 355.3137254901958
+          },
+          {
+            "age": 69,
+            "total": 2436.201076509035,
+            "byProduct": {
+              "statutory": 1635.983151797987,
+              "retirementDepot": 506.24217401818345,
+              "occupational": 293.9757506928645
+            },
+            "gap": 363.7989234909651
+          },
+          {
+            "age": 70,
+            "total": 2428.204080632637,
+            "byProduct": {
+              "statutory": 1643.4780101768552,
+              "retirementDepot": 496.4336010512909,
+              "occupational": 288.29246940449127
+            },
+            "gap": 371.7959193673628
+          },
+          {
+            "age": 71,
+            "total": 2420.438437259662,
+            "byProduct": {
+              "statutory": 1650.9473104478523,
+              "retirementDepot": 486.78958934862277,
+              "occupational": 282.7015374631867
+            },
+            "gap": 379.5615627403381
+          },
+          {
+            "age": 72,
+            "total": 2412.980769746935,
+            "byProduct": {
+              "statutory": 1658.4438526424638,
+              "retirementDepot": 477.32401490809116,
+              "occupational": 277.2129021963799
+            },
+            "gap": 387.01923025306496
+          },
+          {
+            "age": 73,
+            "total": 2405.824505050436,
+            "byProduct": {
+              "statutory": 1665.9661828632616,
+              "retirementDepot": 468.0336073689764,
+              "occupational": 271.824714818198
+            },
+            "gap": 394.1754949495639
+          },
+          {
+            "age": 74,
+            "total": 2398.9632043999754,
+            "byProduct": {
+              "statutory": 1673.5128708222558,
+              "retirementDepot": 458.9151665924459,
+              "occupational": 266.5351669852739
+            },
+            "gap": 401.03679560002456
+          },
+          {
+            "age": 75,
+            "total": 2392.47389402613,
+            "byProduct": {
+              "statutory": 1681.1399314124217,
+              "retirementDepot": 449.9809161440901,
+              "occupational": 261.35304646961816
+            },
+            "gap": 407.52610597387
+          },
+          {
+            "age": 76,
+            "total": 2386.183729271751,
+            "byProduct": {
+              "statutory": 1688.731641466985,
+              "retirementDepot": 441.1967831170981,
+              "occupational": 256.25530468766794
+            },
+            "gap": 413.81627072824904
+          },
+          {
+            "age": 77,
+            "total": 2380.253325420369,
+            "byProduct": {
+              "statutory": 1696.401972570958,
+              "retirementDepot": 432.59018946215633,
+              "occupational": 251.261163387255
+            },
+            "gap": 419.74667457963096
+          },
+          {
+            "age": 78,
+            "total": 2374.593421907178,
+            "byProduct": {
+              "statutory": 1704.092153941397,
+              "retirementDepot": 424.14285269023895,
+              "occupational": 246.35841527554177
+            },
+            "gap": 425.4065780928222
+          },
+          {
+            "age": 79,
+            "total": 2369.198213244967,
+            "byProduct": {
+              "statutory": 1711.8008625157709,
+              "retirementDepot": 415.8519062848382,
+              "occupational": 241.5454444443581
+            },
+            "gap": 430.80178675503294
+          },
+          {
+            "age": 80,
+            "total": 2164.0858429376253,
+            "byProduct": {
+              "statutory": 1749.4192313090023,
+              "retirementDepot": 414.66661162862295,
+              "occupational": 0.0
+            },
+            "gap": 635.9141570623747
+          },
+          {
+            "age": 81,
+            "total": 2163.1862756224164,
+            "byProduct": {
+              "statutory": 1756.781728373625,
+              "retirementDepot": 406.40454724879146,
+              "occupational": 0.0
+            },
+            "gap": 636.8137243775836
+          },
+          {
+            "age": 82,
+            "total": 2162.512147526947,
+            "byProduct": {
+              "statutory": 1764.2017336358745,
+              "retirementDepot": 398.31041389107236,
+              "occupational": 0.0
+            },
+            "gap": 637.487852473053
+          },
+          {
+            "age": 83,
+            "total": 2161.976859737215,
+            "byProduct": {
+              "statutory": 1771.6108509615265,
+              "retirementDepot": 390.36600877568867,
+              "occupational": 0.0
+            },
+            "gap": 638.0231402627851
+          },
+          {
+            "age": 84,
+            "total": 2161.5772163643123,
+            "byProduct": {
+              "statutory": 1779.0083295727604,
+              "retirementDepot": 382.56888679155213,
+              "occupational": 0.0
+            },
+            "gap": 638.4227836356877
+          },
+          {
+            "age": 85,
+            "total": 1850.8811315596256,
+            "byProduct": {
+              "statutory": 1850.8811315596256,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 949.1188684403744
+          },
+          {
+            "age": 86,
+            "total": 1857.1472972372053,
+            "byProduct": {
+              "statutory": 1857.1472972372053,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 942.8527027627947
+          },
+          {
+            "age": 87,
+            "total": 1863.4617447726816,
+            "byProduct": {
+              "statutory": 1863.4617447726816,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 936.5382552273184
+          },
+          {
+            "age": 88,
+            "total": 1869.8247108418286,
+            "byProduct": {
+              "statutory": 1869.8247108418286,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 930.1752891581714
+          },
+          {
+            "age": 89,
+            "total": 1876.2364332805962,
+            "byProduct": {
+              "statutory": 1876.2364332805962,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 923.7635667194038
+          },
+          {
+            "age": 90,
+            "total": 1882.6971510907947,
+            "byProduct": {
+              "statutory": 1882.6971510907947,
+              "retirementDepot": 0.0,
+              "occupational": 0.0
+            },
+            "gap": 917.3028489092053
+          }
+        ]
+      }
+    }
+  }
+}

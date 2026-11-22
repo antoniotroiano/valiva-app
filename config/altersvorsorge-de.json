@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "description": "Altersvorsorgedepot parameters (Germany, law of 2026-05-26). Not tax or pension advice. 'validFrom' is the promulgation date so the values resolve today; the first contribution year (2027) is a separate value. Review once a year and before release.",
+  "values": {
+    "basicGrantTier1Limit": {
+      "value": 360,
+      "unit": "EUR",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 84: 50 % up to 360 EUR",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 84: 50 % bis 360 €",
+      "status": "confirmed"
+    },
+    "basicGrantTier1RatePercent": {
+      "value": 50,
+      "unit": "percent",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 84",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 84",
+      "status": "confirmed"
+    },
+    "basicGrantTier2Limit": {
+      "value": 1800,
+      "unit": "EUR",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 84: 25 % from 360.01 to 1,800 EUR (max. 540 EUR)",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 84: 25 % von 360,01 bis 1.800 € (höchstens 540 €)",
+      "status": "confirmed"
+    },
+    "basicGrantTier2RatePercent": {
+      "value": 25,
+      "unit": "percent",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 84",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 84",
+      "status": "confirmed"
+    },
+    "childGrantRatePercent": {
+      "value": 100,
+      "unit": "percent",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 85: 100 % of contributions up to 1,800 EUR per child, needs child benefit",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 85: 100 % der Beiträge bis 1.800 € je Kind, Voraussetzung Kindergeld",
+      "status": "confirmed"
+    },
+    "childGrantContributionLimit": {
+      "value": 1800,
+      "unit": "EUR",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 85",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 85",
+      "status": "confirmed"
+    },
+    "childGrantMaxPerChild": {
+      "value": 300,
+      "unit": "EUR",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 85: at most 300 EUR per child",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 85: höchstens 300 € je Kind",
+      "status": "confirmed"
+    },
+    "childGrantMaxAge": {
+      "value": 18,
+      "unit": "years",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Assumption: child benefit mostly until 18, until 25 in training; the model uses 18. Age limit not read in the law",
+      "sourceDe": "Annahme: Kindergeld meist bis 18, in Ausbildung bis 25; das Modell nutzt 18. Altersgrenze nicht im Gesetz gelesen",
+      "status": "unverified"
+    },
+    "youthBonusAmount": {
+      "value": 200,
+      "unit": "EUR",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 84 sentence 2: 200 EUR once if under 25 at the start of the contribution year",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 84 Satz 2: 200 € einmalig, wenn zu Beginn des Beitragsjahres nicht 25",
+      "status": "confirmed"
+    },
+    "youthBonusMaxAge": {
+      "value": 25,
+      "unit": "years",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 84 sentence 2; model: once in the first contribution year only (reading of 'once' not checked)",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 84 Satz 2; Modell: nur im ersten Beitragsjahr (Auslegung von „einmalig“ nicht geprüft)",
+      "status": "unverified"
+    },
+    "minOwnContributionYearly": {
+      "value": 120,
+      "unit": "EUR",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 86: below this neither basic nor child grant, from contribution year 2027",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 86: darunter weder Grund- noch Kinderzulage, ab Beitragsjahr 2027",
+      "status": "confirmed"
+    },
+    "maxContributionYearly": {
+      "value": 6840,
+      "unit": "EUR",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11): maximum contribution per contract",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen): Höchstbeitrag je Vertrag",
+      "status": "confirmed"
+    },
+    "firstContributionYear": {
+      "value": 2027,
+      "unit": "year",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), Art. 14: partly in force from 2027-01-01",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), Art. 14: teilweise ab 01.01.2027 in Kraft",
+      "status": "confirmed"
+    },
+    "payoutStartAgeMin": {
+      "value": 65,
+      "unit": "years",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11): payout starts at 65 at the earliest",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen): Auszahlbeginn frühestens mit 65",
+      "status": "confirmed"
+    },
+    "payoutStartAgeMax": {
+      "value": 70,
+      "unit": "years",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11): payout starts at 70 at the latest",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen): Auszahlbeginn spätestens mit 70",
+      "status": "confirmed"
+    },
+    "payoutEndAgeMin": {
+      "value": 85,
+      "unit": "years",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11) (AltZertG): payout plan at least until 85",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen) (AltZertG): Auszahlplan mindestens bis 85",
+      "status": "confirmed"
+    },
+    "lumpSumMaxPercent": {
+      "value": 30,
+      "unit": "percent",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11): lump sum up to 30 % of the capital",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen): Einmalauszahlung bis 30 % des Kapitals",
+      "status": "confirmed"
+    },
+    "standardCostCapPercent": {
+      "value": 1.0,
+      "unit": "percent",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11) (AltZertG § 2a): effective costs of the standard depot at most 1.0 % p. a.",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen) (AltZertG § 2a): Effektivkosten des Standarddepots höchstens 1,0 % p. a.",
+      "status": "confirmed"
+    },
+    "guaranteeLevelLowPercent": {
+      "value": 80,
+      "unit": "percent",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11) (AltZertG): guarantee product with 80 % of the contributions",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen) (AltZertG): Garantieprodukt mit 80 % der Beiträge",
+      "status": "confirmed"
+    },
+    "guaranteeLevelHighPercent": {
+      "value": 100,
+      "unit": "percent",
+      "validFrom": "2026-05-29",
+      "validTo": null,
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11) (AltZertG): guarantee product with 100 % of the contributions",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen) (AltZertG): Garantieprodukt mit 100 % der Beiträge",
+      "status": "confirmed"
+    }
+  }
+}

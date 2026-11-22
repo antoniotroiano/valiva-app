@@ -1,0 +1,122 @@
+{
+  "name": "vap02-start-in-november",
+  "description": "Today is month 11: two savings months in the first year",
+  "synthetic": true,
+  "plan": {
+    "initialCapital": 5000,
+    "monthlyContribution": 250,
+    "annualContributionIncreasePercent": 0,
+    "durationYears": 10,
+    "lumpSums": [],
+    "ter": 0.2,
+    "entryFeePercent": 0,
+    "custodyFeeEurPerYear": 0,
+    "custodyFeePercentPerYear": 0,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "inflationPercent": 2,
+    "taxEnabled": true,
+    "advanceLumpSum": true
+  },
+  "tax": {
+    "capitalGainsTaxRate": 26.375,
+    "partialExemptionRate": 30,
+    "taxFreeAllowance": 1000,
+    "advanceLumpSum": {
+      "baseEarningsFactorPercent": 70,
+      "baseInterestByYear": {
+        "2018": 0.87,
+        "2019": 0.52,
+        "2020": 0.07,
+        "2021": -0.45,
+        "2022": -0.05,
+        "2023": 2.55,
+        "2024": 2.29,
+        "2025": 2.53,
+        "2026": 3.2
+      },
+      "assumedBaseInterestPercent": 3.2,
+      "startYear": 2026,
+      "startMonth": 11
+    }
+  },
+  "taxUnverified": true,
+  "payoutStartAge": 67,
+  "payoutEndAge": 90,
+  "useGlobalAssumptions": true,
+  "profile": {
+    "birthYear": 1985,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": []
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "currentMonth": 11,
+  "expected": {
+    "pessimistic": {
+      "durationYears": 26,
+      "savingMonths": 302,
+      "grossCapital": 118050.7486264302,
+      "totalContributions": 80500.0,
+      "gainShare": 0.32692579009665956,
+      "monthlyNominal": 532.9330677759732,
+      "taxMonthlyNominal": 2.7909135443245385,
+      "grossReal": 318.4697615047012,
+      "taxReal": 1.6677921198444121,
+      "netReal": 316.80196938485676,
+      "advanceLumpSumSaving": 30879.137352921734,
+      "advanceTaxSaving": 1043.0856397676416,
+      "advanceLumpSumPayout": 27471.826386703164
+    },
+    "neutral": {
+      "durationYears": 26,
+      "savingMonths": 302,
+      "grossCapital": 158386.2248155494,
+      "totalContributions": 80500.0,
+      "gainShare": 0.5046309245788113,
+      "monthlyNominal": 715.0251706706031,
+      "taxMonthlyNominal": 20.055684985047314,
+      "grossReal": 427.2842301259646,
+      "taxReal": 11.984861890173356,
+      "netReal": 415.2993682357913,
+      "advanceLumpSumSaving": 37305.98268684134,
+      "advanceTaxSaving": 2040.3622536687672,
+      "advanceLumpSumPayout": 36858.37591718551
+    },
+    "optimistic": {
+      "durationYears": 26,
+      "savingMonths": 302,
+      "grossCapital": 215473.97578114012,
+      "totalContributions": 80500.0,
+      "gainShare": 0.642301889117554,
+      "monthlyNominal": 972.7444194557096,
+      "taxMonthlyNominal": 62.870413086530235,
+      "grossReal": 581.2919145023176,
+      "taxReal": 37.570056489318894,
+      "netReal": 543.7218580129987,
+      "advanceLumpSumSaving": 45600.0642976682,
+      "advanceTaxSaving": 3425.365918756258,
+      "advanceLumpSumPayout": 50143.38089667054
+    }
+  }
+}

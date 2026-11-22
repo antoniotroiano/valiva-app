@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Mockup Hinterbliebenenrente (Review 13 F-5)</title
+  ><link rel="stylesheet" href="mockup.css" />
+  <style>
+    .legend span::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      font-size: 0.9rem;
+    }
+    .l-a::before {
+      background: #566272;
+    }
+    .l-b::before {
+      background: #0f766e;
+    }
+    .l-w::before {
+      background: repeating-linear-gradient(45deg, #b45309, #b45309 3px, #fff 3px, #fff 6px);
+    }
+    .disabled {
+      opacity: 0.6;
+    }
+    label {
+      display: block;
+      margin: 6px 0;
+    }
+  </style>
+  <nav aria-label="Hauptnavigation">
+    <strong>Pathwise</strong><a href="haushalt.html" aria-current="page">Haushalt</a
+    ><a href="gesamtsicht.html">Rentenplan</a>
+  </nav>
+  <main>
+    <h1>Haushalt</h1>
+
+    <h2>1. Haushaltsseite: neue Karte „Nach dem ersten Todesfall“</h2>
+    <div class="card">
+      <h3>Nach dem ersten Todesfall</h3>
+      <p class="hint">
+        Gilt für Haushalte mit genau zwei Personen. Der Todesfall wird mit der Lebenserwartung der
+        Personen angenommen.
+      </p>
+      <label
+        ><input type="checkbox" checked /> Hinterbliebenenrente der gesetzlichen Rente
+        berücksichtigen (Ehe oder eingetragene Lebenspartnerschaft)</label
+      >
+      <fieldset>
+        <legend>Rechtslage</legend>
+        <label
+          ><input type="radio" name="law" checked /> Ehe ab 2002: 55 % der Rente des
+          Verstorbenen</label
+        >
+        <label
+          ><input type="radio" name="law" /> Ehe vor 2002 und ein Partner vor 1962 geboren: 60
+          %</label
+        >
+      </fieldset>
+      <label
+        >Wunscheinkommen nach dem ersten Todesfall<br /><input value="70" size="4" /> % des
+        Wunscheinkommens</label
+      >
+      <p class="hint">
+        Ein Haushalt mit einer Person braucht meist weniger. 100 % heißt: keine Kürzung. Zulässig
+        sind 10 bis 100 %.
+      </p>
+      <p class="hint">
+        Die Witwenrente wird auf das eigene Einkommen angerechnet: 40 % des Betrags über dem
+        Freibetrag (1.123 € pro Monat, Kaufkraft von heute). Kapitalentnahmen aus dem ETF zählen
+        dabei nicht.
+      </p>
+    </div>
+    <div class="card disabled">
+      <p>
+        <b>Bei einem Haushalt mit drei Personen:</b> Die Felder sind gesperrt mit dem Hinweis „Gilt
+        nur für Haushalte mit genau zwei Personen.“
+      </p>
+    </div>
+
+    <h2>2. Haushaltsansicht (Rentenplan, Haushalt)</h2>
+    <div class="card">
+      <h3>Hinterbliebenenrente</h3>
+      <p>
+        Nach dem Tod von <b>Anna</b> (2065) erhält <b>Ben</b> ab 2066 eine Witwenrente von etwa
+        <b>720 €</b> pro Monat (Kaufkraft von heute, nach Anrechnung des eigenen Einkommens).
+      </p>
+      <h3>Verlauf nach Kalenderjahren</h3>
+      <div class="legend">
+        <span class="l-a">Anna</span><span class="l-b">Ben</span
+        ><span class="l-w">Witwenrente für Ben</span>
+      </div>
+      <p class="hint">
+        Im Diagramm ist die Witwenrente als schraffierte Fläche über Ben gestapelt. Die Wunschlinie
+        springt nach dem ersten Todesfall auf 70 %. In der Tabelle gibt es dafür die Spalte „Wunsch“
+        und die Spalte „Witwenrente“.
+      </p>
+      <h3>Hinweise</h3>
+      <ul>
+        <li>
+          <i>Schalter an:</i> „Die Witwenrente ist vereinfacht: nur die gesetzliche Rente, kein
+          Sterbevierteljahr, keine Kinderzuschläge, Vermögen des Verstorbenen (ETF, Depot, bAV) wird
+          nicht vererbt.“
+        </li>
+        <li>
+          <i>Schalter aus:</i> der bisherige Hinweis „Es gibt keine Hinterbliebenenrente. Nach dem
+          Tod der ersten Person ist die Lücke eher zu groß.“
+        </li>
+      </ul>
+    </div>
+    <p class="hint">
+      Beispieldaten <code>couple</code> und <code>couple-gap</code>: Schalter an, Wunsch nach dem
+      ersten Todesfall 100 %.
+    </p>
+    <p class="disclaimer">Keine Anlage- oder Steuerberatung. Prognosen sind keine Garantie.</p>
+  </main>
+</html>

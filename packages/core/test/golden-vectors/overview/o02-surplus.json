@@ -1,0 +1,816 @@
+{
+  "name": "o02-surplus",
+  "description": "Desired income below the pension: gap 0, surplus",
+  "synthetic": true,
+  "profile": {
+    "birthYear": 1985,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": [],
+    "desiredMonthlyIncomeToday": 1500
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "products": [
+    {
+      "productId": "statutory",
+      "enabled": true,
+      "payoutStartAge": 67,
+      "valid": true,
+      "results": {
+        "pessimistic": {
+          "monthlyPensionReal": 2500.0,
+          "taxableMonthlyReal": 2125.0,
+          "contributionsMonthlyReal": 310.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "neutral": {
+          "monthlyPensionReal": 2500.0,
+          "taxableMonthlyReal": 2125.0,
+          "contributionsMonthlyReal": 310.0,
+          "fixedTaxMonthlyReal": 0.0
+        },
+        "optimistic": {
+          "monthlyPensionReal": 2500.0,
+          "taxableMonthlyReal": 2125.0,
+          "contributionsMonthlyReal": 310.0,
+          "fixedTaxMonthlyReal": 0.0
+        }
+      }
+    },
+    {
+      "productId": "etf",
+      "enabled": true,
+      "payoutStartAge": 67,
+      "payoutEndAge": 90,
+      "valid": true,
+      "results": {
+        "pessimistic": {
+          "monthlyPensionReal": 480.0,
+          "taxableMonthlyReal": 0.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 80.0
+        },
+        "neutral": {
+          "monthlyPensionReal": 600.0,
+          "taxableMonthlyReal": 0.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 100.0
+        },
+        "optimistic": {
+          "monthlyPensionReal": 750.0,
+          "taxableMonthlyReal": 0.0,
+          "contributionsMonthlyReal": 0.0,
+          "fixedTaxMonthlyReal": 125.0
+        }
+      }
+    }
+  ],
+  "expected": {
+    "firstPayoutEndAge": 90,
+    "scenarios": {
+      "pessimistic": {
+        "net": 2424.9166666666665,
+        "gross": 2980.0,
+        "taxAndContributions": 555.0833333333334,
+        "gap": 0.0,
+        "surplus": 924.9166666666665,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 0.0,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 2500.0,
+            "taxAndContributionsReal": 475.08333333333337,
+            "netReal": 2024.9166666666665
+          },
+          {
+            "productId": "etf",
+            "grossReal": 480.0,
+            "taxAndContributionsReal": 80.0,
+            "netReal": 400.0
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 2424.9166666666665,
+            "byProduct": {
+              "statutory": 2024.9166666666665,
+              "etf": 400.0
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 68,
+            "total": 2423.225490196078,
+            "byProduct": {
+              "statutory": 2031.0686274509803,
+              "etf": 392.156862745098
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 69,
+            "total": 2421.7407247212614,
+            "byProduct": {
+              "statutory": 2037.2732122260672,
+              "etf": 384.4675124951941
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 70,
+            "total": 2420.4596127714826,
+            "byProduct": {
+              "statutory": 2043.5306789526649,
+              "etf": 376.92893381881777
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 71,
+            "total": 2419.4627905999673,
+            "byProduct": {
+              "statutory": 2049.9246201893616,
+              "etf": 369.5381704106057
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 72,
+            "total": 2418.5809536974193,
+            "byProduct": {
+              "statutory": 2056.288629765453,
+              "etf": 362.29232393196634
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 73,
+            "total": 2417.9781889949895,
+            "byProduct": {
+              "statutory": 2062.7896361205126,
+              "etf": 355.1885528744768
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 74,
+            "total": 2417.485307089544,
+            "byProduct": {
+              "statutory": 2069.2612356439786,
+              "etf": 348.2240714455654
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 75,
+            "total": 2417.2665078241603,
+            "byProduct": {
+              "statutory": 2075.870359348116,
+              "etf": 341.3961484760445
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 76,
+            "total": 2417.236045890062,
+            "byProduct": {
+              "statutory": 2082.5339395409987,
+              "etf": 334.70210634906334
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 77,
+            "total": 2417.3082297829287,
+            "byProduct": {
+              "statutory": 2089.1689098328666,
+              "etf": 328.13931995006203
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 78,
+            "total": 2417.64742077982,
+            "byProduct": {
+              "statutory": 2095.9422051425045,
+              "etf": 321.70521563731575
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 79,
+            "total": 2418.1680319363227,
+            "byProduct": {
+              "statutory": 2102.7707617036604,
+              "etf": 315.3972702326625
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 80,
+            "total": 2418.8678604368442,
+            "byProduct": {
+              "statutory": 2109.6548504048224,
+              "etf": 309.213010032022
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 81,
+            "total": 2419.744753297678,
+            "byProduct": {
+              "statutory": 2116.594743462362,
+              "etf": 303.1500098353157
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 82,
+            "total": 2420.7966064224543,
+            "byProduct": {
+              "statutory": 2123.590714427047,
+              "etf": 297.20589199540757
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 83,
+            "total": 2422.0213636762714,
+            "byProduct": {
+              "statutory": 2130.643038190578,
+              "etf": 291.37832548569367
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 84,
+            "total": 2423.4170159781397,
+            "byProduct": {
+              "statutory": 2137.7519909921657,
+              "etf": 285.6650249859742
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 85,
+            "total": 2424.981600411383,
+            "byProduct": {
+              "statutory": 2144.917850425134,
+              "etf": 280.0637499862492
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 86,
+            "total": 2426.7131993516455,
+            "byProduct": {
+              "statutory": 2152.140895443558,
+              "etf": 274.57230390808746
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 87,
+            "total": 2428.693272945491,
+            "byProduct": {
+              "statutory": 2159.504739702268,
+              "etf": 269.188533243223
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 88,
+            "total": 2430.6699916059288,
+            "byProduct": {
+              "statutory": 2166.7596648968865,
+              "etf": 263.9103267090421
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 89,
+            "total": 2432.8915685245274,
+            "byProduct": {
+              "statutory": 2174.155954103898,
+              "etf": 258.73561442062953
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 90,
+            "total": 2181.6938917874136,
+            "byProduct": {
+              "statutory": 2181.6938917874136,
+              "etf": 0.0
+            },
+            "gap": 0.0
+          }
+        ]
+      },
+      "neutral": {
+        "net": 2524.9166666666665,
+        "gross": 3100.0,
+        "taxAndContributions": 575.0833333333334,
+        "gap": 0.0,
+        "surplus": 1024.9166666666665,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 0.0,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 2500.0,
+            "taxAndContributionsReal": 475.08333333333337,
+            "netReal": 2024.9166666666665
+          },
+          {
+            "productId": "etf",
+            "grossReal": 600.0,
+            "taxAndContributionsReal": 100.0,
+            "netReal": 500.0
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 2524.9166666666665,
+            "byProduct": {
+              "statutory": 2024.9166666666665,
+              "etf": 500.0
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 68,
+            "total": 2521.264705882353,
+            "byProduct": {
+              "statutory": 2031.0686274509803,
+              "etf": 490.1960784313726
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 69,
+            "total": 2517.85760284506,
+            "byProduct": {
+              "statutory": 2037.2732122260672,
+              "etf": 480.58439061899264
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 70,
+            "total": 2514.691846226187,
+            "byProduct": {
+              "statutory": 2043.5306789526649,
+              "etf": 471.1611672735222
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 71,
+            "total": 2511.8473332026188,
+            "byProduct": {
+              "statutory": 2049.9246201893616,
+              "etf": 461.92271301325707
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 72,
+            "total": 2509.154034680411,
+            "byProduct": {
+              "statutory": 2056.288629765453,
+              "etf": 452.8654049149579
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 73,
+            "total": 2506.7753272136088,
+            "byProduct": {
+              "statutory": 2062.7896361205126,
+              "etf": 443.985691093096
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 74,
+            "total": 2504.5413249509356,
+            "byProduct": {
+              "statutory": 2069.2612356439786,
+              "etf": 435.2800893069569
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 75,
+            "total": 2502.6155449431717,
+            "byProduct": {
+              "statutory": 2075.870359348116,
+              "etf": 426.7451855950557
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 76,
+            "total": 2500.911572477328,
+            "byProduct": {
+              "statutory": 2082.5339395409987,
+              "etf": 418.3776329363291
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 77,
+            "total": 2499.343059770444,
+            "byProduct": {
+              "statutory": 2089.1689098328666,
+              "etf": 410.17414993757757
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 78,
+            "total": 2498.073724689149,
+            "byProduct": {
+              "statutory": 2095.9422051425045,
+              "etf": 402.13151954664465
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 79,
+            "total": 2497.0173494944884,
+            "byProduct": {
+              "statutory": 2102.7707617036604,
+              "etf": 394.2465877908281
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 80,
+            "total": 2496.17111294485,
+            "byProduct": {
+              "statutory": 2109.6548504048224,
+              "etf": 386.5162625400276
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 81,
+            "total": 2495.532255756507,
+            "byProduct": {
+              "statutory": 2116.594743462362,
+              "etf": 378.93751229414465
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 82,
+            "total": 2495.0980794213065,
+            "byProduct": {
+              "statutory": 2123.590714427047,
+              "etf": 371.50736499425943
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 83,
+            "total": 2494.8659450476953,
+            "byProduct": {
+              "statutory": 2130.643038190578,
+              "etf": 364.2229068571171
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 84,
+            "total": 2494.833272224633,
+            "byProduct": {
+              "statutory": 2137.7519909921657,
+              "etf": 357.08128123246775
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 85,
+            "total": 2494.9975379079456,
+            "byProduct": {
+              "statutory": 2144.917850425134,
+              "etf": 350.0796874828115
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 86,
+            "total": 2495.356275328667,
+            "byProduct": {
+              "statutory": 2152.140895443558,
+              "etf": 343.2153798851093
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 87,
+            "total": 2495.990406256297,
+            "byProduct": {
+              "statutory": 2159.504739702268,
+              "etf": 336.48566655402874
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 88,
+            "total": 2496.647573283189,
+            "byProduct": {
+              "statutory": 2166.7596648968865,
+              "etf": 329.8879083863027
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 89,
+            "total": 2497.575472129685,
+            "byProduct": {
+              "statutory": 2174.155954103898,
+              "etf": 323.41951802578694
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 90,
+            "total": 2181.6938917874136,
+            "byProduct": {
+              "statutory": 2181.6938917874136,
+              "etf": 0.0
+            },
+            "gap": 0.0
+          }
+        ]
+      },
+      "optimistic": {
+        "net": 2649.9166666666665,
+        "gross": 3250.0,
+        "taxAndContributions": 600.0833333333334,
+        "gap": 0.0,
+        "surplus": 1149.9166666666665,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 0.0,
+        "byProduct": [
+          {
+            "productId": "statutory",
+            "grossReal": 2500.0,
+            "taxAndContributionsReal": 475.08333333333337,
+            "netReal": 2024.9166666666665
+          },
+          {
+            "productId": "etf",
+            "grossReal": 750.0,
+            "taxAndContributionsReal": 125.0,
+            "netReal": 625.0
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 2649.9166666666665,
+            "byProduct": {
+              "statutory": 2024.9166666666665,
+              "etf": 625.0
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 68,
+            "total": 2643.813725490196,
+            "byProduct": {
+              "statutory": 2031.0686274509803,
+              "etf": 612.7450980392157
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 69,
+            "total": 2638.003700499808,
+            "byProduct": {
+              "statutory": 2037.2732122260672,
+              "etf": 600.7304882737409
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 70,
+            "total": 2632.482138044568,
+            "byProduct": {
+              "statutory": 2043.5306789526649,
+              "etf": 588.9514590919028
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 71,
+            "total": 2627.328011455933,
+            "byProduct": {
+              "statutory": 2049.9246201893616,
+              "etf": 577.4033912665714
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 72,
+            "total": 2622.3703859091506,
+            "byProduct": {
+              "statutory": 2056.288629765453,
+              "etf": 566.0817561436975
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 73,
+            "total": 2617.7717499868822,
+            "byProduct": {
+              "statutory": 2062.7896361205126,
+              "etf": 554.9821138663699
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 74,
+            "total": 2613.3613472776747,
+            "byProduct": {
+              "statutory": 2069.2612356439786,
+              "etf": 544.1001116336961
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 75,
+            "total": 2609.3018413419354,
+            "byProduct": {
+              "statutory": 2075.870359348116,
+              "etf": 533.4314819938196
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 76,
+            "total": 2605.5059807114103,
+            "byProduct": {
+              "statutory": 2082.5339395409987,
+              "etf": 522.9720411704114
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 77,
+            "total": 2601.8865972548383,
+            "byProduct": {
+              "statutory": 2089.1689098328666,
+              "etf": 512.717687421972
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 78,
+            "total": 2598.6066045758103,
+            "byProduct": {
+              "statutory": 2095.9422051425045,
+              "etf": 502.6643994333059
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 79,
+            "total": 2595.5789964421956,
+            "byProduct": {
+              "statutory": 2102.7707617036604,
+              "etf": 492.80823473853513
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 80,
+            "total": 2592.800178579857,
+            "byProduct": {
+              "statutory": 2109.6548504048224,
+              "etf": 483.14532817503436
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 81,
+            "total": 2590.2666338300432,
+            "byProduct": {
+              "statutory": 2116.594743462362,
+              "etf": 473.6718903676808
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 82,
+            "total": 2587.974920669871,
+            "byProduct": {
+              "statutory": 2123.590714427047,
+              "etf": 464.3842062428243
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 83,
+            "total": 2585.9216717619743,
+            "byProduct": {
+              "statutory": 2130.643038190578,
+              "etf": 455.27863357139637
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 84,
+            "total": 2584.1035925327506,
+            "byProduct": {
+              "statutory": 2137.7519909921657,
+              "etf": 446.3516015405847
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 85,
+            "total": 2582.517459778648,
+            "byProduct": {
+              "statutory": 2144.917850425134,
+              "etf": 437.5996093535143
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 86,
+            "total": 2581.1601202999445,
+            "byProduct": {
+              "statutory": 2152.140895443558,
+              "etf": 429.01922485638664
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 87,
+            "total": 2580.111822894804,
+            "byProduct": {
+              "statutory": 2159.504739702268,
+              "etf": 420.6070831925359
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 88,
+            "total": 2579.119550379765,
+            "byProduct": {
+              "statutory": 2166.7596648968865,
+              "etf": 412.3598854828783
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 89,
+            "total": 2578.4303516361315,
+            "byProduct": {
+              "statutory": 2174.155954103898,
+              "etf": 404.2743975322337
+            },
+            "gap": 0.0
+          },
+          {
+            "age": 90,
+            "total": 2181.6938917874136,
+            "byProduct": {
+              "statutory": 2181.6938917874136,
+              "etf": 0.0
+            },
+            "gap": 0.0
+          }
+        ]
+      }
+    }
+  }
+}

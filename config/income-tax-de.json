@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "description": "Income tax tariff (Germany, §32a EStG) and lump sums for pension income. Solidarity surcharge and church tax are not modelled. Not advice. Review once a year.",
+  "values": {
+    "basicAllowance": {
+      "value": 12348,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Basic allowance (Grundfreibetrag): tax is 0 up to this taxable income",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Grundfreibetrag: bis zu diesem zu versteuernden Einkommen beträgt die Steuer 0",
+      "status": "confirmed"
+    },
+    "zone2Limit": {
+      "value": 17799,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Upper end of tariff zone 2",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Obergrenze der Tarifzone 2",
+      "status": "confirmed"
+    },
+    "zone3Limit": {
+      "value": 69878,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Upper end of tariff zone 3",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Obergrenze der Tarifzone 3",
+      "status": "confirmed"
+    },
+    "zone4Limit": {
+      "value": 277825,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Upper end of tariff zone 4",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Obergrenze der Tarifzone 4",
+      "status": "confirmed"
+    },
+    "zone2CoefficientY": {
+      "value": 914.51,
+      "unit": "number",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 2: (c1 * y + c2) * y, coefficient c1",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 2: (c1 · y + c2) · y, Koeffizient c1",
+      "status": "confirmed"
+    },
+    "zone2CoefficientBase": {
+      "value": 1400,
+      "unit": "number",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 2: (c1 * y + c2) * y, coefficient c2",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 2: (c1 · y + c2) · y, Koeffizient c2",
+      "status": "confirmed"
+    },
+    "zone3CoefficientZ": {
+      "value": 173.1,
+      "unit": "number",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 3: (c1 * z + c2) * z + c3, coefficient c1",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 3: (c1 · z + c2) · z + c3, Koeffizient c1",
+      "status": "confirmed"
+    },
+    "zone3CoefficientBase": {
+      "value": 2397,
+      "unit": "number",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 3: coefficient c2",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 3: Koeffizient c2",
+      "status": "confirmed"
+    },
+    "zone3Constant": {
+      "value": 1034.87,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 3: constant c3",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 3: Konstante c3",
+      "status": "confirmed"
+    },
+    "zone4RatePercent": {
+      "value": 42,
+      "unit": "percent",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 4: marginal rate (tax = rate * income - constant)",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 4: Grenzsteuersatz (Steuer = Satz · Einkommen − Konstante)",
+      "status": "confirmed"
+    },
+    "zone4Constant": {
+      "value": 11135.63,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 4: constant subtracted",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 4: abzuziehende Konstante",
+      "status": "confirmed"
+    },
+    "zone5RatePercent": {
+      "value": 45,
+      "unit": "percent",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 5: marginal rate",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 5: Grenzsteuersatz",
+      "status": "confirmed"
+    },
+    "zone5Constant": {
+      "value": 19470.38,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §32a (version from 2026), gesetze-im-internet.de, checked 2026-11-19 - Zone 5: constant subtracted",
+      "sourceDe": "EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 - Zone 5: abzuziehende Konstante",
+      "status": "confirmed"
+    },
+    "pensionIncomeLumpSumDeductionYearly": {
+      "value": 102,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §9a Satz 1 Nr. 3, gesetze-im-internet.de, checked 2026-11-19 - Lump sum for income-related expenses on pensions (§9a Nr. 3 EStG), per year",
+      "sourceDe": "EStG §9a Satz 1 Nr. 3, gesetze-im-internet.de, geprüft am 19.11.2026 - Werbungskosten-Pauschbetrag für Renten (§9a Nr. 3 EStG), pro Jahr",
+      "status": "confirmed"
+    },
+    "specialExpensesLumpSumYearly": {
+      "value": 36,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG §10c, gesetze-im-internet.de, checked 2026-11-19 - Lump sum for special expenses (§10c EStG), single person, per year",
+      "sourceDe": "EStG §10c, gesetze-im-internet.de, geprüft am 19.11.2026 - Sonderausgaben-Pauschbetrag (§10c EStG), Einzelperson, pro Jahr",
+      "status": "confirmed"
+    }
+  }
+}
