@@ -309,6 +309,11 @@ function parseHousehold(
   else if (rule !== undefined && rule !== null) {
     issues.push({ code: 'invalid_field', field: 'household.survivorPension' });
   }
+  // Strict: only true or false (null and other types are errors, unlike survivorPension).
+  const joint = raw.jointAssessment;
+  if (typeof joint === 'boolean') household.jointAssessment = joint;
+  else if (joint !== undefined)
+    issues.push({ code: 'invalid_field', field: 'household.jointAssessment' });
   const wishPercent = r.optNum('survivorWishPercent');
   if (wishPercent !== undefined) household.survivorWishPercent = wishPercent;
   issues.push(...r.issues, ...ar.issues, ...sr.issues);

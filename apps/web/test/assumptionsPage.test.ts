@@ -36,6 +36,7 @@ function rawValues(): Record<string, RawValue[]> {
     depot: Object.values<RawValue>(readJson('altersvorsorge-de.json').values),
     incomeTax: Object.values<RawValue>(readJson('income-tax-de.json').values),
     otherIncome: Object.values<RawValue>(readJson('other-income-de.json').values),
+    jointAssessment: Object.values<RawValue>(readJson('joint-assessment-de.json').values),
   };
 }
 
@@ -43,7 +44,7 @@ describe('legal groups', () => {
   const raw = rawValues();
   const groups = legalGroups();
 
-  it('lists every value of every config file, in the six areas', () => {
+  it('lists every value of every config file, in the seven areas', () => {
     expect(groups.map((g) => g.id)).toEqual([
       'tax',
       'pension',
@@ -51,9 +52,10 @@ describe('legal groups', () => {
       'depot',
       'incomeTax',
       'otherIncome',
+      'jointAssessment',
     ]);
     for (const g of groups) expect(groupItems(g)).toHaveLength(raw[g.id]!.length);
-    expect(groups.reduce((n, g) => n + groupItems(g).length, 0)).toBe(89);
+    expect(groups.reduce((n, g) => n + groupItems(g).length, 0)).toBe(91);
   });
 
   it('counts the unverified values per area as the config says', () => {
@@ -111,8 +113,8 @@ describe('legal values markup', () => {
   });
 
   it('renders one row with a source per value', () => {
-    expect((html.match(/<li class="val/g) ?? []).length).toBe(89);
-    expect((html.match(/<details class="src"/g) ?? []).length).toBe(89);
+    expect((html.match(/<li class="val/g) ?? []).length).toBe(91);
+    expect((html.match(/<details class="src"/g) ?? []).length).toBe(91);
   });
 
   it('shows the overall unverified count above the areas', () => {
@@ -156,6 +158,7 @@ describe('the whole page', () => {
       a.depotRules,
       a.occupationalRules,
       a.otherIncomeRules,
+      a.jointAssessmentRules,
       a.withdrawalRules,
       a.goalRules,
     ];

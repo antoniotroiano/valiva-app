@@ -25,12 +25,14 @@ export function HouseholdOverview({
   data,
   openPerson,
   goToPersonProfile,
+  goToJointQuestion,
   guide,
 }: {
   household: HouseholdApi;
   data: HouseholdOverviewApi;
   openPerson: (id: string) => void;
   goToPersonProfile: (id: string) => void;
+  goToJointQuestion: () => void;
   guide?: ReactNode;
 }) {
   const t = de.householdView;
@@ -92,6 +94,7 @@ export function HouseholdOverview({
       }
     >
       {guide}
+      <JointNote household={household} goToQuestion={goToJointQuestion} />
       {!outcome && <p>{t.loading}</p>}
       {outcome?.ok && (
         <Result
@@ -114,6 +117,43 @@ export function HouseholdOverview({
         <Icon name="go" />
       </a>
     </PageShell>
+  );
+}
+
+/**
+ * Tax note of a couple (AP-16): the open question with a jump to it, or a quiet line with the answer. A household
+ * of one person (or more than two) gets none.
+ */
+function JointNote({
+  household,
+  goToQuestion,
+}: {
+  household: HouseholdApi;
+  goToQuestion: () => void;
+}) {
+  const { persons, jointAssessment } = household.state.household;
+  if (persons.length !== 2) return null;
+  const t = de.householdView.joint;
+  if (jointAssessment === undefined) {
+    return (
+      <div className="notice warn joint-note" role="status">
+        <Icon name="warn" />
+        <div>
+          <b>{t.open.badge}</b>
+          <span>{t.open.text}</span>{' '}
+          <button type="button" className="btn" onClick={goToQuestion}>
+            {t.open.button}
+          </button>
+        </div>
+      </div>
+    );
+  }
+  const note = jointAssessment ? t.yes : t.no;
+  return (
+    <div className="notice info joint-note" role="note">
+      <b>{note.badge}</b>
+      <span>{note.text}</span>
+    </div>
   );
 }
 
@@ -305,7 +345,7 @@ function Result({
         </Disclosure>
         <InfoNotes
           codes={infoCodes}
-          extra={[result.survivor ? t.survivorSimplified : t.noSurvivor, t.flatTax]}
+          extra={[result.survivor ? t.survivorSimplified : t.noSurvivor]}
         />
       </div>
     </>

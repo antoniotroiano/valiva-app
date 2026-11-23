@@ -19,6 +19,7 @@
     },
     "desiredMonthlyIncomeToday": 4200,
     "id": "household",
+    "jointAssessment": true,
     "name": "Beispiel",
     "persons": [
       {

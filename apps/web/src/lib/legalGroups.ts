@@ -4,6 +4,7 @@ import { taxConfig } from './taxConfig';
 import {
   depotConfig,
   incomeTaxConfig,
+  jointAssessmentConfig,
   otherIncomeConfig,
   pensionConfig,
   socialConfig,
@@ -14,7 +15,7 @@ export type LegalItem = { key: string; name: string; value: LegalValue };
 
 /** A group of values; `parts` lets a group carry a sub-heading (tax: base interest). */
 export type LegalGroup = {
-  id: 'tax' | 'pension' | 'social' | 'depot' | 'incomeTax' | 'otherIncome';
+  id: 'tax' | 'pension' | 'social' | 'depot' | 'incomeTax' | 'otherIncome' | 'jointAssessment';
   title: string;
   parts: { heading?: string; items: LegalItem[] }[];
 };
@@ -123,6 +124,19 @@ export function legalGroups(): LegalGroup[] {
             Object.keys(otherIncomeConfig.values),
             otherIncomeConfig.values,
             a.otherIncomeNames,
+          ),
+        },
+      ],
+    },
+    {
+      id: 'jointAssessment',
+      title: g.jointAssessment,
+      parts: [
+        {
+          items: items(
+            Object.keys(jointAssessmentConfig.values),
+            jointAssessmentConfig.values,
+            a.jointAssessmentNames,
           ),
         },
       ],

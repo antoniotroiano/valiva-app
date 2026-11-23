@@ -24,6 +24,12 @@ export function useGuidanceInput(household: HouseholdApi, exported: boolean): Gu
       })),
       wish: committed.desiredMonthlyIncomeToday !== undefined,
       exported,
+      ...(committed.persons.length === 2
+        ? {
+            joint:
+              committed.jointAssessment === undefined ? ('open' as const) : ('answered' as const),
+          }
+        : {}),
     }),
     // `version` re-reads the block storage after each save.
     [committed, legal, exported, version],

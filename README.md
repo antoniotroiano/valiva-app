@@ -50,7 +50,7 @@ Playwright uses the locally installed Google Chrome. Without Chrome (for example
 
 ## Assumptions
 
-The calculation rules by feature (ETF plan, savings goals, statutory pension, retirement depot, bAV, other income, overall view, household, workspace file) are in [`docs/assumptions.md`](docs/assumptions.md). All sample data is invented.
+The calculation rules by feature (ETF plan, savings goals, statutory pension, retirement depot, bAV, other income, overall view, household, joint assessment of couples, workspace file) are in [`docs/assumptions.md`](docs/assumptions.md). All sample data is invented.
 
 ## License
 

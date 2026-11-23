@@ -1,5 +1,6 @@
 import type {
   GlobalAssumptions,
+  JointAssessmentParameters,
   LegalParameters,
   OtherIncomeEntry,
   ProjectionContext,
@@ -169,3 +170,9 @@ export function oiEntry(over: Partial<OtherIncomeEntry> = {}): OtherIncomeEntry 
     ...over,
   };
 }
+
+/** Values as in config/joint-assessment-de.json (a test checks they stay in sync). */
+export const JOINT: JointAssessmentParameters = {
+  splittingDivisor: 2,
+  specialExpensesLumpSumJointYearly: 72,
+};

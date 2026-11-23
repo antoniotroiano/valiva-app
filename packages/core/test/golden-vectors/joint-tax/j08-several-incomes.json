@@ -1,0 +1,21 @@
+{
+  "name": "j08-several-incomes",
+  "description": "Two incomes of A and one of B: the tax is split in proportion to the taxable amounts",
+  "synthetic": true,
+  "incomesA": [
+    [2000, 200],
+    [1000, 90]
+  ],
+  "incomesB": [[800, 80]],
+  "lumpSumTaxable": 0,
+  "expected": {
+    "taxableIncomeYearly": 40884,
+    "taxYearly": 3360,
+    "taxMonthly": 280.0,
+    "sharesA": [147.3684210526316, 73.6842105263158],
+    "sharesB": [58.94736842105263],
+    "separateTaxYearly": 4898,
+    "shareA": 221.0526315789474,
+    "shareB": 58.94736842105263
+  }
+}

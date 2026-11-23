@@ -1,6 +1,6 @@
 import type { IncomeTaxParameters } from '../tax/incomeTax';
 import { overview } from './overview';
-import type { OverviewProductInput } from './overview';
+import type { JointTaxContext, OverviewProductInput } from './overview';
 import type { GlobalAssumptions, Profile } from '../shared/profile';
 import { solveRequiredContribution } from '../goals/solver';
 import type { SolveResult } from '../goals/goalTypes';
@@ -35,6 +35,7 @@ export function solveGapContribution(
   assumptions: GlobalAssumptions,
   currentYear: number,
   incomeTaxParameters: IncomeTaxParameters,
+  joint?: JointTaxContext,
 ): GapSolveResult {
   const desired = profile.desiredMonthlyIncomeToday;
   if (desired === undefined) {
@@ -48,6 +49,8 @@ export function solveGapContribution(
       assumptions,
       currentYear,
       incomeTaxParameters,
+      undefined,
+      joint,
     );
     if (!out.ok) return out.issues;
     const status = out.result.products.find((p) => p.productId === 'etf');

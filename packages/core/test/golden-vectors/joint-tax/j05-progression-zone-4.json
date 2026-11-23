@@ -1,0 +1,18 @@
+{
+  "name": "j05-progression-zone-4",
+  "description": "High pensions into the 42 % zone",
+  "synthetic": true,
+  "incomesA": [[9000, 900]],
+  "incomesB": [[1500, 150]],
+  "lumpSumTaxable": 0,
+  "expected": {
+    "taxableIncomeYearly": 113124,
+    "taxYearly": 25854,
+    "taxMonthly": 2154.5,
+    "sharesA": [1846.7142857142858],
+    "sharesB": [307.7857142857143],
+    "separateTaxYearly": 30276,
+    "shareA": 1846.7142857142858,
+    "shareB": 307.7857142857143
+  }
+}

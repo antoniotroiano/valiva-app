@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup AP-16: Gemeinsame Veranlagung (Splitting)</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: light-dark(#f3f6f6, #0d1413);
+        --surface: light-dark(#ffffff, #151e1d);
+        --surface-2: light-dark(#eaf0ef, #1e2928);
+        --text: light-dark(#15201e, #e5eeec);
+        --muted: light-dark(#54635f, #9db0ac);
+        --line: light-dark(#dde5e3, #28353a);
+        --field-border: light-dark(#76847f, #6d807c);
+        --accent: light-dark(#0f766e, #4fd1c0);
+        --accent-soft: light-dark(#dff1ee, #17332f);
+        --on-accent: light-dark(#ffffff, #052420);
+        --ok-fg: light-dark(#166534, #7fdca0);
+        --hint-fg: light-dark(#3b4a47, #c0cdca);
+        --hint-bg: light-dark(#eaf0ef, #1e2928);
+        --hint-bd: light-dark(#c3d0cd, #3a4a47);
+        --warn-fg: light-dark(#8a4b00, #f0b46a);
+        --warn-bg: light-dark(#fdf1e4, #2e2214);
+        --warn-bd: light-dark(#ecc08a, #6b4a1d);
+      }
+      :root[data-theme='light'] {
+        color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px 16px 64px;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+      }
+      h1.top {
+        font-size: 24px;
+        margin: 0 0 4px;
+      }
+      h2.top {
+        font-size: 20px;
+        margin: 40px 0 8px;
+        border-top: 1px solid var(--line);
+        padding-top: 24px;
+      }
+      p.lead {
+        color: var(--muted);
+        margin: 0 0 16px;
+        max-width: 80ch;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+      .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        align-items: flex-start;
+        margin: 16px 0;
+      }
+      .cap {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        margin: 0 0 8px;
+      }
+      .frame {
+        margin: 0;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--bg);
+        padding: 20px 24px;
+        overflow: hidden;
+      }
+      .frame.desktop {
+        width: 760px;
+        max-width: 100%;
+      }
+      .frame.phone {
+        width: 375px;
+        max-width: 100%;
+        padding: 16px;
+      }
+      h1 {
+        font-size: 28px;
+        line-height: 1.2;
+        margin: 0 0 4px;
+      }
+      .frame.phone h1 {
+        font-size: 24px;
+      }
+      .sub {
+        margin: 0 0 16px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px 20px;
+        margin: 0 0 12px;
+      }
+      .frame.phone .card {
+        padding: 14px 16px;
+      }
+      .card h2 {
+        font-size: 22px;
+        line-height: 1.3;
+        margin: 4px 0 4px;
+      }
+      .frame.phone .card h2 {
+        font-size: 20px;
+      }
+      .card p {
+        margin: 4px 0 8px;
+      }
+      .hint {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .eyebrow {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--accent);
+        margin: 0;
+      }
+      .eyebrow .muted {
+        font-weight: 500;
+        color: var(--muted);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 12px 0 4px;
+      }
+      .btn {
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 8px;
+        border: 1px solid var(--field-border);
+        background: var(--surface);
+        color: var(--text);
+        font-weight: 600;
+      }
+      .btn.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--on-accent);
+      }
+      .btn.quiet {
+        border-color: transparent;
+        background: transparent;
+        color: var(--text);
+      }
+      .btn.link {
+        border: 0;
+        background: none;
+        color: var(--accent);
+        text-decoration: underline;
+        padding: 0;
+        min-height: 44px;
+      }
+      .card.next {
+        background: var(--accent-soft);
+        border-color: var(--accent);
+      }
+      ol.steps {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 16px;
+        list-style: none;
+        margin: 12px 0 0;
+        padding: 12px 0 0;
+        border-top: 1px solid var(--accent);
+        font-size: 14px;
+      }
+      ol.steps li {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+      }
+      ol.steps li.done {
+        color: var(--ok-fg);
+      }
+      ol.steps li.now {
+        color: var(--text);
+        font-weight: 700;
+      }
+      .radios {
+        border: 0;
+        margin: 12px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 4px;
+      }
+      .radios legend {
+        font-weight: 600;
+        padding: 0;
+        margin-bottom: 4px;
+      }
+      .radios label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 44px;
+        padding: 0 12px;
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        background: var(--surface);
+      }
+      .radios input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--accent);
+      }
+      .radios label.on {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 999px;
+        border: 1px solid;
+      }
+      .status.open {
+        color: var(--warn-fg);
+        background: var(--warn-bg);
+        border-color: var(--warn-bd);
+      }
+      .status.info {
+        color: var(--hint-fg);
+        background: var(--hint-bg);
+        border-color: var(--hint-bd);
+      }
+      .notice {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        align-items: center;
+        border: 1px solid;
+        border-radius: 10px;
+        padding: 8px 12px;
+        margin: 0 0 8px;
+        font-size: 14px;
+      }
+      .notice.open {
+        color: var(--warn-fg);
+        background: var(--warn-bg);
+        border-color: var(--warn-bd);
+      }
+      .notice.info {
+        color: var(--hint-fg);
+        background: var(--hint-bg);
+        border-color: var(--hint-bd);
+      }
+      .notice p {
+        margin: 0;
+        flex: 1 1 220px;
+      }
+      .notice .btn {
+        min-height: 44px;
+      }
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 8px;
+        margin: 8px 0;
+      }
+      .kpi {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px 12px;
+        background: var(--surface);
+      }
+      .kpi b {
+        display: block;
+        font-size: 22px;
+      }
+      .kpi span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .bar {
+        display: flex;
+        gap: 8px;
+        margin: 16px 0;
+        position: sticky;
+        top: 0;
+        padding: 8px 0;
+        background: var(--bg);
+        z-index: 1;
+      }
+      .rec {
+        font-size: 12px;
+        font-weight: 700;
+        background: var(--accent-soft);
+        color: var(--accent);
+        border-radius: 999px;
+        padding: 2px 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="top">Mockup AP-16: Gemeinsame Veranlagung (Splitting)</h1>
+    <p class="lead">
+      Nur bei genau zwei Personen. Die Frage ist <b>nie vorbelegt</b>. Unbeantwortet rechnet die App
+      einzeln (sichere Seite) und weist darauf hin. Ein Haushalt mit einer Person sieht nichts
+      davon. Zahlen im Mockup sind erfunden.
+    </p>
+    <div class="bar">
+      <button class="btn" onclick="document.documentElement.dataset.theme = 'light'">Hell</button>
+      <button class="btn" onclick="document.documentElement.dataset.theme = 'dark'">Dunkel</button>
+      <button class="btn" onclick="delete document.documentElement.dataset.theme">System</button>
+    </div>
+
+    <!-- ============ A: Frage auf der Haushaltsseite ============ -->
+    <h2 class="top">A. Frage auf der Haushaltsseite (Karte nach "Hinterbliebenenrente")</h2>
+    <p class="lead">
+      Drei Zustände: unbeantwortet, Ja, Nein. Native Optionsfelder, Tastatur mit Pfeiltasten,
+      Wechsel sofort gespeichert wie bei den anderen Feldern. Mit einer Person erscheint die Karte
+      nicht.
+    </p>
+
+    <div class="wrap">
+      <div>
+        <p class="cap">Desktop · unbeantwortet</p>
+        <div class="frame desktop">
+          <section class="card" aria-labelledby="a1">
+            <p class="eyebrow">Steuer <span class="muted">· Frage offen</span></p>
+            <h2 id="a1">Gemeinsame Veranlagung</h2>
+            <p class="hint">
+              Ehepaare und eingetragene Lebenspartner können gemeinsam veranlagt werden: Die App
+              addiert dann die zu versteuernden Einkommen, halbiert sie, wendet den Tarif an und
+              verdoppelt das Ergebnis (Splitting). Das senkt die Steuer, wenn die Renten sehr
+              verschieden sind. Bei gleichen Renten ändert sich nichts. Die App kann nicht wissen,
+              ob ihr verheiratet seid, deshalb fragt sie.
+            </p>
+            <fieldset class="radios">
+              <legend>
+                Werdet ihr gemeinsam veranlagt (Ehe oder eingetragene Lebenspartnerschaft)?
+              </legend>
+              <label><input type="radio" name="a1" /> Ja</label>
+              <label><input type="radio" name="a1" /> Nein</label>
+            </fieldset>
+            <p class="hint">
+              Solange du nicht antwortest, rechnet die App jede Person einzeln. Das ist auf der
+              sicheren Seite: Die Steuer ist eher zu hoch, das Netto eher zu niedrig.
+            </p>
+          </section>
+        </div>
+      </div>
+      <div>
+        <p class="cap">375 px · unbeantwortet</p>
+        <div class="frame phone">
+          <section class="card" aria-labelledby="a1p">
+            <p class="eyebrow">Steuer <span class="muted">· Frage offen</span></p>
+            <h2 id="a1p">Gemeinsame Veranlagung</h2>
+            <p class="hint">
+              Ehepaare können gemeinsam veranlagt werden (Splitting). Das senkt die Steuer, wenn die
+              Renten sehr verschieden sind. Bei gleichen Renten ändert sich nichts.
+            </p>
+            <fieldset class="radios">
+              <legend>
+                Werdet ihr gemeinsam veranlagt (Ehe oder eingetragene Lebenspartnerschaft)?
+              </legend>
+              <label><input type="radio" name="a1p" /> Ja</label>
+              <label><input type="radio" name="a1p" /> Nein</label>
+            </fieldset>
+            <p class="hint">Ohne Antwort rechnet die App jede Person einzeln (sichere Seite).</p>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div>
+        <p class="cap">Desktop · Ja</p>
+        <div class="frame desktop">
+          <section class="card" aria-labelledby="a2">
+            <p class="eyebrow">Steuer <span class="muted">· gemeinsam veranlagt</span></p>
+            <h2 id="a2">Gemeinsame Veranlagung</h2>
+            <fieldset class="radios">
+              <legend>
+                Werdet ihr gemeinsam veranlagt (Ehe oder eingetragene Lebenspartnerschaft)?
+              </legend>
+              <label class="on"><input type="radio" name="a2" checked /> Ja</label>
+              <label><input type="radio" name="a2" /> Nein</label>
+            </fieldset>
+            <p class="hint">
+              Gerechnet wird ab dem Jahr, in dem beide in Rente sind, bis zum Jahr nach dem Tod der
+              ersten Person. Davor und danach rechnet die App einzeln, weil Gehälter nicht erfasst
+              sind. Nur die Einkommensteuer auf Renten ändert sich. Der Sparerpauschbetrag bleibt je
+              Person. Solidaritätszuschlag und Kirchensteuer auf Renten sind nicht berücksichtigt.
+            </p>
+          </section>
+        </div>
+      </div>
+      <div>
+        <p class="cap">375 px · Nein</p>
+        <div class="frame phone">
+          <section class="card" aria-labelledby="a3p">
+            <p class="eyebrow">Steuer <span class="muted">· einzeln veranlagt</span></p>
+            <h2 id="a3p">Gemeinsame Veranlagung</h2>
+            <fieldset class="radios">
+              <legend>
+                Werdet ihr gemeinsam veranlagt (Ehe oder eingetragene Lebenspartnerschaft)?
+              </legend>
+              <label><input type="radio" name="a3p" /> Ja</label>
+              <label class="on"><input type="radio" name="a3p" checked /> Nein</label>
+            </fieldset>
+            <p class="hint">
+              Jede Person wird einzeln versteuert, wie bisher. Du kannst die Antwort jederzeit
+              ändern.
+            </p>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ B: Hinweis in der Gesamtsicht ============ -->
+    <h2 class="top">B. Hinweis in der Gesamtsicht (Haushalt, Zeile bei den wichtigen Hinweisen)</h2>
+    <p class="lead">
+      Unbeantwortet: auffällige Zeile mit Sprung zur Frage. Beantwortet: ruhige Info-Zeile ohne
+      Sprung (nur der Text "nicht gemeinsam veranlagt" von heute wird je nach Antwort ersetzt). Bei
+      einer Person entfällt die Zeile ganz, auch der heutige Satz.
+    </p>
+    <div class="wrap">
+      <div>
+        <p class="cap">Desktop · drei Zustände</p>
+        <div class="frame desktop">
+          <h1>Rentenplan</h1>
+          <p class="sub">Haushalt: Anna und Ben</p>
+          <div class="notice open" role="note">
+            <span class="status open">Frage offen</span>
+            <p>
+              Die Steuer ist je Person einzeln gerechnet, weil offen ist, ob ihr gemeinsam veranlagt
+              werdet. Mit Splitting ist sie bei verschiedenen Renten niedriger.
+            </p>
+            <button class="btn">Frage beantworten</button>
+          </div>
+          <div class="notice info" role="note">
+            <span class="status info">Gemeinsam veranlagt</span>
+            <p>
+              Die Steuer ist gemeinsam gerechnet (Splitting), solange beide in Rente sind. Davor und
+              nach dem Folgejahr eines Todesfalls einzeln.
+            </p>
+          </div>
+          <div class="notice info" role="note">
+            <span class="status info">Einzeln veranlagt</span>
+            <p>
+              Die Steuer wird je Person auf die Summe ihrer Renteneinkünfte gerechnet (nicht
+              gemeinsam veranlagt).
+            </p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="cap">375 px · unbeantwortet und Ja</p>
+        <div class="frame phone">
+          <h1>Rentenplan</h1>
+          <p class="sub">Haushalt: Anna und Ben</p>
+          <div class="notice open" role="note">
+            <span class="status open">Frage offen</span>
+            <p>Steuer einzeln gerechnet, weil offen ist, ob ihr gemeinsam veranlagt werdet.</p>
+            <button class="btn">Frage beantworten</button>
+          </div>
+          <div class="notice info" role="note">
+            <span class="status info">Gemeinsam veranlagt</span>
+            <p>Steuer gemeinsam gerechnet (Splitting), solange beide in Rente sind.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ C: Beispiel Anna und Ben ============ -->
+    <h2 class="top">C. Beispieldaten "Anna und Ben": Antwort Ja</h2>
+    <p class="lead">
+      Die Beispiele sind verheiratet gedacht. Die Zahlen unten sind Platzhalter; im Bau messe ich
+      das echte Netto mit Ja und Nein und nenne die Werte.
+    </p>
+    <div class="wrap">
+      <div class="frame desktop">
+        <div class="kpis">
+          <div class="kpi"><span>Netto des Paars, Nein</span><b>0.000 €</b></div>
+          <div class="kpi"><span>Netto des Paars, Ja</span><b>0.000 €</b></div>
+          <div class="kpi"><span>Unterschied</span><b>+000 €/Monat</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ D: Karte Nächster Schritt ============ -->
+    <h2 class="top">D. Karte "Nächster Schritt" (geführter Einstieg, nur bei zwei Personen)</h2>
+    <p class="lead">
+      Ein weiterer Schritt in der Liste, nach "Wunscheinkommen" und vor "Daten sichern". Der Knopf
+      springt zur Frage auf der Haushaltsseite. Mit einer Person gibt es den Schritt nicht. Antwort
+      Ja oder Nein zählt als erledigt.
+    </p>
+    <div class="wrap">
+      <div>
+        <p class="cap">Desktop</p>
+        <div class="frame desktop">
+          <section class="card next" aria-labelledby="d1">
+            <p class="eyebrow">Nächster Schritt <span class="muted">· 3 von 5 erledigt</span></p>
+            <h2 id="d1">Gemeinsame Veranlagung klären</h2>
+            <p>
+              Für ein Paar hängt die Steuer davon ab, ob ihr gemeinsam veranlagt werdet. Eine
+              Antwort dauert eine Sekunde.
+            </p>
+            <div class="actions">
+              <button class="btn primary">Frage beantworten</button
+              ><button class="btn quiet">Ausblenden</button>
+            </div>
+            <ol class="steps" aria-label="Fortschritt">
+              <li class="done">✓ Profil<span class="sr-only">, erledigt</span></li>
+              <li class="done">✓ Gesetzliche Rente</li>
+              <li class="done">✓ Wunscheinkommen</li>
+              <li class="now" aria-current="step">○ Veranlagung</li>
+              <li>○ Daten sichern</li>
+            </ol>
+          </section>
+        </div>
+      </div>
+      <div>
+        <p class="cap">375 px</p>
+        <div class="frame phone">
+          <section class="card next" aria-labelledby="d1p">
+            <p class="eyebrow">Nächster Schritt <span class="muted">· 3 von 5</span></p>
+            <h2 id="d1p">Gemeinsame Veranlagung klären</h2>
+            <p>Die Steuer des Paars hängt davon ab, ob ihr gemeinsam veranlagt werdet.</p>
+            <div class="actions">
+              <button class="btn primary">Frage beantworten</button
+              ><button class="btn quiet">Ausblenden</button>
+            </div>
+            <ol class="steps" aria-label="Fortschritt">
+              <li class="done">✓ Profil</li>
+              <li class="done">✓ Rente</li>
+              <li class="done">✓ Wunsch</li>
+              <li class="now" aria-current="step">○ Veranlagung</li>
+              <li>○ Sichern</li>
+            </ol>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top: 32px">
+      <span class="rec">Entscheidung</span> Antwort "Ja, bauen" gibt dieses Mockup frei.
+      Änderungswünsche nenne bitte je Abschnitt (A bis D).
+    </p>
+    <style>
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+      }
+    </style>
+  </body>
+</html>

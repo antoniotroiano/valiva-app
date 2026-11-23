@@ -181,5 +181,40 @@ describe('guidanceFor', () => {
     for (const id of guidanceFor(input(empty)).steps.map((s) => s.id)) {
       expect(de.guidance.steps[id].title.length).toBeGreaterThan(0);
     }
+    for (const id of guidanceFor(input(empty, empty, { joint: 'open' })).steps.map((s) => s.id)) {
+      expect(de.guidance.steps[id].title.length).toBeGreaterThan(0);
+    }
+  });
+
+  describe('joint assessment step (AP-16)', () => {
+    const ids = (g: ReturnType<typeof guidanceFor>) => g.steps.map((s) => s.id);
+
+    it('exists only for exactly two persons: one person never sees it', () => {
+      expect(ids(guidanceFor(input(filled)))).toEqual(['profile', 'statutory', 'wish', 'export']);
+      expect(ids(guidanceFor(input(filled, filled)))).toEqual([
+        'profile',
+        'statutory',
+        'wish',
+        'export',
+      ]);
+    });
+
+    it('sits between the wish and the backup and is the next step while the question is open', () => {
+      const i = input(filled, filled, { wish: true, joint: 'open' });
+      expect(ids(guidanceFor(i))).toEqual(['profile', 'statutory', 'wish', 'joint', 'export']);
+      expect(guidanceFor(i).next).toEqual({ id: 'joint' });
+      expect(guidanceFor(i, 'a').next).toEqual({ id: 'joint' });
+    });
+
+    it('is done with either answer and then the backup follows', () => {
+      const i = input(filled, filled, { wish: true, joint: 'answered' });
+      expect(guidanceFor(i).steps.find((s) => s.id === 'joint')?.done).toBe(true);
+      expect(guidanceFor(i).next?.id).toBe('export');
+    });
+
+    it('does not come before the person steps', () => {
+      const i = input(filled, empty, { wish: true, joint: 'open' });
+      expect(guidanceFor(i).next?.id).toBe('profile');
+    });
   });
 });

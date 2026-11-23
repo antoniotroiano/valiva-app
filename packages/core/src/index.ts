@@ -34,3 +34,5 @@ export * from './pension/etfProjector';
 export * from './workspace/blocks';
 export * from './workspace/workspace';
 export * from './tax/retirementTax';
+export * from './tax/jointTax';
+export * from './overview/jointAssessment';

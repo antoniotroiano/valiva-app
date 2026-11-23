@@ -49,7 +49,21 @@ export const householdView = {
   survivorLegend: (name: string) => `Witwenrente für ${name}`,
   wishReduced: (percent: number) =>
     `Nach dem ersten Todesfall zählen nur noch ${percent} % des Wunscheinkommens.`,
-  flatTax:
-    'Die Steuer wird je Person auf die Summe ihrer Renteneinkünfte gerechnet (Einzelveranlagung), nicht gemeinsam veranlagt.',
+  /** Tax note of a couple (AP-16); a household of one person gets none. */
+  joint: {
+    open: {
+      badge: 'Frage offen',
+      text: 'Die Steuer ist je Person einzeln gerechnet, weil offen ist, ob ihr gemeinsam veranlagt werdet. Mit Splitting ist sie bei verschiedenen Renten niedriger.',
+      button: 'Frage beantworten',
+    },
+    yes: {
+      badge: 'Gemeinsam veranlagt',
+      text: 'Die Steuer ist gemeinsam gerechnet (Splitting), solange beide in Rente sind und bis zum Jahr nach einem Todesfall. Davor und danach einzeln.',
+    },
+    no: {
+      badge: 'Einzeln veranlagt',
+      text: 'Die Steuer wird je Person auf die Summe ihrer Renteneinkünfte gerechnet (nicht gemeinsam veranlagt).',
+    },
+  },
   lumpSum: (name: string, amount: string) => `Einmalauszahlung ${name}: ${amount}`,
 } as const;

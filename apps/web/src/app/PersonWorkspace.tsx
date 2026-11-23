@@ -75,6 +75,7 @@ export function PersonWorkspace({
     depot,
     occupational,
     otherIncome,
+    household,
   );
 
   const multi = household.state.household.persons.length > 1;

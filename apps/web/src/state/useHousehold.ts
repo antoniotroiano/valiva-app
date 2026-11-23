@@ -69,6 +69,16 @@ function boot(): HouseholdState {
   return state;
 }
 
+/**
+ * The joint assessment answer belongs to one couple: it is reset whenever the number of persons changes
+ * (two to one, and also one to two or two to three), so a stale answer never applies to a different pair.
+ */
+function withoutJointAssessment(h: Household): Household {
+  const next = { ...h };
+  delete next.jointAssessment;
+  return next;
+}
+
 export function useHousehold() {
   const [state, setState] = useState<HouseholdState>(boot);
   const committed = useDebounced(state, 250);
@@ -122,6 +132,17 @@ export function useHousehold() {
       }),
     [setHousehold],
   );
+  /** The answer to the joint assessment question; `undefined` clears it (not answered). */
+  const setJointAssessment = useCallback(
+    (value: boolean | undefined) =>
+      setHousehold((h) => {
+        const next = { ...h };
+        if (value === undefined) delete next.jointAssessment;
+        else next.jointAssessment = value;
+        return next;
+      }),
+    [setHousehold],
+  );
   const setActivePerson = useCallback(
     (id: string) =>
       setState((s) =>
@@ -138,7 +159,10 @@ export function useHousehold() {
       const person = defaultPerson(newId, name, CURRENT_YEAR, defaultGlobalAssumptions());
       return {
         ...s,
-        household: { ...s.household, persons: [...s.household.persons, person] },
+        household: withoutJointAssessment({
+          ...s.household,
+          persons: [...s.household.persons, person],
+        }),
         activePersonId: newId,
       };
     });
@@ -155,7 +179,7 @@ export function useHousehold() {
       const persons = s.household.persons.filter((p) => p.id !== id);
       return {
         ...s,
-        household: { ...s.household, persons },
+        household: withoutJointAssessment({ ...s.household, persons }),
         activePersonId: s.activePersonId === id ? persons[0]!.id : s.activePersonId,
       };
     });
@@ -182,6 +206,7 @@ export function useHousehold() {
     setSharedAssumptions,
     setDesiredIncome,
     setSurvivor,
+    setJointAssessment,
     setActivePerson,
     addPerson,
     removePerson,

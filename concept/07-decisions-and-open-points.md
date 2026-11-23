@@ -41,6 +41,7 @@
 | 2026-11-18 | Phase 4b: Sparziele | Pro Person mit eigenem Budget; Haushaltssumme nur Anzeige | `11` §2 |
 | 2026-11-18 | Phase 4b: Personenzahl | Beliebig viele, UI für Paare | `11` §2 |
 | 2026-11-18 | Phase 4b: Annahmen, Zeitachse, Snapshot (Vorschläge Planer) | Haushaltsweite und persönliche Annahmen getrennt; Kalenderjahre; Snapshot im Jahr der letzten Rente | `11` §2 |
+| 2026-11-23 | Phase 7 (AP-16): Paar-Besteuerung | Splitting nach §32a Abs. 5 EStG, nur bei zwei Personen und nur nach ausdrücklicher Antwort (kein Vorbelegen); Verteilung nach steuerpflichtigen Rentenanteilen; gemeinsam ab dem Jahr, in dem beide in Rente sind, bis zum Jahr nach dem ersten Todesfall; Feld `jointAssessment` ohne neue Workspace-Version; Config `joint-assessment-de.json` | Bericht 14 AP-16 |
 | 2026-11-23 | Phase 6: Generischer Baustein | Ein wiederverwendbarer Eintragstyp "Sonstige Einkünfte im Alter" statt je eines Bausteins pro Produkt; Review 14 Frage 6, Konzept `15` | `15-phase-6-generic-block.md` |
 | 2026-11-23 | Phase 6: Betrag und Anpassung | Basis `today` oder `nominalAtStart`; Anpassung `inflation`, `pension` oder `fixed` (0 % = Festbetrag) | `15` §2 |
 | 2026-11-23 | Phase 6: Beginn, Ende | Alter in ganzen Jahren, `lifelong` als eigener Fall, beliebiger Beginn plus Schalter "mit Rentenbeginn"; Rechnung ab Rentenbeginn | `15` §2, §5.3 |

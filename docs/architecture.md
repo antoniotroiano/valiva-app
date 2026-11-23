@@ -10,12 +10,12 @@ examples/                    invented example workspaces
 tools/generate_golden.py     independent calculation, writes the golden vectors
 packages/core/src/           pure, deterministic functions; errors are returned as data
   shared/                    types, months, issues (IssueCollector), profile (person data, assumptions)
-  tax/                       taxConfig, legalConfig (config types), tax, incomeTax, retirementTax
+  tax/                       taxConfig, legalConfig (config types), tax, incomeTax, retirementTax, jointTax (splitting)
   etf/                       etf, advanceLumpSum, calculate, validation (ETF savings plan)
   goals/                     goal, goalTypes, goalValidation, etfTarget, solver (savings goals, reverse calculators)
   pension/                   statutory, depot, occupational, otherIncome (generic entries), netPension, payout, projection, allowance, etfProjector
   household/                 household, householdMigration
-  overview/                  overview, otherIncomeProducts, householdOverview, gapSolver, householdGapSolver
+  overview/                  overview, otherIncomeProducts, householdOverview, jointAssessment, gapSolver, householdGapSolver
   workspace/                 blocks, workspace (file format: build, parse, apply)
   index.ts                   the only public interface (`@valiva/core`)
 packages/core/test/          mirrors src/ per folder; fixtures.ts, pensionFixtures.ts and golden-vectors/ are shared

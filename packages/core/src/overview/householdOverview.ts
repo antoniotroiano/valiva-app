@@ -1,4 +1,7 @@
 import type { IncomeTaxParameters } from '../tax/incomeTax';
+import { validateJointAssessmentParameters } from '../tax/jointTax';
+import type { JointAssessmentInput } from '../tax/jointTax';
+import { jointContextFor } from './jointAssessment';
 import { personContext, validateHousehold } from '../household/household';
 import type { Person } from '../household/household';
 import type { GlobalAssumptions } from '../shared/profile';
@@ -179,8 +182,12 @@ export function householdOverview(
   currentYear: number,
   incomeTaxParameters: IncomeTaxParameters,
   survivorParameters?: SurvivorParameters,
+  jointParameters?: JointAssessmentInput,
 ): HouseholdOutcome {
   const issues = validateHousehold(household, currentYear);
+  if (jointParameters !== undefined && household.jointAssessment === true) {
+    issues.push(...validateJointAssessmentParameters(jointParameters));
+  }
   // A person who has to retire in the past must never yield a household result that looks valid.
   for (const person of household.persons) {
     const ctx = personContext(household, person);
@@ -207,9 +214,9 @@ export function householdOverview(
     }
   }
 
-  const persons: HouseholdPersonEntry[] = [];
+  // The products each person's overview takes (with the continued entries of a deceased partner).
+  const finalProducts: Record<string, OverviewProductInput[]> = {};
   for (const person of household.persons) {
-    const ctx = personContext(household, person);
     let products = productsByPerson[person.id] ?? [];
     if (
       survivor !== undefined &&
@@ -231,6 +238,18 @@ export function householdOverview(
         ),
       ];
     }
+    finalProducts[person.id] = products;
+  }
+
+  const persons: HouseholdPersonEntry[] = [];
+  for (const person of household.persons) {
+    const ctx = personContext(household, person);
+    const products = finalProducts[person.id] ?? [];
+    // Joint assessment (AP-16): without the answer yes, no parameters or one person, `joint` stays undefined.
+    const joint =
+      jointParameters === undefined
+        ? undefined
+        : jointContextFor(household, person.id, finalProducts, jointParameters);
     const out = overview(
       products,
       ctx.profile,
@@ -238,6 +257,7 @@ export function householdOverview(
       currentYear,
       incomeTaxParameters,
       person.id,
+      joint,
     );
     if (!out.ok) {
       return {

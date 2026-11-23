@@ -17,6 +17,7 @@ describe('warningText', () => {
       'unverified:social.occupationalHealthAllowanceMonthly',
       'unverified:pension.pensionValue',
       'unverified:otherIncome.riesterFullyTaxable',
+      'unverified:jointAssessment.specialExpensesLumpSumJointYearly',
       'rent_allowance_not_applicable',
       'shared_occupational_threshold',
       'survivor_needs_pair',

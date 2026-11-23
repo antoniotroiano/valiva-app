@@ -1,6 +1,7 @@
 import type { IncomeTaxParameters } from '../tax/incomeTax';
 import type { GapScenarioResult, GapSolveResult } from './gapSolver';
 import type { Household } from '../household/household';
+import type { JointAssessmentInput } from '../tax/jointTax';
 import { householdOverview } from './householdOverview';
 import type { SurvivorParameters } from './householdOverview';
 import type { OverviewProductInput } from './overview';
@@ -23,6 +24,7 @@ export function solveHouseholdGapContribution(
   currentYear: number,
   incomeTaxParameters: IncomeTaxParameters,
   survivorParameters?: SurvivorParameters,
+  jointParameters?: JointAssessmentInput,
 ): GapSolveResult {
   const desired = household.desiredMonthlyIncomeToday;
   if (desired === undefined) {
@@ -41,6 +43,7 @@ export function solveHouseholdGapContribution(
       currentYear,
       incomeTaxParameters,
       survivorParameters,
+      jointParameters,
     );
     if (!out.ok) return out.issues;
     const entry = out.result.persons.find((e) => e.personId === personId);

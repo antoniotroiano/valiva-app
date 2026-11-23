@@ -10,6 +10,11 @@ export function CalculationRules() {
     { id: 'depot', title: t.depotRulesTitle, rules: t.depotRules },
     { id: 'occupational', title: t.occupationalRulesTitle, rules: t.occupationalRules },
     { id: 'otherIncome', title: t.otherIncomeRulesTitle, rules: t.otherIncomeRules },
+    {
+      id: 'jointAssessment',
+      title: t.jointAssessmentRulesTitle,
+      rules: t.jointAssessmentRules,
+    },
     { id: 'withdrawal', title: t.withdrawalRulesTitle, rules: t.withdrawalRules },
     { id: 'goals', title: t.goalRulesTitle, rules: t.goalRules },
   ];

@@ -87,6 +87,7 @@ export function HouseholdPage({
         />
       </section>
       <SurvivorCard api={api} />
+      <JointCard api={api} />
       <section className="card">
         <h2>{t.sharedTitle}</h2>
         <p>{t.sharedText}</p>
@@ -97,6 +98,40 @@ export function HouseholdPage({
         </p>
       </section>
     </PageShell>
+  );
+}
+
+/** Joint assessment question (AP-16): only for exactly two persons, never preselected. */
+function JointCard({ api }: { api: HouseholdApi }) {
+  const t = de.household.joint;
+  const radioName = useId();
+  const { household } = api.state;
+  if (household.persons.length !== 2) return null;
+  const answer = household.jointAssessment;
+  const status = answer === undefined ? t.statusOpen : answer ? t.statusYes : t.statusNo;
+  return (
+    <section className="card" id="joint-question" aria-labelledby="joint-title">
+      <p className="eyebrow">
+        {t.eyebrow} <span className="muted">· {status}</span>
+      </p>
+      <h2 id="joint-title">{t.title}</h2>
+      {answer === undefined && <p className="hint">{t.intro}</p>}
+      <fieldset className="radios boxed">
+        <legend>{t.legend}</legend>
+        {([true, false] as const).map((value) => (
+          <label key={String(value)}>
+            <input
+              type="radio"
+              name={radioName}
+              checked={answer === value}
+              onChange={() => api.setJointAssessment(value)}
+            />
+            {value ? t.yes : t.no}
+          </label>
+        ))}
+      </fieldset>
+      <p className="hint">{answer === undefined ? t.openHint : answer ? t.yesHint : t.noHint}</p>
+    </section>
   );
 }
 

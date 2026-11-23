@@ -85,6 +85,41 @@
 .radios label {
   display: block;
 }
+/* Joint assessment question (AP-16): option boxes of at least 44 px, no preselection. */
+.card .eyebrow {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--accent);
+}
+.card .eyebrow .muted {
+  font-weight: 500;
+  color: var(--muted);
+}
+.radios.boxed {
+  display: grid;
+  gap: var(--s1);
+  margin-top: var(--s3);
+}
+.radios.boxed label {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 44px;
+  padding: 0 var(--s3);
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.radios.boxed label:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.radios.boxed input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+}
 @media (max-width: 900px) {
   .target-grid {
     grid-template-columns: minmax(0, 1fr);

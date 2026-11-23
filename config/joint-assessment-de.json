@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "description": "Joint assessment of spouses (splitting procedure, section 32a paragraph 5 EStG): the joint taxable income is divided by the divisor, the tariff is applied, the result is multiplied by the divisor. Only the income tax on pensions is affected. Solidarity surcharge and church tax are not modelled. Not advice. Review once a year.",
+  "values": {
+    "splittingDivisor": {
+      "value": 2,
+      "unit": "number",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG section 32a paragraph 5, gesetze-im-internet.de, read 2026-11-23 - splitting: twice the tax on half of the joint taxable income. The page showed no version date. The halved income is rounded down to full euros by the reference to paragraph 1 (interpretation, not literal)",
+      "sourceDe": "EStG § 32a Abs. 5 (am 23.11.2026 gelesen) - Splitting: das Zweifache der Steuer auf die Hälfte des gemeinsamen zu versteuernden Einkommens. Die Seite nannte kein Fassungsdatum. Die Abrundung der Hälfte auf volle Euro folgt aus dem Verweis auf Abs. 1 (Auslegung, nicht wörtlich)",
+      "status": "confirmed"
+    },
+    "specialExpensesLumpSumJointYearly": {
+      "value": 72,
+      "unit": "EUR",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "EStG section 10c, gesetze-im-internet.de, read 2026-11-23 - special expenses lump sum 36 EUR, doubled for jointly assessed spouses; the 72 EUR is derived from the doubling, the page does not state it. The pension lump sum of 102 EUR (section 9a sentence 1 no. 3) is applied per person (reading of the wording, not stated for spouses). In the year after the partner's death (section 32a paragraph 6) the single 36 EUR is applied (interpretation)",
+      "sourceDe": "EStG § 10c (am 23.11.2026 gelesen) - Sonderausgaben-Pauschbetrag 36 €, bei Zusammenveranlagung verdoppelt; die 72 € sind aus der Verdopplung abgeleitet, die Seite nennt sie nicht. Der Rentenpauschbetrag von 102 € (§ 9a Satz 1 Nr. 3) wird je Person angesetzt (Auslegung des Wortlauts, für Ehegatten nicht ausdrücklich genannt). Im Jahr nach dem Tod des Partners (§ 32a Abs. 6) gilt der einfache Betrag von 36 € (Auslegung)",
+      "status": "unverified"
+    }
+  }
+}

@@ -133,14 +133,24 @@ export function personStatus(
 
 /* ---------- next steps ---------- */
 
-export type StepId = 'profile' | 'statutory' | 'wish' | 'export';
+export type StepId = 'profile' | 'statutory' | 'wish' | 'joint' | 'export';
 
 /** One step of the "next step" card. Person steps are done when every person has done them. */
 type StepDef = {
   id: StepId;
   scope: 'person' | 'household';
-  done: (ctx: { status?: PersonStatus; wish: boolean; exported: boolean }) => boolean;
+  /** Absent: the step always exists. The joint assessment question exists only for exactly two persons. */
+  applies?: (input: GuidanceInput) => boolean;
+  done: (ctx: {
+    status?: PersonStatus;
+    wish: boolean;
+    exported: boolean;
+    joint?: JointQuestion;
+  }) => boolean;
 };
+
+/** Answer state of the joint assessment question; absent for households that are not exactly two persons. */
+export type JointQuestion = 'open' | 'answered';
 
 /**
  * The steps in order. A further step (for example the splitting question for couples, AP-16) is one more
@@ -154,6 +164,12 @@ export const STEP_DEFS: StepDef[] = [
     done: ({ status }) => status !== undefined && status.pages.statutory !== 'empty',
   },
   { id: 'wish', scope: 'household', done: ({ wish }) => wish },
+  {
+    id: 'joint',
+    scope: 'household',
+    applies: (input) => input.joint !== undefined,
+    done: ({ joint }) => joint === 'answered',
+  },
   { id: 'export', scope: 'household', done: ({ exported }) => exported },
 ];
 
@@ -161,6 +177,8 @@ export type GuidanceInput = {
   persons: { id: string; name: string; status: PersonStatus }[];
   wish: boolean;
   exported: boolean;
+  /** Joint assessment question (AP-16); only present for a household of exactly two persons. */
+  joint?: JointQuestion;
 };
 
 export type StepState = { id: StepId; done: boolean };
@@ -177,12 +195,13 @@ export type Guidance = {
  * where the card names the first person with an open step.
  */
 export function guidanceFor(input: GuidanceInput, scope?: string): Guidance {
-  const { persons, wish, exported } = input;
+  const { persons, wish, exported, joint } = input;
+  const defs = STEP_DEFS.filter((d) => d.applies === undefined || d.applies(input));
   const considered = scope === undefined ? persons : persons.filter((p) => p.id === scope);
   const doneFor = (def: StepDef, p?: { status: PersonStatus }) =>
-    def.done({ status: p?.status, wish, exported });
+    def.done({ status: p?.status, wish, exported, joint });
 
-  const steps: StepState[] = STEP_DEFS.map((def) => ({
+  const steps: StepState[] = defs.map((def) => ({
     id: def.id,
     done:
       def.scope === 'household'
@@ -191,7 +210,7 @@ export function guidanceFor(input: GuidanceInput, scope?: string): Guidance {
   }));
 
   let next: Guidance['next'];
-  for (const def of STEP_DEFS) {
+  for (const def of defs) {
     if (def.scope === 'household') {
       if (!doneFor(def)) {
         next = { id: def.id };
@@ -206,7 +225,7 @@ export function guidanceFor(input: GuidanceInput, scope?: string): Guidance {
     }
   }
 
-  const personDefs = STEP_DEFS.filter((d) => d.scope === 'person');
+  const personDefs = defs.filter((d) => d.scope === 'person');
   const perPerson = persons.map((p) => ({
     id: p.id,
     name: p.name,

@@ -193,9 +193,23 @@ export function App() {
   const statusMap = guideInput.persons.find((p) => p.id === personId)?.status.pages ?? {};
   const statusWho = multi ? activeLabel : undefined;
 
+  /** The joint assessment question sits on the household page: go there, then focus its first option. */
+  const goToJointQuestion = () => {
+    go('household');
+    let tries = 0;
+    const focusQuestion = () => {
+      const field = document.querySelector<HTMLInputElement>('#joint-question input');
+      if (field) {
+        field.scrollIntoView({ block: 'center' });
+        field.focus();
+      } else if (tries++ < 20) window.setTimeout(focusQuestion, 100);
+    };
+    window.setTimeout(focusQuestion, 50);
+  };
   const goToStep = (id: StepId, stepPerson?: string) => {
     if (stepPerson !== undefined && stepPerson !== personId) household.setActivePerson(stepPerson);
-    if (id === 'profile') go('profile');
+    if (id === 'joint') goToJointQuestion();
+    else if (id === 'profile') go('profile');
     else if (id === 'statutory') go('statutory');
     else if (id === 'export') go('data');
     else {
@@ -327,6 +341,7 @@ export function App() {
               <HouseholdOverviewPage
                 household={household}
                 guide={guideCard}
+                goToJointQuestion={goToJointQuestion}
                 openPerson={(id) => {
                   household.setActivePerson(id);
                   setView('person');

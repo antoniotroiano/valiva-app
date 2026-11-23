@@ -7,7 +7,7 @@ Stand der Recherche: 2026-11-09. Nichts davon ersetzt den Gesetzestext oder eine
 - Zeitschritt monatlich; Rendite als p. a. geometrisch umgerechnet (nicht nominal/12)
 - Kosten: TER laufend, optional Ausgabeaufschlag und Depotgebühr
 - ETF-Steuer (vereinfacht): Abgeltungsteuer 26,375 % auf Gewinne, Teilfreistellung Aktienfonds 30 %, Sparerpauschbetrag 1.000 €; Vorabpauschale optional (Review `13` F-7b), sonst ignoriert
-- Gesetzliche, betriebliche und Altersvorsorgedepot-Renten: nachgelagerte Besteuerung: **Einkommensteuer nach Tarif §32a EStG auf die Summe aller Renteneinkünfte einer Person** (seit Teilphase 6a, vorher pauschaler Satz), Abgaben als pauschaler Satz je Baustein; kein Solidaritätszuschlag, keine Kirchensteuer, keine Zusammenveranlagung
+- Gesetzliche, betriebliche und Altersvorsorgedepot-Renten: nachgelagerte Besteuerung: **Einkommensteuer nach Tarif §32a EStG auf die Summe aller Renteneinkünfte einer Person** (seit Teilphase 6a, vorher pauschaler Satz), Abgaben als pauschaler Satz je Baustein; kein Solidaritätszuschlag, keine Kirchensteuer; Zusammenveranlagung (Splitting) nur nach ausdrücklicher Antwort bei zwei Personen (AP-16, `docs/assumptions.md`)
 - Alle Beträge intern nominal; Darstellung nominal **und** real (deflationiert)
 - Zahlentyp: Gleitkomma (double) genügt für Prognosen, gerundet wird nur bei der Anzeige. Dezimalarithmetik erst bei späterem Ist-Tracking (Käufe)
 - Berechnungen deterministisch und ohne Zufall (außer eine spätere, explizite Monte-Carlo-Funktion mit festem Seed)

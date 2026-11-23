@@ -43,6 +43,7 @@ export function warningText(code: string): string {
       social: de.assumptions.socialNames,
       depot: de.assumptions.depotNames,
       incomeTax: de.assumptions.incomeTaxNames,
+      jointAssessment: de.assumptions.jointAssessmentNames,
       otherIncome: de.otherIncome.ruleNames,
     };
     return o.unverified(names[group ?? '']?.[key ?? ''] ?? key ?? '');

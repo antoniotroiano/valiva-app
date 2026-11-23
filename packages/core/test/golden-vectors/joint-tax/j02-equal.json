@@ -1,0 +1,18 @@
+{
+  "name": "j02-equal",
+  "description": "Equal pensions: the same tax as taxing each alone",
+  "synthetic": true,
+  "incomesA": [[1900, 190]],
+  "incomesB": [[1900, 190]],
+  "lumpSumTaxable": 0,
+  "expected": {
+    "taxableIncomeYearly": 40764,
+    "taxYearly": 3330,
+    "taxMonthly": 277.5,
+    "sharesA": [138.75],
+    "sharesB": [138.75],
+    "separateTaxYearly": 3330,
+    "shareA": 138.75,
+    "shareB": 138.75
+  }
+}

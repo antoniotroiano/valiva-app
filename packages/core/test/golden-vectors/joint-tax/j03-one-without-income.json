@@ -1,0 +1,18 @@
+{
+  "name": "j03-one-without-income",
+  "description": "One person without income: both allowances in the joint income",
+  "synthetic": true,
+  "incomesA": [[2500, 250]],
+  "incomesB": [],
+  "lumpSumTaxable": 0,
+  "expected": {
+    "taxableIncomeYearly": 26826,
+    "taxYearly": 318,
+    "taxMonthly": 26.5,
+    "sharesA": [26.5],
+    "sharesB": [],
+    "separateTaxYearly": 3349,
+    "shareA": 26.5,
+    "shareB": 0
+  }
+}

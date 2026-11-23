@@ -12,11 +12,13 @@ export function HouseholdOverviewPage({
   household,
   openPerson,
   goToPersonProfile,
+  goToJointQuestion,
   guide,
 }: {
   household: HouseholdApi;
   openPerson: (id: string) => void;
   goToPersonProfile: (id: string) => void;
+  goToJointQuestion: () => void;
   guide?: ReactNode;
 }) {
   const legal = useMemo(() => currentLegal(), []);
@@ -27,6 +29,7 @@ export function HouseholdOverviewPage({
       data={data}
       openPerson={openPerson}
       goToPersonProfile={goToPersonProfile}
+      goToJointQuestion={goToJointQuestion}
       guide={guide}
     />
   );

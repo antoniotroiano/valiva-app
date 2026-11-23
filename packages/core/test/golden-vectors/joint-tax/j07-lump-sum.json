@@ -1,0 +1,19 @@
+{
+  "name": "j07-lump-sum",
+  "description": "One-off taxable payout of 20,000 EUR on top of the monthly pensions",
+  "synthetic": true,
+  "incomesA": [[3000, 300]],
+  "incomesB": [[800, 80]],
+  "lumpSumTaxable": 20000,
+  "expected": {
+    "taxableIncomeYearly": 40764,
+    "taxYearly": 3330,
+    "taxMonthly": 277.5,
+    "sharesA": [219.07894736842104],
+    "sharesB": [58.421052631578945],
+    "separateTaxYearly": 4863,
+    "shareA": 219.07894736842104,
+    "shareB": 58.421052631578945,
+    "lumpSumTaxYearly": 5320
+  }
+}

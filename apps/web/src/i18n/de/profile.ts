@@ -3,7 +3,7 @@ export const profile = {
   subtitle: 'Angaben zu dir und die Annahmen, die alle Einkommensquellen gemeinsam nutzen.',
   formLabel: 'Eingaben Profil',
   taxNote:
-    'Die Einkommensteuer auf Renten rechnet die App nach dem aktuellen Tarif (Grundfreibetrag und Progression) auf die Summe aller Einkommensquellen. Solidaritätszuschlag, Kirchensteuer und Zusammenveranlagung sind nicht berücksichtigt.',
+    'Die Einkommensteuer auf Renten rechnet die App nach dem aktuellen Tarif (Grundfreibetrag und Progression) auf die Summe aller Einkommensquellen. Solidaritätszuschlag und Kirchensteuer sind nicht berücksichtigt. Paare können auf der Seite Haushalt angeben, ob sie gemeinsam veranlagt werden (Splitting).',
   groups: {
     person: 'Person',
     general: 'Allgemeine Annahmen',

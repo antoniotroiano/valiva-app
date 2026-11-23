@@ -1,0 +1,18 @@
+{
+  "name": "j04-survivor-year",
+  "description": "Year after the partner's death: splitting tariff, single special expenses lump sum",
+  "synthetic": true,
+  "incomesA": [[2500, 250]],
+  "incomesB": null,
+  "lumpSumTaxable": 0,
+  "expected": {
+    "taxableIncomeYearly": 26862,
+    "taxYearly": 324,
+    "taxMonthly": 27.0,
+    "sharesA": [27.0],
+    "sharesB": [],
+    "separateTaxYearly": 3349,
+    "shareA": 27.0,
+    "shareB": 0
+  }
+}

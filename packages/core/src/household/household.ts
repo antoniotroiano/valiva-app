@@ -44,6 +44,12 @@ export type Household = {
   survivorPension?: 'new' | 'old';
   /** Share of the wish that counts after the first death, in percent. Absent: 100. Two-person households only. */
   survivorWishPercent?: number;
+  /**
+   * Joint assessment (splitting) of a household of exactly two persons: `true` taxes the pensions of both
+   * together, `false` taxes each person alone. Absent: not answered, taxed alone (AP-16). Ignored for other
+   * household sizes.
+   */
+  jointAssessment?: boolean;
   assumptions: HouseholdAssumptions;
   persons: Person[];
 };
@@ -114,6 +120,9 @@ export function validateHousehold(household: Household, currentYear: number): Va
   const rule = household.survivorPension;
   if (rule !== undefined && rule !== 'new' && rule !== 'old') {
     issues.push({ field: 'survivorPension', code: 'required' });
+  }
+  if (household.jointAssessment !== undefined && typeof household.jointAssessment !== 'boolean') {
+    issues.push({ field: 'jointAssessment', code: 'required' });
   }
   const shared = new Set<string>();
   const sharedFields = [

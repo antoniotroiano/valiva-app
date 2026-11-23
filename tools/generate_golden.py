@@ -10,6 +10,8 @@ Outputs:
   packages/core/test/golden-vectors/overview/*.json    overview of products (Phase 4a-1)
   packages/core/test/golden-vectors/other-income/*.json  generic block 'other income in retirement' (AP-15)
   packages/core/test/golden-vectors/withdrawal/*.json  percent withdrawal of the ETF (review 13 F-16)
+  packages/core/test/golden-vectors/joint-tax/*.json  splitting tax of two persons in one year (AP-16)
+  packages/core/test/golden-vectors/joint-household/*.json  household with joint assessment (AP-16)
   tools/golden-check.xlsx                    one sheet per case with live Excel formulas;
                                              compare the 'Excel' column with the 'Python' column.
 
@@ -998,16 +1000,20 @@ def ov_incomes(counted, sc, age, a):
     return out
 
 
-def ov_net_by_product(counted, sc, age, a):
-    """Net per month of every counted product: gross minus own deductions minus the share of the tax on the sum."""
+def ov_net_by_product(counted, sc, age, a, joint=None):
+    """Net per month of every counted product: gross minus own deductions minus the share of the tax on the sum.
+    `joint` = (monthly joint tax, taxable monthly sum of both persons) replaces the single tax (AP-16)."""
     inc = ov_incomes(counted, sc, age, a)
     shared = oi_group(counted, sc, age, a)
     taxable, contrib = sum(i[0] for i in inc), sum(i[1] for i in inc)
     total_tax = pension_tax_monthly(taxable, contrib)
+    denom = taxable
+    if joint is not None:
+        total_tax, denom = joint
     out = []
     for p, (t_i, c_i) in zip(counted, inc):
         f = ov_factor(p, age, a); r = p["results"][sc]
-        share = total_tax * t_i / taxable if taxable > 0 else 0.0
+        share = total_tax * t_i / denom if denom > 0 else 0.0
         gross = r["monthlyPensionReal"] * f
         shared_i = shared is not None and p["productId"] in shared
         ded = (r["fixedTaxMonthlyReal"] * f + c_i + share) if shared_i else (r["fixedTaxMonthlyReal"] + r["contributionsMonthlyReal"]) * f + share
@@ -2354,6 +2360,267 @@ def oi_household_excel_sheet(wb, name, persons, a, entries_by_person, raw_by_per
     ws.column_dimensions["A"].width = 36
 
 
+# ---- AP-16: joint assessment of spouses (splitting, paragraph 32a paragraph 5 EStG) ----------------------
+# Own copy of the values: special expenses lump sum doubled (paragraph 10c: 2 x 36 = 72, unverified), pension lump sum
+# of 102 EUR per person (paragraph 9a no. 3, reading of the wording), divisor 2. Solidarity surcharge and church tax are
+# not modelled (as for the single tax).
+JT_OUT = OUT / "joint-tax"
+JH_OUT = OUT / "joint-household"
+JOINT_SPECIAL = 72
+
+
+def jt_after_lump(incomes):
+    """Yearly taxable pension of one person after the 102 EUR lump sum (capped at the income)."""
+    y = 12 * sum(t for t, c in incomes)
+    return y - min(LUMP_DEDUCTION, y)
+
+
+def jt_zve(a_inc, b_inc, widow=False):
+    """Joint taxable income per year; `b_inc` is None in the year after the partner's death (single lump sum)."""
+    b = b_inc or []
+    contrib = 12 * (sum(c for t, c in a_inc) + sum(c for t, c in b))
+    special = SPECIAL_EXPENSES if b_inc is None else JOINT_SPECIAL
+    return max(0.0, jt_after_lump(a_inc) + jt_after_lump(b) - contrib - special)
+
+
+def jt_tax(z):
+    """Splitting: twice the tariff of half of the taxable income, the half rounded down to full euros."""
+    return 2 * income_tax(math.floor(z) // 2)
+
+
+def jt_separate(inc):
+    return income_tax(max(0.0, jt_after_lump(inc) - 12 * sum(c for t, c in inc) - SPECIAL_EXPENSES))
+
+
+def joint_tax_vector(a_inc, b_inc, lump=0.0):
+    z = jt_zve(a_inc, b_inc)
+    tax = jt_tax(z)
+    b = b_inc or []
+    total_t = sum(t for t, c in a_inc) + sum(t for t, c in b)
+    share = lambda t: tax / 12 * t / total_t if total_t > 0 else 0.0
+    out = dict(taxableIncomeYearly=z, taxYearly=tax, taxMonthly=tax / 12,
+               sharesA=[share(t) for t, c in a_inc], sharesB=[share(t) for t, c in b],
+               separateTaxYearly=jt_separate(a_inc) + (jt_separate(b) if b_inc else 0))
+    out["shareA"], out["shareB"] = sum(out["sharesA"]), sum(out["sharesB"])
+    if lump:
+        out["lumpSumTaxYearly"] = jt_tax(z + lump) - jt_tax(z)
+    return out
+
+
+# (name, description, incomes of A [(taxable, contributions) per month], incomes of B or None, lump sum)
+JT_CASES = [
+    ("j01-unequal", "Pensions 3,000 and 800 a month: the weak earner's allowance is used", [(3000, 300)], [(800, 80)], 0),
+    ("j02-equal", "Equal pensions: the same tax as taxing each alone", [(1900, 190)], [(1900, 190)], 0),
+    ("j03-one-without-income", "One person without income: both allowances in the joint income", [(2500, 250)], [], 0),
+    ("j04-survivor-year", "Year after the partner's death: splitting tariff, single special expenses lump sum", [(2500, 250)], None, 0),
+    ("j05-progression-zone-4", "High pensions into the 42 % zone", [(9000, 900)], [(1500, 150)], 0),
+    ("j06-below-allowance", "Both below all allowances: tax 0", [(700, 0)], [(600, 0)], 0),
+    ("j07-lump-sum", "One-off taxable payout of 20,000 EUR on top of the monthly pensions", [(3000, 300)], [(800, 80)], 20000),
+    ("j08-several-incomes", "Two incomes of A and one of B: the tax is split in proportion to the taxable amounts",
+     [(2000, 200), (1000, 90)], [(800, 80)], 0),
+]
+
+
+def jt_excel_sheet(wb, name, a_inc, b_inc, lump, exp):
+    ws = wb.create_sheet(name[:31])
+    ws["A1"] = "Joint assessment (splitting), one year; monthly amounts in one purchasing power"
+    ws["A2"], ws["B2"] = "pension lump sum per person", LUMP_DEDUCTION
+    ws["A3"], ws["B3"] = "special expenses lump sum, joint", JOINT_SPECIAL
+    ws["A4"], ws["B4"] = "special expenses lump sum, single", SPECIAL_EXPENSES
+    ws["A5"], ws["B5"] = "divisor", 2
+    ws["A6"], ws["B6"] = "partner absent (survivor year)? 1 = yes", 1 if b_inc is None else 0
+    ws["A7"], ws["B7"] = "one-off payout", lump
+    for c, h in enumerate(["person", "taxable per month", "contributions per month", "share of tax per month Excel", "Python", "difference"], start=1):
+        ws.cell(row=9, column=c, value=h)
+    rows = [("A", t, c) for t, c in a_inc] + [("B", t, c) for t, c in (b_inc or [])]
+    first, last = 10, 9 + len(rows)
+    for i, (who, t, c) in enumerate(rows):
+        r = first + i
+        ws.cell(row=r, column=1, value=who); ws.cell(row=r, column=2, value=t); ws.cell(row=r, column=3, value=c)
+    rng = lambda col, who: f'SUMIF($A${first}:$A${last},"{who}",{col}${first}:{col}${last})'
+    base = last + 2
+    labels = [
+        ("taxable A per year after lump sum", f"=12*{rng('B', 'A')}-MIN($B$2,12*{rng('B', 'A')})"),
+        ("taxable B per year after lump sum", f"=12*{rng('B', 'B')}-MIN($B$2,12*{rng('B', 'B')})"),
+        ("contributions of both per year", f"=12*SUM(C{first}:C{last})"),
+        ("joint taxable income (not rounded)", f"=MAX(0,B{base}+B{base + 1}-B{base + 2}-IF($B$6=1,$B$4,$B$3))"),
+        ("half, rounded down to full euros", f"=INT(INT(B{base + 3})/$B$5)"),
+        ("tax on the half", "=" + excel_tariff(f"B{base + 4}")),
+        ("joint tax per year", f"=$B$5*B{base + 5}"),
+        ("separate tax per year (each alone)", None),
+    ]
+    for k, (label, f) in enumerate(labels):
+        ws.cell(row=base + k, column=1, value=label)
+        if f:
+            ws.cell(row=base + k, column=2, value=f)
+    # separate tax: every person alone, with the single special expenses lump sum
+    for k, who in enumerate(["A", "B"]):
+        z = f"INT(MAX(0,12*{rng('B', who)}-MIN($B$2,12*{rng('B', who)})-12*{rng('C', who)}-$B$4))"
+        ws.cell(row=base + 7, column=2 + k, value="=" + excel_tariff(z) if (who == "A" or b_inc) else 0)
+    ws.cell(row=base + 7, column=4, value=f"=B{base + 7}+C{base + 7}")
+    ws.cell(row=base + 8, column=1, value="joint tax Python"); ws.cell(row=base + 8, column=2, value=exp["taxYearly"])
+    ws.cell(row=base + 9, column=1, value="difference joint tax"); ws.cell(row=base + 9, column=2, value=f"=B{base + 6}-B{base + 8}")
+    ws.cell(row=base + 10, column=1, value="separate tax Python"); ws.cell(row=base + 10, column=2, value=exp["separateTaxYearly"])
+    ws.cell(row=base + 11, column=1, value="difference separate tax"); ws.cell(row=base + 11, column=2, value=f"=D{base + 7}-B{base + 10}")
+    sharesP = exp["sharesA"] + exp["sharesB"]
+    for i, (who, t, c) in enumerate(rows):
+        r = first + i
+        ws.cell(row=r, column=4, value=f"=IF(SUM($B${first}:$B${last})>0,B{base + 6}/12*B{r}/SUM($B${first}:$B${last}),0)")
+        ws.cell(row=r, column=5, value=sharesP[i]); ws.cell(row=r, column=6, value=f"=D{r}-E{r}")
+    if lump:
+        r = base + 12
+        ws.cell(row=r, column=1, value="joint tax with the payout per year")
+        ws.cell(row=r, column=2, value=f"=$B$5*(" + excel_tariff(f"INT((B{base + 3}+$B$7)/$B$5)") + ")")
+        ws.cell(row=r + 1, column=1, value="extra tax of the payout Excel"); ws.cell(row=r + 1, column=2, value=f"=B{r}-B{base + 6}")
+        ws.cell(row=r + 2, column=1, value="extra tax Python"); ws.cell(row=r + 2, column=2, value=exp["lumpSumTaxYearly"])
+        ws.cell(row=r + 3, column=1, value="difference"); ws.cell(row=r + 3, column=2, value=f"=B{r + 1}-B{r + 2}")
+    ws.column_dimensions["A"].width = 40
+
+
+# Household-level vectors: statutory-like products only (invented projection results as in the overview vectors).
+# (name, description, persons, products by person, desired, partner/death notes)
+JH_CASES = [
+    ("jh01-unequal-both-retire-67", "Both retire at 67 in the same year; pensions 3,400 and 800: splitting lifts the net of the couple",
+     [hh_person("a", 1985, 67, 90), hh_person("b", 1985, 67, 90)],
+     {"a": [ov_product("statutory", 67, 3400, 2890, 420)], "b": [ov_product("statutory", 67, 800, 680, 90)]}, 4500),
+    ("jh02-equal-pensions-no-effect", "Equal pensions: the net is the same with and without joint assessment",
+     [hh_person("a", 1985, 67, 90), hh_person("b", 1985, 67, 90)],
+     {"a": [ov_product("statutory", 67, 2100, 1785, 260)], "b": [ov_product("statutory", 67, 2100, 1785, 260)]}, 4000),
+    ("jh03-different-retirement-years", "a retires at 63, b (two years younger) at 67: a is taxed alone until b retires, then jointly",
+     [hh_person("a", 1980, 63, 88), hh_person("b", 1982, 67, 90)],
+     {"a": [ov_product("statutory", 63, 3000, 2550, 370), ov_product("occupational", 63, 400, 400, 55, end=85)],
+      "b": [ov_product("statutory", 67, 700, 595, 80)]}, 3800),
+    ("jh04-death-and-widow-year", "b dies at 80: joint in the death year, splitting tariff for a in the year after, then alone",
+     [hh_person("a", 1985, 67, 90), hh_person("b", 1985, 67, 80)],
+     {"a": [ov_product("statutory", 67, 3200, 2720, 395)], "b": [ov_product("statutory", 67, 600, 510, 70)]}, 3500),
+    ("jh05-lump-sum-of-the-depot", "a has a one-off depot payout of 12,000 EUR, taxed on top of the joint income of its year",
+     [hh_person("a", 1985, 67, 90), hh_person("b", 1985, 67, 90)],
+     {"a": [ov_product("statutory", 67, 3000, 2550, 370), ov_product("retirementDepot", 67, 500, 500, 0, end=85, lump=12000)],
+      "b": [ov_product("statutory", 67, 900, 765, 100)]}, 4200),
+]
+
+
+def project_household_joint(persons, a, products, desired, joint_on):
+    for pr in persons:
+        pr["start"], pr["end"] = pr["birthYear"] + pr["targetRetirementAge"], pr["birthYear"] + pr["lifeExpectancyAge"]
+    first, snap, last = min(p["start"] for p in persons), max(p["start"] for p in persons), max(p["end"] for p in persons)
+    by_id = {pr["id"]: pr for pr in persons}
+    counted = {pid: [p for p in lst if p["enabled"] and p["valid"]] for pid, lst in products.items()}
+
+    def state(me, other, y):
+        """None = alone, 'both' = joint, 'widow' = survivor with the splitting tariff."""
+        if not joint_on or len(persons) != 2:
+            return None
+        lo, hi = max(me["start"], other["start"]), min(me["end"], other["end"]) + 1
+        if y < lo or y > hi:
+            return None
+        return "widow" if y > other["end"] else "both"
+
+    def partner(me):
+        return next(p for p in persons if p["id"] != me["id"])
+
+    def incomes(pid, sc, y):
+        age = y - by_id[pid]["birthYear"]
+        return [(t, c) for t, c in ov_incomes(counted[pid], sc, age, a)]
+
+    def net_by_product(pr, sc, y):
+        age = y - pr["birthYear"]
+        if not (pr["targetRetirementAge"] <= age <= pr["lifeExpectancyAge"]):
+            return {}
+        other = partner(pr) if len(persons) == 2 else None
+        st = state(pr, other, y) if other else None
+        joint = None
+        if st:
+            mine = incomes(pr["id"], sc, y)
+            theirs = incomes(other["id"], sc, y) if st == "both" else None
+            z = jt_zve(mine, theirs)
+            joint = (jt_tax(z) / 12, sum(t for t, c in mine) + sum(t for t, c in (theirs or [])))
+        return {x["productId"]: x["netReal"] for x in ov_net_by_product(counted[pr["id"]], sc, age, a, joint)}
+
+    def lump_net(pr, sc):
+        total = 0.0
+        for p in counted[pr["id"]]:
+            l = p["results"][sc].get("lumpSum")
+            if not l:
+                continue
+            y = pr["birthYear"] + p["payoutStartAge"]
+            mine = incomes(pr["id"], sc, y)
+            other = partner(pr) if len(persons) == 2 else None
+            st = state(pr, other, y) if other else None
+            if st:
+                theirs = incomes(other["id"], sc, y) if st == "both" else None
+                z = jt_zve(mine, theirs)
+                tax = jt_tax(z + l["grossReal"]) - jt_tax(z)
+            else:
+                tax = lump_tax(sum(t for t, c in mine), sum(c for t, c in mine), l["grossReal"])
+            total += l["grossReal"] - tax
+        return total
+
+    out = dict(firstYear=first, snapshotYear=snap, lastYear=last, scenarios={})
+    for sc in SCEN:
+        path, total_gap = [], 0.0
+        for y in range(first, last + 1):
+            by = {pr["id"]: sum(net_by_product(pr, sc, y).values()) for pr in persons}
+            tot = sum(by.values())
+            pt = dict(year=y, total=tot, byPerson=by)
+            if desired is not None:
+                pt["desired"] = desired
+                pt["gap"] = max(0.0, desired - tot)
+                if y < last:
+                    total_gap += 12 * pt["gap"]
+            path.append(pt)
+        at = next(pt for pt in path if pt["year"] == snap)
+        out["scenarios"][sc] = dict(
+            net=at["total"], byPerson=at["byPerson"],
+            gap=None if desired is None else max(0.0, desired - at["total"]),
+            surplus=None if desired is None else max(0.0, at["total"] - desired),
+            totalGapReal=None if desired is None else total_gap,
+            lumpSumNetReal={pr["id"]: lump_net(pr, sc) for pr in persons}, path=path)
+    return out
+
+
+def jh_snapshot_excel_sheet(wb, name, persons, products, exp):
+    """Snapshot year of a couple that retires together at the start age: no inflation factor, so the Excel
+    net per person is gross minus contributions minus the share of the joint tax."""
+    ws = wb.create_sheet(name[:31])
+    ws["A1"] = "Snapshot year, both persons start at the same age: monthly amounts, neutral scenario"
+    ws["A2"], ws["B2"] = "pension lump sum per person", LUMP_DEDUCTION
+    ws["A3"], ws["B3"] = "special expenses lump sum, joint", JOINT_SPECIAL
+    for c, h in enumerate(["person", "gross", "taxable", "contributions", "share of tax Excel", "net Excel", "net Python", "difference"], start=1):
+        ws.cell(row=5, column=c, value=h)
+    rows = []
+    for pr in persons:
+        for p in products[pr["id"]]:
+            r = 6 + len(rows)
+            res = p["results"]["neutral"]
+            for c, v in enumerate([pr["id"], res["monthlyPensionReal"], res["taxableMonthlyReal"], res["contributionsMonthlyReal"]], start=1):
+                ws.cell(row=r, column=c, value=v)
+            rows.append(r)
+    last = 5 + len(rows)
+    base = last + 2
+    sumif = lambda who, col: f'SUMIF($A$6:$A${last},"{who}",{col}$6:{col}${last})'
+    a_id, b_id = persons[0]["id"], persons[1]["id"]
+    ws.cell(row=base, column=1, value="joint taxable income")
+    ws.cell(row=base, column=2, value=(
+        f"=INT(MAX(0,12*{sumif(a_id, 'C')}-MIN($B$2,12*{sumif(a_id, 'C')})+12*{sumif(b_id, 'C')}-MIN($B$2,12*{sumif(b_id, 'C')})"
+        f"-12*SUM(D6:D{last})-$B$3))"))
+    ws.cell(row=base + 1, column=1, value="joint tax per year")
+    ws.cell(row=base + 1, column=2, value="=2*" + excel_tariff(f"INT(B{base}/2)"))
+    for i, r in enumerate(rows):
+        ws.cell(row=r, column=5, value=f"=B{base + 1}/12*C{r}/SUM($C$6:$C${last})")
+        ws.cell(row=r, column=6, value=f"=B{r}-D{r}-E{r}")
+    for pr in persons:
+        k = [r for r, p in zip(rows, [p for pr2 in persons for p in products[pr2["id"]]]) if False]
+    ws.cell(row=base + 3, column=1, value="net of the couple Excel")
+    ws.cell(row=base + 3, column=2, value=f"=SUM(F6:F{last})")
+    ws.cell(row=base + 4, column=1, value="net of the couple Python")
+    ws.cell(row=base + 4, column=2, value=exp["scenarios"]["neutral"]["net"])
+    ws.cell(row=base + 5, column=1, value="difference")
+    ws.cell(row=base + 5, column=2, value=f"=B{base + 3}-B{base + 4}")
+    ws.column_dimensions["A"].width = 36
+
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     ADV_OUT.mkdir(parents=True, exist_ok=True)
@@ -2522,8 +2789,26 @@ def main():
              "payoutStartAge": start, "payoutEndAge": end, "useGlobalAssumptions": use_global, "percent": percent,
              "profile": ETFP_PROFILE, "assumptions": a, "currentYear": 2026, "expected": exp}, indent=2) + "\n")
         wd_excel_sheet(wb, name, plan, ETFP_PROFILE, a, TAX, start, end, use_global, percent, exp["neutral"])
+    JT_OUT.mkdir(parents=True, exist_ok=True)
+    JH_OUT.mkdir(parents=True, exist_ok=True)
+    for name, desc, a_inc, b_inc, lump in JT_CASES:
+        exp = joint_tax_vector(a_inc, b_inc, lump)
+        (JT_OUT / f"{name}.json").write_text(json.dumps(
+            {"name": name, "description": desc, "synthetic": True, "incomesA": a_inc, "incomesB": b_inc,
+             "lumpSumTaxable": lump, "expected": exp}, indent=2) + "\n")
+        jt_excel_sheet(wb, name, a_inc, b_inc, lump, exp)
+    for name, desc, persons, products, desired in JH_CASES:
+        a = {**STAT_ASSUMPTIONS, **HH_ASSUMPTIONS}
+        exp_joint = project_household_joint([dict(p) for p in persons], a, products, desired, True)
+        exp_separate = project_household_joint([dict(p) for p in persons], a, products, desired, False)
+        (JH_OUT / f"{name}.json").write_text(json.dumps(
+            {"name": name, "description": desc, "synthetic": True, "persons": persons, "assumptions": a,
+             "desiredMonthlyIncomeToday": desired, "currentYear": 2026, "products": products,
+             "expected": exp_joint, "expectedSeparate": exp_separate}, indent=2) + "\n")
+        if name.startswith("jh01"):
+            jh_snapshot_excel_sheet(wb, name, [dict(p) for p in persons], products, exp_joint)
     wb.save(ROOT / "tools/golden-check.xlsx")
-    print(f"wrote {len(CASES)} ETF, {len(GOAL_CASES)} goal and {len(TARGET_CASES)} ETF target and {len(STAT_CASES)} statutory and {len(DEPOT_CASES)} depot and {len(BAV_CASES)} occupational and {len(OV_CASES)} overview and {len(OI_CASES) + 1} other income and {len(ETFP_CASES)} ETF payout and {len(HH_CASES)} household and {len(ADV_CASES)} advance and {len(ADVP_CASES)} advance payout vectors")
+    print(f"wrote {len(CASES)} ETF, {len(GOAL_CASES)} goal and {len(TARGET_CASES)} ETF target and {len(STAT_CASES)} statutory and {len(DEPOT_CASES)} depot and {len(BAV_CASES)} occupational and {len(OV_CASES)} overview and {len(OI_CASES) + 1} other income and {len(ETFP_CASES)} ETF payout and {len(HH_CASES)} household and {len(JT_CASES)} joint tax and {len(JH_CASES)} joint household and {len(ADV_CASES)} advance and {len(ADVP_CASES)} advance payout vectors")
 
 
 main()

@@ -40,4 +40,23 @@ export const household = {
     creditNote:
       'Die Witwenrente wird auf das eigene Einkommen angerechnet: 40 % des Betrags über dem Freibetrag. Kapitalentnahmen aus dem ETF zählen dabei nicht. Die genauen Werte stehen auf der Seite „Annahmen“.',
   },
+  /** Joint assessment (splitting), AP-16. Only for households of exactly two persons. */
+  joint: {
+    title: 'Gemeinsame Veranlagung',
+    eyebrow: 'Steuer',
+    statusOpen: 'Frage offen',
+    statusYes: 'gemeinsam veranlagt',
+    statusNo: 'einzeln veranlagt',
+    intro:
+      'Ehepaare und eingetragene Lebenspartner können gemeinsam veranlagt werden: Die App addiert dann die zu versteuernden Einkommen, halbiert sie, wendet den Tarif an und verdoppelt das Ergebnis (Splitting). Das senkt die Steuer, wenn die Renten sehr verschieden sind. Bei gleichen Renten ändert sich nichts. Die App kann nicht wissen, ob ihr verheiratet seid, deshalb fragt sie.',
+    legend: 'Werdet ihr gemeinsam veranlagt (Ehe oder eingetragene Lebenspartnerschaft)?',
+    yes: 'Ja',
+    no: 'Nein',
+    openHint:
+      'Solange du nicht antwortest, rechnet die App jede Person einzeln. Das ist auf der sicheren Seite: Die Steuer ist eher zu hoch, das Netto eher zu niedrig.',
+    yesHint:
+      'Gerechnet wird ab dem Jahr, in dem beide in Rente sind, bis zum Jahr nach dem Tod der ersten Person. Davor und danach rechnet die App einzeln, weil Gehälter nicht erfasst sind. Nur die Einkommensteuer auf Renten ändert sich. Der Sparerpauschbetrag bleibt je Person. Solidaritätszuschlag und Kirchensteuer auf Renten sind nicht berücksichtigt.',
+    noHint:
+      'Jede Person wird einzeln versteuert, wie bisher. Du kannst die Antwort jederzeit ändern.',
+  },
 } as const;

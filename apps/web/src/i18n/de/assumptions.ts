@@ -28,6 +28,7 @@ export const assumptions = {
       depot: 'Altersvorsorgedepot',
       incomeTax: 'Einkommensteuer',
       otherIncome: 'Sonstige Einkünfte (Regelannahmen)',
+      jointAssessment: 'Gemeinsame Veranlagung (Paare)',
     },
     ruleApplies: 'wird angenommen',
   },
@@ -95,6 +96,11 @@ export const assumptions = {
     sharedBenefitThreshold: 'Freibetrag und Freigrenze gelten gemeinsam für alle Versorgungsbezüge',
     survivorIncomeCredited:
       'Eigene Renten, Pensionen und Mieten werden auf die Witwenrente angerechnet',
+  },
+  /** Splitting values (`config/joint-assessment-de.json`). */
+  jointAssessmentNames: {
+    splittingDivisor: 'Splitting: Einkommen durch diese Zahl teilen, Steuer damit multiplizieren',
+    specialExpensesLumpSumJointYearly: 'Sonderausgaben-Pauschbetrag bei gemeinsamer Veranlagung',
   },
   incomeTaxNames: {
     basicAllowance: 'Grundfreibetrag',
@@ -195,6 +201,17 @@ export const assumptions = {
     'Weiterzahlung an den Partner: nur bei zwei Personen und eingeschalteter Hinterbliebenenrente. Der Anteil wird bei der überlebenden Person besteuert, ohne Abgaben, und zählt als anrechenbares Einkommen bei der Witwenrente.',
     'Nicht berücksichtigt: Versorgungsfreibetrag bei Pensionen, Ertragsanteil-Tabelle, Sparerpauschbetrag, Werbungskosten, Kapitalabfindung, Garantien und Überschüsse.',
     'Die zugrunde liegenden Regelannahmen sind ungeprüft und stehen unter Rechtswerte.',
+  ],
+  jointAssessmentRulesTitle: 'Gemeinsame Veranlagung',
+  jointAssessmentRules: [
+    'Nur bei genau zwei Personen und nur, wenn du die Frage auf der Seite Haushalt mit „Ja“ beantwortest. Ohne Antwort und bei „Nein“ wird jede Person einzeln versteuert.',
+    'Splitting: Die zu versteuernden Einkommen beider Personen werden addiert, halbiert, mit dem Tarif versteuert, und die Steuer wird verdoppelt (§ 32a Abs. 5 EStG). Die Hälfte wird auf volle Euro abgerundet.',
+    'Das zu versteuernde Einkommen: je Person der steuerpflichtige Rentenanteil minus 102 € Werbungskosten-Pauschbetrag (höchstens in Höhe der Einnahmen), davon werden die gezahlten Kranken- und Pflegebeiträge beider und der doppelte Sonderausgaben-Pauschbetrag (72 €) abgezogen.',
+    'Die Steuer wird im Verhältnis der steuerpflichtigen Rentenanteile beider Personen verteilt. Wer mehr steuerpflichtige Rente hat, trägt mehr der gemeinsamen Steuer. Die Summe stimmt mit der Gesamtsteuer überein.',
+    'Gerechnet wird gemeinsam erst ab dem Jahr, in dem beide in Rente sind, und höchstens bis zum Jahr nach dem Tod der ersten Person (im Jahr danach bleibt der Splitting-Tarif für die überlebende Person, mit dem einfachen Pauschbetrag von 36 €). Davor und danach wird einzeln gerechnet, weil Gehälter nicht erfasst sind.',
+    'Eine Einmalauszahlung des Altersvorsorgedepots wird im gemeinsamen Einkommen des Auszahlungsjahres besteuert. Bei gleichen Renten ergibt sich dieselbe Steuer wie einzeln; durch die Rundung auf volle Euro kann das Splitting bei fast gleichen Renten bis zu 2 € pro Jahr höher ausfallen.',
+    'Nicht berücksichtigt: Solidaritätszuschlag und Kirchensteuer auf Renten, ein gemeinsamer Sparerpauschbetrag (er bleibt je Person), Einzelveranlagung auf Antrag, Rentensplitting. Auf den Einzelseiten der Einkommensquellen wird die Steuer weiter einzeln gezeigt.',
+    'Die Pauschbeträge je Person (102 €), der doppelte Sonderausgaben-Pauschbetrag (72 €) und der einfache Betrag im Jahr nach dem Tod sind Auslegungen des Gesetzestexts und ungeprüft; der Wert 72 € steht unter Rechtswerte.',
   ],
   withdrawalRulesTitle: 'Entnahmestrategien',
   withdrawalRules: [

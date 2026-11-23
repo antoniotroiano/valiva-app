@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { householdOverview, personContext, solveHouseholdGapContribution } from '@valiva/core';
 import type { GapSolveResult, HouseholdOutcome, LegalResolution } from '@valiva/core';
+import { jointInput } from '../lib/legalConfig';
 import { buildEtfProduct, buildPersonProducts, loadPersonBlocks } from '../lib/personProducts';
 import type { PersonBlocks } from '../lib/personProducts';
 import { CURRENT_YEAR } from './useHousehold';
@@ -52,6 +53,7 @@ export function useHouseholdOverview(
       CURRENT_YEAR,
       tax,
       legal.legal.pension,
+      jointInput(legal),
     );
     const person = household.persons.find((p) => p.id === gapPersonId);
     const b = blocks[gapPersonId];
@@ -67,6 +69,7 @@ export function useHouseholdOverview(
         CURRENT_YEAR,
         tax,
         legal.legal.pension,
+        jointInput(legal),
       );
     }
     return { outcome, gap };

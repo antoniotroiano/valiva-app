@@ -61,12 +61,13 @@ test.describe('desktop', () => {
     ).toBeVisible();
   });
 
-  test('household page stays under 1.600 px with the details collapsed', async ({ page }) => {
+  test('household page stays under 1.700 px with the details collapsed', async ({ page }) => {
     await loadExample(page, 'Paar');
     await page.goto('/#overview');
     await page.getByRole('radio', { name: 'Haushalt' }).click();
     await expect(page.getByRole('region', { name: 'Gesamtsicht Haushalt' })).toBeVisible();
-    expect(await height(page)).toBeLessThan(1600);
+    // 1.672 px with the joint assessment note of AP-16 (1.600 px limit before it, the note is one block).
+    expect(await height(page)).toBeLessThan(1700);
   });
 
   test('important notes stand above the page head, the other notes are collapsed with their count', async ({
@@ -149,12 +150,13 @@ test.describe('desktop', () => {
 test.describe('phone', () => {
   test.use({ viewport: { width: 375, height: 812 } });
 
-  test('household page stays under 2.550 px with the details collapsed', async ({ page }) => {
+  test('household page stays under 2.750 px with the details collapsed', async ({ page }) => {
     await loadExample(page, 'Paar');
     await page.goto('/#overview');
     await page.getByRole('radio', { name: 'Haushalt' }).click();
     await expect(page.getByRole('region', { name: 'Gesamtsicht Haushalt' })).toBeVisible();
     // 2.400 px before AP-15; the couple example has entries now, so one more note (unchecked rules) shows on top.
-    expect(await height(page)).toBeLessThan(2550);
+    // 2.721 px with the joint assessment note and its unverified-value line of AP-16 (2.550 px limit before it).
+    expect(await height(page)).toBeLessThan(2750);
   });
 });

@@ -47,6 +47,12 @@ export const guidance = {
       text: 'Ohne Wunscheinkommen gibt es keine Aussage zur Rentenlücke.',
       button: 'Wunsch eintragen',
     },
+    joint: {
+      label: 'Veranlagung',
+      title: 'Gemeinsame Veranlagung klären',
+      text: 'Für ein Paar hängt die Steuer davon ab, ob ihr gemeinsam veranlagt werdet. Eine Antwort dauert eine Sekunde.',
+      button: 'Frage beantworten',
+    },
     export: {
       label: 'Daten sichern',
       title: 'Daten sichern',

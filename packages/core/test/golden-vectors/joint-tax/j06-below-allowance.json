@@ -1,0 +1,18 @@
+{
+  "name": "j06-below-allowance",
+  "description": "Both below all allowances: tax 0",
+  "synthetic": true,
+  "incomesA": [[700, 0]],
+  "incomesB": [[600, 0]],
+  "lumpSumTaxable": 0,
+  "expected": {
+    "taxableIncomeYearly": 15324,
+    "taxYearly": 0,
+    "taxMonthly": 0.0,
+    "sharesA": [0.0],
+    "sharesB": [0.0],
+    "separateTaxYearly": 0,
+    "shareA": 0.0,
+    "shareB": 0.0
+  }
+}

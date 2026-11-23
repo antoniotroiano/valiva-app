@@ -90,6 +90,13 @@ export const OTHER_INCOME_KEYS = [
   'survivorIncomeCredited',
 ] as const;
 
+/** Values of the joint assessment (splitting, `config/joint-assessment-de.json`). */
+export const JOINT_ASSESSMENT_KEYS = [
+  'splittingDivisor',
+  'specialExpensesLumpSumJointYearly',
+] as const;
+
+export type JointAssessmentKey = (typeof JOINT_ASSESSMENT_KEYS)[number];
 export type PensionKey = (typeof PENSION_KEYS)[number];
 export type OtherIncomeKey = (typeof OTHER_INCOME_KEYS)[number];
 export type SocialKey = (typeof SOCIAL_KEYS)[number];
@@ -109,6 +116,8 @@ export type LegalParameters = {
   incomeTax: Record<IncomeTaxKey, number>;
   /** Rule assumptions of the other-income block; absent if the caller passed no `other-income-de.json`. */
   otherIncome?: Record<OtherIncomeKey, number>;
+  /** Splitting values; absent if the caller passed no `joint-assessment-de.json`. */
+  jointAssessment?: Record<JointAssessmentKey, number>;
   unverified: string[];
 };
 
@@ -147,6 +156,7 @@ export function resolveLegalParameters(
   incomeTax: LegalConfig<IncomeTaxKey>,
   date: string,
   otherIncome?: LegalConfig<OtherIncomeKey>,
+  jointAssessment?: LegalConfig<JointAssessmentKey>,
 ): LegalResolution {
   const bad: string[] = [];
   const unverified: string[] = [];
@@ -156,6 +166,9 @@ export function resolveLegalParameters(
   const t = pick(incomeTax, INCOME_TAX_KEYS, 'incomeTax', date, bad, unverified);
   const o = otherIncome
     ? pick(otherIncome, OTHER_INCOME_KEYS, 'otherIncome', date, bad, unverified)
+    : undefined;
+  const j = jointAssessment
+    ? pick(jointAssessment, JOINT_ASSESSMENT_KEYS, 'jointAssessment', date, bad, unverified)
     : undefined;
   return bad.length > 0
     ? { ok: false, missingOrExpired: bad }
@@ -167,6 +180,7 @@ export function resolveLegalParameters(
           depot: d,
           incomeTax: t,
           ...(o ? { otherIncome: o } : {}),
+          ...(j ? { jointAssessment: j } : {}),
           unverified,
         },
       };

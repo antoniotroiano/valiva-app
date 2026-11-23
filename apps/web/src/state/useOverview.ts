@@ -2,13 +2,17 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   OVERVIEW_BLOCKS,
   concurrentIncome,
+  isJointlyAssessed,
+  jointContextFor,
   loadBlock,
   overview,
+  personContext,
   solveGapContribution,
 } from '@valiva/core';
 import type {
   GapSolveResult,
   LegalResolution,
+  JointTaxContext,
   OverviewOutcome,
   OverviewBlock,
   OverviewProductId,
@@ -18,7 +22,9 @@ import type {
   ScenarioName,
 } from '@valiva/core';
 import { CURRENT_YEAR } from './useProfile';
-import { buildEtfProduct, buildPersonProducts } from '../lib/personProducts';
+import { jointInput } from '../lib/legalConfig';
+import { buildEtfProduct, buildPersonProducts, loadPersonBlocks } from '../lib/personProducts';
+import type { HouseholdApi } from './useHousehold';
 import type { ProfileApi } from './useProfile';
 import type { StatutoryApi } from './useStatutory';
 import type { DepotApi } from './useDepot';
@@ -44,6 +50,7 @@ export function useOverview(
   depot: DepotApi,
   occupational: OccupationalApi,
   entries: OtherIncomeApi,
+  household: HouseholdApi,
 ) {
   const [state, setState] = useState<OverviewState>(() => load(personId));
 
@@ -54,6 +61,27 @@ export function useOverview(
   const setEnabled = useCallback((block: OverviewBlock, value: boolean) => {
     setState((s) => ({ ...s, enabled: { ...s.enabled, [block]: value } }));
   }, []);
+
+  /**
+   * Joint assessment with the partner (AP-16): only for a couple that answered yes. The partner's products are
+   * read from the saved blocks, so the person's own view taxes like the household view does.
+   */
+  const jointOf = useCallback(
+    (id: string, products: ReturnType<typeof buildPersonProducts>): JointTaxContext | undefined => {
+      const hh = household.committed.household;
+      const parameters = jointInput(legal);
+      if (parameters === undefined || !isJointlyAssessed(hh)) return undefined;
+      const partner = hh.persons.find((p) => p.id !== id);
+      if (partner === undefined) return undefined;
+      const partnerProducts = buildPersonProducts(
+        loadPersonBlocks(partner.id),
+        personContext(hh, partner),
+        legal,
+      );
+      return jointContextFor(hh, id, { [id]: products, [partner.id]: partnerProducts }, parameters);
+    },
+    [household.committed.household, legal],
+  );
 
   const computed:
     | {
@@ -76,7 +104,16 @@ export function useOverview(
     };
     const products = buildPersonProducts(blocks, ctxPerson, legal);
     const tax = legal.legal.incomeTax;
-    const outcome = overview(products, pr, ctxPerson.assumptions, CURRENT_YEAR, tax);
+    const joint = jointOf(personId, products);
+    const outcome = overview(
+      products,
+      pr,
+      ctxPerson.assumptions,
+      CURRENT_YEAR,
+      tax,
+      personId,
+      joint,
+    );
     const buildEtf = (monthly: number) => buildEtfProduct(blocks, ctxPerson, legal, monthly, true);
     const gap = solveGapContribution(
       products.slice(1),
@@ -86,6 +123,7 @@ export function useOverview(
       ctxPerson.assumptions,
       CURRENT_YEAR,
       tax,
+      joint,
     );
     // Income of the other products when each pension block pays out, so its page taxes the sum.
     const otherIncome: Partial<Record<OverviewProductId, Record<ScenarioName, OtherIncome>>> = {};
@@ -110,6 +148,7 @@ export function useOverview(
     occupational.committed,
     entries.committed,
     state.enabled,
+    jointOf,
   ]);
 
   /** Recomputes the overview with shifted returns and ETF rate; nothing is saved. */
@@ -140,7 +179,15 @@ export function useOverview(
         overview: state,
       };
       const products = buildPersonProducts(blocks, { profile: pr, assumptions }, legal);
-      return overview(products, pr, assumptions, CURRENT_YEAR, legal.legal.incomeTax);
+      return overview(
+        products,
+        pr,
+        assumptions,
+        CURRENT_YEAR,
+        legal.legal.incomeTax,
+        personId,
+        jointOf(personId, products),
+      );
     };
   }, [
     legal,
@@ -153,6 +200,7 @@ export function useOverview(
     occupational.committed,
     entries.committed,
     state.enabled,
+    jointOf,
   ]);
 
   return {

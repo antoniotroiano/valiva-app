@@ -1,6 +1,8 @@
 import { lumpSumTax, retirementIncomeTax } from '../tax/retirementTax';
 import type { IncomeTaxParameters } from '../tax/incomeTax';
-import type { OtherIncome, TaxableIncome } from '../tax/retirementTax';
+import { jointLumpSumTax, jointRetirementIncomeTax } from '../tax/jointTax';
+import type { JointAssessmentParameters } from '../tax/jointTax';
+import type { OtherIncome, RetirementTax, TaxableIncome } from '../tax/retirementTax';
 import { validateAssumptions, validateProfile, validateRetirementTiming } from '../shared/profile';
 import type { GlobalAssumptions, Profile } from '../shared/profile';
 import type { ProjectionResult } from '../pension/projection';
@@ -225,6 +227,34 @@ function sharedContributionsAt(
 }
 
 /**
+ * Taxable incomes of all enabled, valid products at `age` (today's purchasing power), as `overview` taxes them.
+ * Used to give the partner's income to a jointly assessed person.
+ */
+export function taxableIncomesAt(
+  products: OverviewProductInput[],
+  scenario: ScenarioName,
+  age: number,
+  assumptions: GlobalAssumptions,
+): TaxableIncome[] {
+  const counted = products.filter((p) => p.enabled && p.outcome.ok);
+  const shared = sharedContributionsAt(counted, scenario, age, assumptions);
+  return counted.map((p) => incomeAt(p, scenario, age, assumptions, shared?.[p.productId]));
+}
+
+/**
+ * Joint assessment of a person with the partner (splitting). `partnerIncomesIn(year, scenario)` returns the
+ * partner's taxable incomes in that calendar year, `null` in the year after the partner's death (the survivor
+ * keeps the splitting tariff, §32a Abs. 6 EStG), or `undefined` if the two are not taxed jointly in that year (the
+ * person is then taxed alone). Absent: single assessment, exactly as before.
+ */
+export type JointTaxContext = {
+  parameters: JointAssessmentParameters;
+  /** Warning codes of unverified splitting values; added to the snapshot of a person who is taxed jointly then. */
+  warnings?: readonly string[];
+  partnerIncomesIn: (year: number, scenario: ScenarioName) => TaxableIncome[] | null | undefined;
+};
+
+/**
  * Income of the products other than `excludeId` that runs at `age` per scenario, to hand to a projector as
  * `otherIncome`. Only enabled, valid products count; each is taken as projected without other income, which
  * is enough because taxable amounts and contributions do not depend on the tax.
@@ -262,6 +292,7 @@ export function overview(
   currentYear: number,
   incomeTaxParameters: IncomeTaxParameters,
   personId = 'default',
+  joint?: JointTaxContext,
 ): OverviewOutcome {
   const issues = [
     ...validateProfile(profile, currentYear),
@@ -315,7 +346,25 @@ export function overview(
       const shared = sharedContributionsAt(counted, scenario, age, assumptions);
       return counted.map((p) => incomeAt(p, scenario, age, assumptions, shared?.[p.productId]));
     };
-    const taxAt = (age: number) => retirementIncomeTax(incomesAt(age), incomeTaxParameters);
+    const partnerAt = (age: number) => joint?.partnerIncomesIn(profile.birthYear + age, scenario);
+    const taxAt = (age: number): RetirementTax => {
+      const partner = joint === undefined ? undefined : partnerAt(age);
+      if (joint === undefined || partner === undefined) {
+        return retirementIncomeTax(incomesAt(age), incomeTaxParameters);
+      }
+      const r = jointRetirementIncomeTax(
+        incomesAt(age),
+        partner,
+        incomeTaxParameters,
+        joint.parameters,
+      );
+      return {
+        taxableIncomeYearly: r.taxableIncomeYearly,
+        taxYearly: r.taxYearly,
+        taxMonthly: r.shareA,
+        byId: r.byIdA,
+      };
+    };
     const amountsAt = (
       p: OverviewProductInput,
       r: ProjectionResult,
@@ -337,7 +386,17 @@ export function overview(
     /** Net of the one-off payout in the year it is paid, taxed on top of the other incomes of that year. */
     const lumpSumNet = (p: OverviewProductInput, r: ProjectionResult): number => {
       if (!r.lumpSum) return 0;
-      const tax = lumpSumTax(incomesAt(p.payoutStartAge), r.lumpSum.grossReal, incomeTaxParameters);
+      const partner = joint === undefined ? undefined : partnerAt(p.payoutStartAge);
+      const tax =
+        joint === undefined || partner === undefined
+          ? lumpSumTax(incomesAt(p.payoutStartAge), r.lumpSum.grossReal, incomeTaxParameters)
+          : jointLumpSumTax(
+              incomesAt(p.payoutStartAge),
+              partner,
+              r.lumpSum.grossReal,
+              incomeTaxParameters,
+              joint.parameters,
+            );
       // Health contributions on the lump sum (only without compulsory insurance), as the projector computed them.
       const toReal = r.lumpSum.gross > 0 ? r.lumpSum.grossReal / r.lumpSum.gross : 0;
       const health = Math.max(0, (r.lumpSum.gross - r.lumpSum.tax - r.lumpSum.net) * toReal);
@@ -360,6 +419,9 @@ export function overview(
 
     if (sharedContributionsAt(counted, scenario, target, assumptions) !== undefined) {
       warnings.push('shared_occupational_threshold');
+    }
+    if (joint !== undefined && partnerAt(target) !== undefined) {
+      for (const w of joint.warnings ?? []) if (!warnings.includes(w)) warnings.push(w);
     }
 
     const snapshot: OverviewSnapshot = {
