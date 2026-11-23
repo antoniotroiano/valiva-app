@@ -1,4 +1,6 @@
 import { lazy, useMemo } from 'react';
+import type { ReactNode } from 'react';
+import type { EmptyAction } from '../components/cards/EmptyState';
 import { PageHeadProvider, usePageHead } from '../components/layout/PageHead';
 import { de } from '../i18n/de';
 import { currentLegal } from '../lib/legalConfig';
@@ -41,12 +43,16 @@ export function PersonWorkspace({
   page,
   go,
   newStart,
+  guide,
+  nextStep,
 }: {
   personId: string;
   household: HouseholdApi;
   page: Page;
   go: (p: Page) => void;
   newStart: boolean;
+  guide?: ReactNode;
+  nextStep?: EmptyAction;
 }) {
   const profile = useProfile(household, personId);
   const goals = useGoals(personId, profile.committed.assumptions.churchTax);
@@ -82,6 +88,7 @@ export function PersonWorkspace({
           wish={profile.state.profile.desiredMonthlyIncomeToday}
           setWish={(v) => profile.setProfile({ desiredMonthlyIncomeToday: v })}
           newStart={newStart}
+          guide={guide}
         />
       )}
       {page === 'etf' && (
@@ -106,6 +113,7 @@ export function PersonWorkspace({
           legal={legal}
           goToProfile={() => go('profile')}
           goToAssumptions={() => go('assumptions')}
+          nextStep={nextStep}
           otherIncome={retirement.otherIncome?.statutory}
         />
       )}
@@ -116,6 +124,7 @@ export function PersonWorkspace({
           legal={legal}
           goToProfile={() => go('profile')}
           goToAssumptions={() => go('assumptions')}
+          nextStep={nextStep}
           otherIncome={retirement.otherIncome?.retirementDepot}
         />
       )}
@@ -126,6 +135,7 @@ export function PersonWorkspace({
           legal={legal}
           goToProfile={() => go('profile')}
           goToAssumptions={() => go('assumptions')}
+          nextStep={nextStep}
           otherIncome={retirement.otherIncome?.occupational}
         />
       )}

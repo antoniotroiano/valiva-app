@@ -301,5 +301,7 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 
 - 2026-11-23 – Review 14 AP-12: Annahmen-Seite zweigeteilt ("Deine Annahmen" nur lesend, "Gesetzliche Werte" je Bereich eingeklappt mit Abzeichen "n ungeprüft"/"alle bestätigt", Regeln und Begriffe eingeklappt; Mockup `annahmen-ap12.html` freigegeben; 3.093 auf 171 Wörter, 10.472 auf 1.350 px). Abweichungen: Prüfprotokoll in Quellentexten per Anzeige-Parser abgetrennt (`config/` unverändert), Gültigkeit als deutsches Datum, Glossar eingeklappt. 5 Werte ungeprüft, alle sichtbar markiert. 611 Unit- und 174 von 175 E2E-Tests grün (Skip-Link-Test unverändert rot); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
+- 2026-11-23 – Review 14 AP-13: Geführter Einstieg (Status je Eingabeseite in Seitenleiste und Handy-Blatt, Karte "Nächster Schritt" statt Willkommenskarte, ausblendbar, `valiva.onboarding` mit `hidden`; leere Zustände mit Knopf; Begriff "Einkommensquellen" statt "Bausteine"; Mockup `fuehrung-ap13.html` freigegeben). Abweichungen: Seitenleiste 272 px, "leer" bei Profil/ETF = unverändert gegenüber den Vorgaben, Export-Mahnung weicht auf dem Rentenplan der Karte. 621 Unit- und 189 von 190 E2E-Tests grün (Skip-Link-Test unverändert rot); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+
 ## Offene Fragen aus dem Bau
 - (leer)

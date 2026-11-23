@@ -3,7 +3,7 @@ export const assumptions = {
   subtitle: 'Deine Annahmen für die Prognose und die gesetzlichen Werte, mit denen gerechnet wird.',
   yours: {
     title: 'Deine Annahmen',
-    note: 'Das sind deine Annahmen, keine Gesetzeswerte. Sie gelten für alle Bausteine.',
+    note: 'Das sind deine Annahmen, keine Gesetzeswerte. Sie gelten für alle Einkommensquellen.',
     change: 'Im Profil ändern',
     scenariosLabel: 'Rendite pessimistisch / neutral / optimistisch p. a.',
     scenarios: (pessimistic: string, neutral: string, optimistic: string) =>

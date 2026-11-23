@@ -102,9 +102,10 @@ export const statutory = {
     `Abschlag von ${percent} %: Du gehst ${months} Monate vor der Regelaltersgrenze in Rente, die Rente sinkt dauerhaft um 0,3 % je Monat.`,
   late: (percent: string, months: number) =>
     `Zuschlag von ${percent} %: Du gehst ${months} Monate nach der Regelaltersgrenze in Rente, 0,5 % je Monat. Weitere Entgeltpunkte durch Arbeit sind nicht angesetzt.`,
-  empty:
-    'Noch keine Renteninformation eingetragen. Trage oben den Betrag aus deiner Renteninformation ein, dann rechnen wir Anpassung, Steuer und Abgaben.',
-  jumpToField: 'Zum Feld springen',
+  emptyTitle: 'Noch keine Renteninformation eingetragen',
+  emptyText:
+    'Trage oben den Betrag aus deiner Renteninformation ein, dann rechnen wir Anpassung, Steuer und Abgaben.',
+  emptyButton: 'Betrag eintragen',
   inputInvalid: 'Bitte die markierten Eingaben korrigieren, dann zeigen wir das Ergebnis.',
   profileInvalid: 'Das Profil enthält Fehler. Bitte dort korrigieren, dann rechnen wir weiter.',
   profileLinkInvalid: 'Zum Profil',

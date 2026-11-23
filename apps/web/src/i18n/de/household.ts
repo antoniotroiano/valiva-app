@@ -1,7 +1,8 @@
 export const household = {
   firstPersonName: 'Person 1',
   title: 'Haushalt',
-  subtitle: 'Personen des Haushalts verwalten. Jede Person hat eigene Bausteine und Sparziele.',
+  subtitle:
+    'Personen des Haushalts verwalten. Jede Person hat eigene Einkommensquellen und Sparziele.',
   personsTitle: 'Personen',
   nameLabel: (n: number) => `Name von Person ${n}`,
   nameRequired: 'Bitte einen Namen eingeben.',
@@ -11,7 +12,7 @@ export const household = {
   newPersonName: (n: number) => `Person ${n}`,
   remove: (name: string) => `${name} entfernen`,
   removeConfirm: (name: string) =>
-    `${name} samt allen Bausteinen und Sparzielen dieser Person löschen? Das kann nicht rückgängig gemacht werden.`,
+    `${name} samt allen Einkommensquellen und Sparzielen dieser Person löschen? Das kann nicht rückgängig gemacht werden.`,
   sharedTitle: 'Gemeinsame Werte',
   sharedText:
     'Das Wunscheinkommen sowie Inflation, Renditeszenarien, Rentenanpassung und Entnahmerendite gelten für den ganzen Haushalt. Geburtsjahr, Rentenalter, Steuersatz im Ruhestand, Grenzsteuersatz, Sozialabgaben und Krankenversicherung gelten je Person.',

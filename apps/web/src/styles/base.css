@@ -32,11 +32,11 @@ body {
 
 /* Navigation (sidebar; phone navigation: see the 900 px block in components.css) */
 .sidebar {
-  width: 248px;
+  width: 272px;
   flex-shrink: 0;
   background: var(--nav-bg);
   border-right: 1px solid var(--line);
-  padding: var(--s5) var(--s4);
+  padding: var(--s5) var(--s3);
   position: sticky;
   top: 0;
   height: 100vh;
@@ -48,7 +48,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 var(--s3) var(--s4);
+  margin: 0 var(--s2) var(--s4);
 }
 .nav-head strong {
   font-size: 20px;
@@ -93,8 +93,9 @@ body {
   align-items: center;
   gap: var(--s3);
   min-height: 40px;
-  padding: 0 var(--s3);
+  padding: 0 var(--s2);
   border-radius: 10px;
+  white-space: nowrap;
   color: var(--text);
   text-decoration: none;
   transition:
@@ -122,7 +123,16 @@ body {
 .nl[data-block='bav'] {
   --bk: var(--b-bav);
 }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .nl .dot {
+  flex: none;
   margin-left: auto;
   width: 8px;
   height: 8px;
@@ -160,4 +170,41 @@ input:not([type='checkbox']):not([type='radio']):hover {
 input[type='checkbox'],
 input[type='radio'] {
   accent-color: var(--accent);
+}
+/* Input status mark (AP-13): three shapes plus text for screen readers; the colour only supports it */
+.st {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  margin-left: auto;
+}
+.nl .dot + .st,
+.sheet li a .dot + .st {
+  margin-left: 0;
+}
+.st.empty {
+  color: var(--muted);
+}
+.st.done {
+  color: var(--ok-fg);
+}
+.st.hint {
+  color: var(--warn-fg);
+}
+.st .st-w {
+  font-size: var(--fs-caption);
+  font-weight: 600;
+}
+.nl[aria-current='page'] .st.empty {
+  color: var(--muted);
+}
+.nav-note {
+  display: block;
+  margin: 0 var(--s2) var(--s1);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+.muted {
+  color: var(--muted);
 }

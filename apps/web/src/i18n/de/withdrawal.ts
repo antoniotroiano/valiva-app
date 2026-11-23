@@ -15,7 +15,7 @@ export const withdrawal = {
     months === 0 ? `${years} Jahre` : `${years} Jahre ${months} Monate`,
   remaining: 'Restkapital im Endalter (nominal)',
   depleted: (age: string) =>
-    `Das Kapital ist im neutralen Fall mit ${age} aufgebraucht. Danach zahlt dieser Baustein nichts mehr.`,
+    `Das Kapital ist im neutralen Fall mit ${age} aufgebraucht. Danach zahlt diese Einkommensquelle nichts mehr.`,
   note: 'Bei „Prozent“ zählt die Zahlung im ersten Jahr. Sie steigt jedes Jahr um die Inflation und bleibt in Kaufkraft von heute gleich.',
   noteEtfTax:
     'Die Steuer ist für das erste Jahr gerechnet (Sparerpauschbetrag fest in Euro, daher wird sie später real etwas höher).',

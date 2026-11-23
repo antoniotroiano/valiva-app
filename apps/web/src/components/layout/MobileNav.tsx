@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { de } from '../../i18n/de';
 import { BLOCK_OF } from '../../app/pages';
 import type { Page } from '../../app/pages';
+import type { InputStatus } from '../../lib/inputStatus';
 import { Icon, type IconName } from './Icon';
+import { NavStatus } from './NavStatus';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sheet = 'inputs' | 'more';
@@ -27,10 +29,16 @@ export function MobileNav({
   page,
   theme,
   onThemeChange,
+  status = {},
+  statusWho,
 }: {
   page: string;
   theme: Theme;
   onThemeChange: (t: Theme) => void;
+  /** Input status per page (active person); the sheet shows mark and word. */
+  status?: Partial<Record<string, InputStatus>>;
+  /** Person the status belongs to; only with several persons. */
+  statusWho?: string;
 }) {
   const [open, setOpen] = useState<Sheet | null>(null);
   const triggers = useRef<Record<Sheet, HTMLButtonElement | null>>({ inputs: null, more: null });
@@ -77,6 +85,7 @@ export function MobileNav({
         <Icon name={p as Page} />
         {de.nav[p as keyof typeof de.nav] as string}
         {BLOCK_OF[p as Page] && <span className="dot" aria-hidden="true" />}
+        <NavStatus status={status[p]} withWord />
         <Icon name="next" size="sm" />
       </a>
     </li>
@@ -130,6 +139,11 @@ export function MobileNav({
       {open === 'inputs' && (
         <div className="sheet" id="sheet-inputs" role="dialog" aria-labelledby="sheet-inputs-title">
           {heading('inputs')}
+          {statusWho && (
+            <p className="sheet-note" id="sheet-status-who">
+              {de.guidance.statusFor(statusWho)}
+            </p>
+          )}
           <ul>{sheetLink('inputs', 'profile')}</ul>
           <p className="sheet-group" id="sheet-blocks">
             {de.nav.blocks}

@@ -98,7 +98,7 @@
 /* Navigation groups, fact lists, fieldsets */
 .nav-group {
   display: block;
-  margin: var(--s4) var(--s3) var(--s1);
+  margin: var(--s4) var(--s2) var(--s1);
   font-size: var(--fs-caption);
   font-weight: 600;
   color: var(--muted);
@@ -535,4 +535,111 @@ abbr[title] {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--s3);
+}
+
+/* Next-step card (AP-13) and the welcome steps */
+.card.next {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.card.next .eyebrow {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--accent);
+}
+.card.next .eyebrow .muted {
+  font-weight: 500;
+}
+.card.next h2 {
+  margin: var(--s1) 0;
+}
+.card.next p {
+  margin: var(--s1) 0 var(--s2);
+}
+.card.next .actions,
+.welcome .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin: var(--s3) 0 var(--s1);
+}
+.card.next .btn.quiet {
+  color: var(--text);
+}
+.card.next.compact {
+  padding-top: var(--s3);
+  padding-bottom: var(--s3);
+}
+.nx-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s1) var(--s4);
+}
+.card.next.compact .nx-t {
+  margin: 0;
+}
+.card.next.compact .nx-t b {
+  display: block;
+}
+.card.next.compact .actions {
+  margin: 0;
+}
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin: var(--s3) 0 0;
+  padding: var(--s3) 0 0;
+  border-top: 1px solid var(--accent);
+  list-style: none;
+  font-size: var(--fs-small);
+}
+.steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+}
+.steps li.done {
+  color: var(--ok-fg);
+}
+.steps li.now {
+  color: var(--text);
+  font-weight: 700;
+}
+.persons {
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+.welcome .steps.big {
+  display: grid;
+  gap: var(--s2);
+  margin: var(--s3) 0;
+  padding: 0;
+  border: 0;
+  font-size: var(--fs-text);
+}
+.welcome .steps.big li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  color: var(--text);
+}
+.welcome .steps.big .muted {
+  display: block;
+  font-size: var(--fs-small);
+}
+.welcome .steps.big b {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--fs-caption);
 }

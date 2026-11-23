@@ -174,9 +174,10 @@ export const depot = {
       'Kranken- und Pflegeversicherung: Annahme „keine Beiträge auf diese Leistung“ bei Pflichtversicherten (nicht bestätigt).',
     unverified: (name: string) => `Ungeprüfter Rechtswert verwendet: ${name}.`,
   },
-  empty:
-    'Noch kein Beitrag eingetragen. Trage oben einen Monatsbeitrag ein, dann rechnen wir Zulagen, Kapital und Auszahlplan.',
-  jumpToField: 'Zum Feld springen',
+  emptyTitle: 'Noch kein Beitrag eingetragen',
+  emptyText:
+    'Trage oben einen Monatsbeitrag ein, dann rechnen wir Zulagen, Kapital und Auszahlplan.',
+  emptyButton: 'Beitrag eintragen',
   inputInvalid: 'Bitte die markierten Eingaben korrigieren, dann zeigen wir das Ergebnis.',
   profileInvalid: 'Das Profil enthält Fehler. Bitte dort korrigieren, dann rechnen wir weiter.',
   profileLinkInvalid: 'Zum Profil',

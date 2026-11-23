@@ -184,7 +184,7 @@ test('overview: statutory pension and desired income show a gap', async ({ page 
   await section.getByLabel('Neutral', { exact: true }).check();
   await openRow(page, 'Lücke schließen');
   await expect(section.getByRole('row', { name: /Zusätzlich pro Monat/ })).toContainText('€');
-  await openRow(page, 'Bausteine in der Gesamtsicht');
+  await openRow(page, 'Einkommensquellen in der Gesamtsicht');
   await section.getByRole('checkbox', { name: 'Gesetzliche Rente' }).uncheck();
   await expect(section.getByText('ausgeschaltet').first()).toBeVisible();
 });

@@ -7,6 +7,7 @@ import {
   type ValidationIssue,
 } from '@valiva/core';
 import { useMemo } from 'react';
+import { EmptyState, type EmptyAction } from '../../components/cards/EmptyState';
 import { NumberField } from '../../components/forms/NumberField';
 import { FieldGroup } from '../../components/forms/FieldGroup';
 import { BlockPage, BlockSection } from '../../components/layout/BlockPage';
@@ -23,6 +24,8 @@ type Props = {
   legal: LegalResolution;
   goToProfile: () => void;
   goToAssumptions: () => void;
+  /** Quiet second action of the empty state: the next open step. */
+  nextStep?: EmptyAction;
   /** Income of the other products when this one pays out; the tax is levied on the sum. */
   otherIncome?: Record<ScenarioName, OtherIncome>;
 };
@@ -33,6 +36,7 @@ export function StatutoryPage({
   legal,
   goToProfile,
   goToAssumptions,
+  nextStep,
   otherIncome,
 }: Props) {
   const t = de.statutory;
@@ -188,18 +192,17 @@ export function StatutoryPage({
       </button>
     </div>
   ) : empty ? (
-    <div className="notice" role="status">
-      {t.empty}{' '}
-      <button
-        type="button"
-        className="btn inline-btn"
-        onClick={() =>
-          document.querySelector<HTMLInputElement>('#statutory-pension-field input')?.focus()
-        }
-      >
-        {t.jumpToField}
-      </button>
-    </div>
+    <EmptyState
+      title={t.emptyTitle}
+      primary={{
+        label: t.emptyButton,
+        onClick: () =>
+          document.querySelector<HTMLInputElement>('#statutory-pension-field input')?.focus(),
+      }}
+      secondary={nextStep}
+    >
+      {t.emptyText}
+    </EmptyState>
   ) : outcome?.ok ? (
     <StatutoryResult result={outcome.result} />
   ) : (

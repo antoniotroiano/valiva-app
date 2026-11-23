@@ -32,7 +32,7 @@ Typography: system sans stack (no webfont), 16 px base, tabular figures everywhe
 
 ## Components
 
-- **Sidebar:** sticky, own surface; line icons (`components/layout/Icon.tsx`, inline SVG, no library); current page = tinted pill with accent text; block pages carry a colour dot (colour key, not a status); theme switch at the bottom.
+- **Sidebar:** sticky, 272 px, own surface; line icons (`components/layout/Icon.tsx`, inline SVG, no library); current page = tinted pill with accent text; block pages carry a colour dot (colour key, not a status); theme switch at the bottom.
 - **Phone navigation:** slim top bar, fixed bottom tab bar with icons and pill, sheets "Inputs" and "More" with icons, block dots and a grab handle (behaviour as approved in AP-03).
 - **Cards / `KpiTile`:** border, no shadow; `hero` variant: 48 px number on a raised card.
 - **`StatusChip`:** `ok`, `hint`, `warn`, `error`; icon + text + colour.
@@ -105,7 +105,8 @@ Contrast rule: text 4.5:1, controls, focus ring and chart fills 3:1; the full pa
 - **Navigation:** line icons as inline SVG (24 grid, stroke 1.8, no library); active item = tinted pill; small block-colour dot next to block pages. Phone: bottom tab bar and sheets exactly as approved in AP-03, now with icons in the sheet rows.
 - **Empty state:** three steps with progress, one primary button for the next step, one quiet secondary action.
 - **Motion:** none beyond 150 ms colour transitions; `prefers-reduced-motion` respected.
-- **Not part of v2:** progress marks in the sidebar (AP-13), pensioner mode (AP-19).
+- **Guided start (AP-13 built):** `NavStatus` marks each input page (dashed circle = empty, check = filled, triangle = with note) with text for screen readers; sidebar shows the mark, the phone sheet mark and word; a line "Status für …" names the person with several persons. `NextStepCard` (`--accent-soft` fill, accent border) replaces the welcome card after the first input: one step, progress list, "Ausblenden", one line when a single step is left. Sidebar groups "Eingaben" (profile, income sources) and "Sparen", 272 px wide. Group term "Einkommensquellen" (was "Bausteine"). Mockup: `docs/mockups/fuehrung-ap13.html`.
+- **Not part of v2:** pensioner mode (AP-19).
 
 ## History
 
@@ -116,3 +117,4 @@ Contrast rule: text 4.5:1, controls, focus ring and chart fills 3:1; the full pa
 - 2026-11-23: AP-10 built the block page template and the two-part ETF page; the note on shared values moved under the page heading.
 - 2026-11-23: AP-11 applied the block page template to Depot, bAV and statutory pension (visible words 596/728/471 down to 277/260/191); allowances as card list on phones.
 - 2026-11-23: AP-12 rebuilt the Annahmen page (visible words 3,093 down to 171, height 10,472 px down to 1,350 px collapsed on desktop); `Disclosure` got a `badge` slot; new `styles/assumptions.css`.
+- 2026-11-23: AP-13 built the guided start: input status marks, next-step card, empty states with a button, term "Einkommensquellen", sidebar 248 to 272 px.

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { PageShell } from '../../components/layout/PageShell';
 import { usePageHead } from '../../components/layout/PageHead';
 import { WelcomeCard } from '../../components/cards/WelcomeCard';
@@ -14,6 +15,7 @@ export function OverviewPage({
   wish,
   setWish,
   newStart,
+  guide,
 }: {
   retirement: OverviewApi;
   budget: BudgetInfo;
@@ -25,6 +27,8 @@ export function OverviewPage({
   setWish: (value: number | undefined) => void;
   /** First visit, nothing entered yet: shows the welcome card and marks the values as examples. */
   newStart: boolean;
+  /** The "next step" card; shown after the first input instead of the welcome card. */
+  guide?: ReactNode;
 }) {
   const t = de.overview;
   const { person } = usePageHead();
@@ -42,12 +46,13 @@ export function OverviewPage({
     >
       {newStart && (
         <>
-          <WelcomeCard goToProfile={() => goTo('profile')} goToBlocks={() => goTo('etf')} />
+          <WelcomeCard goToProfile={() => goTo('profile')} />
           <p className="notice info">
             <span className="badge">{t.sampleBadge}</span> {t.sampleNote}
           </p>
         </>
       )}
+      {guide}
       <RetirementOverview
         api={retirement}
         goTo={goTo}

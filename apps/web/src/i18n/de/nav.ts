@@ -6,7 +6,7 @@ export const nav = {
   overview: 'Rentenplan',
   household: 'Haushalt',
   profile: 'Profil',
-  blocks: 'Bausteine',
+  blocks: 'Einkommensquellen',
   etf: 'ETF-Sparplan',
   statutory: 'Gesetzliche Rente',
   depot: 'Altersvorsorgedepot',

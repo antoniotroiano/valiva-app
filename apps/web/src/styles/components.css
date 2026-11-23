@@ -187,6 +187,11 @@ td.left {
     font-weight: 600;
     cursor: pointer;
   }
+  .sheet-note {
+    margin: 0 8px 2px;
+    font-size: var(--fs-caption);
+    color: var(--muted);
+  }
   .sheet-group {
     margin: 6px 8px 2px;
     font-size: var(--fs-caption);
@@ -205,6 +210,7 @@ td.left {
     text-decoration: none;
   }
   .sheet li a .dot {
+    flex: none;
     margin-left: auto;
     width: 8px;
     height: 8px;
@@ -215,6 +221,9 @@ td.left {
   .sheet li a > .ic:last-child {
     margin-left: auto;
     color: var(--muted);
+  }
+  .sheet li a .st + .ic:last-child {
+    margin-left: 0;
   }
   .sheet li a .dot + .ic:last-child {
     margin-left: var(--s3);

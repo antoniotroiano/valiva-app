@@ -11,13 +11,7 @@ import { ConfirmDialog } from '../layout/ConfirmDialog';
 const EXAMPLE_ID = 'single';
 
 /** Shown on the first visit (`onboarding.ts`): what the app does, three steps, example data. */
-export function WelcomeCard({
-  goToProfile,
-  goToBlocks,
-}: {
-  goToProfile: () => void;
-  goToBlocks: () => void;
-}) {
+export function WelcomeCard({ goToProfile }: { goToProfile: () => void }) {
   const t = de.overview.welcome;
   const [confirming, setConfirming] = useState(false);
   const [error, setError] = useState(false);
@@ -43,24 +37,22 @@ export function WelcomeCard({
     <section className="card welcome" aria-labelledby="ov-welcome">
       <h2 id="ov-welcome">{t.title}</h2>
       <p>{t.intro}</p>
-      <ul>
-        {t.points.map((p) => (
-          <li key={p}>{p}</li>
+      <h3 className="sr-only">{t.stepsTitle}</h3>
+      <ol className="steps big">
+        {(
+          [
+            [t.stepProfile, t.stepProfileHint],
+            [t.stepStatutory, t.stepStatutoryHint],
+            [t.stepWish, t.stepWishHint],
+          ] as const
+        ).map(([label, hint], i) => (
+          <li key={label}>
+            <b aria-hidden="true">{i + 1}</b>
+            <span>
+              {label} <span className="muted">{hint}</span>
+            </span>
+          </li>
         ))}
-      </ul>
-      <h3>{t.stepsTitle}</h3>
-      <ol>
-        <li>
-          <button type="button" className="link" onClick={goToProfile}>
-            {t.stepProfile}
-          </button>
-        </li>
-        <li>
-          <button type="button" className="link" onClick={goToBlocks}>
-            {t.stepBlocks}
-          </button>
-        </li>
-        <li>{t.stepGap}</li>
       </ol>
       <div className="actions">
         <button type="button" className="btn primary" onClick={goToProfile}>

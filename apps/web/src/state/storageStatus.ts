@@ -13,6 +13,8 @@ export type StorageStatus = {
 };
 
 let persistenceSuspended = false;
+let dataVersion = 0;
+const dataListeners = new Set<() => void>();
 let status: StorageStatus = { writeFailed: false, changedElsewhere: false };
 const listeners = new Set<() => void>();
 
@@ -33,6 +35,8 @@ export function safeSetItem(key: string, value: string): boolean {
   try {
     localStorage.setItem(key, value);
     update({ writeFailed: false });
+    dataVersion += 1;
+    for (const l of dataListeners) l();
     return true;
   } catch {
     update({ writeFailed: true });
@@ -48,6 +52,22 @@ export function safeRemoveItem(key: string): boolean {
     update({ writeFailed: true });
     return false;
   }
+}
+
+/** Counts successful writes; lets derived views (input status in the navigation) refresh after a save. */
+export function getDataVersion(): number {
+  return dataVersion;
+}
+
+export function useDataVersion(): number {
+  return useSyncExternalStore(
+    (listener) => {
+      dataListeners.add(listener);
+      return () => dataListeners.delete(listener);
+    },
+    getDataVersion,
+    getDataVersion,
+  );
 }
 
 export function getStorageStatus(): StorageStatus {

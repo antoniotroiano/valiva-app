@@ -97,7 +97,7 @@ test.describe('desktop', () => {
 
   test('a person without any block gets the empty state with the next step', async ({ page }) => {
     await page.goto('/#overview');
-    await openRow(page, 'Bausteine in der Gesamtsicht');
+    await openRow(page, 'Einkommensquellen in der Gesamtsicht');
     // The page re-renders into the empty state, so click instead of waiting for the old checkbox.
     await page.getByRole('checkbox', { name: 'ETF-Sparplan' }).click();
     await expect(

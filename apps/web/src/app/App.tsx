@@ -1,15 +1,22 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import { de } from '../i18n/de';
 import { useHousehold } from '../state/useHousehold';
 import { safeSetItem, watchOtherTabs } from '../state/storageStatus';
-import { isNewStart, markStarted } from '../state/onboarding';
+import { hideGuidance, markStarted, readOnboarding } from '../state/onboarding';
+import { useGuidanceInput } from '../state/useGuidance';
+import { guidanceFor } from '../lib/inputStatus';
+import type { StepId } from '../lib/inputStatus';
+import { NavStatus } from '../components/layout/NavStatus';
+import { NextStepCard } from '../components/cards/NextStepCard';
+import { createStore } from './createStore';
 import { MobileNav } from '../components/layout/MobileNav';
 import { AppNotices } from '../components/layout/AppNotices';
 import { useNarrowScreen } from '../state/useNarrowScreen';
 import { HouseholdOverviewPage } from './HouseholdOverviewPage';
 import { Icon } from '../components/layout/Icon';
 import { BLOCK_OF, NAV, PAGES } from './pages';
-import type { Page } from './pages';
+import type { NavEntry, Page } from './pages';
 import { PersonWorkspace } from './PersonWorkspace';
 import { PageHeadProvider, type PageHeadValue } from '../components/layout/PageHead';
 import { PersonTabs } from '../components/layout/PersonTabs';
@@ -45,7 +52,8 @@ export function App() {
   const [view, setView] = useState<'household' | 'person'>('household');
   const multi = household.state.household.persons.length > 1;
 
-  const [newStart, setNewStart] = useState(isNewStart);
+  const [onboarding, setOnboarding] = useState(readOnboarding);
+  const newStart = onboarding === 'new';
 
   useEffect(() => watchOtherTabs(), []);
 
@@ -54,7 +62,7 @@ export function App() {
     const onEdit = (e: Event) => {
       if (!e.isTrusted || !(e.target instanceof Element) || !e.target.closest('main')) return;
       markStarted();
-      setNewStart(false);
+      setOnboarding(readOnboarding());
     };
     document.addEventListener('input', onEdit);
     document.addEventListener('change', onEdit);
@@ -167,6 +175,57 @@ export function App() {
     };
   }
 
+  // Guided start: status of the input pages (active person) and the "next step" card.
+  const exported = createStore().lastExport() !== undefined;
+  const guideInput = useGuidanceInput(household, exported);
+  const householdView = multi && view === 'household';
+  const scope = householdView ? undefined : personId;
+  const guide = guidanceFor(guideInput, scope);
+  const showCard = onboarding === 'done' && guide.next !== undefined;
+  const statusMap = guideInput.persons.find((p) => p.id === personId)?.status.pages ?? {};
+  const statusWho = multi ? activeLabel : undefined;
+
+  const goToStep = (id: StepId, stepPerson?: string) => {
+    if (stepPerson !== undefined && stepPerson !== personId) household.setActivePerson(stepPerson);
+    if (id === 'profile') go('profile');
+    else if (id === 'statutory') go('statutory');
+    else if (id === 'export') go('data');
+    else {
+      // The wish field sits on the Rentenplan: go there first, then focus it once the page has rendered.
+      if (page !== 'overview') go('overview');
+      let tries = 0;
+      const focusWish = () => {
+        const field = document.querySelector<HTMLInputElement>('#wish-field input');
+        if (field) field.focus();
+        else if (tries++ < 20) window.setTimeout(focusWish, 100);
+      };
+      window.setTimeout(focusWish, 50);
+    }
+  };
+  const hideCard = () => {
+    hideGuidance();
+    setOnboarding('hidden');
+    document.getElementById('main')?.focus();
+  };
+  // Empty states on the input pages offer the next open step (not the page's own step).
+  const ownStep: StepId | undefined = page === 'statutory' ? 'statutory' : undefined;
+  const openStep = guidanceFor(guideInput, personId).steps.find((x) => !x.done && x.id !== ownStep);
+  const nextStep = openStep
+    ? {
+        label: de.guidance.empty.next(de.guidance.steps[openStep.id].title),
+        onClick: () => goToStep(openStep.id, personId),
+      }
+    : undefined;
+  const guideCard: ReactNode = showCard ? (
+    <NextStepCard
+      guidance={guide}
+      who={multi ? (householdView ? de.guidance.card.householdScope : activeLabel) : undefined}
+      named={householdView}
+      onGo={goToStep}
+      onHide={hideCard}
+    />
+  ) : null;
+
   const navLink = (p: Page) => (
     <a
       className="nl"
@@ -177,8 +236,32 @@ export function App() {
       <Icon name={p} />
       {de.nav[p]}
       {BLOCK_OF[p] && <span className="dot" aria-hidden="true" />}
+      <NavStatus status={statusMap[p as keyof typeof statusMap]} />
     </a>
   );
+
+  const navEntry = (entry: NavEntry): ReactNode =>
+    typeof entry === 'string' ? (
+      <li key={entry}>{navLink(entry)}</li>
+    ) : (
+      <li key={entry.group}>
+        <span className="nav-group" id={`nav-${entry.group}`}>
+          {de.nav[entry.group]}
+        </span>
+        {entry.group === 'inputs' && statusWho && (
+          <span className="nav-note" id="nav-status-who">
+            {de.guidance.statusFor(statusWho)}
+          </span>
+        )}
+        <ul
+          className="nav-sub"
+          aria-labelledby={`nav-${entry.group}`}
+          aria-describedby={entry.group === 'inputs' && statusWho ? 'nav-status-who' : undefined}
+        >
+          {entry.items.map(navEntry)}
+        </ul>
+      </li>
+    );
 
   return (
     <div className="layout">
@@ -194,30 +277,19 @@ export function App() {
         {de.nav.skip}
       </a>
       {narrow ? (
-        <MobileNav page={page} theme={theme} onThemeChange={setTheme} />
+        <MobileNav
+          page={page}
+          theme={theme}
+          onThemeChange={setTheme}
+          status={statusMap}
+          statusWho={statusWho}
+        />
       ) : (
         <nav className="sidebar" aria-label={de.nav.label}>
           <div className="nav-head">
             <strong>{de.appName}</strong>
           </div>
-          <ul className="nav-list">
-            {NAV.map((entry) =>
-              typeof entry === 'string' ? (
-                <li key={entry}>{navLink(entry)}</li>
-              ) : (
-                <li key={entry.group}>
-                  <span className="nav-group" id={`nav-${entry.group}`}>
-                    {de.nav[entry.group]}
-                  </span>
-                  <ul className="nav-sub" aria-labelledby={`nav-${entry.group}`}>
-                    {entry.items.map((p) => (
-                      <li key={p}>{navLink(p)}</li>
-                    ))}
-                  </ul>
-                </li>
-              ),
-            )}
-          </ul>
+          <ul className="nav-list">{NAV.map(navEntry)}</ul>
           <div className="theme">
             <label htmlFor="theme">{de.nav.theme}</label>
             <select id="theme" value={theme} onChange={(e) => setTheme(e.target.value as Theme)}>
@@ -234,7 +306,7 @@ export function App() {
         </p>
         <AppNotices
           goToData={() => go('data')}
-          hideExportReminder={page === 'data'}
+          hideExportReminder={page === 'data' || (page === 'overview' && showCard && !exported)}
           isNewStart={newStart}
         />
         <PageHeadProvider value={head}>
@@ -246,6 +318,7 @@ export function App() {
             ) : page === 'overview' && multi && view === 'household' ? (
               <HouseholdOverviewPage
                 household={household}
+                guide={guideCard}
                 openPerson={(id) => {
                   household.setActivePerson(id);
                   setView('person');
@@ -264,6 +337,8 @@ export function App() {
                 page={page}
                 go={go}
                 newStart={newStart}
+                guide={guideCard}
+                nextStep={nextStep}
               />
             )}
           </Suspense>

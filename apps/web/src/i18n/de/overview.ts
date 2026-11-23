@@ -12,16 +12,15 @@ export const overview = {
     'Diese Zahlen stammen aus vorbelegten Werten, nicht aus deinen Angaben. Sobald du etwas änderst, verschwindet dieser Hinweis.',
   welcome: {
     title: 'Willkommen',
-    intro: 'Mit dieser App planst du deine Altersvorsorge:',
-    points: [
-      'Prognose für ETF-Sparplan, gesetzliche Rente, Altersvorsorgedepot und betriebliche Altersvorsorge',
-      'Gesamtsicht: Wie viel bleibt im Ruhestand netto pro Monat?',
-      'Rentenlücke zum Wunscheinkommen und was sie schließen würde',
-    ],
+    intro:
+      'Mit Valiva planst du, was dir im Ruhestand netto pro Monat bleibt, und ob zum Wunscheinkommen etwas fehlt.',
     stepsTitle: 'So gehst du vor',
-    stepProfile: 'Profil ausfüllen (Geburtsjahr, Rentenalter)',
-    stepBlocks: 'Bausteine eintragen',
-    stepGap: 'Rentenlücke ansehen',
+    stepProfile: 'Profil prüfen',
+    stepProfileHint: 'Geburtsjahr, Rentenalter',
+    stepStatutory: 'Gesetzliche Rente eintragen',
+    stepStatutoryHint: 'aus der Renteninformation',
+    stepWish: 'Wunscheinkommen festlegen',
+    stepWishHint: 'dann siehst du die Lücke',
     start: 'Mit meinen Daten beginnen',
     example: 'Mit Beispieldaten ausprobieren',
     localHint:
@@ -42,11 +41,11 @@ export const overview = {
   retirement: {
     title: 'Gesamtsicht im Ruhestand',
     intro:
-      'Monatliches Nettoeinkommen aus den Bausteinen in Kaufkraft von heute, verglichen mit deinem Wunscheinkommen.',
-    blocks: 'Bausteine in der Gesamtsicht',
+      'Monatliches Nettoeinkommen aus den Einkommensquellen in Kaufkraft von heute, verglichen mit deinem Wunscheinkommen.',
+    blocks: 'Einkommensquellen in der Gesamtsicht',
     profileInvalid: 'Die Profildaten oder Annahmen sind unvollständig.',
     toProfile: 'Zum Profil',
-    toBlock: 'Zum Baustein',
+    toBlock: 'Zur Einkommensquelle',
     productNames: {
       etf: 'ETF-Sparplan',
       statutory: 'Gesetzliche Rente',
@@ -67,7 +66,7 @@ export const overview = {
       closeGapLink: 'So lässt sich die Lücke schließen',
     },
     sections: {
-      composition: 'Zusammensetzung nach Baustein',
+      composition: 'Zusammensetzung nach Einkommensquelle',
       more: 'Mehr dazu',
       pathMeta: 'Diagramm, drei Szenarien',
       closeGapMeta: (amount: string) => `+${amount} Sparrate (neutral)`,
@@ -83,7 +82,7 @@ export const overview = {
     },
     empty: {
       title: 'Nächster Schritt: gesetzliche Rente eintragen',
-      text: 'In der Gesamtsicht ist noch kein Baustein ausgefüllt. Sobald einer da ist, erscheint hier das Ergebnis.',
+      text: 'In der Gesamtsicht ist noch keine Einkommensquelle ausgefüllt. Sobald eine da ist, erscheint hier das Ergebnis.',
       primary: 'Gesetzliche Rente eintragen',
       secondary: 'Profil prüfen',
     },
@@ -173,7 +172,7 @@ export const overview = {
         unreachable: 'nicht erreichbar',
       },
       etfOff:
-        'Der ETF-Baustein ist in der Gesamtsicht ausgeschaltet. Die Rechnung nimmt ihn trotzdem mit der Rate der ETF-Seite hinzu.',
+        'Der ETF-Sparplan ist in der Gesamtsicht ausgeschaltet. Die Rechnung nimmt ihn trotzdem mit der Rate der ETF-Seite hinzu.',
       budgetRest: (amount: string) =>
         `Mit der neuen Rate (neutral) bleiben ${amount} im Sparbudget.`,
       budgetOver: (amount: string) =>

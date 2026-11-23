@@ -24,7 +24,11 @@ test('the welcome card ends with the first edit and the wish can be entered on t
   await page.getByLabel(/Gewünschtes Netto-Einkommen/).fill('3000');
   await expect(page.getByRole('heading', { name: 'Willkommen' })).toHaveCount(0);
   await expect(page.getByText('Rentenlücke').first()).toBeVisible();
-  // After the first edit the export reminder (never exported) takes the place of the old one-time hint.
+  // After the first edit the "next step" card takes the place of the welcome card; it names the backup, so the
+  // export reminder only appears once the card is hidden.
+  await expect(page.getByText('Nächster Schritt').first()).toBeVisible();
+  await expect(page.getByText(/Du hast noch nie exportiert/)).toHaveCount(0);
+  await page.getByRole('button', { name: 'Ausblenden' }).click();
   await expect(page.getByText(/Du hast noch nie exportiert/)).toBeVisible();
   await page.waitForTimeout(600);
   await page.reload();

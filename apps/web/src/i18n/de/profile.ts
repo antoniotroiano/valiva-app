@@ -1,9 +1,9 @@
 export const profile = {
   title: 'Profil',
-  subtitle: 'Angaben zu dir und die Annahmen, die alle Rentenbausteine gemeinsam nutzen.',
+  subtitle: 'Angaben zu dir und die Annahmen, die alle Einkommensquellen gemeinsam nutzen.',
   formLabel: 'Eingaben Profil',
   taxNote:
-    'Die Einkommensteuer auf Renten rechnet die App nach dem aktuellen Tarif (Grundfreibetrag und Progression) auf die Summe aller Rentenbausteine. Solidaritätszuschlag, Kirchensteuer und Zusammenveranlagung sind nicht berücksichtigt.',
+    'Die Einkommensteuer auf Renten rechnet die App nach dem aktuellen Tarif (Grundfreibetrag und Progression) auf die Summe aller Einkommensquellen. Solidaritätszuschlag, Kirchensteuer und Zusammenveranlagung sind nicht berücksichtigt.',
   groups: {
     person: 'Person',
     general: 'Allgemeine Annahmen',

@@ -170,9 +170,10 @@ export const occupational = {
       'Freibetrag und Freigrenze der Betriebsrente (heute 197,75 €) steigen im Modell mit der Inflation (Annahme).',
     unverified: (name: string) => `Ungeprüfter Rechtswert verwendet: ${name}.`,
   },
-  empty:
-    'Noch keine Umwandlung eingetragen. Trage oben einen Monatsbetrag ein, dann rechnen wir Netto-Aufwand, Kapital und Betriebsrente.',
-  jumpToField: 'Zum Feld springen',
+  emptyTitle: 'Noch keine Umwandlung eingetragen',
+  emptyText:
+    'Trage oben einen Monatsbetrag ein, dann rechnen wir Netto-Aufwand, Kapital und Betriebsrente.',
+  emptyButton: 'Betrag eintragen',
   inputInvalid: 'Bitte die markierten Eingaben korrigieren, dann zeigen wir das Ergebnis.',
   profileInvalid: 'Das Profil enthält Fehler. Bitte dort korrigieren, dann rechnen wir weiter.',
   profileLinkInvalid: 'Zum Profil',

@@ -114,7 +114,11 @@ test('an edit made just before the tab is hidden is saved (B-6)', async ({ page 
 test.describe('export reminder (B-10)', () => {
   test('appears once data exists, can be snoozed and ends with an export', async ({ page }) => {
     await loadCouple(page);
+    // On the Rentenplan the "next step" card names the backup (AP-13); the reminder shows on the other pages.
     await page.goto('/#overview');
+    await expect(page.getByRole('region', { name: 'Daten sichern' })).toBeVisible();
+    await expect(page.getByText(/Du hast noch nie exportiert/)).toHaveCount(0);
+    await page.goto('/#profile');
     const reminder = page.getByRole('note').filter({ hasText: 'Du hast noch nie exportiert' });
     await expect(reminder).toBeVisible();
     await expect(reminder).toContainText('Safari kann lokale Daten löschen');

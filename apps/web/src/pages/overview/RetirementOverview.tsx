@@ -242,7 +242,7 @@ function Result({
             ))}
           </ul>
         </article>
-        <aside className="card">
+        <aside className="card" id="wish-field">
           <NumberField
             label={de.overview.wish.label}
             hint={hasWish ? undefined : de.overview.wish.hint}

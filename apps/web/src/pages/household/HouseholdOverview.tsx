@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 import type { GapSolveResult, ScenarioName, ValidationIssue } from '@valiva/core';
 import { SCENARIO_NAMES } from '@valiva/core';
 import { formatEur } from '../../lib/format';
@@ -24,11 +25,13 @@ export function HouseholdOverview({
   data,
   openPerson,
   goToPersonProfile,
+  guide,
 }: {
   household: HouseholdApi;
   data: HouseholdOverviewApi;
   openPerson: (id: string) => void;
   goToPersonProfile: (id: string) => void;
+  guide?: ReactNode;
 }) {
   const t = de.householdView;
   const r = de.overview.retirement;
@@ -88,6 +91,7 @@ export function HouseholdOverview({
         </button>
       }
     >
+      {guide}
       {!outcome && <p>{t.loading}</p>}
       {outcome?.ok && (
         <Result
@@ -199,7 +203,7 @@ function Result({
             </p>
           )}
         </article>
-        <aside className="card">
+        <aside className="card" id="wish-field">
           <NumberField
             label={de.household.wishLabel}
             hint={t.hero.wishHint}

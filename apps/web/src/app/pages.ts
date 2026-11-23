@@ -22,15 +22,29 @@ export const PAGES: Page[] = [
   'assumptions',
   'data',
 ];
-/** Sidebar order; a group renders as a labelled sub-list. */
-export const NAV: (Page | { group: 'blocks'; items: Page[] })[] = [
+export type NavEntry = Page | { group: 'inputs' | 'blocks' | 'saving'; items: NavEntry[] };
+
+/** Sidebar order; a group renders as a labelled sub-list (same grouping as the phone sheet "Eingaben"). */
+export const NAV: NavEntry[] = [
   'overview',
   'household',
-  'profile',
-  { group: 'blocks', items: ['etf', 'statutory', 'depot', 'occupational'] },
-  'goals',
+  {
+    group: 'inputs',
+    items: ['profile', { group: 'blocks', items: ['etf', 'statutory', 'depot', 'occupational'] }],
+  },
+  { group: 'saving', items: ['goals'] },
   'assumptions',
   'data',
+];
+
+/** Pages with an input status (the "Eingaben" pages). */
+export const INPUT_PAGES: Page[] = [
+  'profile',
+  'etf',
+  'statutory',
+  'depot',
+  'occupational',
+  'goals',
 ];
 
 /** Colour group of a building-block page (sidebar dot, see docs/design.md). */

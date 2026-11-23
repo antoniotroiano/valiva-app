@@ -58,6 +58,7 @@ const PATHS = {
       <path d="M8 12.5l3 3 5-6" />
     </>
   ),
+  open: <circle cx="12" cy="12" r="8.5" strokeDasharray="3 3" />,
   warn: <path d="M12 4l9.5 16h-19zM12 10v4.5M12 17.5v.01" />,
   info: (
     <>

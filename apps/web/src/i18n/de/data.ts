@@ -7,7 +7,7 @@ export const data = {
   lastExported: (when: string) => `Zuletzt exportiert: ${when}`,
   exportTitle: 'Exportieren',
   exportText: (fileName: string) =>
-    `Speichert alle Personen und Bausteine in einer Datei (${fileName}).`,
+    `Speichert alle Personen und Einkommensquellen in einer Datei (${fileName}).`,
   exportWarning:
     'Die Datei enthält persönliche Finanzdaten und ist nicht verschlüsselt. Bewahre sie sicher auf und gib sie nicht weiter.',
   exportButton: 'Daten exportieren',
@@ -21,7 +21,7 @@ export const data = {
   previewExportedValue: (when: string, version: string) => `${when} (Version ${version})`,
   previewPersons: 'Personen',
   previewPersonsValue: (n: number, names: string) => `${n}: ${names}`,
-  previewNothing: 'keine Bausteine',
+  previewNothing: 'keine Einkommensquellen',
   previewSynthetic: 'Erfundene Beispieldaten',
   warningsTitle: 'Hinweise zur Datei',
   replaceButton: 'Daten ersetzen …',
@@ -47,11 +47,11 @@ export const data = {
   } as Record<string, string>,
   resetTitle: 'Alle Daten löschen',
   resetText:
-    'Entfernt alle Personen, Bausteine und Sparziele aus diesem Browser. Das lässt sich nicht rückgängig machen.',
+    'Entfernt alle Personen, Einkommensquellen und Sparziele aus diesem Browser. Das lässt sich nicht rückgängig machen.',
   resetButton: 'Alle Daten löschen …',
   confirmResetTitle: 'Wirklich alle Daten löschen?',
   confirmResetText:
-    'Alle Personen, Bausteine und Sparziele in diesem Browser werden entfernt. Exportiere vorher eine Sicherung, wenn du sie behalten willst.',
+    'Alle Personen, Einkommensquellen und Sparziele in diesem Browser werden entfernt. Exportiere vorher eine Sicherung, wenn du sie behalten willst.',
   confirmResetExport: 'Erst exportieren',
   confirmResetButton: 'Alles löschen',
   resetDone: 'Alle Daten wurden gelöscht. Die Seite wird neu geladen.',

@@ -8,6 +8,7 @@ import {
 } from '@valiva/core';
 import { useId, useMemo } from 'react';
 import { MonthField } from '../../components/forms/MonthField';
+import { EmptyState, type EmptyAction } from '../../components/cards/EmptyState';
 import { NumberField } from '../../components/forms/NumberField';
 import { FieldGroup } from '../../components/forms/FieldGroup';
 import { MoreInfo } from '../../components/forms/MoreInfo';
@@ -26,6 +27,8 @@ type Props = {
   legal: LegalResolution;
   goToProfile: () => void;
   goToAssumptions: () => void;
+  /** Quiet second action of the empty state: the next open step. */
+  nextStep?: EmptyAction;
   /** Income of the other products when this one pays out; the tax is levied on the sum. */
   otherIncome?: Record<ScenarioName, OtherIncome>;
 };
@@ -38,6 +41,7 @@ export function DepotPage({
   legal,
   goToProfile,
   goToAssumptions,
+  nextStep,
   otherIncome,
 }: Props) {
   const t = de.depot;
@@ -279,18 +283,17 @@ export function DepotPage({
       </button>
     </div>
   ) : empty ? (
-    <div className="notice" role="status">
-      {t.empty}{' '}
-      <button
-        type="button"
-        className="btn inline-btn"
-        onClick={() =>
-          document.querySelector<HTMLInputElement>('#depot-contribution-field input')?.focus()
-        }
-      >
-        {t.jumpToField}
-      </button>
-    </div>
+    <EmptyState
+      title={t.emptyTitle}
+      primary={{
+        label: t.emptyButton,
+        onClick: () =>
+          document.querySelector<HTMLInputElement>('#depot-contribution-field input')?.focus(),
+      }}
+      secondary={nextStep}
+    >
+      {t.emptyText}
+    </EmptyState>
   ) : outcome?.ok ? (
     <DepotResult
       results={outcome.results}
