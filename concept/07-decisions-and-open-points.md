@@ -57,7 +57,7 @@
 
 1. **Name:** Entscheidung vor der Veröffentlichung auf GitHub; dann Verfügbarkeit (GitHub, Domain, Marke) prüfen
 2. **Beispielwerte für Golden-Tests:** anonymisierte Werte aus der eigenen Renteninformation und den Verträgen
-3. **Unsichere Gesetzeswerte:** am 2026-11-11 größtenteils bestätigt (`03` Abschnitt 12). Offen: Besteuerung der Depot-Leistungen (§ 22 Nr. 5), Altersgrenze der Kinderzulage, Bonus unter 25 "einmalig", KV/Pflege auf private und betriebliche Renten, § 26a BetrAVG; vor Release erneut prüfen
+3. **Unsichere Gesetzeswerte:** am 2026-11-11 größtenteils bestätigt (`03` Abschnitt 12), am 2026-11-23 in AP-23 gegen Primärtexte geprüft (`03` Abschnitt 12a, `docs/legal-values-review.md`). Weiter `unverified` (5): Kirchensteuer 8 % und 9 % (Satz steht nicht im Landesgesetz, sondern im Kirchensteuerbeschluss), Basiszins-Annahme ab 2027, Altersgrenze der Kinderzulage (18, Anknüpfung an Kindergeld), Riester voll steuerpflichtig (Vereinfachung). Offen: Besteuerung der Depot-Leistungen (§ 22 Nr. 5 ab 2027/2028), § 26a BetrAVG
 4. **Speicherformat A/B:** JSON-Datei ist Standard; SQLite nur bei Bedarf (Entscheidung in Phase 5)
 5. **Lizenz** (z. B. MIT) vor Veröffentlichung
 6. **Gesetzliche Rente:** Phase 3 nutzt die Hochrechnung der Renteninformation (entschieden); ein Entgeltpunkte-Modell bleibt spätere Option
@@ -74,7 +74,7 @@
     - **Nutzen:** Gering, solange beide Partner ihren Freibetrag je selbst weitgehend nutzen; spürbar, wenn die Zinsen oder Gewinne einer Person deutlich über 1.000 € liegen und die des Partners kaum.
     - **Nicht Teil davon:** Verteilung des Freibetrags zwischen Sparzielen und ETF-Sparplan einer Person (Stufe 1 rechnet nur die Ziele; der ETF wird meist Jahre später verkauft).
 14. **Phase 6b, Generischer Baustein (Konzept `15`, offene Punkte dort §14):**
-    - **Regelannahmen ungeprüft** (alle `unverified`, Quellen nur genannt, nicht gelesen): Basisrente wie gesetzliche Rente besteuert (§22 Nr. 1 S. 3 Buchst. a aa EStG), Ertragsanteil der privaten Leibrente (a bb), Riester-Leistungen voll steuerpflichtig (§22 Nr. 5), gemeinsame KV-Freibetrag-/Pflege-Freigrenze-Schwelle je Person (§226 Abs. 2 SGB V, §57 SGB XI), Anrechnung auf die Witwenrente (§97 SGB VI, §§18a ff. SGB IV). Vor Release prüfen (Punkt 3).
+    - **Regelannahmen** (am 2026-11-23 in AP-23 gelesen, vier `confirmed`, Riester `unverified`; Abweichungen siehe `docs/assumptions.md`; ursprünglich alle `unverified`, Quellen nur genannt): Basisrente wie gesetzliche Rente besteuert (§22 Nr. 1 S. 3 Buchst. a aa EStG), Ertragsanteil der privaten Leibrente (a bb), Riester-Leistungen voll steuerpflichtig (§22 Nr. 5), gemeinsame KV-Freibetrag-/Pflege-Freigrenze-Schwelle je Person (§226 Abs. 2 SGB V, §57 SGB XI), Anrechnung auf die Witwenrente (§97 SGB VI, §§18a ff. SGB IV). Vor Release prüfen (Punkt 3).
     - **Eigene Config-Datei `config/other-income-de.json` für diese Regeln** oder nur Hinweiscodes: Vorschlag Datei, Entscheidung in AP-15.
     - **Gemeinsame Schwelle `likeOccupational`** koppelt Gesamtsicht und bAV-Seite (bAV-Seite zeigt weiter den Einzelwert, Hinweis `shared_occupational_threshold`); prüfen, ob der Hinweis genügt.
     - **Versorgungsfreibetrag** (Pension, §19 Abs. 2 EStG) und **Werbungskosten bei Mieten** nicht berücksichtigt; der Pauschbetrag von 102 € auf Renteneinkünfte wirkt in `retirementIncomeTax` auch auf Mieten. Abgaben auf den weitergezahlten Anteil an Hinterbliebene: keine (Vereinfachung).

@@ -168,7 +168,6 @@ export const occupational = {
       'Umwandlung, Zuschuss und Arbeitgeberbeitrag liegen zusammen über der steuerfreien Grenze. Der Teil darüber ist voll steuerpflichtig, das rechnet die App nicht mit.',
     thresholds_indexed:
       'Freibetrag und Freigrenze der Betriebsrente (heute 197,75 €) steigen im Modell mit der Inflation (Annahme).',
-    unverified: (name: string) => `Ungeprüfter Rechtswert verwendet: ${name}.`,
   },
   emptyTitle: 'Noch keine Umwandlung eingetragen',
   emptyText:

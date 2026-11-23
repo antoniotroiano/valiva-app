@@ -114,7 +114,6 @@ export const statutory = {
       'Der Rentenbeginn liegt vor dem Basisjahr des Besteuerungsanteils. Es wird der Wert des Basisjahres angesetzt.',
     statutory_amount_for_retirement_age:
       'Es wird die Rente verwendet, die du für diesen Rentenbeginn eingetragen hast. Abschlag und Zuschlag werden nicht noch einmal abgezogen.',
-    unverified: (name: string) => `Ungeprüfter Rechtswert verwendet: ${name}.`,
   },
   assumptionsLink: 'Annahmen anzeigen',
 } as const;

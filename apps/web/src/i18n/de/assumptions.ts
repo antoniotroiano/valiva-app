@@ -31,6 +31,7 @@ export const assumptions = {
       jointAssessment: 'Gemeinsame Veranlagung (Paare)',
     },
     ruleApplies: 'wird angenommen',
+    ruleApplied: 'wird angewendet',
   },
   names: {
     capitalGainsTaxRate: 'Abgeltungsteuer inkl. Soli',
@@ -88,7 +89,7 @@ export const assumptions = {
     guaranteeLevelLowPercent: 'Garantiestufe niedrig',
     guaranteeLevelHighPercent: 'Garantiestufe hoch',
   },
-  /** Rule assumptions of the other-income block (`config/other-income-de.json`); shown as "wird angenommen". */
+  /** Rule assumptions of the other-income block (`config/other-income-de.json`); shown as "wird angewendet" (confirmed) or "wird angenommen" (unverified). */
   otherIncomeNames: {
     basisPensionTaxShare: 'Basisrente wird wie die gesetzliche Rente besteuert',
     privateAnnuityEarningsShare: 'Private Leibrente: Ertragsanteil (Anteil trägst du selbst ein)',
@@ -146,8 +147,6 @@ export const assumptions = {
   /** Full sentences for values whose table label alone is no sentence; `n` is the value from `config/`. */
   unverifiedItem: {
     'depot.childGrantMaxAge': (n: number) => `Kinderzulage nur für Kinder jünger als ${n} Jahre`,
-    'depot.youthBonusMaxAge': (n: number) =>
-      `Bonus nur für Sparer unter ${n} Jahren (Alter zu Jahresbeginn)`,
   } as Record<string, (n: number) => string>,
   status: { confirmed: 'bestätigt', unverified: 'ungeprüft' },
   unverifiedNote: 'Ungeprüfte Werte sind nicht gegen amtliche Quellen bestätigt.',
@@ -206,7 +205,7 @@ export const assumptions = {
     'Abgaben "wie bei der Betriebsrente": Freibetrag und Freigrenze gelten gemeinsam mit der Betriebsrente und werden nach Brutto aufgeteilt. Die Freigrenze der Pflegeversicherung gilt ganz oder gar nicht.',
     'Weiterzahlung an den Partner: nur bei zwei Personen und eingeschalteter Hinterbliebenenrente. Der Anteil wird bei der überlebenden Person besteuert, ohne Abgaben, und zählt als anrechenbares Einkommen bei der Witwenrente.',
     'Nicht berücksichtigt: Versorgungsfreibetrag bei Pensionen, Ertragsanteil-Tabelle, Sparerpauschbetrag, Werbungskosten, Kapitalabfindung, Garantien und Überschüsse.',
-    'Die zugrunde liegenden Regelannahmen sind ungeprüft und stehen unter Rechtswerte.',
+    'Die zugrunde liegenden Regeln stehen unter Rechtswerte mit ihrem Status. Vier sind am Gesetzestext gelesen, die Vereinfachung bei Riester ist ungeprüft. Die App weicht in zwei Punkten vom Gesetz ab: Der Freibetrag der Krankenversicherung gilt im Gesetz nur für Betriebsrenten, und geförderte Riester-Leistungen werden bei der Witwenrente nicht angerechnet.',
   ],
   jointAssessmentRulesTitle: 'Gemeinsame Veranlagung',
   jointAssessmentRules: [
@@ -217,7 +216,7 @@ export const assumptions = {
     'Gerechnet wird gemeinsam erst ab dem Jahr, in dem beide in Rente sind, und höchstens bis zum Jahr nach dem Tod der ersten Person (im Jahr danach bleibt der Splitting-Tarif für die überlebende Person, mit dem einfachen Pauschbetrag von 36 €). Davor und danach wird einzeln gerechnet, weil Gehälter nicht erfasst sind.',
     'Eine Einmalauszahlung des Altersvorsorgedepots wird im gemeinsamen Einkommen des Auszahlungsjahres besteuert. Bei gleichen Renten ergibt sich dieselbe Steuer wie einzeln; durch die Rundung auf volle Euro kann das Splitting bei fast gleichen Renten bis zu 2 € pro Jahr höher ausfallen.',
     'Nicht berücksichtigt: Solidaritätszuschlag und Kirchensteuer auf Renten, ein gemeinsamer Sparerpauschbetrag (er bleibt je Person), Einzelveranlagung auf Antrag, Rentensplitting. Auf den Einzelseiten der Einkommensquellen wird die Steuer weiter einzeln gezeigt.',
-    'Die Pauschbeträge je Person (102 €), der doppelte Sonderausgaben-Pauschbetrag (72 €) und der einfache Betrag im Jahr nach dem Tod sind Auslegungen des Gesetzestexts und ungeprüft; der Wert 72 € steht unter Rechtswerte.',
+    'Die Pauschbeträge je Person (102 €), der doppelte Sonderausgaben-Pauschbetrag (72 €) und der einfache Betrag im Jahr nach dem Tod sind Auslegungen des Gesetzestexts und nicht bestätigt; der Wert 72 € ist bestätigt (§ 10c EStG) und steht unter Rechtswerte.',
   ],
   withdrawalRulesTitle: 'Entnahmestrategien',
   withdrawalRules: [

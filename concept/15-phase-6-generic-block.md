@@ -164,6 +164,7 @@ Annahmen: Heute 2026, Inflation 2 %, Rentenanpassung 2,5 %, Person geboren 1976 
 | `riesterFullyTaxable` | Leistungen aus Riester-Altverträgen voll steuerpflichtig | §22 Nr. 5 EStG (wie Depot) |
 | `sharedBenefitThreshold` | KV-Freibetrag und Pflege-Freigrenze gelten je Person gemeinsam für alle Versorgungsbezüge | §226 Abs. 2 SGB V, §57 SGB XI |
 | `survivorIncomeCredited` | Eigene Renten, Pensionen und Mieten zählen als anrechenbares Einkommen bei der Witwenrente | §97 SGB VI, §§18a ff. SGB IV |
+**Stand AP-23 (2026-11-23):** Die Quellen der Tabelle sind jetzt gelesen. `basisPensionTaxShare`, `privateAnnuityEarningsShare`, `sharedBenefitThreshold` und `survivorIncomeCredited` sind `confirmed` (Einschränkungen in `sourceDe` und `docs/assumptions.md`), `riesterFullyTaxable` bleibt `unverified` (Vereinfachung, § 22 Nr. 5 Satz 2). Die Spalte "nicht gelesen, nur genannt" gilt nur noch historisch.
 Die Variante ohne eigene Datei (nur Hinweiscodes im Kern) ist möglich, verbirgt die Regeln aber vor der Annahmen-Seite; **Entscheidung in AP-15 beim Bau, siehe §14 Nr. 1**. Die App-Grenzen (10 Einträge, 60 Zeichen) sind **keine** Rechtswerte und stehen als Konstanten im Kern (`appConfig`-Stil), nicht in `config/`.
 **Bei späterer Erweiterung wären neu nötig** (nicht V1): Ertragsanteil-Tabelle nach Alter (§22 Nr. 1 Satz 3 Buchst. a bb EStG), Versorgungsfreibetrag und Zuschlag nach Beginnjahr (§19 Abs. 2 EStG), Besteuerung von Kapitalauszahlungen, Werbungskosten-Pauschalen, Grenzwerte der Hinterbliebenenversorgung je Produkt.
 

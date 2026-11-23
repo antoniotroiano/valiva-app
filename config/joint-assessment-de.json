@@ -16,9 +16,9 @@
       "unit": "EUR",
       "validFrom": "2026-01-01",
       "validTo": null,
-      "source": "EStG section 10c, gesetze-im-internet.de, read 2026-11-23 - special expenses lump sum 36 EUR, doubled for jointly assessed spouses; the 72 EUR is derived from the doubling, the page does not state it. The pension lump sum of 102 EUR (section 9a sentence 1 no. 3) is applied per person (reading of the wording, not stated for spouses). In the year after the partner's death (section 32a paragraph 6) the single 36 EUR is applied (interpretation)",
-      "sourceDe": "EStG § 10c (am 23.11.2026 gelesen) - Sonderausgaben-Pauschbetrag 36 €, bei Zusammenveranlagung verdoppelt; die 72 € sind aus der Verdopplung abgeleitet, die Seite nennt sie nicht. Der Rentenpauschbetrag von 102 € (§ 9a Satz 1 Nr. 3) wird je Person angesetzt (Auslegung des Wortlauts, für Ehegatten nicht ausdrücklich genannt). Im Jahr nach dem Tod des Partners (§ 32a Abs. 6) gilt der einfache Betrag von 36 € (Auslegung)",
-      "status": "unverified"
+      "source": "EStG section 10c sentences 1 and 2, gesetze-im-internet.de, read 2026-11-23 (page shows no version date): lump sum 36 EUR, for joint assessment of spouses it doubles, so 72 EUR. Not part of this value, interpretations: the pension lump sum of 102 EUR (section 9a sentence 1 no. 3, 'insgesamt 102 Euro') is applied per person, the law does not say it for spouses; in the year after the partner's death (section 32a paragraph 6) the single 36 EUR is applied (not re-read)",
+      "sourceDe": "EStG § 10c Satz 1 und 2 (am 23.11.2026 gelesen): Pauschbetrag 36 €, bei Zusammenveranlagung von Ehegatten verdoppelt er sich, also 72 €. Nicht Teil dieses Werts, Auslegungen: Der Rentenpauschbetrag von 102 € (§ 9a Satz 1 Nr. 3, „insgesamt 102 Euro“) wird je Person angesetzt, für Ehegatten sagt das Gesetz nichts; im Jahr nach dem Tod des Partners (§ 32a Abs. 6) gilt der einfache Betrag von 36 € (nicht erneut gelesen) Die Seite nennt kein Fassungsdatum.",
+      "status": "confirmed"
     }
   }
 }

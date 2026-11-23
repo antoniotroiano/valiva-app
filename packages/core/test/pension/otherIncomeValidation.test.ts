@@ -19,7 +19,7 @@ import type {
   PensionKey,
   SocialKey,
 } from '../../src';
-import { LEGAL, LEGAL_OI, OI_CTX, OTHER_INCOME_RULE_KEYS, oiEntry } from '../pensionFixtures';
+import { LEGAL, LEGAL_OI, OI_CTX, UNVERIFIED_RULE_KEYS, oiEntry } from '../pensionFixtures';
 
 const root = join(__dirname, '../../../../config');
 const read = <K extends string>(f: string) =>
@@ -37,10 +37,12 @@ describe('config/other-income-de.json', () => {
     read<IncomeTaxKey>('income-tax-de.json'),
   ] as const;
 
-  it('has exactly the five rule keys, all unverified, with the usual fields', () => {
+  it('has exactly the five rule keys, only the Riester simplification unverified, with the usual fields', () => {
     expect(Object.keys(config.values).sort()).toEqual([...OTHER_INCOME_KEYS].sort());
     for (const v of Object.values(config.values)) {
-      expect(v.status).toBe('unverified');
+      expect(v.status).toBe(
+        UNVERIFIED_RULE_KEYS.some((k) => config.values[k] === v) ? 'unverified' : 'confirmed',
+      );
       expect(v.value).toBe(1);
       expect(v.unit).toBe('rule');
       expect(v.validFrom).toMatch(/^\d{4}-\d{2}-\d{2}$/);
@@ -50,12 +52,15 @@ describe('config/other-income-de.json', () => {
     }
   });
 
-  it('resolves into the test fixture and lists every rule as unverified', () => {
+  it('resolves into the test fixture and lists only the unverified rule', () => {
     const r = resolveLegalParameters(...four, '2026-11-11', config);
     if (!r.ok) throw new Error(r.missingOrExpired.join());
     expect(r.legal).toEqual(LEGAL_OI);
     expect(r.legal.unverified).toEqual(
-      expect.arrayContaining(OTHER_INCOME_RULE_KEYS.map((k) => `otherIncome.${k}`)),
+      expect.arrayContaining(UNVERIFIED_RULE_KEYS.map((k) => `otherIncome.${k}`)),
+    );
+    expect(r.legal.unverified.filter((k) => k.startsWith('otherIncome.'))).toEqual(
+      UNVERIFIED_RULE_KEYS.map((k) => `otherIncome.${k}`),
     );
   });
 

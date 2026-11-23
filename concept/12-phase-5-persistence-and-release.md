@@ -95,7 +95,7 @@ Stand 2026-11-23 (AP-17). Hinweis: Das Repo ist bereits öffentlich (siehe Beric
 - [x] Lizenz MIT, `LICENSE` mit Urheber "antoniotroiano", Abhängigkeitslizenzen geprüft (Produktion MIT/ISC/BSD, MPL nur Entwicklungswerkzeuge)
 - [x] Datenscan sauber (Dateien und Verlauf: keine echten Nutzerdaten, keine Schlüssel, keine privaten Pfade oder E-Mail-Adressen außer der noreply-Adresse; `golden-check.xlsx` ohne Autor)
 - [x] README mit Disclaimer, Datenschutz, Start, Export/Import, Lizenz, bekannte Grenzen
-- [x] Unsichere Gesetzeswerte erneut geprüft (2026-11-23): 11 Werte bleiben bewusst `unverified`, weil nur Ratgeberquellen erreichbar waren (Bericht 14, Protokoll "Rechtswerte"); Status in der UI sichtbar (Annahmen-Seite, Hinweise)
+- [x] Unsichere Gesetzeswerte erneut geprüft (2026-11-23): 11 Werte bleiben bewusst `unverified`, weil nur Ratgeberquellen erreichbar waren (Bericht 14, Protokoll "Rechtswerte"); Status in der UI sichtbar (Annahmen-Seite, Hinweise) Nachgeholt in AP-23 (2026-11-23): 6 bestätigt, 5 bleiben `unverified` (`docs/legal-values-review.md`).
 - [x] CI grün (vom Autor bestätigt 2026-11-23 nach Anhebung des Höhenwächters), `npm audit` ohne Funde
 - [x] Sichtprüfung der Seite "Daten": Session-Sichtprüfung mit Beispieldaten (kein Überlauf), Abnahme durch den Autor 2026-11-23; Test mit echten Daten und Testpersonen folgt
 

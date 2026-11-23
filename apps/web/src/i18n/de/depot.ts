@@ -172,7 +172,6 @@ export const depot = {
       'Besteuerung der Auszahlungen: Annahme „voll steuerpflichtig mit pauschalem Satz“ (nicht bestätigt).',
     noHealthContributions:
       'Kranken- und Pflegeversicherung: Annahme „keine Beiträge auf diese Leistung“ bei Pflichtversicherten (nicht bestätigt).',
-    unverified: (name: string) => `Ungeprüfter Rechtswert verwendet: ${name}.`,
   },
   emptyTitle: 'Noch kein Beitrag eingetragen',
   emptyText:

@@ -117,3 +117,11 @@ Der Gesetzestext (BGBl. 2026 I Nr. 156, 24 Seiten) wurde per Textextraktion gele
 - Ob "einmalig" beim Bonus unter 25 im ganzen Leben gilt; Modell: einmalig im ersten Beitragsjahr
 - KV/Pflege auf Leistungen aus privaten Altersvorsorgeverträgen (Annahme: bei Pflichtversicherten beitragsfrei) und auf Betriebsrenten (Freibetrag KV, Freigrenze Pflege); Stichtage in § 26a BetrAVG
 - Ob der Gesetzgeber die Werte noch ändert: vor Release erneut prüfen
+
+## 12a. Prüfung der elf ungeprüften Werte gegen Primärtexte (AP-23, 2026-11-23)
+
+Gelesen auf `gesetze-im-internet.de` (Seiten ohne Fassungsdatum, "nichtamtliches Inhaltsverzeichnis"), `gesetze-bayern.de`, `landesrecht-bw.de` und im Bundesgesetzblatt (BGBl. 2026 I Nr. 156, PDF von `recht.bund.de`). Ergebnis und Fundstellen je Wert: `docs/legal-values-review.md`. Keine Rechts- oder Steuerberatung.
+
+- **Bestätigt (6):** Jugendbonus-Alter 25 (§ 84 Satz 2 EStG neu, "einmalig" bleibt Auslegung); Sonderausgaben-Pauschbetrag 72 € (§ 10c Satz 1 und 2 EStG, 2 × 36 €); Basisrente wie gesetzliche Rente (§ 22 Nr. 1 Satz 3 a aa); Ertragsanteil für andere Leibrenten (a bb); gemeinsame KV/Pflege-Schwelle (§ 237 Satz 4, § 226 Abs. 2 SGB V, § 57 SGB XI) und Anrechnung auf die Witwenrente (§ 97 SGB VI, § 18a SGB IV), beide mit benannten Abweichungen der App.
+- **Bleibt `unverified` (5):** Kirchensteuer 8 % und 9 % (kein Satz im Landesgesetz), Basiszins-Annahme ab 2027 (§ 18 Abs. 4 InvStG: erst im Januar veröffentlicht), Kinderzulage-Alter 18 (§ 85 knüpft an Kindergeld, § 32 Abs. 4 EStG), Riester voll steuerpflichtig (§ 22 Nr. 5 Satz 2 besteuert den ungeförderten Teil anders).
+- **`validFrom` 2026-05-29** der Werte in `altersvorsorge-de.json` ist das Verkündungsdatum; die Zulagenregeln gelten ab 2027-01-01 (Art. 14 Abs. 2). Nicht geändert, weil der Code Werte nach `validFrom` wählt (Backlog).

@@ -67,14 +67,14 @@ describe('projectOtherIncome: concept examples (15 section 5.4)', () => {
     near(r.taxableMonthlyReal * f, 370); // taxable at the start, nominal
     near((r.fixedTaxFreeMonthlyReal ?? NaN) * f, 30); // tax-free amount, nominal, fixed
     near(r.monthlyPensionReal, 285.67);
-    expect(r.warnings).toContain('unverified:otherIncome.basisPensionTaxShare');
+    expect(r.warnings).not.toContain('unverified:otherIncome.basisPensionTaxShare'); // confirmed in AP-23
   });
 
   it('example 6: a likeOccupational entry alone uses the occupational rules on its own amount', () => {
     const r = project(oiEntry({ amountMonthly: 300, contributions: 'likeOccupational' }));
     // 300 EUR above the allowance 197.75: health 17.5 % of the rest, care 3.6 % of all
     near(r.contributionsMonthlyReal, 0.175 * (300 - 197.75) + 0.036 * 300);
-    expect(r.warnings).toContain('unverified:otherIncome.sharedBenefitThreshold');
+    expect(r.warnings).not.toContain('unverified:otherIncome.sharedBenefitThreshold'); // confirmed in AP-23
   });
 });
 
@@ -210,14 +210,15 @@ describe('projectOtherIncome: warnings and hints', () => {
   const codes = (e: OtherIncomeEntry, legal = LEGAL_OI) =>
     project(e, { ...OI_CTX, legal }).warnings;
 
-  it('lists the unverified rules an entry rests on, nothing else as unverified', () => {
+  it('lists the unverified rule an entry rests on (Riester), nothing else as unverified', () => {
     expect(codes(oiEntry({ kind: 'riester', taxMode: 'full' }))).toContain(
       'unverified:otherIncome.riesterFullyTaxable',
     );
+    // confirmed against the law text in AP-23: no longer listed as unverified
     expect(
       codes(oiEntry({ kind: 'privateAnnuity', taxMode: 'percent', taxSharePercent: 20 })),
-    ).toContain('unverified:otherIncome.privateAnnuityEarningsShare');
-    expect(codes(oiEntry({ survivorPercent: 55 }))).toContain(
+    ).not.toContain('unverified:otherIncome.privateAnnuityEarningsShare');
+    expect(codes(oiEntry({ survivorPercent: 55 }))).not.toContain(
       'unverified:otherIncome.survivorIncomeCredited',
     );
     expect(codes(oiEntry({ kind: 'other', taxMode: 'none' }))).toEqual([]);

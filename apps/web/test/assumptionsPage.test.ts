@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { defaultAssumptions } from '@valiva/core';
 import { de } from '../src/i18n/de';
 import { groupItems, legalGroups, unverifiedItems } from '../src/lib/legalGroups';
+import { formatLegalValue } from '../src/lib/legalValue';
 import { splitSourceText } from '../src/lib/sourceText';
 import { AssumptionsPage } from '../src/pages/assumptions/AssumptionsPage';
 import { GroupStatus, LegalValues } from '../src/pages/assumptions/LegalValues';
@@ -119,6 +120,19 @@ describe('legal values markup', () => {
 
   it('shows the overall unverified count above the areas', () => {
     expect(html).toContain('5 ungeprüft');
+  });
+
+  it('labels a rule as applied when the law text carries it and as assumed when it is unverified (AP-23)', () => {
+    const rule = {
+      value: 1,
+      unit: 'rule',
+      validFrom: '2026-01-01',
+      validTo: null,
+      source: '',
+      sourceDe: '',
+    };
+    expect(formatLegalValue({ ...rule, status: 'confirmed' })).toBe('wird angewendet');
+    expect(formatLegalValue({ ...rule, status: 'unverified' })).toBe('wird angenommen');
   });
 });
 

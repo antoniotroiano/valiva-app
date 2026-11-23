@@ -70,8 +70,8 @@
       "unit": "years",
       "validFrom": "2026-05-29",
       "validTo": null,
-      "source": "Assumption: child benefit mostly until 18, until 25 in training; the model uses 18. Age limit not read in the law",
-      "sourceDe": "Annahme: Kindergeld meist bis 18, in Ausbildung bis 25; das Modell nutzt 18. Altersgrenze nicht im Gesetz gelesen",
+      "source": "Assumption: BGBl. 2026 I Nr. 156, Art. 2 no. 8, § 85 para. 1 EStG new (read 2026-11-23) ties the child grant to 'Kindergeld festgesetzt' and names no age. Child benefit runs to 18, to 21 (job-seeking) or 25 (training) under section 32 para. 4 EStG; the model uses 18 as a simplification",
+      "sourceDe": "Annahme: BGBl. 2026 I Nr. 156, Art. 2 Nr. 8, § 85 Abs. 1 EStG neu (am 23.11.2026 gelesen) knüpft die Kinderzulage an „Kindergeld festgesetzt“ und nennt kein Alter. Kindergeld gibt es nach § 32 Abs. 4 EStG bis 18, bis 21 (arbeitsuchend) oder bis 25 (Ausbildung); das Modell nutzt 18 als Vereinfachung",
       "status": "unverified"
     },
     "youthBonusAmount": {
@@ -88,9 +88,9 @@
       "unit": "years",
       "validFrom": "2026-05-29",
       "validTo": null,
-      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (read 2026-11-11), § 84 sentence 2; model: once in the first contribution year only (reading of 'once' not checked)",
-      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 84 Satz 2; Modell: nur im ersten Beitragsjahr (Auslegung von „einmalig“ nicht geprüft)",
-      "status": "unverified"
+      "source": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156, Art. 2 no. 7, § 84 sentence 2 EStG new, read 2026-11-23 on recht.bund.de: bonus 200 EUR 'once' if the 25th year of life is not completed at the start of the contribution year. In force 2027-01-01 (Art. 14 para. 2); validFrom is the promulgation date. 'Once' is not defined in the new text (the old sentence 3 was dropped): the model applies it in the first contribution year only (interpretation)",
+      "sourceDe": "Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156, Art. 2 Nr. 7, § 84 Satz 2 EStG neu (am 23.11.2026 gelesen): 200 € „einmalig“, wenn das 25. Lebensjahr zu Beginn des Beitragsjahres nicht vollendet ist. Inkrafttreten 01.01.2027 (Art. 14 Abs. 2); validFrom ist das Verkündungsdatum. „Einmalig“ ist im neuen Text nicht erklärt (der alte Satz 3 entfiel): Das Modell wendet es nur im ersten Beitragsjahr an (Auslegung)",
+      "status": "confirmed"
     },
     "minOwnContributionYearly": {
       "value": 120,

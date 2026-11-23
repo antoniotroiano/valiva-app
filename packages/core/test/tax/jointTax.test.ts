@@ -229,14 +229,14 @@ describe('config/joint-assessment-de.json', () => {
     JSON.parse(readFileSync(join(__dirname, '../../../../config', name), 'utf8')) as LegalConfig<K>;
   const config = read<(typeof JOINT_ASSESSMENT_KEYS)[number]>('joint-assessment-de.json');
 
-  it('matches the test values and marks the derived 72 EUR as unverified', () => {
+  it('matches the test values and both values are confirmed', () => {
     for (const key of JOINT_ASSESSMENT_KEYS) {
       expect(config.values[key].value).toBe(JOINT[key]);
       expect(config.values[key].source.length).toBeGreaterThan(20);
       expect(config.values[key].sourceDe.length).toBeGreaterThan(20);
     }
     expect(config.values.splittingDivisor.status).toBe('confirmed');
-    expect(config.values.specialExpensesLumpSumJointYearly.status).toBe('unverified');
+    expect(config.values.specialExpensesLumpSumJointYearly.status).toBe('confirmed');
   });
 
   it('resolves with the other legal files; without it the values are absent', () => {
@@ -248,7 +248,7 @@ describe('config/joint-assessment-de.json', () => {
     ] as const;
     const withJoint = resolveLegalParameters(...four, '2026-11-23', undefined, config);
     expect(withJoint.ok && withJoint.legal.jointAssessment).toEqual(JOINT);
-    expect(withJoint.ok && withJoint.legal.unverified).toContain(
+    expect(withJoint.ok && withJoint.legal.unverified).not.toContain(
       'jointAssessment.specialExpensesLumpSumJointYearly',
     );
     const without = resolveLegalParameters(...four, '2026-11-23');

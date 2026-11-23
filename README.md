@@ -30,7 +30,7 @@ Everything runs in your browser. Your inputs are kept in the browser's local sto
 ## Known limitations
 
 - Persons who already draw their pension are not supported yet; entering a retirement start in the past gives an error message instead of a result.
-- Some legal values are marked `unverified`; the app shows this wherever such a value is used.
+- Of the legal values, 5 are still marked `unverified` (church tax rates, base interest from 2027, child age limit of the retirement depot, Riester simplification); the app shows this wherever such a value is used. The review against the law texts is in `docs/legal-values-review.md`.
 
 ## License
 

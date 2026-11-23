@@ -1,32 +1,32 @@
 {
   "schemaVersion": 1,
-  "description": "Rule assumptions of the generic 'other income in retirement' block (concept 15, section 9). There is no amount here: every value is 1 (rule applies) and every status is 'unverified', because none of the legal sources was read. They exist so the app can show the assumptions instead of presenting them as certain. Review against primary sources before a release.",
+  "description": "Rule assumptions of the generic 'other income in retirement' block (concept 15, section 9). There is no amount here: every value is 1 (rule applies). Status 'confirmed' means the primary text carries the rule (read 2026-11-23, AP-23), with the limits named in the source; 'unverified' means a simplification that the text does not carry. Review once a year.",
   "values": {
     "basisPensionTaxShare": {
       "value": 1,
       "unit": "rule",
       "validFrom": "2026-01-01",
       "validTo": null,
-      "source": "Assumption: a basic pension (Basisrente) is taxed like the statutory pension, with the taxable share by start year (section 22 no. 1 sentence 3 letter a aa EStG, named only, not read)",
-      "sourceDe": "Annahme: Die Basisrente wird wie die gesetzliche Rente besteuert (Besteuerungsanteil nach Beginnjahr); § 22 Nr. 1 Satz 3 Buchst. a aa EStG, nur genannt, nicht gelesen",
-      "status": "unverified"
+      "source": "EStG section 22 no. 1 sentence 3 letter a aa, gesetze-im-internet.de, read 2026-11-23 (page shows no version date): pensions from statutory pension insurance and from insurance in the sense of section 10 para. 1 no. 2 letter b (basic pension) are taxed with the taxable share by year of pension start (table, 2026: 84 %)",
+      "sourceDe": "EStG § 22 Nr. 1 Satz 3 Buchst. a aa (am 23.11.2026 gelesen): Renten aus der gesetzlichen Rentenversicherung und aus Rentenversicherungen nach § 10 Abs. 1 Nr. 2 Buchst. b (Basisrente) werden mit dem Besteuerungsanteil nach dem Jahr des Rentenbeginns besteuert (Tabelle, 2026: 84 %) Die Seite nennt kein Fassungsdatum.",
+      "status": "confirmed"
     },
     "privateAnnuityEarningsShare": {
       "value": 1,
       "unit": "rule",
       "validFrom": "2026-01-01",
       "validTo": null,
-      "source": "Assumption: a private annuity is taxed with its earnings share (Ertragsanteil); the app has no table, the user enters the share (section 22 no. 1 sentence 3 letter a bb EStG, named only, not read)",
-      "sourceDe": "Annahme: Eine private Leibrente wird mit dem Ertragsanteil besteuert; die App hat keine Tabelle, der Anteil wird selbst eingetragen (laut Versicherer oder Steuerbescheid); § 22 Nr. 1 Satz 3 Buchst. a bb EStG, nur genannt, nicht gelesen",
-      "status": "unverified"
+      "source": "EStG section 22 no. 1 sentence 3 letter a bb, gesetze-im-internet.de, read 2026-11-23 (page shows no version date): other life annuities are taxed with the earnings share (Ertragsanteil) by age at pension start (table in the law). The app has no table; the user enters the share. That is an app decision, not a legal rule",
+      "sourceDe": "EStG § 22 Nr. 1 Satz 3 Buchst. a bb (am 23.11.2026 gelesen): andere Leibrenten werden mit dem Ertragsanteil nach dem Alter bei Rentenbeginn besteuert (Tabelle im Gesetz). Die App hat keine Tabelle, der Anteil wird selbst eingetragen. Das ist eine Entscheidung der App, keine Rechtsregel Die Seite nennt kein Fassungsdatum.",
+      "status": "confirmed"
     },
     "riesterFullyTaxable": {
       "value": 1,
       "unit": "rule",
       "validFrom": "2026-01-01",
       "validTo": null,
-      "source": "Assumption: benefits from existing Riester contracts are fully taxable (section 22 no. 5 EStG, named only, not read)",
-      "sourceDe": "Annahme: Leistungen aus Riester-Altverträgen sind voll steuerpflichtig; § 22 Nr. 5 EStG, nur genannt, nicht gelesen",
+      "source": "Assumption (simplification): EStG section 22 no. 5 sentence 1 taxes benefits from retirement contracts in full, but sentence 2 taxes the part that rests on contributions that were not funded (no grants, no tax deduction) with the earnings share or under section 20 instead (read 2026-11-23). The app taxes all of a Riester entry in full, which only fits the funded part",
+      "sourceDe": "Annahme (Vereinfachung), § 22 Nr. 5 EStG (am 23.11.2026 gelesen): Satz 1 besteuert Leistungen aus Altersvorsorgeverträgen voll, Satz 2 besteuert aber den Teil, der auf nicht geförderten Beiträgen beruht, nach Ertragsanteil bzw. nach § 20. Die App besteuert einen Riester-Eintrag ganz voll, das passt nur für den geförderten Teil",
       "status": "unverified"
     },
     "sharedBenefitThreshold": {
@@ -34,18 +34,18 @@
       "unit": "rule",
       "validFrom": "2026-01-01",
       "validTo": null,
-      "source": "Assumption: the health insurance allowance and the care threshold apply once per person across all pension-like benefits (section 226 para. 2 SGB V, section 57 SGB XI, named only, not read)",
-      "sourceDe": "Annahme: Freibetrag (Krankenversicherung) und Freigrenze (Pflegeversicherung) gelten je Person gemeinsam für alle Versorgungsbezüge; § 226 Abs. 2 SGB V, § 57 SGB XI, nur genannt, nicht gelesen",
-      "status": "unverified"
+      "source": "SGB V section 237 sentence 4 with section 226 para. 2 sentence 1 (health) and SGB XI section 57 para. 1 (care), gesetze-im-internet.de, read 2026-11-23: the threshold applies to Versorgungsbezüge and earned income together ('insgesamt'). Limits of the app: the allowance (sentence 2) is law only for company pensions (section 229 para. 1 sentence 1 no. 5), the app also grants it to other entries marked as like company pension; section 229 lists no Riester, basic pension, private annuity or rent as Versorgungsbezüge, the user chooses per entry",
+      "sourceDe": "SGB V § 237 Satz 4 mit § 226 Abs. 2 Satz 1 (Kranken) und SGB XI § 57 Abs. 1 (Pflege) (am 23.11.2026 gelesen): Die Schwelle gilt für Versorgungsbezüge und Arbeitseinkommen zusammen („insgesamt“). Grenzen der App: Der Freibetrag (Satz 2) gilt im Gesetz nur für Betriebsrenten (§ 229 Abs. 1 Satz 1 Nr. 5), die App gewährt ihn auch anderen Einträgen mit „wie Betriebsrente“; § 229 nennt Riester, Basisrente, private Rente und Miete nicht als Versorgungsbezüge, die Nutzerin wählt je Eintrag",
+      "status": "confirmed"
     },
     "survivorIncomeCredited": {
       "value": 1,
       "unit": "rule",
       "validFrom": "2026-01-01",
       "validTo": null,
-      "source": "Assumption: own pensions, civil service pensions and rent count as income credited against the widow's pension (section 97 SGB VI, sections 18a ff. SGB IV, named only, not read)",
-      "sourceDe": "Annahme: Eigene Renten, Pensionen und Mieten zählen als anrechenbares Einkommen bei der Witwenrente; § 97 SGB VI, §§ 18a ff. SGB IV, nur genannt, nicht gelesen",
-      "status": "unverified"
+      "source": "SGB VI section 97 with SGB IV section 18a, gesetze-im-internet.de, read 2026-11-23: own pensions (para. 3 no. 2, 5, 9, 10) and rent after expenses (para. 4 no. 2) count as income against the widow's pension. Limit of the app: section 18a para. 1 sentence 2 no. 2 excludes benefits from funded retirement contracts (Riester), the app still counts a Riester entry",
+      "sourceDe": "SGB VI § 97 mit SGB IV § 18a (am 23.11.2026 gelesen): Eigene Renten (Abs. 3 Nr. 2, 5, 9, 10) und Mieten nach Werbungskosten (Abs. 4 Nr. 2) zählen als Einkommen bei der Witwenrente. Grenze der App: § 18a Abs. 1 Satz 2 Nr. 2 nimmt Leistungen aus geförderten Altersvorsorgeverträgen (Riester) aus, die App rechnet einen Riester-Eintrag dennoch mit",
+      "status": "confirmed"
     }
   }
 }

@@ -34,7 +34,6 @@ describe('warningText', () => {
       'unverified:depot.childGrantMaxAge',
       'unverified:depot.payoutTaxation',
       'unverified:depot.noHealthContributions',
-      'unverified:depot.youthBonusMaxAge',
       'unverified:jointAssessment.specialExpensesLumpSumJointYearly',
       'unverified:otherIncome.riesterFullyTaxable',
       'unverified:otherIncome.survivorIncomeCredited',
@@ -44,15 +43,14 @@ describe('warningText', () => {
     ];
     const merged = mergeUnverified(codes);
     expect(merged).toEqual([
-      'unverified:values:depot.childGrantMaxAge+depot.youthBonusMaxAge+jointAssessment.specialExpensesLumpSumJointYearly+otherIncome.riesterFullyTaxable+otherIncome.survivorIncomeCredited',
+      'unverified:values:depot.childGrantMaxAge+jointAssessment.specialExpensesLumpSumJointYearly+otherIncome.riesterFullyTaxable+otherIncome.survivorIncomeCredited',
       'unverified:depot.assumptions',
       'etf_tax_simplified',
       'unverified:tax',
     ]);
     const values = warningText(merged[0]!);
-    // Amounts come from config/, with full sentences for the two age limits.
+    // Amounts come from config/, with a full sentence for the child age limit.
     expect(values).toContain('Kinderzulage nur für Kinder jünger als 18 Jahre');
-    expect(values).toContain('Bonus nur für Sparer unter 25 Jahren (Alter zu Jahresbeginn)');
     expect(values).toContain(
       `${de.assumptions.jointAssessmentNames.specialExpensesLumpSumJointYearly}: 72 €`,
     );

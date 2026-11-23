@@ -11,7 +11,7 @@ Legende: `[ ]` offen · `[x]` erledigt
 - [x] Datenmodell (`06-data-model.md`)
 - [x] Konzept in `concept/` aufgeteilt, `CLAUDE.md` angelegt
 - [ ] Beispielwerte für Golden-Tests vom Autor erhalten (anonymisiert)
-- [x] Unsichere Gesetzeswerte gegen Primärquellen prüfen (2026-11-11, `03` Abschnitt 12); Rest bleibt `unverified`
+- [x] Unsichere Gesetzeswerte gegen Primärquellen prüfen (2026-11-11, `03` Abschnitt 12; 2026-11-23 AP-23, `03` Abschnitt 12a: 5 Werte bleiben `unverified`)
 - [x] Name festlegen (vor GitHub-Veröffentlichung): Valiva (2026-11-22)
 - [x] Lizenz festlegen (vor GitHub-Veröffentlichung): MIT, Urheber "antoniotroiano" (2026-11-23)
 
@@ -344,4 +344,4 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-23 – Review 14: AP-23 (Rechtswerte gegen Primärquellen) und AP-24 (öffentliche Außenwirkung, `concept/` ordnen) angelegt; AP-17 laut Autor abgenommen (Test mit echten Daten erledigt); `.claude/launch.json` aus dem Index genommen. Reihenfolge: AP-21, AP-23, AP-24, AP-22.
 
 - 2026-11-23 – Review 14 AP-21: Backlog durchgesehen (Abschnitt 8 gegliedert, Erledigtes in 8a), Skip-Link-Ursache geklärt (StrictMode, nur Dev) und behoben, Playwright mit eigenem Port und Dev/Build-Schalter, Seitenliste einmal geführt, ungeprüfte Rechtswerte als ein Hinweis mit Beträgen, schlanker Fokusring, `theme-color` folgt dem Umschalter, `markExported`-Fehler sichtbar, `ConfirmRemove` statt `window.confirm`, WebKit/Firefox-Smoke lokal (`PW_CROSS=1`), Druck geprüft (Befunde im Backlog); 839 Unit- und 238 E2E-Tests grün; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
-
+- 2026-11-23 – Review 14 AP-23: Rechtswerte gegen Primärtexte geprüft (gesetze-im-internet.de, Landesrecht BY/BW, BGBl. 2026 I Nr. 156): 6 von 11 `confirmed` (Jugendbonus-Alter 25, 72 €, vier Regelannahmen Sonstige Einkünfte, zwei davon mit benannten Abweichungen der App), 5 bleiben `unverified` (Kirchensteuer 8/9 %, Basiszins ab 2027, Kinderzulage-Alter 18, Riester voll steuerpflichtig); `validTo` bewusst nicht gesetzt (Abweichung von AP-23, Merkzettel `docs/legal-values-review.md`), Rechenergebnisse und Golden unverändert; 840 Unit- und 220 E2E-Tests grün; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.

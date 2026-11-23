@@ -52,8 +52,8 @@
       "unit": "percent",
       "validFrom": "2009-01-01",
       "validTo": null,
-      "source": "Church tax rate 8 % in Baden-Wuerttemberg and Bavaria (state church tax laws), not yet checked against an official source",
-      "sourceDe": "Kirchensteuersatz 8 % in Baden-Württemberg und Bayern (Kirchensteuergesetze der Länder), noch nicht gegen eine amtliche Quelle geprüft",
+      "source": "Church tax rate 8 % in Baden-Wuerttemberg and Bavaria. Not carried by the state law (read 2026-11-23): BayKirchStG Art. 8 para. 1 only caps the rate at 10 %, KiStG BW section 7 para. 2 speaks of a percentage without a number; the rate is set in the church tax resolutions, which were not read",
+      "sourceDe": "Kirchensteuersatz 8 % in Baden-Württemberg und Bayern. Vom Landesgesetz nicht getragen (am 23.11.2026 gelesen): Art. 8 Abs. 1 BayKirchStG setzt nur eine Obergrenze von 10 %, § 7 Abs. 2 KiStG BW nennt einen Hundertsatz ohne Zahl; der Satz steht in den Kirchensteuerbeschlüssen, die nicht gelesen wurden",
       "status": "unverified"
     },
     "churchTaxRateHigh": {
@@ -61,8 +61,8 @@
       "unit": "percent",
       "validFrom": "2009-01-01",
       "validTo": null,
-      "source": "Church tax rate 9 % in the other federal states (state church tax laws), not yet checked against an official source",
-      "sourceDe": "Kirchensteuersatz 9 % in den übrigen Bundesländern (Kirchensteuergesetze der Länder), noch nicht gegen eine amtliche Quelle geprüft",
+      "source": "Church tax rate 9 % in the other federal states. State laws of the other 14 states not read (checked only Bavaria and Baden-Wuerttemberg on 2026-11-23, where the rate is set by church resolution); stays unverified",
+      "sourceDe": "Kirchensteuersatz 9 % in den übrigen Bundesländern. Die Landesgesetze der übrigen 14 Länder wurden nicht gelesen (geprüft nur Bayern und Baden-Württemberg am 23.11.2026, dort legt ein Kirchensteuerbeschluss den Satz fest); bleibt ungeprüft",
       "status": "unverified"
     }
   },
@@ -174,8 +174,8 @@
       "unit": "percent",
       "validFrom": "2027-01-01",
       "validTo": null,
-      "source": "Assumption for all years after the last published base interest: the 2026 rate carried forward. The real rate is set each January and can differ a lot (2021: -0.45 %, 2026: 3.20 %)",
-      "sourceDe": "Annahme für alle Jahre nach dem letzten veröffentlichten Basiszins: der Wert von 2026 wird fortgeschrieben. Der echte Satz wird jeden Januar neu festgelegt und kann stark abweichen (2021: −0,45 %, 2026: 3,20 %)",
+      "source": "Assumption for all years after the last published base interest: the 2026 rate carried forward. InvStG section 18 para. 4 (read 2026-11-23): the Bundesbank computes the rate on the first stock exchange day of the year and the BMF publishes it in the Bundessteuerblatt, so no primary source exists before January 2027. The real rate can differ a lot (2021: -0.45 %, 2026: 3.20 %). Check every January",
+      "sourceDe": "Annahme für alle Jahre nach dem letzten veröffentlichten Basiszins: der Wert von 2026 wird fortgeschrieben. § 18 Abs. 4 InvStG (am 23.11.2026 gelesen): Die Bundesbank errechnet den Satz auf den ersten Börsentag des Jahres, das BMF veröffentlicht ihn im Bundessteuerblatt; vor Januar 2027 gibt es keine Primärquelle. Der echte Satz kann stark abweichen (2021: −0,45 %, 2026: 3,20 %). Jeden Januar prüfen",
       "status": "unverified"
     }
   }

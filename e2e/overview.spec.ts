@@ -84,8 +84,7 @@ test.describe('desktop', () => {
       important.getByRole('listitem').filter({ hasText: 'Ungeprüfte Rechtswerte' }),
     ).toHaveCount(1);
     await expect(important).toContainText('Kinderzulage nur für Kinder jünger als 18 Jahre');
-    await expect(important).toContainText('Bonus nur für Sparer unter 25 Jahren');
-    await expect(important).toContainText('72 €');
+    await expect(important).toContainText('Riester-Leistungen voll steuerpflichtig');
     const above = await important.evaluate(
       (n) =>
         !!(

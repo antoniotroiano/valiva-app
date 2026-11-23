@@ -84,7 +84,7 @@ export const LEGAL: LegalParameters = {
     pensionIncomeLumpSumDeductionYearly: 102,
     specialExpensesLumpSumYearly: 36,
   },
-  unverified: ['depot.childGrantMaxAge', 'depot.youthBonusMaxAge'],
+  unverified: ['depot.childGrantMaxAge'],
 };
 
 export const PROFILE: Profile = {
@@ -117,7 +117,7 @@ export const STATUTORY: StatutoryInput = {
   retirementAge: 67,
 };
 
-/** Rule assumptions as in config/other-income-de.json: all `unverified` (a test checks they stay in sync). */
+/** Rule assumptions as in config/other-income-de.json (a test checks they stay in sync). */
 export const OTHER_INCOME_RULE_KEYS = [
   'basisPensionTaxShare',
   'privateAnnuityEarningsShare',
@@ -125,6 +125,9 @@ export const OTHER_INCOME_RULE_KEYS = [
   'sharedBenefitThreshold',
   'survivorIncomeCredited',
 ] as const;
+
+/** The rules that stay `unverified` after the AP-23 review (a simplification the law text does not carry). */
+export const UNVERIFIED_RULE_KEYS = ['riesterFullyTaxable'] as const;
 
 /** `LEGAL` plus the other-income rules, as the app resolves them with `config/other-income-de.json`. */
 export const LEGAL_OI: LegalParameters = {
@@ -136,7 +139,7 @@ export const LEGAL_OI: LegalParameters = {
     sharedBenefitThreshold: 1,
     survivorIncomeCredited: 1,
   },
-  unverified: [...LEGAL.unverified, ...OTHER_INCOME_RULE_KEYS.map((k) => `otherIncome.${k}`)],
+  unverified: [...LEGAL.unverified, ...UNVERIFIED_RULE_KEYS.map((k) => `otherIncome.${k}`)],
 };
 
 /** Context of the concept examples (`15` §5.4): today 2026, born 1976, retirement at 67 (year 2043). */

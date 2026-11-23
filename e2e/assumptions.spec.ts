@@ -61,15 +61,15 @@ test('unverified values stay visible while every area is collapsed', async ({ pa
     await expect(page.locator(`#legal-${id}`)).not.toHaveAttribute('open', /.*/);
   }
   await expect(page.locator('#legal-tax > summary')).toContainText('3 ungeprüft');
-  await expect(page.locator('#legal-depot > summary')).toContainText('2 ungeprüft');
+  await expect(page.locator('#legal-depot > summary')).toContainText('1 ungeprüft');
   for (const id of ['pension', 'social', 'incomeTax']) {
     await expect(page.locator(`#legal-${id} > summary`)).toContainText('alle bestätigt');
     await expect(page.locator(`#legal-${id} > summary`)).not.toContainText('ungeprüft');
   }
   // Overall line above the list; the summary row is visible without opening anything.
-  await expect(page.locator('#legal-otherIncome > summary')).toContainText('5 ungeprüft');
-  await expect(page.locator('#legal-jointAssessment > summary')).toContainText('1 ungeprüft');
-  await expect(page.locator('.legal-summary')).toContainText('11 ungeprüft');
+  await expect(page.locator('#legal-otherIncome > summary')).toContainText('1 ungeprüft');
+  await expect(page.locator('#legal-jointAssessment > summary')).toContainText('alle bestätigt');
+  await expect(page.locator('.legal-summary')).toContainText('5 ungeprüft');
   await expect(page.locator('#legal-tax > summary .chip.warn')).toBeVisible();
 });
 
@@ -81,7 +81,7 @@ test('an unverified value is marked at the value itself', async ({ page }) => {
   for (const row of await unverified.all())
     await expect(row.locator('.chip.warn')).toContainText('ungeprüft');
   await page.locator('#legal-depot > summary').click();
-  await expect(page.locator('#legal-depot li.val.unv')).toHaveCount(2);
+  await expect(page.locator('#legal-depot li.val.unv')).toHaveCount(1);
   await expect(page.locator('#legal-pension li.val.unv')).toHaveCount(0);
 });
 
@@ -117,9 +117,7 @@ test('the unverified source of a church tax value is shown in full', async ({ pa
   await page.locator('#legal-tax > summary').click();
   const row = page.locator('#legal-tax li.val', { hasText: 'Kirchensteuer Baden-Württemberg' });
   await row.locator('details.src summary').click();
-  await expect(row.locator('details.src p')).toContainText(
-    'noch nicht gegen eine amtliche Quelle geprüft',
-  );
+  await expect(row.locator('details.src p')).toContainText('Vom Landesgesetz nicht getragen');
   await expect(row).toContainText('8 %');
 });
 
