@@ -1,5 +1,7 @@
 export const glossary = {
   title: 'Begriffe',
+  rowTitle: 'Fachbegriffe erklärt',
+  termCount: (count: number) => `${count} Begriffe`,
   intro:
     'Fachbegriffe, die in der App vorkommen. Im Text sind sie gestrichelt unterstrichen; die Erklärung erscheint beim Darüberfahren oder Fokussieren.',
   terms: {

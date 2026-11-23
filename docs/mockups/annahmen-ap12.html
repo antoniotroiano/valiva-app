@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup AP-12: Annahmen-Seite entschlackt</title>
+    <style>
+      /* Tokens as in apps/web/src/styles/tokens.css (excerpt). Static mockup, only the theme switch uses a script. */
+      :root {
+        color-scheme: light dark;
+        --bg: light-dark(#f3f6f6, #0d1413);
+        --surface: light-dark(#ffffff, #151e1d);
+        --surface-2: light-dark(#eaf0ef, #1e2928);
+        --text: light-dark(#15201e, #e5eeec);
+        --muted: light-dark(#54635f, #9db0ac);
+        --line: light-dark(#dde5e3, #28353a);
+        --field-border: light-dark(#76847f, #6d807c);
+        --accent: light-dark(#0f766e, #4fd1c0);
+        --accent-soft: light-dark(#dff1ee, #17332f);
+        --ok-fg: light-dark(#166534, #7fdca0);
+        --ok-bg: light-dark(#e2f4e7, #12301f);
+        --ok-bd: light-dark(#9fd0ae, #245b3a);
+        --warn-fg: light-dark(#8a4b00, #f0b46a);
+        --warn-bg: light-dark(#fdf1e4, #2e2214);
+        --warn-bd: light-dark(#ecc08a, #6b4a1d);
+      }
+      :root[data-theme='light'] {
+        color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px 16px 48px;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
+      h1.top {
+        font-size: 24px;
+        margin: 0 0 4px;
+      }
+      h2.top {
+        font-size: 18px;
+        margin: 32px 0 8px;
+      }
+      p.lead {
+        color: var(--muted);
+        margin: 0 0 16px;
+        max-width: 75ch;
+      }
+      .bar {
+        display: flex;
+        gap: 8px;
+        margin: 16px 0;
+      }
+      button {
+        font: inherit;
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 8px;
+        border: 1px solid var(--field-border);
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+      }
+      .frame {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--bg);
+        padding: 12px;
+      }
+      .frame.desktop {
+        width: 760px;
+        max-width: 100%;
+      }
+      .frame.phone {
+        width: 375px;
+        max-width: 100%;
+      }
+      .frame > .cap {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        margin: 0 0 8px;
+      }
+      /* page pieces (the real page uses PageShell and the shared classes) */
+      .page h1 {
+        font-size: 28px;
+        line-height: 1.2;
+        margin: 4px 0 4px;
+        letter-spacing: -0.01em;
+      }
+      .frame.phone .page h1 {
+        font-size: 24px;
+      }
+      .page .sub {
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+      .page h2 {
+        font-size: 22px;
+        line-height: 1.3;
+        margin: 24px 0 8px;
+      }
+      .frame.phone .page h2 {
+        font-size: 20px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 12px 16px;
+      }
+      .page .card + .card {
+        margin-top: 12px;
+      }
+      /* "Deine Annahmen": four read-only figures */
+      .figs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px 16px;
+        margin: 8px 0;
+      }
+      .frame.desktop .figs {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .fig {
+        background: var(--surface-2);
+        border-radius: 10px;
+        padding: 8px 12px;
+      }
+      .fig .l {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .fig .v {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .fig .v small {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--muted);
+      }
+      a.link {
+        color: var(--accent);
+        font-weight: 600;
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+      }
+      /* collapsible row, as .dts / .dt in the app */
+      .dts {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+      .dt {
+        border-top: 1px solid var(--line);
+      }
+      .dt:first-child {
+        border-top: 0;
+      }
+      .dt > summary {
+        list-style: none;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        gap: 8px 12px;
+        font-weight: 600;
+        cursor: pointer;
+        flex-wrap: wrap;
+        padding: 4px 0;
+      }
+      .dt > summary::-webkit-details-marker {
+        display: none;
+      }
+      .dt > summary::after {
+        content: '›';
+        transform: rotate(90deg);
+        color: var(--muted);
+        margin-left: 4px;
+      }
+      .dt[open] > summary::after {
+        transform: rotate(-90deg);
+      }
+      .dt > summary .title {
+        flex: 1 1 auto;
+      }
+      .meta {
+        color: var(--muted);
+        font-weight: 400;
+        font-size: 14px;
+      }
+      .dt-body {
+        padding: 0 0 12px;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 8px 0;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.4;
+        padding: 2px 10px;
+        border-radius: 999px;
+        border: 1px solid;
+        white-space: nowrap;
+      }
+      .chip.warn {
+        color: var(--warn-fg);
+        background: var(--warn-bg);
+        border-color: var(--warn-bd);
+      }
+      .chip.ok {
+        color: var(--ok-fg);
+        background: var(--ok-bg);
+        border-color: var(--ok-bd);
+      }
+      .chip svg {
+        width: 14px;
+        height: 14px;
+        flex: none;
+      }
+      /* legal values: one row per value */
+      ul.vals {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      ul.vals > li {
+        border-top: 1px solid var(--line);
+        padding: 8px 0;
+      }
+      ul.vals > li:first-child {
+        border-top: 0;
+      }
+      ul.vals > li.unv {
+        background: var(--warn-bg);
+        border-radius: 10px;
+        border: 1px solid var(--warn-bd);
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .vrow {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 2px 16px;
+        align-items: baseline;
+      }
+      .vrow .n {
+        grid-column: 1;
+      }
+      .vrow .val {
+        grid-column: 2;
+        grid-row: 1;
+        font-weight: 700;
+        text-align: right;
+      }
+      .vrow .since {
+        grid-column: 1;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .vrow .chip {
+        grid-column: 2;
+        justify-self: end;
+      }
+      details.src > summary {
+        list-style: none;
+        cursor: pointer;
+        color: var(--accent);
+        font-size: 14px;
+        font-weight: 600;
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+      details.src > summary::-webkit-details-marker {
+        display: none;
+      }
+      details.src > summary::after {
+        content: ' ▾';
+        margin-left: 4px;
+      }
+      details.src[open] > summary::after {
+        content: ' ▴';
+      }
+      details.src > p {
+        margin: 2px 0 4px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      details.src .date {
+        font-size: 13px;
+      }
+      h3.sub3 {
+        font-size: 16px;
+        margin: 12px 0 0;
+      }
+      .rules ul {
+        margin: 0;
+        padding-left: 20px;
+        font-size: 15px;
+      }
+      .rules li + li {
+        margin-top: 6px;
+      }
+      /* review notes below the frames */
+      table.cmp {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+      }
+      table.cmp th,
+      table.cmp td {
+        padding: 6px 10px;
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid var(--line);
+      }
+      table.cmp thead th {
+        background: var(--surface-2);
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .scroll {
+        overflow-x: auto;
+      }
+      ul.notes {
+        font-size: 15px;
+        margin: 4px 0 0;
+        padding-left: 20px;
+        max-width: 85ch;
+      }
+      ul.notes li + li {
+        margin-top: 6px;
+      }
+      code {
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="top">AP-12: Annahmen-Seite entschlackt</h1>
+    <p class="lead">
+      Vorher: 3.093 Wörter, 10.472 px Desktop, 19.743 px bei 375 px. Nachher (Ziel): Seite beginnt
+      mit „Deine Annahmen“, die gesetzlichen Werte sind je Bereich eingeklappt, die Rechenregeln je
+      Baustein. Alle Zahlen stammen aus <code>config/</code> und sind unverändert. Unten stehen die
+      Fragen, die ich vor dem Bauen beantwortet haben möchte.
+    </p>
+    <div class="bar">
+      <button type="button" id="theme">Hell / Dunkel umschalten</button>
+    </div>
+
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol
+        id="i-warn"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 3 2.5 20h19L12 3z" />
+        <path d="M12 10v4M12 17.2v.1" />
+      </symbol>
+      <symbol
+        id="i-ok"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="9" />
+        <path d="m8 12.5 2.7 2.7L16 9.8" />
+      </symbol>
+    </svg>
+
+    <div class="wrap">
+      <!-- ===================== DESKTOP, collapsed ===================== -->
+      <section class="frame desktop" aria-label="Desktop eingeklappt">
+        <p class="cap">Desktop, eingeklappt (Ausgangszustand)</p>
+        <div class="page">
+          <h1>Annahmen</h1>
+          <p class="sub">
+            Deine Annahmen für die Prognose und die gesetzlichen Werte, mit denen gerechnet wird.
+          </p>
+
+          <h2>Deine Annahmen</h2>
+          <div class="card">
+            <div class="figs">
+              <div class="fig">
+                <div class="l">Inflation</div>
+                <div class="v">2 <small>% p. a.</small></div>
+              </div>
+              <div class="fig">
+                <div class="l">Rendite pessimistisch / neutral / optimistisch</div>
+                <div class="v">3 / 5 / 7 <small>% p. a.</small></div>
+              </div>
+              <div class="fig">
+                <div class="l">Rentenanpassung</div>
+                <div class="v">2,5 <small>% p. a.</small></div>
+              </div>
+              <div class="fig">
+                <div class="l">Rendite in der Rentenphase</div>
+                <div class="v">2 <small>% p. a.</small></div>
+              </div>
+            </div>
+            <p class="hint" style="margin: 0">
+              Das sind deine Annahmen, keine Gesetzeswerte. Sie gelten für alle Bausteine.
+              <a class="link" href="#">Im Profil ändern</a>
+            </p>
+          </div>
+
+          <h2>Gesetzliche Werte</h2>
+          <p class="hint" style="margin-top: 0">
+            84 Werte mit Quelle und Gültigkeit.
+            <span class="chip warn"
+              ><svg><use href="#i-warn" /></svg>5 ungeprüft</span
+            >
+            Ungeprüfte Werte sind nicht gegen amtliche Quellen bestätigt.
+          </p>
+          <div class="card dts">
+            <details class="dt">
+              <summary>
+                <span class="title">Steuern</span><span class="meta">18 Werte</span
+                ><span class="chip warn"
+                  ><svg><use href="#i-warn" /></svg>3 ungeprüft</span
+                >
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Gesetzliche Rente</span><span class="meta">20 Werte</span
+                ><span class="chip ok"
+                  ><svg><use href="#i-ok" /></svg>alle bestätigt</span
+                >
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Sozialversicherung</span><span class="meta">11 Werte</span
+                ><span class="chip ok"
+                  ><svg><use href="#i-ok" /></svg>alle bestätigt</span
+                >
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Altersvorsorgedepot</span><span class="meta">20 Werte</span
+                ><span class="chip warn"
+                  ><svg><use href="#i-warn" /></svg>2 ungeprüft</span
+                >
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Einkommensteuer</span><span class="meta">15 Werte</span
+                ><span class="chip ok"
+                  ><svg><use href="#i-ok" /></svg>alle bestätigt</span
+                >
+              </summary>
+            </details>
+          </div>
+
+          <h2>Rechenregeln</h2>
+          <div class="card dts">
+            <details class="dt">
+              <summary>
+                <span class="title">ETF-Sparplan</span><span class="meta">7 Regeln</span>
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Gesetzliche Rente</span><span class="meta">7 Regeln</span>
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Altersvorsorgedepot</span><span class="meta">8 Regeln</span>
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Betriebliche Altersvorsorge</span
+                ><span class="meta">9 Regeln</span>
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Entnahmestrategien</span><span class="meta">4 Regeln</span>
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Sparziele</span><span class="meta">6 Regeln</span>
+              </summary>
+            </details>
+          </div>
+
+          <h2>Begriffe</h2>
+          <div class="card dts">
+            <details class="dt">
+              <summary>
+                <span class="title">Fachbegriffe erklärt</span><span class="meta">8 Begriffe</span>
+              </summary>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== DESKTOP, Steuern geöffnet ===================== -->
+      <section class="frame desktop" aria-label="Desktop mit aufgeklapptem Bereich">
+        <p class="cap">
+          Desktop, „Steuern“ aufgeklappt, bei zwei Werten die Quelle offen (Auszug, 5 von 18 Werten)
+        </p>
+        <div class="page">
+          <div class="card dts">
+            <details class="dt" open>
+              <summary>
+                <span class="title">Steuern</span><span class="meta">18 Werte</span
+                ><span class="chip warn"
+                  ><svg><use href="#i-warn" /></svg>3 ungeprüft</span
+                >
+              </summary>
+              <div class="dt-body">
+                <ul class="vals">
+                  <li>
+                    <div class="vrow">
+                      <span class="n">Abgeltungsteuer inkl. Soli</span
+                      ><span class="val">26,375 %</span>
+                      <span class="since">gültig ab 01.01.2009</span>
+                    </div>
+                    <details class="src">
+                      <summary>Quelle</summary>
+                      <p>
+                        Abgeltungsteuer 25 % (§32d Abs. 1 EStG) zuzüglich 5,5 % Solidaritätszuschlag
+                        darauf (§4 SolzG 1995); ohne Kirchensteuer
+                        <span class="date">· geprüft 19.11.2026</span>
+                      </p>
+                    </details>
+                  </li>
+                  <li>
+                    <div class="vrow">
+                      <span class="n">Teilfreistellung Aktienfonds</span
+                      ><span class="val">30 %</span>
+                      <span class="since">gültig ab 01.01.2018</span>
+                    </div>
+                    <details class="src"><summary>Quelle</summary></details>
+                  </li>
+                  <li class="unv">
+                    <div class="vrow">
+                      <span class="n"
+                        >Kirchensteuer Baden-Württemberg, Bayern (nur auf Wunsch im Profil)</span
+                      ><span class="val">8 %</span> <span class="since">gültig ab 01.01.2009</span
+                      ><span class="chip warn"
+                        ><svg><use href="#i-warn" /></svg>ungeprüft</span
+                      >
+                    </div>
+                    <details class="src" open>
+                      <summary>Quelle</summary>
+                      <p>
+                        Kirchensteuersatz 8 % in Baden-Württemberg und Bayern (Kirchensteuergesetze
+                        der Länder), noch nicht gegen eine amtliche Quelle geprüft
+                      </p>
+                    </details>
+                  </li>
+                  <li class="unv">
+                    <div class="vrow">
+                      <span class="n"
+                        >Kirchensteuer übrige Bundesländer (nur auf Wunsch im Profil)</span
+                      ><span class="val">9 %</span> <span class="since">gültig ab 01.01.2009</span
+                      ><span class="chip warn"
+                        ><svg><use href="#i-warn" /></svg>ungeprüft</span
+                      >
+                    </div>
+                    <details class="src"><summary>Quelle</summary></details>
+                  </li>
+                </ul>
+                <h3 class="sub3">Basiszins für die Vorabpauschale</h3>
+                <ul class="vals">
+                  <li>
+                    <div class="vrow">
+                      <span class="n">Basiszins 2026</span><span class="val">3,2 %</span
+                      ><span class="since">gültig 01.01.2026 bis 31.12.2026</span>
+                    </div>
+                    <details class="src"><summary>Quelle</summary></details>
+                  </li>
+                  <li class="unv">
+                    <div class="vrow">
+                      <span class="n">Basiszins ab 2027 (Annahme)</span
+                      ><span class="val">3,2 %</span><span class="since">gültig ab 01.01.2027</span
+                      ><span class="chip warn"
+                        ><svg><use href="#i-warn" /></svg>ungeprüft</span
+                      >
+                    </div>
+                    <details class="src"><summary>Quelle</summary></details>
+                  </li>
+                </ul>
+                <p class="hint">Ungeprüfte Werte sind nicht gegen amtliche Quellen bestätigt.</p>
+              </div>
+            </details>
+          </div>
+          <div class="card dts rules" style="margin-top: 12px">
+            <details class="dt" open>
+              <summary>
+                <span class="title">Gesetzliche Rente</span><span class="meta">7 Regeln</span>
+              </summary>
+              <div class="dt-body">
+                <ul>
+                  <li>
+                    Ausgangspunkt ist die Hochrechnung aus der Renteninformation in heutigen Werten,
+                    keine Entgeltpunkte.
+                  </li>
+                  <li>
+                    Rente bei Beginn = Betrag × (1 + Rentenanpassung) hoch Jahre bis Rentenbeginn ×
+                    Faktor.
+                  </li>
+                  <li>… (alle 7 Regeln, Wortlaut unverändert)</li>
+                </ul>
+              </div>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Altersvorsorgedepot</span><span class="meta">8 Regeln</span>
+              </summary>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== PHONE, collapsed ===================== -->
+      <section class="frame phone" aria-label="Smartphone eingeklappt">
+        <p class="cap">375 px, eingeklappt (Ausgangszustand)</p>
+        <div class="page">
+          <h1>Annahmen</h1>
+          <p class="sub">
+            Deine Annahmen für die Prognose und die gesetzlichen Werte, mit denen gerechnet wird.
+          </p>
+          <h2>Deine Annahmen</h2>
+          <div class="card">
+            <div class="figs">
+              <div class="fig">
+                <div class="l">Inflation</div>
+                <div class="v">2 <small>% p. a.</small></div>
+              </div>
+              <div class="fig">
+                <div class="l">Rentenanpassung</div>
+                <div class="v">2,5 <small>% p. a.</small></div>
+              </div>
+              <div class="fig">
+                <div class="l">Rendite in der Rentenphase</div>
+                <div class="v">2 <small>% p. a.</small></div>
+              </div>
+              <div class="fig">
+                <div class="l">Rendite p. a.</div>
+                <div class="v">3 / 5 / 7 <small>%</small></div>
+              </div>
+            </div>
+            <p class="hint" style="margin: 0">
+              Deine Annahmen, keine Gesetzeswerte. <a class="link" href="#">Im Profil ändern</a>
+            </p>
+          </div>
+          <h2>Gesetzliche Werte</h2>
+          <p class="hint" style="margin-top: 0">
+            84 Werte,
+            <span class="chip warn"
+              ><svg><use href="#i-warn" /></svg>5 ungeprüft</span
+            >
+          </p>
+          <div class="card dts">
+            <details class="dt">
+              <summary>
+                <span class="title">Steuern</span
+                ><span class="chip warn"
+                  ><svg><use href="#i-warn" /></svg>3 ungeprüft</span
+                >
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Gesetzliche Rente</span
+                ><span class="chip ok"
+                  ><svg><use href="#i-ok" /></svg>alle bestätigt</span
+                >
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Sozialversicherung</span
+                ><span class="chip ok"
+                  ><svg><use href="#i-ok" /></svg>alle bestätigt</span
+                >
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Altersvorsorgedepot</span
+                ><span class="chip warn"
+                  ><svg><use href="#i-warn" /></svg>2 ungeprüft</span
+                >
+              </summary>
+            </details>
+            <details class="dt">
+              <summary>
+                <span class="title">Einkommensteuer</span
+                ><span class="chip ok"
+                  ><svg><use href="#i-ok" /></svg>alle bestätigt</span
+                >
+              </summary>
+            </details>
+          </div>
+          <h2>Rechenregeln</h2>
+          <div class="card dts">
+            <details class="dt">
+              <summary><span class="title">ETF-Sparplan</span></summary>
+            </details>
+            <details class="dt">
+              <summary><span class="title">Gesetzliche Rente</span></summary>
+            </details>
+            <details class="dt">
+              <summary><span class="title">Altersvorsorgedepot</span></summary>
+            </details>
+            <details class="dt">
+              <summary><span class="title">Betriebliche Altersvorsorge</span></summary>
+            </details>
+            <details class="dt">
+              <summary><span class="title">Entnahmestrategien</span></summary>
+            </details>
+            <details class="dt">
+              <summary><span class="title">Sparziele</span></summary>
+            </details>
+          </div>
+          <h2>Begriffe</h2>
+          <div class="card dts">
+            <details class="dt">
+              <summary><span class="title">Fachbegriffe erklärt</span></summary>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== PHONE, Depot geöffnet ===================== -->
+      <section class="frame phone" aria-label="Smartphone mit aufgeklapptem Bereich">
+        <p class="cap">375 px, „Altersvorsorgedepot“ aufgeklappt (Auszug, 3 von 20 Werten)</p>
+        <div class="page">
+          <div class="card dts">
+            <details class="dt" open>
+              <summary>
+                <span class="title">Altersvorsorgedepot</span
+                ><span class="chip warn"
+                  ><svg><use href="#i-warn" /></svg>2 ungeprüft</span
+                >
+              </summary>
+              <div class="dt-body">
+                <ul class="vals">
+                  <li>
+                    <div class="vrow">
+                      <span class="n">Grundzulage: erste Stufe bis</span
+                      ><span class="val">360 €</span><span class="since">gültig ab 29.05.2026</span>
+                    </div>
+                    <details class="src"><summary>Quelle</summary></details>
+                  </li>
+                  <li class="unv">
+                    <div class="vrow">
+                      <span class="n">Kinderzulage: Kind jünger als</span
+                      ><span class="val">18 Jahre</span>
+                      <span class="since">gültig ab 29.05.2026</span
+                      ><span class="chip warn"
+                        ><svg><use href="#i-warn" /></svg>ungeprüft</span
+                      >
+                    </div>
+                    <details class="src" open>
+                      <summary>Quelle</summary>
+                      <p>
+                        Annahme: Kindergeld meist bis 18, in Ausbildung bis 25; das Modell nutzt 18.
+                        Altersgrenze nicht im Gesetz gelesen
+                      </p>
+                    </details>
+                  </li>
+                  <li>
+                    <div class="vrow">
+                      <span class="n">Einmalauszahlung höchstens</span><span class="val">30 %</span
+                      ><span class="since">gültig ab 29.05.2026</span>
+                    </div>
+                    <details class="src">
+                      <summary>Quelle</summary>
+                      <p>
+                        Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156: Einmalauszahlung bis 30 %
+                        des Kapitals <span class="date">· gelesen 11.11.2026</span>
+                      </p>
+                    </details>
+                  </li>
+                </ul>
+                <p class="hint">Ungeprüfte Werte sind nicht gegen amtliche Quellen bestätigt.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <h2 class="top">Vorher / nachher je Bereich (Werte aus der Konfiguration, nichts entfällt)</h2>
+    <div class="scroll">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th>Bereich</th>
+            <th>Werte</th>
+            <th>ungeprüft</th>
+            <th>Vorher</th>
+            <th>Nachher</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Steuern</td>
+            <td>18 (7 Steuerwerte + 11 Basiszins-Werte)</td>
+            <td>3: Kirchensteuer BW/Bayern, Kirchensteuer übrige, Basiszins ab 2027</td>
+            <td>zwei Tabellen mit Dateinamen im Titel</td>
+            <td>eine Aufklappzeile, Zwischenüberschrift „Basiszins für die Vorabpauschale“</td>
+          </tr>
+          <tr>
+            <td>Gesetzliche Rente</td>
+            <td>20</td>
+            <td>0</td>
+            <td>Tabelle, Titel mit <code>config/pension-de.json</code></td>
+            <td>Aufklappzeile „Gesetzliche Rente“</td>
+          </tr>
+          <tr>
+            <td>Sozialversicherung</td>
+            <td>11</td>
+            <td>0</td>
+            <td>Tabelle mit Dateinamen</td>
+            <td>Aufklappzeile</td>
+          </tr>
+          <tr>
+            <td>Altersvorsorgedepot</td>
+            <td>20</td>
+            <td>2: Kinderzulage „Kind jünger als“, Bonus „Alter unter“</td>
+            <td>Tabelle mit Dateinamen</td>
+            <td>Aufklappzeile</td>
+          </tr>
+          <tr>
+            <td>Einkommensteuer</td>
+            <td>15</td>
+            <td>0</td>
+            <td>Tabelle mit Dateinamen</td>
+            <td>Aufklappzeile</td>
+          </tr>
+          <tr>
+            <td>Rechenregeln</td>
+            <td>6 Listen, 41 Regeln, 831 Wörter</td>
+            <td>–</td>
+            <td>6 Karten untereinander, offen</td>
+            <td>6 Aufklappzeilen, Wortlaut unverändert</td>
+          </tr>
+          <tr>
+            <td>Begriffe</td>
+            <td>8, 191 Wörter</td>
+            <td>–</td>
+            <td>Karte, offen</td>
+            <td>eine Aufklappzeile (siehe Frage 3)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="top">Was sich an den Texten ändert (zur Durchsicht)</h2>
+    <p class="lead">
+      Ich kürze <b>keine</b> Rechenregel, keinen Wertnamen und keinen rechtlichen Hinweis. Geändert
+      werden nur die Überschriften (Dateinamen raus), der Untertitel und das Prüfprotokoll in den
+      Quellenangaben.
+    </p>
+    <div class="scroll">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th>Stelle</th>
+            <th>Vorher</th>
+            <th>Nachher</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Untertitel</td>
+            <td>Gesetzliche Werte und Rechenregeln, die die Prognose verwendet.</td>
+            <td>
+              Deine Annahmen für die Prognose und die gesetzlichen Werte, mit denen gerechnet wird.
+            </td>
+          </tr>
+          <tr>
+            <td>Bereichstitel</td>
+            <td>
+              Steuerwerte (config/tax-de.json) · Basiszins für die Vorabpauschale
+              (config/tax-de.json) · Gesetzliche Rente (config/pension-de.json) · Sozialversicherung
+              (config/social-de.json) · Altersvorsorgedepot (config/altersvorsorge-de.json) ·
+              Einkommensteuer (config/income-tax-de.json)
+            </td>
+            <td>
+              Steuern · Basiszins für die Vorabpauschale · Gesetzliche Rente · Sozialversicherung ·
+              Altersvorsorgedepot · Einkommensteuer
+            </td>
+          </tr>
+          <tr>
+            <td>Spaltenköpfe</td>
+            <td>Wert · Betrag · Gültig ab · Quelle · Status</td>
+            <td>
+              entfallen als Tabelle; je Wert: Name, Betrag, „gültig ab …“, „Quelle“, Abzeichen
+              „ungeprüft“ (bestätigt bekommt kein Abzeichen am Wert, nur in der Kopfzeile des
+              Bereichs)
+            </td>
+          </tr>
+          <tr>
+            <td>Hinweis ungeprüft</td>
+            <td>Ungeprüfte Werte sind nicht gegen amtliche Quellen bestätigt.</td>
+            <td>unverändert, unter jedem Bereich mit ungeprüften Werten und einmal oben</td>
+          </tr>
+          <tr>
+            <td>Quelle, Beispiel 1</td>
+            <td>
+              Teilfreistellung für Aktienfonds 30 % (§20 Abs. 1 InvStG), geprüft am 19.11.2026 auf
+              gesetze-im-internet.de
+            </td>
+            <td>Teilfreistellung für Aktienfonds 30 % (§20 Abs. 1 InvStG) · geprüft 19.11.2026</td>
+          </tr>
+          <tr>
+            <td>Quelle, Beispiel 2</td>
+            <td>
+              EStG §32a (Fassung ab 2026), gesetze-im-internet.de, geprüft am 19.11.2026 -
+              Obergrenze der Tarifzone 2
+            </td>
+            <td>EStG §32a (Fassung ab 2026) – Obergrenze der Tarifzone 2 · geprüft 19.11.2026</td>
+          </tr>
+          <tr>
+            <td>Quelle, Beispiel 3</td>
+            <td>Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156 (am 11.11.2026 gelesen), § 84</td>
+            <td>Altersvorsorgereformgesetz, BGBl. 2026 I Nr. 156, § 84 · gelesen 11.11.2026</td>
+          </tr>
+          <tr>
+            <td>Quelle, Beispiel 4 (kein Datum)</td>
+            <td>Kirchensteuersatz 8 % … noch nicht gegen eine amtliche Quelle geprüft</td>
+            <td>unverändert, ohne Datum</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="top">Fragen vor dem Bauen</h2>
+    <ul class="notes">
+      <li>
+        <b>1. Quellentexte.</b> Das Prüfprotokoll steckt im Freitext <code>sourceDe</code> in
+        <code>config/</code>. Vorschlag: <code>config/</code> bleibt unverändert, ein kleiner Parser
+        in der Oberfläche trennt „geprüft am … auf gesetze-im-internet.de“ und „(am … gelesen)“ ab
+        und zeigt das Datum klein dahinter. Ein Test prüft an allen 84 Werten, dass außer diesem
+        Protokoll nichts verloren geht; passt ein Text nicht zum Muster, bleibt er wortgleich
+        stehen. Folge: Der Hinweis auf die Website <i>gesetze-im-internet.de</i> verschwindet aus
+        der Oberfläche (bleibt in <code>config/</code>). Alternative: Datum als eigenes Feld in
+        <code>config/</code> (ändert Inhalte dort, brauche ich ausdrücklich von dir).
+      </li>
+      <li>
+        <b>2. Ungeprüft eingeklappt.</b> Bereiche starten alle eingeklappt (Höhenziel). „Ungeprüft“
+        bleibt sichtbar als Abzeichen in der Kopfzeile, als Gesamtzeile „5 ungeprüft“ oben und am
+        Wert (Abzeichen plus getönter Rahmen). Alternative: Bereiche mit ungeprüften Werten starten
+        offen (Steuern und Depot, Seite dann über dem Ziel von 2.500 px).
+      </li>
+      <li>
+        <b>3. „Begriffe“ (Glossar).</b> Steht nicht in deinem Umfang, ist aber 191 Wörter lang und
+        würde die Zielhöhe belasten. Vorschlag: eine eingeklappte Zeile am Seitenende, Inhalt
+        unverändert. Alternative: offen lassen.
+      </li>
+      <li>
+        <b>4. „Deine Annahmen“</b> zeigt die vier gemeinsamen Werte des Haushalts (Inflation, drei
+        Renditeszenarien, Rentenanpassung, Rendite in der Rentenphase). Kirchensteuer,
+        Grenzsteuersatz, Sozialabgaben und Krankenversicherung sind personenbezogen und bleiben im
+        Profil. Passt das?
+      </li>
+      <li>
+        <b>5. Schalter/Hinweis</b> bei mehreren Personen: Der Hinweis „gemeinsame Werte“ steht wie
+        heute unter der Überschrift. Keine Änderung.
+      </li>
+    </ul>
+
+    <script>
+      const root = document.documentElement;
+      document.getElementById('theme').addEventListener('click', () => {
+        const dark =
+          getComputedStyle(root).colorScheme.includes('dark') && root.dataset.theme !== 'light';
+        root.dataset.theme = dark ? 'light' : 'dark';
+      });
+    </script>
+  </body>
+</html>

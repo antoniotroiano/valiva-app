@@ -1,0 +1,115 @@
+/* Annahmen page (AP-12): own figures, legal values by area, calculation rules */
+.figs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s2) var(--s4);
+  margin: 0 0 var(--s2);
+}
+.fig {
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: var(--s2) var(--s3);
+}
+.fig dt {
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--muted);
+}
+.fig dd {
+  margin: 0;
+  font-size: var(--fs-h3);
+  font-weight: 700;
+}
+@media (min-width: 900px) {
+  .figs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.legal-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1) var(--s2);
+  margin-top: 0;
+}
+.dt-row .chip {
+  flex: none;
+}
+
+ul.vals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.val {
+  border-top: 1px solid var(--line);
+  padding: var(--s2) 0;
+}
+.val:first-child {
+  border-top: 0;
+}
+.val.unv {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-bd);
+  border-radius: var(--radius-sm);
+  padding: var(--s2) var(--s3);
+  margin: var(--s1) 0;
+}
+.val-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px var(--s4);
+  align-items: baseline;
+}
+.val-amount {
+  grid-column: 2;
+  grid-row: 1;
+  font-weight: 700;
+  text-align: right;
+}
+.val-since {
+  grid-column: 1;
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+.val-row .chip {
+  grid-column: 2;
+  justify-self: end;
+}
+.val.unv .val-since {
+  color: var(--warn-fg);
+}
+details.src > summary {
+  color: var(--accent);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  cursor: pointer;
+  /* stays a list-item: the disclosure marker must remain (checked by e2e/mobile.spec.ts) */
+  min-height: 44px;
+  padding-block: 10px;
+}
+details.src > p {
+  margin: 0 0 var(--s2);
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+.src-date {
+  font-size: var(--fs-caption);
+  white-space: nowrap;
+}
+.part-heading {
+  margin: var(--s4) 0 var(--s1);
+  font-size: var(--fs-text);
+}
+ul.rules {
+  margin: 0;
+  padding-left: var(--s5);
+}
+ul.rules li + li {
+  margin-top: var(--s2);
+}
+
+.asm-section + .asm-section {
+  margin-top: var(--s6);
+}

@@ -136,7 +136,12 @@ export function PersonWorkspace({
           goToAssumptions={() => go('assumptions')}
         />
       )}
-      {page === 'assumptions' && <AssumptionsPage />}
+      {page === 'assumptions' && (
+        <AssumptionsPage
+          assumptions={profile.committed.assumptions}
+          goToProfile={() => go('profile')}
+        />
+      )}
     </PageHeadProvider>
   );
 }

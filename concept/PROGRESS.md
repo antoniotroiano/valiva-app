@@ -299,5 +299,7 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 
 - 2026-11-23 – Review 14 AP-11: Depot, bAV und gesetzliche Rente auf `BlockPage` (Mockup `depot-ap11.html` freigegeben; Wörter 596/728/471 auf 277/260/191; Zulagentabelle am Smartphone als Kartenliste; Hinweise nach Gewicht gebündelt; `MoreInfo` öffnet bei Fehler). Abweichungen: Smartphone-Kennzahlen in 2 Spalten, Eingabegruppen eingeklappt. 594 Unit- und 163 von 164 E2E-Tests grün (Skip-Link-Test unverändert rot); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
+- 2026-11-23 – Review 14 AP-12: Annahmen-Seite zweigeteilt ("Deine Annahmen" nur lesend, "Gesetzliche Werte" je Bereich eingeklappt mit Abzeichen "n ungeprüft"/"alle bestätigt", Regeln und Begriffe eingeklappt; Mockup `annahmen-ap12.html` freigegeben; 3.093 auf 171 Wörter, 10.472 auf 1.350 px). Abweichungen: Prüfprotokoll in Quellentexten per Anzeige-Parser abgetrennt (`config/` unverändert), Gültigkeit als deutsches Datum, Glossar eingeklappt. 5 Werte ungeprüft, alle sichtbar markiert. 611 Unit- und 174 von 175 E2E-Tests grün (Skip-Link-Test unverändert rot); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+
 ## Offene Fragen aus dem Bau
 - (leer)

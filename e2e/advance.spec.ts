@@ -35,8 +35,9 @@ test('advance lump sum is off by default, can be switched on, shows its tax and 
 
 test('the Annahmen page lists the base interest with its status', async ({ page }) => {
   await page.goto('/#assumptions');
-  const table = page.locator('table', { hasText: 'Basiszins 2026' });
-  await expect(table).toContainText('3,2');
-  await expect(table.locator('tr', { hasText: 'Basiszins ab 2027' })).toContainText('ungeprüft');
-  await expect(table.locator('tr', { hasText: 'Basiszins 2026' })).toContainText('bestätigt');
+  await page.locator('#legal-tax > summary').click();
+  const row = (name: string) => page.locator('#legal-tax li.val', { hasText: name });
+  await expect(row('Basiszins 2026')).toContainText('3,2');
+  await expect(row('Basiszins ab 2027')).toContainText('ungeprüft');
+  await expect(row('Basiszins 2026')).not.toContainText('ungeprüft');
 });

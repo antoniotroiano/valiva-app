@@ -1,13 +1,33 @@
 export const assumptions = {
   title: 'Annahmen',
-  subtitle: 'Gesetzliche Werte und Rechenregeln, die die Prognose verwendet.',
-  taxTitle: 'Steuerwerte (config/tax-de.json)',
-  cols: {
-    name: 'Wert',
-    value: 'Betrag',
-    validFrom: 'Gültig ab',
+  subtitle: 'Deine Annahmen für die Prognose und die gesetzlichen Werte, mit denen gerechnet wird.',
+  yours: {
+    title: 'Deine Annahmen',
+    note: 'Das sind deine Annahmen, keine Gesetzeswerte. Sie gelten für alle Bausteine.',
+    change: 'Im Profil ändern',
+    scenariosLabel: 'Rendite pessimistisch / neutral / optimistisch p. a.',
+    scenarios: (pessimistic: string, neutral: string, optimistic: string) =>
+      `${pessimistic} / ${neutral} / ${optimistic} %`,
+  },
+  legal: {
+    title: 'Gesetzliche Werte',
+    intro: (count: number) => `${count} Werte mit Quelle und Gültigkeit.`,
+    valueCount: (count: number) => `${count} Werte`,
+    unverifiedCount: (count: number) => `${count} ungeprüft`,
+    allConfirmed: 'alle bestätigt',
     source: 'Quelle',
-    status: 'Status',
+    validFrom: (from: string) => `gültig ab ${from}`,
+    validRange: (from: string, to: string) => `gültig ${from} bis ${to}`,
+    checkedOn: (date: string) => `geprüft ${date}`,
+    readOn: (date: string) => `gelesen ${date}`,
+    baseInterestHeading: 'Basiszins für die Vorabpauschale',
+    groups: {
+      tax: 'Steuern',
+      pension: 'Gesetzliche Rente',
+      social: 'Sozialversicherung',
+      depot: 'Altersvorsorgedepot',
+      incomeTax: 'Einkommensteuer',
+    },
   },
   names: {
     capitalGainsTaxRate: 'Abgeltungsteuer inkl. Soli',
@@ -20,10 +40,7 @@ export const assumptions = {
     baseEarningsFactor: 'Basisertragsfaktor Vorabpauschale (Anteil des Basiszinses)',
     baseInterestAssumed: 'Basiszins ab 2027 (Annahme)',
   } as Record<string, string>,
-  baseInterestTitle: 'Basiszins für die Vorabpauschale (config/tax-de.json)',
   baseInterestName: (year: number) => `Basiszins ${year}`,
-  pensionTitle: 'Gesetzliche Rente (config/pension-de.json)',
-  socialTitle: 'Sozialversicherung (config/social-de.json)',
   pensionNames: {
     pensionValue: 'Aktueller Rentenwert je Entgeltpunkt',
     averageEarningsYearly: 'Vorläufiges Durchschnittsentgelt pro Jahr',
@@ -46,7 +63,6 @@ export const assumptions = {
     survivorIncomeFreeFactor: 'Witwenrente: Freibetrag als Vielfaches des Rentenwerts',
     survivorIncomeCreditedPercent: 'Witwenrente: Anrechnung des übersteigenden Einkommens',
   },
-  depotTitle: 'Altersvorsorgedepot (config/altersvorsorge-de.json)',
   depotNames: {
     basicGrantTier1Limit: 'Grundzulage: erste Stufe bis',
     basicGrantTier1RatePercent: 'Grundzulage: Satz erste Stufe',
@@ -69,7 +85,6 @@ export const assumptions = {
     guaranteeLevelLowPercent: 'Garantiestufe niedrig',
     guaranteeLevelHighPercent: 'Garantiestufe hoch',
   },
-  incomeTaxTitle: 'Einkommensteuer (config/income-tax-de.json)',
   incomeTaxNames: {
     basicAllowance: 'Grundfreibetrag',
     zone2Limit: 'Tarifzone 2 bis',
@@ -115,6 +130,8 @@ export const assumptions = {
   unverifiedNote: 'Ungeprüfte Werte sind nicht gegen amtliche Quellen bestätigt.',
   configError: 'Für das heutige Datum gibt es keine gültigen Steuerwerte in der Konfiguration.',
   rulesTitle: 'Rechenregeln',
+  ruleCount: (count: number) => `${count} Regeln`,
+  etfRulesTitle: 'ETF-Sparplan',
   rules: [
     'Monatlicher Zeitschritt; die Jahresrendite wird geometrisch auf den Monat umgerechnet.',
     'Nettorendite = Bruttorendite minus TER (Vereinfachung).',
@@ -124,7 +141,7 @@ export const assumptions = {
     'Sonst nicht berücksichtigt: Steuern während der Laufzeit.',
     'Kaufkraft von heute: Endwert nach Steuer geteilt durch (1 + Inflation) hoch Laufzeit.',
   ],
-  pensionRulesTitle: 'Rechenregeln gesetzliche Rente',
+  pensionRulesTitle: 'Gesetzliche Rente',
   pensionRules: [
     'Ausgangspunkt ist die Hochrechnung aus der Renteninformation in heutigen Werten, keine Entgeltpunkte.',
     'Rente bei Beginn = Betrag × (1 + Rentenanpassung) hoch Jahre bis Rentenbeginn × Faktor.',
@@ -134,7 +151,7 @@ export const assumptions = {
     'Krankenversicherung als Pflichtversicherter: halber allgemeiner Satz plus halber Zusatzbeitrag. Pflege: voller Satz, für Kinderlose höher. Bei „Andere“ gilt dein eigener Gesamtsatz.',
     'Nicht berücksichtigt: Änderung der Entgeltpunkte bei früherem oder späterem Beginn, Freibeträge, Kirchensteuer, Erwerbsminderung und Hinterbliebenenrente.',
   ],
-  depotRulesTitle: 'Rechenregeln Altersvorsorgedepot',
+  depotRulesTitle: 'Altersvorsorgedepot',
   depotRules: [
     'Ansparphase monatlich: Beitrag zu Monatsbeginn, dann Wachstum mit der Nettorendite (Szenario minus Kosten). Keine Steuer in der Ansparphase.',
     'Die Ansparphase endet im Dezember vor dem Jahr, in dem du das Auszahlalter erreichst (Geburtsjahr plus Alter).',
@@ -145,7 +162,7 @@ export const assumptions = {
     'Steuer: Auszahlungen sind voll steuerpflichtig mit dem pauschalen Steuersatz im Alter. Kranken- und Pflegeversicherung auf diese Leistung sind bei Pflichtversicherten mit 0 angesetzt (Annahme, nicht bestätigt); bei „Andere“ gilt dein eigener Satz.',
     'Nicht berücksichtigt: Sonderausgabenabzug und Günstigerprüfung, Ehegattenzulage, Wechsel aus Riester-Verträgen, Glide Path, lebenslange Rente und variabler Anteil.',
   ],
-  occupationalRulesTitle: 'Rechenregeln Betriebliche Altersvorsorge',
+  occupationalRulesTitle: 'Betriebliche Altersvorsorge',
   occupationalRules: [
     'Ansparphase monatlich wie beim Altersvorsorgedepot, aber ohne Zulagen: Umwandlung, Zuschuss und Arbeitgeberbeitrag zu Monatsbeginn, dann Wachstum mit der Rendite nach Kosten. Keine Steuer in der Ansparphase.',
     'Die Ansparphase endet im Dezember vor dem Jahr, in dem du das Auszahlalter erreichst (Geburtsjahr plus Alter).',
@@ -164,7 +181,7 @@ export const assumptions = {
     'Das Kapital kann dabei vor dem Endalter aufgebraucht sein (Warnung mit Alter) oder übrig bleiben (Restkapital). Beides ist keine Garantie, sondern eine Rechnung mit den Annahmen oben.',
     'Nicht berechnet sind eine „dynamische“ Entnahme, die sich an der Wertentwicklung orientiert, und das Risiko schlechter Börsenjahre direkt nach Rentenbeginn.',
   ],
-  goalRulesTitle: 'Rechenregeln Sparziele',
+  goalRulesTitle: 'Sparziele',
   goalRules: [
     'Monatlicher Zeitschritt; der Zins pro Jahr wird geometrisch auf den Monat umgerechnet.',
     'Je Monat: Einzahlung zu Monatsbeginn, dann Zins auf den Saldo, dann Steuer auf den Zins.',

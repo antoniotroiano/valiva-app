@@ -43,3 +43,8 @@ export function formatAge(age: number): string {
 export function formatMonth(month: string): string {
   return `${month.slice(5, 7)}/${month.slice(0, 4)}`;
 }
+
+/** `2026-01-01` -> `01.01.2026`. */
+export function formatDate(iso: string): string {
+  return `${iso.slice(8, 10)}.${iso.slice(5, 7)}.${iso.slice(0, 4)}`;
+}

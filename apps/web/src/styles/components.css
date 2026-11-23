@@ -294,6 +294,3 @@ td.left {
 .nowrap {
   white-space: nowrap;
 }
-.assumptions td.left:not(.nowrap) {
-  min-width: 14em;
-}

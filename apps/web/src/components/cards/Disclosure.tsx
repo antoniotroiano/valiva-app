@@ -8,12 +8,15 @@ import { Icon } from '../layout/Icon';
 export function Disclosure({
   title,
   meta,
+  badge,
   defaultOpen,
   id,
   children,
 }: {
   title: string;
   meta?: string;
+  /** Status shown in the row even when it is collapsed (e.g. "2 ungeprüft"); stays visible on a phone. */
+  badge?: ReactNode;
   defaultOpen?: boolean;
   id?: string;
   children?: ReactNode;
@@ -24,6 +27,7 @@ export function Disclosure({
         <span className="dt-row">
           <span>{title}</span>
           {meta && <span className="meta">{meta}</span>}
+          {badge}
           <Icon name="chevron" size="sm" />
         </span>
       </summary>

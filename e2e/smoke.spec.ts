@@ -19,7 +19,12 @@ test('invalid input shows a field error instead of results', async ({ page }) =>
 
 test('assumptions page shows the tax values with status', async ({ page }) => {
   await page.goto('/#assumptions');
-  await expect(page.getByRole('cell', { name: '26,375 %' })).toBeVisible();
+  // Collapsed: the unverified count is already visible in the row.
+  await expect(page.locator('#legal-tax > summary')).toContainText('3 ungeprüft');
+  await page.locator('#legal-tax > summary').click();
+  await expect(
+    page.locator('#legal-tax li.val', { hasText: 'Abgeltungsteuer inkl. Soli' }),
+  ).toContainText('26,375 %');
   await expect(page.getByText('ungeprüft').first()).toBeVisible();
 });
 
@@ -140,10 +145,16 @@ test('occupational pension: conversion leads to net effort and a net pension', a
 
 test('assumptions page lists the pension and social values', async ({ page }) => {
   await page.goto('/#assumptions');
-  await expect(page.getByRole('table', { name: /config\/pension-de\.json/ })).toBeVisible();
-  await expect(page.getByRole('table', { name: /config\/social-de\.json/ })).toBeVisible();
-  await expect(page.getByRole('cell', { name: '14,4 %' })).toBeVisible();
-  await expect(page.getByRole('table', { name: /config\/altersvorsorge-de\.json/ })).toBeVisible();
+  for (const id of ['pension', 'social', 'depot']) {
+    await page.locator(`#legal-${id} > summary`).click();
+    await expect(page.locator(`#legal-${id} li.val`).first()).toBeVisible();
+  }
+  await expect(page.locator('#legal-pension li.val', { hasText: 'Höchstabschlag' })).toContainText(
+    '14,4 %',
+  );
+  await expect(
+    page.locator('#legal-depot li.val', { hasText: 'Grundzulage: Satz erste Stufe' }),
+  ).toContainText('50 %');
 });
 
 test('overview: statutory pension and desired income show a gap', async ({ page }) => {
