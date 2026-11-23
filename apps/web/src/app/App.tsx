@@ -30,7 +30,15 @@ const DataPage = lazy(() =>
 
 type Theme = 'system' | 'light' | 'dark';
 
-const PERSON_PAGES: Page[] = ['profile', 'etf', 'statutory', 'depot', 'occupational', 'goals'];
+const PERSON_PAGES: Page[] = [
+  'profile',
+  'etf',
+  'statutory',
+  'depot',
+  'occupational',
+  'other',
+  'goals',
+];
 
 function pageFromHash(): Page {
   const h = window.location.hash.slice(1) as Page;

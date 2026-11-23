@@ -1,5 +1,6 @@
 import {
   SCENARIO_NAMES,
+  buildOtherIncomeProducts,
   projectDepot,
   projectOccupational,
   projectStatutory,
@@ -25,6 +26,8 @@ import { load as loadGoals } from '../state/useGoals';
 import type { GoalsState } from '../state/useGoals';
 import { load as loadOccupational } from '../state/useOccupational';
 import type { OccupationalState } from '../state/useOccupational';
+import { load as loadOtherIncome } from '../state/useOtherIncome';
+import type { OtherIncomeState } from '../state/useOtherIncome';
 import { load as loadOverview } from '../state/useOverview';
 import type { OverviewState } from '../state/useOverview';
 import { load as loadStatutory } from '../state/useStatutory';
@@ -37,6 +40,7 @@ export type PersonBlocks = {
   statutory: StatutoryState;
   depot: DepotState;
   occupational: OccupationalState;
+  otherIncome: OtherIncomeState;
   overview: OverviewState;
   goals: GoalsState;
 };
@@ -49,6 +53,7 @@ export function loadPersonBlocks(personId: string): PersonBlocks {
     statutory: loadStatutory(personId),
     depot: loadDepot(personId),
     occupational: loadOccupational(personId),
+    otherIncome: loadOtherIncome(personId),
     overview: loadOverview(personId),
     goals: loadGoals(personId),
   };
@@ -95,7 +100,7 @@ export function buildEtfProduct(
   };
 }
 
-/** Builds the overview products of one person from their blocks; the order is ETF, statutory, depot, company. */
+/** Builds the overview products of one person from their blocks; the order is ETF, statutory, depot, company, then the entries of "other income". */
 export function buildPersonProducts(
   blocks: Omit<PersonBlocks, 'goals'>,
   ctxPerson: PersonCtx,
@@ -182,5 +187,6 @@ export function buildPersonProducts(
       payoutEndAge: occEnd,
       outcome: allScenarios((s) => projectOccupational(occInput, ctx, s)),
     },
+    ...buildOtherIncomeProducts(blocks.otherIncome.entries, ctx),
   ];
 }

@@ -123,6 +123,9 @@ body {
 .nl[data-block='bav'] {
   --bk: var(--b-bav);
 }
+.nl[data-block='oth'] {
+  --bk: var(--b-oth);
+}
 .sr-only {
   position: absolute;
   width: 1px;

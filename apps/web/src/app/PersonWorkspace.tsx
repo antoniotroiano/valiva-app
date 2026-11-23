@@ -9,6 +9,7 @@ import { useEtfPlan } from '../state/useEtfPlan';
 import { useGoals } from '../state/useGoals';
 import type { HouseholdApi } from '../state/useHousehold';
 import { useOccupational } from '../state/useOccupational';
+import { useOtherIncome } from '../state/useOtherIncome';
 import { useOverview } from '../state/useOverview';
 import { useProfile } from '../state/useProfile';
 import { useStatutory } from '../state/useStatutory';
@@ -28,6 +29,9 @@ const StatutoryPage = lazy(() =>
 );
 const DepotPage = lazy(() =>
   import('../pages/depot/DepotPage').then((m) => ({ default: m.DepotPage })),
+);
+const OtherIncomePage = lazy(() =>
+  import('../pages/other/OtherIncomePage').then((m) => ({ default: m.OtherIncomePage })),
 );
 const OccupationalPage = lazy(() =>
   import('../pages/occupational/OccupationalPage').then((m) => ({ default: m.OccupationalPage })),
@@ -59,9 +63,19 @@ export function PersonWorkspace({
   const statutory = useStatutory(personId);
   const depot = useDepot(personId);
   const occupational = useOccupational(personId);
+  const otherIncome = useOtherIncome(personId);
   const legal = useMemo(() => currentLegal(), []);
   const plan = useEtfPlan(personId, profile, legal);
-  const retirement = useOverview(personId, profile, legal, plan, statutory, depot, occupational);
+  const retirement = useOverview(
+    personId,
+    profile,
+    legal,
+    plan,
+    statutory,
+    depot,
+    occupational,
+    otherIncome,
+  );
 
   const multi = household.state.household.persons.length > 1;
   const shared = multi && (page === 'profile' || page === 'assumptions');
@@ -137,6 +151,18 @@ export function PersonWorkspace({
           goToAssumptions={() => go('assumptions')}
           nextStep={nextStep}
           otherIncome={retirement.otherIncome?.occupational}
+        />
+      )}
+      {page === 'other' && (
+        <OtherIncomePage
+          api={otherIncome}
+          profile={profile}
+          legal={legal}
+          household={household.state.household}
+          retirement={retirement}
+          goToProfile={() => go('profile')}
+          goToAssumptions={() => go('assumptions')}
+          nextStep={nextStep}
         />
       )}
       {page === 'goals' && (

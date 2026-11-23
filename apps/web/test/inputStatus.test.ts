@@ -4,9 +4,10 @@ import {
   defaultBlock,
   defaultHouseholdState,
 } from '@valiva/core';
-import type { Household, Person } from '@valiva/core';
+import type { Household, OtherIncomeEntry, Person } from '@valiva/core';
 import { describe, expect, it } from 'vitest';
 import { de } from '../src/i18n/de';
+import { newOtherIncomeEntry } from '../src/lib/otherIncomeDefaults';
 import { guidanceFor, personStatus, sameData } from '../src/lib/inputStatus';
 import type { GuidanceInput, PersonStatus } from '../src/lib/inputStatus';
 import { currentLegal } from '../src/lib/legalConfig';
@@ -22,6 +23,7 @@ const blocks = (): PersonBlocks => ({
   statutory: defaultBlock('statutory', CURRENT_YEAR),
   depot: defaultBlock('depot', CURRENT_YEAR),
   occupational: defaultBlock('occupational', CURRENT_YEAR),
+  otherIncome: defaultBlock('otherIncome', CURRENT_YEAR),
   overview: defaultBlock('overview', CURRENT_YEAR),
   goals: defaultBlock('goals', CURRENT_YEAR),
 });
@@ -47,7 +49,27 @@ describe('personStatus', () => {
       statutory: 'empty',
       depot: 'empty',
       occupational: 'empty',
+      other: 'empty',
     });
+  });
+
+  it('marks "other income" done for a valid entry and "with note" for an invalid one', () => {
+    const h = household();
+    const person = { ...h.persons[0]!, birthYear: CURRENT_YEAR - 45 };
+    const entry = (patch: Partial<OtherIncomeEntry>): OtherIncomeEntry => ({
+      ...newOtherIncomeEntry('rent', 'e1', 'Miete', 67),
+      amountMonthly: 500,
+      ...patch,
+    });
+    const status = (e: OtherIncomeEntry) => {
+      const b = blocks();
+      b.otherIncome = { ...b.otherIncome, entries: [e] };
+      return statusOf(h, person, b).other;
+    };
+    expect(status(entry({}))).toBe('done');
+    expect(status(entry({ amountMonthly: -1 }))).toBe('hint');
+    // A note about an unchecked rule alone does not turn the page into "with note".
+    expect(status(entry({ kind: 'riester', taxMode: 'full' }))).toBe('done');
   });
 
   it('marks a page done once something is entered', () => {

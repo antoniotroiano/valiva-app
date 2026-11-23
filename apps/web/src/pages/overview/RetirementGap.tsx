@@ -12,9 +12,10 @@ import { ScrollTable } from '../../components/cards/ScrollTable';
 
 export type BudgetInfo = { budget?: number; otherSavingsMonthly: number };
 
-export function productName(id: OverviewProductId): string {
+/** Name of a product; an entry of "other income" shows its own name when `names` has it. */
+export function productName(id: OverviewProductId, names?: Record<string, string>): string {
   const n = de.overview.retirement.productNames;
-  return id.startsWith('otherIncome:') ? n.otherIncome : n[id as keyof typeof n];
+  return id.startsWith('otherIncome:') ? (names?.[id] ?? n.otherIncome) : n[id as keyof typeof n];
 }
 
 export function GapTile({
@@ -135,9 +136,11 @@ export function Row({
 export function PathTable({
   result,
   scenario,
+  names,
 }: {
   result: OverviewResult;
   scenario: ScenarioName;
+  names?: Record<string, string>;
 }) {
   const t = de.overview.retirement;
   const hasWish = result.desiredMonthlyIncomeToday !== undefined;
@@ -151,7 +154,7 @@ export function PathTable({
             <th scope="col">{t.age}</th>
             {kinds.map((k) => (
               <th key={k.productId} scope="col">
-                {productName(k.productId)}
+                {productName(k.productId, names)}
               </th>
             ))}
             <th scope="col">{t.net}</th>

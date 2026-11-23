@@ -169,6 +169,12 @@ function Result({
     }
   };
   const compositionRows = ['statutory', 'etf', 'retirementDepot', 'occupational'] as const;
+  /** Entries of "other income" and the share paid on to the partner, as one column. */
+  const otherOf = (personId: string) =>
+    Object.entries(chosen.byPersonProduct[personId] ?? {}).reduce(
+      (sum, [id, v]) => (id.startsWith('otherIncome:') ? sum + (v ?? 0) : sum),
+      0,
+    );
 
   return (
     <>
@@ -251,6 +257,7 @@ function Result({
                       {r.productNames[k]}
                     </th>
                   ))}
+                  <th scope="col">{r.productNames.otherIncome}</th>
                   <th scope="col">{t.total}</th>
                 </tr>
               </thead>
@@ -263,6 +270,7 @@ function Result({
                         {formatEur(chosen.byPersonProduct[p.personId]?.[k] ?? 0)}
                       </td>
                     ))}
+                    <td className="num">{formatEur(otherOf(p.personId))}</td>
                     <td className="num">
                       <b>{formatEur(chosen.byPerson[p.personId] ?? 0)}</b>
                     </td>
@@ -421,6 +429,15 @@ function SurvivorNote({
     : undefined;
   const amount = s ? (first?.survivorPension?.[s.survivorId] ?? 0) : 0;
   const reduced = wishPercent !== undefined && wishPercent < 100 && result.persons.length === 2;
+  const passedOn = s ? (first?.survivorOtherIncome?.[s.survivorId] ?? 0) : 0;
+  const deathPoint = s
+    ? result.scenarios[scenario].path.find((p) => p.year === s.deathYear)
+    : undefined;
+  const hasEntries =
+    s !== undefined &&
+    Object.keys(deathPoint?.byPersonProduct[s.deceasedId] ?? {}).some((id) =>
+      id.startsWith('otherIncome:'),
+    );
   if (!s && !reduced) return null;
   return (
     <>
@@ -439,6 +456,10 @@ function SurvivorNote({
           </p>
         </>
       )}
+      {s && passedOn > 0 && (
+        <p>{t.survivorOtherIncomeText(name(s.survivorId), formatEur(passedOn))}</p>
+      )}
+      {hasEntries && <p className="hint">{t.survivorOtherIncomeNote}</p>}
       {reduced && <p>{t.wishReduced(wishPercent)}</p>}
     </>
   );

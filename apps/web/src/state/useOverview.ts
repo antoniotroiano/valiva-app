@@ -23,6 +23,7 @@ import type { ProfileApi } from './useProfile';
 import type { StatutoryApi } from './useStatutory';
 import type { DepotApi } from './useDepot';
 import type { OccupationalApi } from './useOccupational';
+import type { OtherIncomeApi } from './useOtherIncome';
 import type { EtfPlanApi } from './useEtfPlan';
 import { personKey, readBlock } from './personStorage';
 import { safeSetItem } from './storageStatus';
@@ -42,6 +43,7 @@ export function useOverview(
   statutory: StatutoryApi,
   depot: DepotApi,
   occupational: OccupationalApi,
+  entries: OtherIncomeApi,
 ) {
   const [state, setState] = useState<OverviewState>(() => load(personId));
 
@@ -69,6 +71,7 @@ export function useOverview(
       statutory: statutory.committed,
       depot: depot.committed,
       occupational: occupational.committed,
+      otherIncome: entries.committed,
       overview: state,
     };
     const products = buildPersonProducts(blocks, ctxPerson, legal);
@@ -105,6 +108,7 @@ export function useOverview(
     statutory.committed,
     depot.committed,
     occupational.committed,
+    entries.committed,
     state.enabled,
   ]);
 
@@ -132,6 +136,7 @@ export function useOverview(
         statutory: statutory.committed,
         depot: depot.committed,
         occupational: occupational.committed,
+        otherIncome: entries.committed,
         overview: state,
       };
       const products = buildPersonProducts(blocks, { profile: pr, assumptions }, legal);
@@ -146,6 +151,7 @@ export function useOverview(
     statutory.committed,
     depot.committed,
     occupational.committed,
+    entries.committed,
     state.enabled,
   ]);
 
@@ -156,6 +162,11 @@ export function useOverview(
     outcome: computed?.outcome,
     gap: computed?.gap,
     otherIncome: computed?.otherIncome,
+    /** Entries of "other income" (committed values) and their names by product id, for labels. */
+    entries: entries.committed.entries,
+    entryNames: Object.fromEntries(
+      entries.committed.entries.map((e) => [`otherIncome:${e.id}`, e.name]),
+    ) as Record<string, string>,
     /** Profile errors of this person (empty when valid); shown instead of a result. */
     profileIssues: profile.issues.profile,
   };

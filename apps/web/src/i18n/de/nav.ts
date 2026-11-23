@@ -11,6 +11,7 @@ export const nav = {
   statutory: 'Gesetzliche Rente',
   depot: 'Altersvorsorgedepot',
   occupational: 'Betriebliche AV',
+  other: 'Sonstige Einkünfte',
   goals: 'Sparziele',
   assumptions: 'Annahmen',
   data: 'Daten',

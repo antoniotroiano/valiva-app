@@ -58,7 +58,7 @@ localStorage  →  storage hooks (apps/web/src/state/use*.ts, workspaceStore.ts)
                    ↓ pure calls, legal values from config/ via apps/web/src/lib/legalConfig.ts and taxConfig.ts
               core calculations (etf, pension, goals, overview)
                    ↓ results and issues as data
-              pages and charts (apps/web/src/pages, components) → texts from i18n/de/
+              pages and charts (apps/web/src/pages, components; the page `other` lists the entries of the generic block) → texts from i18n/de/
 ```
 
 - Writes go through one central path (`state/storageStatus.ts`), so a failed save is visible.

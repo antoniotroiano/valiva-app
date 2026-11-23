@@ -149,11 +149,12 @@ test.describe('desktop', () => {
 test.describe('phone', () => {
   test.use({ viewport: { width: 375, height: 812 } });
 
-  test('household page stays under 2.400 px with the details collapsed', async ({ page }) => {
+  test('household page stays under 2.550 px with the details collapsed', async ({ page }) => {
     await loadExample(page, 'Paar');
     await page.goto('/#overview');
     await page.getByRole('radio', { name: 'Haushalt' }).click();
     await expect(page.getByRole('region', { name: 'Gesamtsicht Haushalt' })).toBeVisible();
-    expect(await height(page)).toBeLessThan(2400);
+    // 2.400 px before AP-15; the couple example has entries now, so one more note (unchecked rules) shows on top.
+    expect(await height(page)).toBeLessThan(2550);
   });
 });

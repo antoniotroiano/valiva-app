@@ -42,6 +42,10 @@ export const householdView = {
     `Nach dem Tod von ${deceased} (${year}) erhält ${survivor} ab ${year + 1} eine Witwenrente von etwa ${amount} pro Monat (Kaufkraft von heute, nach Anrechnung des eigenen Einkommens).`,
   survivorNone: (deceased: string, year: number, survivor: string) =>
     `Nach dem Tod von ${deceased} (${year}) bleibt für ${survivor} keine Witwenrente übrig, weil das eigene Einkommen sie vollständig aufzehrt.`,
+  survivorOtherIncomeText: (survivor: string, amount: string) =>
+    `Aus den sonstigen Einkünften des Verstorbenen werden ab dem Folgejahr etwa ${amount} pro Monat an ${survivor} weitergezahlt (Kaufkraft von heute, vor Steuer; auf diesen Anteil fallen keine Abgaben an).`,
+  survivorOtherIncomeNote:
+    'Einträge unter "Sonstige Einkünfte" zahlen nur dann an den Partner weiter, wenn dort eine Weiterzahlung eingetragen ist. Sonst endet die Zahlung mit dem Tod, und die Lücke danach ist eher zu groß.',
   survivorLegend: (name: string) => `Witwenrente für ${name}`,
   wishReduced: (percent: number) =>
     `Nach dem ersten Todesfall zählen nur noch ${percent} % des Wunscheinkommens.`,

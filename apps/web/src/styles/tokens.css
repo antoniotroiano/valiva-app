@@ -30,6 +30,7 @@
   --b-stat: light-dark(#475569, #a9b8b4);
   --b-dep: light-dark(#a21caf, #f08fd0);
   --b-bav: light-dark(#b45309, #e0a24a);
+  --b-oth: light-dark(#47750a, #a3d46b);
   --on-block: light-dark(#ffffff, #0d1413);
   /* Status chips and notices: text, fill, border. Always together with an icon and text. */
   --ok-fg: light-dark(#166534, #7fdca0);

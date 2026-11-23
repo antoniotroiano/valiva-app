@@ -20,7 +20,7 @@ type RawValue = { status: string; sourceDe: string };
 const configDir = join(__dirname, '../../../config');
 const readJson = (file: string) => JSON.parse(readFileSync(join(configDir, file), 'utf8'));
 
-/** Every value of the five config files, read straight from the JSON (not through the page code). */
+/** Every value of the six config files, read straight from the JSON (not through the page code). */
 function rawValues(): Record<string, RawValue[]> {
   const tax = readJson('tax-de.json');
   const advance = tax.advanceLumpSum;
@@ -35,6 +35,7 @@ function rawValues(): Record<string, RawValue[]> {
     social: Object.values<RawValue>(readJson('social-de.json').values),
     depot: Object.values<RawValue>(readJson('altersvorsorge-de.json').values),
     incomeTax: Object.values<RawValue>(readJson('income-tax-de.json').values),
+    otherIncome: Object.values<RawValue>(readJson('other-income-de.json').values),
   };
 }
 
@@ -42,10 +43,17 @@ describe('legal groups', () => {
   const raw = rawValues();
   const groups = legalGroups();
 
-  it('lists every value of every config file, in the five areas', () => {
-    expect(groups.map((g) => g.id)).toEqual(['tax', 'pension', 'social', 'depot', 'incomeTax']);
+  it('lists every value of every config file, in the six areas', () => {
+    expect(groups.map((g) => g.id)).toEqual([
+      'tax',
+      'pension',
+      'social',
+      'depot',
+      'incomeTax',
+      'otherIncome',
+    ]);
     for (const g of groups) expect(groupItems(g)).toHaveLength(raw[g.id]!.length);
-    expect(groups.reduce((n, g) => n + groupItems(g).length, 0)).toBe(84);
+    expect(groups.reduce((n, g) => n + groupItems(g).length, 0)).toBe(89);
   });
 
   it('counts the unverified values per area as the config says', () => {
@@ -103,8 +111,8 @@ describe('legal values markup', () => {
   });
 
   it('renders one row with a source per value', () => {
-    expect((html.match(/<li class="val/g) ?? []).length).toBe(84);
-    expect((html.match(/<details class="src"/g) ?? []).length).toBe(84);
+    expect((html.match(/<li class="val/g) ?? []).length).toBe(89);
+    expect((html.match(/<details class="src"/g) ?? []).length).toBe(89);
   });
 
   it('shows the overall unverified count above the areas', () => {
@@ -147,6 +155,7 @@ describe('the whole page', () => {
       a.pensionRules,
       a.depotRules,
       a.occupationalRules,
+      a.otherIncomeRules,
       a.withdrawalRules,
       a.goalRules,
     ];

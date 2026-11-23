@@ -1,14 +1,20 @@
 import type { LegalValue } from '@valiva/core';
 import { de } from '../i18n/de';
 import { taxConfig } from './taxConfig';
-import { depotConfig, incomeTaxConfig, pensionConfig, socialConfig } from './legalConfig';
+import {
+  depotConfig,
+  incomeTaxConfig,
+  otherIncomeConfig,
+  pensionConfig,
+  socialConfig,
+} from './legalConfig';
 
 /** One legal value with its display name, as listed on the Annahmen page. */
 export type LegalItem = { key: string; name: string; value: LegalValue };
 
 /** A group of values; `parts` lets a group carry a sub-heading (tax: base interest). */
 export type LegalGroup = {
-  id: 'tax' | 'pension' | 'social' | 'depot' | 'incomeTax';
+  id: 'tax' | 'pension' | 'social' | 'depot' | 'incomeTax' | 'otherIncome';
   title: string;
   parts: { heading?: string; items: LegalItem[] }[];
 };
@@ -104,6 +110,19 @@ export function legalGroups(): LegalGroup[] {
             Object.keys(incomeTaxConfig.values),
             incomeTaxConfig.values,
             a.incomeTaxNames,
+          ),
+        },
+      ],
+    },
+    {
+      id: 'otherIncome',
+      title: g.otherIncome,
+      parts: [
+        {
+          items: items(
+            Object.keys(otherIncomeConfig.values),
+            otherIncomeConfig.values,
+            a.otherIncomeNames,
           ),
         },
       ],

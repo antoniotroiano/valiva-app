@@ -21,7 +21,15 @@ export function OverviewPage({
   budget: BudgetInfo;
   goTo: (
     page:
-      'profile' | 'etf' | 'statutory' | 'depot' | 'occupational' | 'assumptions' | 'data' | 'goals',
+      | 'profile'
+      | 'etf'
+      | 'statutory'
+      | 'depot'
+      | 'occupational'
+      | 'other'
+      | 'assumptions'
+      | 'data'
+      | 'goals',
   ) => void;
   wish: number | undefined;
   setWish: (value: number | undefined) => void;

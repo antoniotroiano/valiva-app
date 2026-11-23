@@ -59,7 +59,7 @@ describe.each(SIDES)('token contrast (%#) %s', (side) => {
   });
 
   it('building-block colours reach 3:1 on card and track, labels 4.5:1 on the block', () => {
-    for (const b of ['b-etf', 'b-stat', 'b-dep', 'b-bav']) {
+    for (const b of ['b-etf', 'b-stat', 'b-dep', 'b-bav', 'b-oth']) {
       check(b, 'surface', 3);
       check(b, 'surface-2', 3);
       check('on-block', b, 4.5);

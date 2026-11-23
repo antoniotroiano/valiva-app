@@ -19,7 +19,7 @@ export const pensionConfig = pensionRaw as unknown as LegalConfig<PensionKey>;
 export const socialConfig = socialRaw as unknown as LegalConfig<SocialKey>;
 export const depotConfig = depotRaw as unknown as LegalConfig<DepotKey>;
 export const incomeTaxConfig = incomeTaxRaw as unknown as LegalConfig<IncomeTaxKey>;
-/** Rule assumptions of the other-income block (all unverified). Not yet listed on the Annahmen page (AP-15 part B). */
+/** Rule assumptions of the other-income block (all unverified). */
 export const otherIncomeConfig = otherIncomeRaw as unknown as LegalConfig<OtherIncomeKey>;
 
 /** Legal values valid today. The core does not read files, so the app resolves and passes them in. */

@@ -4,7 +4,7 @@ import { loadExample } from './helpers';
 // AP-12: the Annahmen page starts with the own assumptions, lists legal values by area (collapsed), keeps
 // unverified values visible and shows no developer path.
 
-const AREAS = ['tax', 'pension', 'social', 'depot', 'incomeTax'] as const;
+const AREAS = ['tax', 'pension', 'social', 'depot', 'incomeTax', 'otherIncome'] as const;
 
 const bodyWords = (page: Page) =>
   page.evaluate(
@@ -48,7 +48,7 @@ test('the shown own assumptions follow the profile', async ({ page }) => {
 test('unverified values stay visible while every area is collapsed', async ({ page }) => {
   await page.goto('/#assumptions');
   const rows = page.locator('#legal-values ~ .dts > details.dt');
-  await expect(rows).toHaveCount(5);
+  await expect(rows).toHaveCount(6);
   for (const id of AREAS) {
     await expect(page.locator(`#legal-${id}`)).not.toHaveAttribute('open', /.*/);
   }
@@ -59,7 +59,8 @@ test('unverified values stay visible while every area is collapsed', async ({ pa
     await expect(page.locator(`#legal-${id} > summary`)).not.toContainText('ungeprüft');
   }
   // Overall line above the list; the summary row is visible without opening anything.
-  await expect(page.locator('.legal-summary')).toContainText('5 ungeprüft');
+  await expect(page.locator('#legal-otherIncome > summary')).toContainText('5 ungeprüft');
+  await expect(page.locator('.legal-summary')).toContainText('10 ungeprüft');
   await expect(page.locator('#legal-tax > summary .chip.warn')).toBeVisible();
 });
 
@@ -77,7 +78,7 @@ test('an unverified value is marked at the value itself', async ({ page }) => {
 
 test('every value stays reachable with its validity and its source', async ({ page }) => {
   await page.goto('/#assumptions');
-  const expected = { tax: 18, pension: 20, social: 11, depot: 20, incomeTax: 15 };
+  const expected = { tax: 18, pension: 20, social: 11, depot: 20, incomeTax: 15, otherIncome: 5 };
   for (const id of AREAS) {
     await page.locator(`#legal-${id} > summary`).click();
     const rows = page.locator(`#legal-${id} li.val`);
@@ -118,7 +119,7 @@ test('no config path and no review log in the interface', async ({ page }) => {
 test('calculation rules sit in one collapsed row per building block', async ({ page }) => {
   await page.goto('/#assumptions');
   const rows = page.locator('#calc-rules ~ .dts > details.dt');
-  await expect(rows).toHaveCount(6);
+  await expect(rows).toHaveCount(7);
   await expect(page.locator('#rules-depot')).not.toHaveAttribute('open', /.*/);
   await page.locator('#rules-depot > summary').click();
   await expect(page.locator('#rules-depot')).toContainText('Zulagen je Kalenderjahr');

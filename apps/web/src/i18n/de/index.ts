@@ -13,6 +13,7 @@ import { profile } from './profile';
 import { statutory } from './statutory';
 import { depot } from './depot';
 import { occupational } from './occupational';
+import { otherIncome } from './otherIncome';
 import { glossary } from './glossary';
 import { assumptions } from './assumptions';
 import { issues } from './issues';
@@ -34,6 +35,7 @@ export const de = {
   statutory,
   depot,
   occupational,
+  otherIncome,
   glossary,
   assumptions,
   issues,

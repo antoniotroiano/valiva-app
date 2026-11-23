@@ -27,7 +27,9 @@ export const assumptions = {
       social: 'Sozialversicherung',
       depot: 'Altersvorsorgedepot',
       incomeTax: 'Einkommensteuer',
+      otherIncome: 'Sonstige Einkünfte (Regelannahmen)',
     },
+    ruleApplies: 'wird angenommen',
   },
   names: {
     capitalGainsTaxRate: 'Abgeltungsteuer inkl. Soli',
@@ -84,6 +86,15 @@ export const assumptions = {
     standardCostCapPercent: 'Kostendeckel Standarddepot',
     guaranteeLevelLowPercent: 'Garantiestufe niedrig',
     guaranteeLevelHighPercent: 'Garantiestufe hoch',
+  },
+  /** Rule assumptions of the other-income block (`config/other-income-de.json`); shown as "wird angenommen". */
+  otherIncomeNames: {
+    basisPensionTaxShare: 'Basisrente wird wie die gesetzliche Rente besteuert',
+    privateAnnuityEarningsShare: 'Private Leibrente: Ertragsanteil (Anteil trägst du selbst ein)',
+    riesterFullyTaxable: 'Riester-Leistungen sind voll steuerpflichtig',
+    sharedBenefitThreshold: 'Freibetrag und Freigrenze gelten gemeinsam für alle Versorgungsbezüge',
+    survivorIncomeCredited:
+      'Eigene Renten, Pensionen und Mieten werden auf die Witwenrente angerechnet',
   },
   incomeTaxNames: {
     basicAllowance: 'Grundfreibetrag',
@@ -173,6 +184,17 @@ export const assumptions = {
     'Steuer: Die Rente ist voll steuerpflichtig mit dem pauschalen Steuersatz im Alter.',
     'Krankenversicherung als Pflichtversicherter: voller Satz (allgemein plus Zusatzbeitrag) auf den Teil über dem Freibetrag. Pflege: voller Satz auf die gesamte Rente, sobald sie die Freigrenze überschreitet, sonst 0. Freibetrag und Freigrenze werden mit der Inflation fortgeschrieben (Annahme, nicht bestätigt). Bei „Andere“ gilt dein eigener Satz auf die gesamte Rente.',
     'Nicht berücksichtigt: Kapitalauszahlung mit Verbeitragung über 120 Monate, Doppelverbeitragung, Direktzusage, Unterstützungskasse und lebenslange Rente.',
+  ],
+  otherIncomeRulesTitle: 'Sonstige Einkünfte',
+  otherIncomeRules: [
+    'Ein Eintrag ist ein Betrag pro Monat, den du selbst einträgst. Die App prognostiziert kein Kapital und hat keine Renditeszenarien dafür, alle drei Szenarien sind gleich.',
+    'Kaufkraft heute: Der Betrag wächst bis zum Beginn mit der Anpassung. Nominal bei Beginn: Der Betrag gilt erst ab dem Beginn und wird dann mit der Anpassung fortgeschrieben. Die Kaufkraft rechnet mit der Inflation zurück.',
+    'Die Einkommensteuer wird auf die Summe aller Einkünfte einer Person berechnet (gesetzliche Rente, Betriebsrente, Depot, Einträge), nicht je Eintrag. Jeder Eintrag trägt seinen Anteil.',
+    'Besteuerung: nicht, voll, ein Anteil in Prozent oder wie die gesetzliche Rente (Besteuerungsanteil nach Beginnjahr, der steuerfreie Teil bleibt fest).',
+    'Abgaben "wie bei der Betriebsrente": Freibetrag und Freigrenze gelten gemeinsam mit der Betriebsrente und werden nach Brutto aufgeteilt. Die Freigrenze der Pflegeversicherung gilt ganz oder gar nicht.',
+    'Weiterzahlung an den Partner: nur bei zwei Personen und eingeschalteter Hinterbliebenenrente. Der Anteil wird bei der überlebenden Person besteuert, ohne Abgaben, und zählt als anrechenbares Einkommen bei der Witwenrente.',
+    'Nicht berücksichtigt: Versorgungsfreibetrag bei Pensionen, Ertragsanteil-Tabelle, Sparerpauschbetrag, Werbungskosten, Kapitalabfindung, Garantien und Überschüsse.',
+    'Die zugrunde liegenden Regelannahmen sind ungeprüft und stehen unter Rechtswerte.',
   ],
   withdrawalRulesTitle: 'Entnahmestrategien',
   withdrawalRules: [

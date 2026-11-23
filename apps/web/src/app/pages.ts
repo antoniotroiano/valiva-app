@@ -6,6 +6,7 @@ export type Page =
   | 'statutory'
   | 'depot'
   | 'occupational'
+  | 'other'
   | 'goals'
   | 'assumptions'
   | 'data';
@@ -18,6 +19,7 @@ export const PAGES: Page[] = [
   'statutory',
   'depot',
   'occupational',
+  'other',
   'goals',
   'assumptions',
   'data',
@@ -30,7 +32,10 @@ export const NAV: NavEntry[] = [
   'household',
   {
     group: 'inputs',
-    items: ['profile', { group: 'blocks', items: ['etf', 'statutory', 'depot', 'occupational'] }],
+    items: [
+      'profile',
+      { group: 'blocks', items: ['etf', 'statutory', 'depot', 'occupational', 'other'] },
+    ],
   },
   { group: 'saving', items: ['goals'] },
   'assumptions',
@@ -44,13 +49,15 @@ export const INPUT_PAGES: Page[] = [
   'statutory',
   'depot',
   'occupational',
+  'other',
   'goals',
 ];
 
 /** Colour group of a building-block page (sidebar dot, see docs/design.md). */
-export const BLOCK_OF: Partial<Record<Page, 'etf' | 'stat' | 'dep' | 'bav'>> = {
+export const BLOCK_OF: Partial<Record<Page, 'etf' | 'stat' | 'dep' | 'bav' | 'oth'>> = {
   etf: 'etf',
   statutory: 'stat',
   depot: 'dep',
   occupational: 'bav',
+  other: 'oth',
 };

@@ -53,6 +53,10 @@ export const overview = {
       occupational: 'Betriebliche AV',
       otherIncome: 'Sonstige Einkünfte',
     },
+    otherIncomeChip: (counted: number, total: number) =>
+      `Sonstige Einkünfte: ${total} ${total === 1 ? 'Eintrag' : 'Einträge'}${
+        counted < total ? `, davon ${counted} gezählt` : ''
+      }`,
     status: {
       included: (start?: number) => `zählt ab Alter ${start}`,
       later: (start?: number) => `zahlt erst ab Alter ${start}, im Zielalter noch nicht gezählt`,

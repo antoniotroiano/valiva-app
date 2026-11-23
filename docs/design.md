@@ -20,7 +20,7 @@ Each colour is defined once as `light-dark(light, dark)`; `color-scheme` (system
 | `--bg`, `--surface`, `--surface-2`, `--nav-bg`                              | page, card, hover/track, sidebar                                    |
 | `--text`, `--muted`, `--line`, `--field-border`                             | text, secondary text, decoration only, inputs/segments/chart axes   |
 | `--accent`, `--accent-soft`, `--on-accent`, `--focus`                       | primary colour, its tint, text on it, focus ring                    |
-| `--b-etf`, `--b-stat`, `--b-dep`, `--b-bav`, `--on-block`                   | building blocks (charts, sidebar dot, chips) and label text on them |
+| `--b-etf`, `--b-stat`, `--b-dep`, `--b-bav`, `--b-oth`, `--on-block`        | building blocks (charts, sidebar dot, chips) and label text on them |
 | `--ok-*`, `--hint-*`, `--warn-*`, `--bad-*` (`-fg/-bg/-bd`)                 | status chips and notices                                            |
 | `--c-contrib`, `--c-pess`, `--c-neutral`, `--c-opt`, `--wish`               | chart series (scenarios also by line style) and the wish line       |
 | `--danger`, `--ok`                                                          | error text, positive text (older tokens, still used)                |

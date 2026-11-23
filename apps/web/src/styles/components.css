@@ -240,6 +240,9 @@ td.left {
   .sheet li a[data-block='bav'] {
     --bk: var(--b-bav);
   }
+  .sheet li a[data-block='oth'] {
+    --bk: var(--b-oth);
+  }
   .sheet li a[aria-current='page'] {
     background: var(--accent-soft);
     color: var(--accent);

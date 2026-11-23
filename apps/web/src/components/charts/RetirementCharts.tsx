@@ -1,4 +1,9 @@
-import type { OverviewProductKind, OverviewResult, ScenarioName } from '@valiva/core';
+import type {
+  OverviewProductId,
+  OverviewProductKind,
+  OverviewResult,
+  ScenarioName,
+} from '@valiva/core';
 import { SCENARIO_NAMES } from '@valiva/core';
 import {
   Area,
@@ -16,8 +21,19 @@ import { formatEur } from '../../lib/format';
 import { de } from '../../i18n/de';
 import { AXIS, BLOCK_COLOR, SEGMENT_GAP, TOOLTIP_STYLE, segmentLabel } from './chartTheme';
 
-const KINDS: OverviewProductKind[] = ['statutory', 'etf', 'retirementDepot', 'occupational'];
+/** The entries of "other income" are one segment in charts; the table lists them one by one. */
+type Segment = OverviewProductKind | 'otherIncome';
+const KINDS: Segment[] = ['statutory', 'etf', 'retirementDepot', 'occupational', 'otherIncome'];
 const COLOR = BLOCK_COLOR;
+
+/** Amount of a segment in a per-product map: the entries of "other income" are summed. */
+function segmentAmount(byProduct: Partial<Record<OverviewProductId, number>>, k: Segment): number {
+  if (k !== 'otherIncome') return byProduct[k] ?? 0;
+  return Object.entries(byProduct).reduce(
+    (sum, [id, v]) => (id.startsWith('otherIncome:') ? sum + (v ?? 0) : sum),
+    0,
+  );
+}
 
 export function ScenarioSwitch({
   value,
@@ -81,9 +97,11 @@ export function CompositionChart({
   scenario: ScenarioName;
 }) {
   const t = de.overview.retirement;
-  const amounts = result.scenarios[scenario].snapshot.byProduct;
+  const amounts = Object.fromEntries(
+    result.scenarios[scenario].snapshot.byProduct.map((a) => [a.productId, a.netReal]),
+  ) as Partial<Record<OverviewProductId, number>>;
   const row: Record<string, number | string> = { name: 'net' };
-  for (const k of KINDS) row[k] = amounts.find((a) => a.productId === k)?.netReal ?? 0;
+  for (const k of KINDS) row[k] = segmentAmount(amounts, k);
   const alt = t.charts.compositionAlt(
     KINDS.filter((k) => (row[k] as number) > 0).map(
       (k) => `${t.productNames[k]} ${formatEur(row[k] as number)}`,
@@ -106,7 +124,7 @@ export function CompositionChart({
             <XAxis type="number" hide domain={[0, 'dataMax']} />
             <YAxis type="category" dataKey="name" hide />
             <Tooltip
-              formatter={(v, n) => [formatEur(Number(v)), t.productNames[n as OverviewProductKind]]}
+              formatter={(v, n) => [formatEur(Number(v)), t.productNames[n as Segment]]}
               contentStyle={TOOLTIP_STYLE}
             />
             {KINDS.map((k) => (
@@ -132,7 +150,7 @@ function Legend({
   kinds,
   amounts,
 }: {
-  kinds: OverviewProductKind[];
+  kinds: Segment[];
   amounts?: Record<string, number | string>;
 }) {
   const t = de.overview.retirement;
@@ -159,10 +177,10 @@ export function PathChart({
   const t = de.overview.retirement;
   const desired = result.desiredMonthlyIncomeToday;
   const path = result.scenarios[scenario].path;
-  const used = KINDS.filter((k) => path.some((p) => (p.byProduct[k] ?? 0) > 0));
+  const used = KINDS.filter((k) => path.some((p) => segmentAmount(p.byProduct, k) > 0));
   const data = path.map((p) => ({
     age: p.age,
-    ...Object.fromEntries(used.map((k) => [k, p.byProduct[k] ?? 0])),
+    ...Object.fromEntries(used.map((k) => [k, segmentAmount(p.byProduct, k)])),
   }));
   const end = result.firstPayoutEndAge;
   return (
@@ -183,7 +201,7 @@ export function PathChart({
               domain={[0, (max: number) => Math.max(max, desired ?? 0) * 1.05]}
             />
             <Tooltip
-              formatter={(v, n) => [formatEur(Number(v)), t.productNames[n as OverviewProductKind]]}
+              formatter={(v, n) => [formatEur(Number(v)), t.productNames[n as Segment]]}
               labelFormatter={(l) => `${t.age} ${l}`}
               contentStyle={TOOLTIP_STYLE}
             />

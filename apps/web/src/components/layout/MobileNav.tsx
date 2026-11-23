@@ -10,7 +10,7 @@ type Theme = 'system' | 'light' | 'dark';
 type Sheet = 'inputs' | 'more';
 
 /** Pages reachable from the "Inputs" sheet; the rest of the sheet pages live under "More". */
-const INPUT_PAGES = ['profile', 'etf', 'statutory', 'depot', 'occupational', 'goals'];
+const INPUT_PAGES = ['profile', 'etf', 'statutory', 'depot', 'occupational', 'other', 'goals'];
 const MORE_PAGES = ['assumptions', 'data'];
 
 function TabIcon({ name }: { name: IconName }) {
@@ -149,7 +149,9 @@ export function MobileNav({
             {de.nav.blocks}
           </p>
           <ul aria-labelledby="sheet-blocks">
-            {['etf', 'statutory', 'depot', 'occupational'].map((p) => sheetLink('inputs', p))}
+            {['etf', 'statutory', 'depot', 'occupational', 'other'].map((p) =>
+              sheetLink('inputs', p),
+            )}
           </ul>
           <p className="sheet-group" id="sheet-saving">
             {de.nav.saving}

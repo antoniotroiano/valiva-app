@@ -1,6 +1,6 @@
 # Valiva
 
-Private planner for retirement and savings: ETF savings plans, statutory pension, company pension (bAV), retirement depot (Altersvorsorgedepot from 2027) and short-term savings goals, for one person or a household. It shows what you can expect in retirement, how big the gap to your wish income is, and which extra ETF rate would close it.
+Private planner for retirement and savings: ETF savings plans, statutory pension, company pension (bAV), retirement depot (Altersvorsorgedepot from 2027), other income in retirement (existing Riester or private annuities, basic pension, civil service pension, rent) and short-term savings goals, for one person or a household. It shows what you can expect in retirement, how big the gap to your wish income is, and which extra ETF rate would close it.
 
 > **Disclaimer:** This app gives no investment or tax advice. Projections are not a guarantee. Legal values in `config/` may be marked `unverified`; check them against official sources before relying on them.
 
@@ -50,7 +50,7 @@ Playwright uses the locally installed Google Chrome. Without Chrome (for example
 
 ## Assumptions
 
-The calculation rules by feature (ETF plan, savings goals, statutory pension, retirement depot, bAV, overall view, household, workspace file) are in [`docs/assumptions.md`](docs/assumptions.md). All sample data is invented.
+The calculation rules by feature (ETF plan, savings goals, statutory pension, retirement depot, bAV, other income, overall view, household, workspace file) are in [`docs/assumptions.md`](docs/assumptions.md). All sample data is invented.
 
 ## License
 

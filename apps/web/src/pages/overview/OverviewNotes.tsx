@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { warningText, warningWeight } from '../../lib/warningText';
+import { mergeOtherIncomeRules, warningText, warningWeight } from '../../lib/warningText';
 import { withTerms } from '../../components/cards/Terms';
 import { Disclosure } from '../../components/cards/Disclosure';
 import { Icon } from '../../components/layout/Icon';
@@ -7,7 +7,7 @@ import { de } from '../../i18n/de';
 
 /** Splits core warning codes by weight: important ones go above the page, the rest is collapsed. */
 export function splitWarnings(codes: string[]): { important: string[]; info: string[] } {
-  const unique = [...new Set(codes)];
+  const unique = mergeOtherIncomeRules([...new Set(codes)]);
   return {
     important: unique.filter((c) => warningWeight(c) === 'important'),
     info: unique.filter((c) => warningWeight(c) === 'info'),

@@ -15,11 +15,12 @@ export const TOOLTIP_STYLE = {
 } as const;
 
 /** One fixed colour per building block (same everywhere: sidebar dot, chips, charts). */
-export const BLOCK_COLOR: Record<OverviewProductKind, string> = {
+export const BLOCK_COLOR: Record<OverviewProductKind | 'otherIncome', string> = {
   statutory: 'var(--b-stat)',
   etf: 'var(--b-etf)',
   retirementDepot: 'var(--b-dep)',
   occupational: 'var(--b-bav)',
+  otherIncome: 'var(--b-oth)',
 };
 
 /** Segments are separated by a 2 px gap in card colour (colours alone cannot be told apart). */

@@ -25,9 +25,10 @@ import { Disclosure } from '../../components/cards/Disclosure';
 import { EmptyState } from '../../components/cards/EmptyState';
 import { ScrollTable } from '../../components/cards/ScrollTable';
 import { GapTile, Row, PathTable } from './RetirementGap';
+import { EntriesTable } from '../other/OtherIncomeResults';
 import { ImportantNotes, InfoNotes, TopNotice, splitWarnings } from './OverviewNotes';
 
-type Target = 'profile' | 'etf' | 'statutory' | 'depot' | 'occupational' | 'assumptions';
+type Target = 'profile' | 'etf' | 'statutory' | 'depot' | 'occupational' | 'other' | 'assumptions';
 
 const PAGE_OF: Record<OverviewBlock, Target> = {
   etf: 'etf',
@@ -36,9 +37,9 @@ const PAGE_OF: Record<OverviewBlock, Target> = {
   occupational: 'occupational',
 };
 
-/** Page of a product; entries of the generic block have no page yet (AP-15 part B). */
-const pageOf = (id: OverviewProductId): Target | undefined =>
-  id.startsWith('otherIncome:') ? undefined : id === 'retirementDepot' ? 'depot' : (id as Target);
+/** Page of a product; all entries of the generic block share the page "other". */
+const pageOf = (id: OverviewProductId): Target =>
+  id.startsWith('otherIncome:') ? 'other' : id === 'retirementDepot' ? 'depot' : (id as Target);
 
 const warningsOf = (result: OverviewResult) =>
   SCENARIO_NAMES.flatMap((s) => result.scenarios[s].snapshot.warnings);
@@ -84,13 +85,11 @@ export function RetirementAlerts({
         const page = pageOf(p.productId);
         return (
           <TopNotice key={p.productId} kind="bad">
-            <b>{t.sections.blockInvalid(productName(p.productId))}</b>{' '}
+            <b>{t.sections.blockInvalid(productName(p.productId, api.entryNames))}</b>{' '}
             {p.issues?.map((i: ValidationIssue) => issueMessage(i)).join(' ')}{' '}
-            {page !== undefined && (
-              <button type="button" className="link" onClick={() => goTo(page)}>
-                {t.toBlock}
-              </button>
-            )}
+            <button type="button" className="link" onClick={() => goTo(page)}>
+              {t.toBlock}
+            </button>
           </TopNotice>
         );
       })}
@@ -157,6 +156,8 @@ function Result({
   const hasWish = desired !== undefined;
   const info = splitWarnings(warningsOf(result)).info;
   const allEmpty = result.products.every((p) => p.empty || p.status === 'disabled');
+  const entryProducts = result.products.filter((p) => p.productId.startsWith('otherIncome:'));
+  const entriesCounted = entryProducts.filter((p) => p.status === 'included' && !p.empty).length;
   const enabledCount = OVERVIEW_BLOCKS.filter((b) => api.state.enabled[b]).length;
 
   const blocks = (
@@ -240,14 +241,23 @@ function Result({
             </p>
           )}
           <ul className="chips">
-            {result.products.map((p) => (
-              <li key={p.productId}>
-                <StatusChip kind={p.empty ? 'warn' : STATUS_KIND[p.status]}>
-                  {productName(p.productId)}:{' '}
-                  {p.empty ? t.statusEmpty : t.status[p.status](p.payoutStartAge)}
+            {result.products
+              .filter((p) => !p.productId.startsWith('otherIncome:'))
+              .map((p) => (
+                <li key={p.productId}>
+                  <StatusChip kind={p.empty ? 'warn' : STATUS_KIND[p.status]}>
+                    {productName(p.productId)}:{' '}
+                    {p.empty ? t.statusEmpty : t.status[p.status](p.payoutStartAge)}
+                  </StatusChip>
+                </li>
+              ))}
+            {entryProducts.length > 0 && (
+              <li>
+                <StatusChip kind={entriesCounted > 0 ? 'ok' : 'hint'}>
+                  {t.otherIncomeChip(entriesCounted, entryProducts.length)}
                 </StatusChip>
               </li>
-            ))}
+            )}
           </ul>
         </article>
         <aside className="card" id="wish-field">
@@ -353,7 +363,13 @@ function Result({
             </table>
           </ScrollTable>
           <h3>{t.pathTitle}</h3>
-          <PathTable result={result} scenario={scenario} />
+          <PathTable result={result} scenario={scenario} names={api.entryNames} />
+          {api.entries.length > 0 && (
+            <>
+              <h3>{de.otherIncome.result.table.title}</h3>
+              <EntriesTable entries={api.entries} result={result} />
+            </>
+          )}
         </Disclosure>
         {blocks}
         <InfoNotes codes={info} />

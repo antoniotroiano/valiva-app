@@ -16,6 +16,8 @@ import { splitSourceText } from '../../lib/sourceText';
 import { taxConfig } from '../../lib/taxConfig';
 
 function formatValue(v: LegalValue): string {
+  // A rule assumption has no amount: the value 1 only means "the rule is applied".
+  if (v.unit === 'rule') return de.assumptions.legal.ruleApplies;
   const units = de.assumptions.units as Record<string, string>;
   const unit = units[v.unit] ?? v.unit;
   // Years such as 2026 or 1964 are not grouped like amounts.

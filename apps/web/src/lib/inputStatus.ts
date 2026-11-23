@@ -24,10 +24,11 @@ import type { PersonBlocks } from './personProducts';
  * values); `done`: entered and valid; `hint`: entered, but invalid or the core reports a note the user can act on.
  */
 export type InputStatus = 'empty' | 'done' | 'hint';
-export type InputPage = 'profile' | 'etf' | 'statutory' | 'depot' | 'occupational' | 'goals';
+export type InputPage =
+  'profile' | 'etf' | 'statutory' | 'depot' | 'occupational' | 'other' | 'goals';
 
 export type PersonStatus = {
-  /** `goals` is absent while there are no goals: the page is optional and shows no mark. */
+  /** `goals` is absent while there are no goals: the page is optional and shows no mark. `other` is `empty` without entries. */
   pages: Partial<Record<InputPage, InputStatus>>;
 };
 
@@ -73,6 +74,13 @@ function profileStatus(person: Person, ctx: PersonContext, currentYear: number):
   return sameData(own(person), own(d)) ? 'empty' : 'done';
 }
 
+/** `other` is done when there is a valid entry; any invalid entry or actionable note makes it "with note". */
+function otherStatus(products: OverviewProductInput[]): InputStatus {
+  const own = products.filter((p) => p.productId.startsWith('otherIncome:'));
+  if (own.length === 0) return 'empty';
+  return own.some((p) => actionable(p)) ? 'hint' : 'done';
+}
+
 function entered(blocks: PersonBlocks) {
   const s = blocks.statutory;
   return {
@@ -115,6 +123,7 @@ export function personStatus(
     statutory: status(e.statutory, byId('statutory')),
     depot: status(e.depot, byId('retirementDepot')),
     occupational: status(e.occupational, byId('occupational')),
+    other: otherStatus(products),
   };
   if (goals.length > 0) {
     pages.goals = goals.some((g) => validateSavingsGoal(g).length > 0) ? 'hint' : 'done';

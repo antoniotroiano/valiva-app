@@ -12,6 +12,7 @@ const PAGES = [
   'statutory',
   'depot',
   'occupational',
+  'other',
   'goals',
   'assumptions',
   'data',
