@@ -51,10 +51,12 @@ export const overview = {
       statutory: 'Gesetzliche Rente',
       retirementDepot: 'Altersvorsorgedepot',
       occupational: 'Betriebliche AV',
+      otherIncome: 'Sonstige Einkünfte',
     },
     status: {
       included: (start?: number) => `zählt ab Alter ${start}`,
       later: (start?: number) => `zahlt erst ab Alter ${start}, im Zielalter noch nicht gezählt`,
+      ended: () => 'Ende vor dem Rentenbeginn, zählt nicht',
       disabled: () => 'ausgeschaltet',
       invalid: () => 'nicht berechenbar.',
     },

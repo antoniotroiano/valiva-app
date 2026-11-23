@@ -15,6 +15,18 @@ export const issues = {
   scenario_order: 'Die Renditen müssen aufsteigend sein: pessimistisch ≤ neutral ≤ optimistisch.',
   not_positive: 'Der Wert muss größer als 0 sein.',
   required: 'Bitte einen Wert angeben.',
+  invalid_id:
+    'Die Kennung darf nur Buchstaben, Ziffern, Unterstrich und Bindestrich enthalten (höchstens 32 Zeichen).',
+  duplicate_id: 'Diese Kennung kommt bereits vor.',
+  name_invalid: 'Bitte einen Namen mit 1 bis 60 Zeichen eingeben.',
+  end_not_after_start: (min?: number) =>
+    min !== undefined
+      ? `Das Ende muss nach dem Beginn liegen, frühestens mit ${min} Jahren.`
+      : 'Das Ende muss nach dem Beginn liegen.',
+  nominal_start_in_past:
+    'Ein Betrag "nominal bei Beginn" ist nur für einen Beginn möglich, der noch nicht vergangen ist. Bitte "Kaufkraft heute" wählen.',
+  too_many_entries: (max?: number) =>
+    max !== undefined ? `Es sind höchstens ${max} Einträge möglich.` : 'Es sind zu viele Einträge.',
   invalid_month: 'Bitte einen Monat im Format JJJJ-MM angeben.',
   not_after_start: 'Der Monat muss nach dem Startmonat liegen.',
   not_chronological: 'Die Monate müssen aufsteigend sein.',

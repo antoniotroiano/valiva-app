@@ -1,4 +1,4 @@
-import type { LegalParameters } from '../tax/legalConfig';
+import type { LegalParameters, SocialKey } from '../tax/legalConfig';
 import type { GlobalAssumptions } from '../shared/profile';
 import { lumpSumTax, retirementIncomeTax } from '../tax/retirementTax';
 import type { OtherIncome } from '../tax/retirementTax';
@@ -10,6 +10,16 @@ import type { OtherIncome } from '../tax/retirementTax';
  * pension exceeds a threshold (`unverified`).
  */
 export type PensionKind = 'statutory' | 'retirementDepot' | 'occupational';
+
+/** Social-insurance values the shared threshold of the occupational pension needs. */
+export type SharedThresholdParameters = Pick<
+  Record<SocialKey, number>,
+  | 'healthGeneralRatePercent'
+  | 'careRatePercent'
+  | 'careRateChildlessPercent'
+  | 'occupationalHealthAllowanceMonthly'
+  | 'occupationalCareThresholdMonthly'
+>;
 
 export type NetPension = {
   gross: number;
@@ -98,7 +108,7 @@ export function netPension(
       grossMonthly,
       context.thresholdScale ?? 1,
       assumptions,
-      legal,
+      legal.social,
     ));
   }
 
@@ -135,27 +145,24 @@ export function netPension(
  * (all or nothing). Allowance and threshold are today's values and are multiplied by `thresholdScale`
  * (assumption: they rise like prices). `other` pays the entered rate on the whole pension.
  */
-function occupationalContributions(
+export function occupationalContributions(
   gross: number,
   thresholdScale: number,
   assumptions: GlobalAssumptions,
-  legal: LegalParameters,
+  social: SharedThresholdParameters,
 ): { health: number; care: number } {
   const h = assumptions.health;
   if (h.mode !== 'statutoryCompulsory') {
     return { health: (gross * (h.otherRatePercent ?? 0)) / 100, care: 0 };
   }
-  const allowance = legal.social.occupationalHealthAllowanceMonthly * thresholdScale;
-  const threshold = legal.social.occupationalCareThresholdMonthly * thresholdScale;
+  const allowance = social.occupationalHealthAllowanceMonthly * thresholdScale;
+  const threshold = social.occupationalCareThresholdMonthly * thresholdScale;
   const health =
-    (Math.max(0, gross - allowance) *
-      (legal.social.healthGeneralRatePercent + h.additionalRatePercent)) /
+    (Math.max(0, gross - allowance) * (social.healthGeneralRatePercent + h.additionalRatePercent)) /
     100;
   const care =
     gross > threshold
-      ? (gross *
-          (h.childless ? legal.social.careRateChildlessPercent : legal.social.careRatePercent)) /
-        100
+      ? (gross * (h.childless ? social.careRateChildlessPercent : social.careRatePercent)) / 100
       : 0;
   return { health, care };
 }

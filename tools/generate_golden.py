@@ -8,6 +8,7 @@ Outputs:
   packages/core/test/golden-vectors/depot/*.json       retirement depot (Phase 3b)
   packages/core/test/golden-vectors/occupational/*.json  occupational pension (Phase 3c)
   packages/core/test/golden-vectors/overview/*.json    overview of products (Phase 4a-1)
+  packages/core/test/golden-vectors/other-income/*.json  generic block 'other income in retirement' (AP-15)
   packages/core/test/golden-vectors/withdrawal/*.json  percent withdrawal of the ETF (review 13 F-16)
   tools/golden-check.xlsx                    one sheet per case with live Excel formulas;
                                              compare the 'Excel' column with the 'Python' column.
@@ -970,34 +971,46 @@ def ov_factor(p, age, a):
     y = age - p["payoutStartAge"]
     if p["productId"] == "statutory":
         return ((1 + a["pensionAdjustmentPercent"] / 100) / infl) ** y
+    if p.get("indexation") is not None:  # entries of the generic block follow their adjustment
+        return ((1 + p["indexation"] / 100) / infl) ** y
     return infl ** -y
 
 
 def ov_incomes(counted, sc, age, a):
     """(taxable, contributions) per month in today's purchasing power of every counted product at one age."""
     out = []
+    shared = oi_group(counted, sc, age, a)
     for p in counted:
         f = ov_factor(p, age, a); r = p["results"][sc]
         taxable = r["taxableMonthlyReal"] * f
-        if p["productId"] == "statutory" and f > 0:
-            # the tax-free part of a statutory pension is a fixed euro amount; later increases are fully taxable
+        tax_free = None
+        if p["productId"] == "statutory":
             tax_free = r["monthlyPensionReal"] - r["taxableMonthlyReal"]
+        elif p.get("fixedTaxFree") is not None:
+            tax_free = p["fixedTaxFree"]
+        if tax_free is not None and f > 0:
+            # the tax-free part is a fixed euro amount; later increases are fully taxable
             taxable = max(0.0, r["monthlyPensionReal"] * f - tax_free * (1 + a["inflationPercent"] / 100) ** -(age - p["payoutStartAge"]))
-        out.append((taxable, r["contributionsMonthlyReal"] * f))
+        contrib = r["contributionsMonthlyReal"] * f
+        if shared is not None and p["productId"] in shared:
+            contrib = shared[p["productId"]]
+        out.append((taxable, contrib))
     return out
 
 
 def ov_net_by_product(counted, sc, age, a):
     """Net per month of every counted product: gross minus own deductions minus the share of the tax on the sum."""
     inc = ov_incomes(counted, sc, age, a)
+    shared = oi_group(counted, sc, age, a)
     taxable, contrib = sum(i[0] for i in inc), sum(i[1] for i in inc)
     total_tax = pension_tax_monthly(taxable, contrib)
     out = []
-    for p, (t_i, _) in zip(counted, inc):
+    for p, (t_i, c_i) in zip(counted, inc):
         f = ov_factor(p, age, a); r = p["results"][sc]
         share = total_tax * t_i / taxable if taxable > 0 else 0.0
         gross = r["monthlyPensionReal"] * f
-        ded = (r["fixedTaxMonthlyReal"] + r["contributionsMonthlyReal"]) * f + share
+        shared_i = shared is not None and p["productId"] in shared
+        ded = (r["fixedTaxMonthlyReal"] * f + c_i + share) if shared_i else (r["fixedTaxMonthlyReal"] + r["contributionsMonthlyReal"]) * f + share
         out.append(dict(productId=p["productId"], grossReal=gross, taxAndContributionsReal=ded, netReal=gross - ded))
     return out
 
@@ -1806,6 +1819,541 @@ def advp_excel_sheet(wb, name, plan, prof, a, tax, start, end, use_global, exp, 
             row += 1
 
 
+# ---- AP-15 part A: generic block "other income in retirement" (concept 15) ---------------------------
+OI_OUT = OUT / "other-income"
+OI_PROFILE = dict(birthYear=1976, targetRetirementAge=67, lifeExpectancyAge=90, childrenBirthYears=[])
+OI_PREFIX = "otherIncome:"
+
+
+def oi_entry(id, name, kind, amount, basis="today", adjustment=None, start=None, end=None, tax="full", share=None,
+             contributions="none", survivor=0, enabled=True):
+    """One entry exactly as the TypeScript type `OtherIncomeEntry` (the vector stores it as JSON)."""
+    e = dict(id=id, name=name, kind=kind, enabled=enabled, amountMonthly=amount, amountBasis=basis,
+             adjustment=adjustment or dict(mode="inflation"), start=start or dict(mode="retirement"),
+             end=end or dict(mode="lifelong"), taxMode=tax, contributions=contributions, survivorPercent=survivor)
+    if share is not None:
+        e["taxSharePercent"] = share
+    return e
+
+
+def oi_start_age(e, prof):
+    return e["start"]["age"] if e["start"]["mode"] == "age" else prof["targetRetirementAge"]
+
+
+def oi_adjustment(e, a):
+    m = e["adjustment"]["mode"]
+    return a["inflationPercent"] if m == "inflation" else a["pensionAdjustmentPercent"] if m == "pension" else e["adjustment"]["percent"]
+
+
+def oi_occ_contributions(gross_real, a, soc=STAT_LEGAL["social"]):
+    """Health and care contributions of the occupational pension for a monthly gross in today's purchasing power."""
+    h = a["health"]
+    if h["mode"] != "statutoryCompulsory":
+        return gross_real * h["otherRatePercent"] / 100, 0.0
+    kv = max(0.0, gross_real - soc["occupationalHealthAllowanceMonthly"]) * (soc["healthGeneralRatePercent"] + h["additionalRatePercent"]) / 100
+    pf = gross_real * (soc["careRateChildlessPercent"] if h["childless"] else soc["careRatePercent"]) / 100 \
+        if gross_real > soc["occupationalCareThresholdMonthly"] else 0.0
+    return kv, pf
+
+
+def oi_project(e, prof, a, current_year=2026, pension=STAT_LEGAL["pension"]):
+    """Second implementation of the projector (15 section 5.1): amounts at the payout start."""
+    start_age = oi_start_age(e, prof)
+    start_year = prof["birthYear"] + start_age
+    n = start_year - current_year
+    g = oi_adjustment(e, a)
+    infl = 1 + a["inflationPercent"] / 100
+    nominal = e["amountMonthly"] * (1 + g / 100) ** n if e["amountBasis"] == "today" else e["amountMonthly"]
+    real = nominal / infl ** n
+    mode, fixed_free = e["taxMode"], None
+    if mode == "none":
+        share = 0.0
+    elif mode == "full":
+        share = 100.0
+    elif mode == "percent":
+        share = e["taxSharePercent"]
+    else:
+        share = min(pension["taxableShareMaxPercent"], max(pension["taxableShareBasePercent"],
+                    pension["taxableShareBasePercent"] + pension["taxableShareIncreasePerYear"] * (start_year - pension["taxableShareBaseYear"])))
+    taxable = real * share / 100
+    if mode == "pensionShare":
+        fixed_free = real - taxable
+    kv, pf = oi_occ_contributions(real, a) if e["contributions"] == "likeOccupational" else (0.0, 0.0)
+    return dict(startAge=start_age, startYear=start_year, yearsToStart=n, adjustmentPercent=g, nominalAtStart=nominal,
+                realAtStart=real, taxableSharePercent=share, taxableRealAtStart=taxable, fixedTaxFreeReal=fixed_free,
+                contributionsRealStandalone=kv + pf)
+
+
+def oi_valid(e, prof):
+    """The validation rules that matter for the vectors: amount range and end after start."""
+    if not (0 <= e["amountMonthly"] <= 100000):
+        return False
+    return not (e["end"]["mode"] == "age" and e["end"]["age"] <= oi_start_age(e, prof))
+
+
+def oi_product(e, prof, a, soc=STAT_LEGAL["social"]):
+    """The entry as an overview product in the format of ov_product (all scenarios equal)."""
+    if not oi_valid(e, prof):
+        bad = dict(productId=OI_PREFIX + e["id"], enabled=e["enabled"], payoutStartAge=oi_start_age(e, prof), valid=False)
+        if e["end"]["mode"] == "age":
+            bad["payoutEndAge"] = e["end"]["age"]
+        return bad
+    pr = oi_project(e, prof, a)
+    p = dict(productId=OI_PREFIX + e["id"], enabled=e["enabled"], payoutStartAge=pr["startAge"], valid=True,
+             indexation=pr["adjustmentPercent"], results={})
+    if e["end"]["mode"] == "age":
+        p["payoutEndAge"] = e["end"]["age"]
+    if pr["fixedTaxFreeReal"] is not None:
+        p["fixedTaxFree"] = pr["fixedTaxFreeReal"]
+    if e["contributions"] == "likeOccupational":
+        p["shared"] = True
+    if e["survivorPercent"] > 0:
+        p["survivorPercent"] = e["survivorPercent"]
+    for sc in SCEN:
+        p["results"][sc] = dict(monthlyPensionReal=pr["realAtStart"], taxableMonthlyReal=pr["taxableRealAtStart"],
+                                contributionsMonthlyReal=pr["contributionsRealStandalone"], fixedTaxMonthlyReal=0.0)
+    return p
+
+
+def oi_group(counted, sc, age, a, soc=STAT_LEGAL["social"]):
+    """Contributions of the shared threshold group per product id at one age, or None if no entry joined it."""
+    if not any(p.get("shared") and not oi_empty(p) for p in counted):
+        return None
+    members = [p for p in counted if p["productId"] == "occupational" or p.get("shared")]
+    gross = {p["productId"]: p["results"][sc]["monthlyPensionReal"] * ov_factor(p, age, a) for p in members}
+    total_gross = sum(gross.values())
+    kv, pf = oi_occ_contributions(total_gross, a, soc)
+    return {pid: ((kv + pf) * g / total_gross if total_gross > 0 else 0.0) for pid, g in gross.items()}
+
+
+def oi_empty(p):
+    return p["valid"] and all(p["results"][sc]["monthlyPensionReal"] == 0 for sc in SCEN)
+
+
+def oi_status(p, target):
+    if not p["enabled"]:
+        return "disabled"
+    if not p["valid"]:
+        return "invalid"
+    if p["productId"].startswith(OI_PREFIX) and p.get("payoutEndAge") is not None and p["payoutEndAge"] <= target:
+        return "ended"
+    return "later" if p["payoutStartAge"] > target else "included"
+
+
+OI_ASSUMPTIONS = dict(inflationPercent=2, pensionAdjustmentPercent=2.5)
+OI_DESIRED = 3000
+_riester = oi_entry("riester", "Riester pension", "riester", 150, basis="nominalAtStart", adjustment=dict(mode="fixed", percent=0),
+                    start=dict(mode="age", age=67))
+_rent = oi_entry("rent", "Rent", "rent", 600)
+_pension = oi_entry("pension", "Civil service pension", "civilServicePension", 1200, adjustment=dict(mode="pension"))
+_basis = oi_entry("basis", "Basic pension", "basisPension", 400, basis="nominalAtStart", adjustment=dict(mode="fixed", percent=1),
+                  start=dict(mode="age", age=67), tax="pensionShare")
+# product table of the concept examples: extras are invented raw projection results like in the overview vectors
+OI_CASES = [
+    ("oi01-riester-fixed", "Riester from the statement: 150 EUR nominal at 67, fixed (example 1)", [_riester], []),
+    ("oi02-rent-inflation", "Rent 600 EUR in today's purchasing power, like inflation, fully taxable (example 2)", [_rent], []),
+    ("oi03-pension-adjustment", "Pension 1,200 EUR today, follows the statutory adjustment (example 3)", [_pension], []),
+    ("oi04-basis-pension-share", "Basic pension 400 EUR nominal, 1 % per year, taxed like the statutory pension (example 4)", [_basis], []),
+    ("oi05-four-entries-sum-tax", "Riester, rent, basic pension and a 1,500 EUR pension: tax on the sum (example 5)",
+     [_riester, _rent, _basis, oi_entry("pension", "Pension", "civilServicePension", 1500)], []),
+    ("oi06-shared-threshold", "Company pension 150 EUR and a Riester through a pension fund share one threshold (example 6)",
+     [oi_entry("riester", "Riester through a pension fund", "riester", 150, basis="nominalAtStart", adjustment=dict(mode="fixed", percent=0),
+               start=dict(mode="age", age=67), contributions="likeOccupational")],
+     [ov_product("occupational", 67, 150, 150, 0, end=90)]),
+    ("oi08-statuses", "Statuses: included, starts after and ends before the retirement, amount 0, disabled, invalid",
+     [_riester,
+      oi_entry("later", "Rent from 70", "rent", 500, start=dict(mode="age", age=70)),
+      oi_entry("ended", "Pension 60 to 65", "civilServicePension", 800, start=dict(mode="age", age=60), end=dict(mode="age", age=65)),
+      oi_entry("zero", "Nothing", "other", 0),
+      oi_entry("off", "Switched off", "rent", 300, enabled=False),
+      oi_entry("bad", "Invalid amount", "other", -1),
+      oi_entry("early", "Starts at 60, ends at 80", "privateAnnuity", 200, basis="nominalAtStart", adjustment=dict(mode="fixed", percent=1),
+               start=dict(mode="age", age=60), end=dict(mode="age", age=80), tax="percent", share=18)],
+     []),
+]
+
+
+def project_oi(prof, a, entries, extras, desired, current_year=2026):
+    """Expected values of one vector: statuses, per-entry amounts at the start and the overview of all products."""
+    products = [dict(p) for p in extras] + [oi_product(e, prof, a) for e in entries]
+    exp = project_overview(prof, a, products, desired, current_year)
+    t = prof["targetRetirementAge"]
+    exp["statuses"] = [dict(productId=p["productId"], status=oi_status(p, t), empty=oi_empty(p)) for p in products]
+    exp["entries"] = {e["id"]: oi_project(e, prof, a) for e in entries if oi_valid(e, prof)}
+    return products, exp
+
+
+def oi_excel_sheet(wb, name, prof, a, entries, extras, desired, exp):
+    """Excel check of one vector: inputs per product, derived values with live formulas, neutral path per age.
+    Compare the 'Excel' columns with the 'Python' columns (difference column should be 0)."""
+    ws = wb.create_sheet(name[:31])
+    soc, pen = STAT_LEGAL["social"], STAT_LEGAL["pension"]
+    params = [("target retirement age", prof["targetRetirementAge"]), ("life expectancy age", prof["lifeExpectancyAge"]),
+              ("desired net income (blank = none)", desired), ("inflation % p.a.", a["inflationPercent"]),
+              ("pension adjustment % p.a.", a["pensionAdjustmentPercent"]),
+              ("taxable share base %", pen["taxableShareBasePercent"]), ("taxable share base year", pen["taxableShareBaseYear"]),
+              ("taxable share increase per year", pen["taxableShareIncreasePerYear"]),
+              ("taxable share max %", pen["taxableShareMaxPercent"]), ("current year", 2026), ("birth year", prof["birthYear"]),
+              ("health rate % (general + additional)", soc["healthGeneralRatePercent"] + a["health"]["additionalRatePercent"]),
+              ("care rate %", soc["careRatePercent"]), ("allowance per month", soc["occupationalHealthAllowanceMonthly"]),
+              ("care threshold per month", soc["occupationalCareThresholdMonthly"])]
+    for r, (label, v) in enumerate(params, start=2):
+        ws.cell(row=r, column=1, value=label); ws.cell(row=r, column=2, value=v)
+    # B2 target, B3 life, B4 desired, B5 inflation, B6 adjustment, B7 share base, B8 base year, B9 increase, B10 max,
+    # B11 current year, B12 birth year, B13 health rate, B14 care rate, B15 allowance, B16 threshold
+    heads = ["type (1 entry, 0 raw)", "start age", "end age (999 = lifelong)", "counts (1/0)", "amount per month",
+             "basis (1 = nominal at start)", "adjustment % p.a.", "tax mode (0 none, 1 full, 2 percent, 3 like statutory)",
+             "taxable share % (mode 2)", "in shared threshold group (1/0)", "years to start n", "real at start Excel",
+             "taxable real at start Excel", "real at start Python", "taxable real at start Python", "difference real",
+             "status Excel", "status Python"]
+    ws["A19"] = "product"
+    for c, h in enumerate(heads, start=2):
+        ws.cell(row=19, column=c, value=h)
+    TAXMODE = dict(none=0, full=1, percent=2, pensionShare=3)
+    rows, prods = [], []
+    for j, p in enumerate(extras):
+        prods.append(("raw", p))
+    for e in entries:
+        prods.append(("entry", e))
+    for j, (kind, x) in enumerate(prods):
+        r = 20 + j; rows.append(r)
+        if kind == "raw":
+            res = x["results"]["neutral"]
+            vals = [0, x["payoutStartAge"], x.get("payoutEndAge", 999), 1 if x["enabled"] else 0, res["monthlyPensionReal"],
+                    0, 0, 1, 100, 1 if x["productId"] == "occupational" else 0]
+            ws.cell(row=r, column=1, value=x["productId"])
+            py_real, py_tax = res["monthlyPensionReal"], res["taxableMonthlyReal"]
+        else:
+            m = x["adjustment"]["mode"]
+            g = "=$B$5" if m == "inflation" else "=$B$6" if m == "pension" else x["adjustment"]["percent"]
+            start = x["start"]["age"] if x["start"]["mode"] == "age" else "=$B$2"
+            vals = [1, start, x["end"]["age"] if x["end"]["mode"] == "age" else 999,
+                    1 if (x["enabled"]) else 0, x["amountMonthly"], 1 if x["amountBasis"] == "nominalAtStart" else 0, g,
+                    TAXMODE[x["taxMode"]], x.get("taxSharePercent", 0), 1 if x["contributions"] == "likeOccupational" else 0]
+            ws.cell(row=r, column=1, value=OI_PREFIX + x["id"])
+            pr = exp["entries"][x["id"]]
+            py_real, py_tax = pr["realAtStart"], pr["taxableRealAtStart"]
+        for c, v in enumerate(vals, start=2):
+            ws.cell(row=r, column=c, value=v)
+        ws.cell(row=r, column=12, value=f"=$B$12+C{r}-$B$11")
+        ws.cell(row=r, column=13, value=f"=IF(B{r}=1,IF(G{r}=1,F{r},F{r}*(1+H{r}/100)^L{r})/(1+$B$5/100)^L{r},F{r})")
+        share = "MIN($B$10,MAX($B$7,$B$7+$B$9*($B$12+C%d-$B$8)))" % r
+        ws.cell(row=r, column=14, value=f"=IF(B{r}=1,CHOOSE(I{r}+1,0,M{r},M{r}*J{r}/100,M{r}*{share}/100),F{r})")
+        ws.cell(row=r, column=15, value=py_real); ws.cell(row=r, column=16, value=py_tax)
+        ws.cell(row=r, column=17, value=f"=M{r}-O{r}")
+        ws.cell(row=r, column=18, value=(f'=IF(E{r}=0,"disabled",IF(AND(B{r}=1,D{r}<>999,D{r}<=$B$2),"ended",'
+                                         f'IF(C{r}>$B$2,"later","included")))'))
+        pid = ws.cell(row=r, column=1).value
+        ws.cell(row=r, column=19, value=next(x["status"] for x in exp["statuses"] if x["productId"] == pid))
+    n = len(prods)
+    head = 20 + n + 2
+    ws.cell(row=head, column=1, value="age")
+    col = lambda k: ws.cell(row=1, column=k).column_letter
+    for j in range(n):
+        ws.cell(row=head, column=2 + j, value=f"factor {ws.cell(row=rows[j], column=1).value}")
+    sc, kc, cc, zc, nc, gc = 2 + n, 3 + n, 4 + n, 5 + n, 6 + n, 7 + n
+    for c, h in [(sc, "gross of group members"), (kc, "health contribution"), (cc, "care contribution"),
+                 (zc, "taxable income per year"), (nc, "total net Excel"), (gc, "gap Excel"), (gc + 1, "total Python"),
+                 (gc + 2, "difference")]:
+        ws.cell(row=head, column=c, value=h)
+    path = exp["scenarios"]["neutral"]["path"]
+    for i, pt in enumerate(path):
+        r = head + 1 + i
+        ws.cell(row=r, column=1, value=pt["age"])
+        fcells = []
+        for j, pr_ in enumerate(rows):
+            ws.cell(row=r, column=2 + j, value=(
+                f"=IF(AND($A{r}>=$C${pr_},$A{r}<$D${pr_}),((1+$H${pr_}/100)/(1+$B$5/100))^($A{r}-$C${pr_}),0)*$E${pr_}"))
+            fcells.append(f"{col(2 + j)}{r}")
+        ws.cell(row=r, column=sc, value="=" + ("+".join(f"{f}*$M${pr_}*$K${pr_}" for f, pr_ in zip(fcells, rows)) or "0"))
+        S = f"{col(sc)}{r}"
+        ws.cell(row=r, column=kc, value=f"=MAX(0,{S}-$B$15)*$B$13/100")
+        ws.cell(row=r, column=cc, value=f"=IF({S}>$B$16,{S}*$B$14/100,0)")
+        taxable = "+".join(
+            f"IF($I${pr_}=3,MAX(0,{f}*$M${pr_}-IF({f}>0,($M${pr_}-$N${pr_})*(1+$B$5/100)^-($A{r}-$C${pr_}),0)),{f}*$N${pr_})"
+            for f, pr_ in zip(fcells, rows)) or "0"
+        contrib = f"({col(kc)}{r}+{col(cc)}{r})"
+        gross = "+".join(f"{f}*$M${pr_}" for f, pr_ in zip(fcells, rows)) or "0"
+        ws.cell(row=r, column=zc, value=f"=INT(MAX(0,12*({taxable})-MIN(102,12*({taxable}))-12*{contrib}-36))")
+        ws.cell(row=r, column=nc, value=f"=({gross})-{contrib}-({excel_tariff(f'{col(zc)}{r}')})/12")
+        ws.cell(row=r, column=gc, value=f'=IF($B$4="","",MAX(0,$B$4-{col(nc)}{r}))')
+        ws.cell(row=r, column=gc + 1, value=pt["total"])
+        ws.cell(row=r, column=gc + 2, value=f"={col(nc)}{r}-{col(gc + 1)}{r}")
+    last = head + len(path)
+    r = last + 2
+    ws.cell(row=r, column=1, value="totalGapReal Excel")
+    ws.cell(row=r, column=2, value=f'=IF($B$4="","",12*SUMIF(A{head + 1}:A{last},"<"&$B$3,{col(gc)}{head + 1}:{col(gc)}{last}))')
+    ws.cell(row=r + 1, column=1, value="totalGapReal Python")
+    ws.cell(row=r + 1, column=2, value=exp["scenarios"]["neutral"]["totalGapReal"])
+    ws.column_dimensions["A"].width = 36
+
+
+# ---- AP-15 part A: household with entries that go on to the partner (oi07) ----------------------------
+OI_HH_PERSONS = [hh_person("a", 1985, 67, 80), hh_person("b", 1987, 67, 90)]
+OI_HH_ENTRIES = {
+    "a": [oi_entry("pension", "Civil service pension", "civilServicePension", 1500, survivor=55)],
+    "b": [oi_entry("rent", "Rent", "rent", 400)],
+}
+OI_HH_RAW = {"a": [ov_product("statutory", 67, 2400, 2040, 300)], "b": [ov_product("statutory", 67, 600, 510, 70)]}
+
+
+def oi_hh_net(counted, extras, sc, age, a):
+    """Net per product and per extra income at one age, tax on the sum of both (extras: dicts with gross, taxable).
+    Extras carry no contributions (the continued share of a partner's entry: simplification of concept 15 section 4.2)."""
+    inc = ov_incomes(counted, sc, age, a)
+    taxable = sum(i[0] for i in inc) + sum(x["taxable"] for x in extras)
+    contrib = sum(i[1] for i in inc)
+    total_tax = pension_tax_monthly(taxable, contrib)
+    nets = {}
+    for p, (t_i, c_i) in zip(counted, inc):
+        f = ov_factor(p, age, a); r = p["results"][sc]
+        share = total_tax * t_i / taxable if taxable > 0 else 0.0
+        nets[p["productId"]] = r["monthlyPensionReal"] * f - ((r["fixedTaxMonthlyReal"] + r["contributionsMonthlyReal"]) * f + share)
+    extra_nets = [x["gross"] - (total_tax * x["taxable"] / taxable if taxable > 0 else 0.0) for x in extras]
+    return nets, extra_nets
+
+
+def oi_continued(dead, p, year, a):
+    """Gross and taxable amount (today's purchasing power) of the deceased's entry that goes on to the partner in `year`.
+    Direct reading of the rule: the share of the gross in the year of the death, carried on with the entry's own factor,
+    until the entry ends. Zero if the entry did not pay at the death."""
+    share = p.get("survivorPercent", 0) / 100
+    if share <= 0 or not (p["enabled"] and p["valid"]):
+        return None
+    life_age = dead["lifeExpectancyAge"]
+    if ov_factor(p, life_age, a) <= 0:
+        return None
+    age_d = year - dead["birthYear"]
+    if p.get("payoutEndAge") is not None and age_d >= p["payoutEndAge"]:
+        return None
+    r = p["results"]["neutral"]
+    infl = 1 + a["inflationPercent"] / 100
+    f = ((1 + p["indexation"] / 100) / infl) ** (age_d - p["payoutStartAge"])  # the own factor, also beyond the death
+    gross = share * r["monthlyPensionReal"] * f
+    if p.get("fixedTaxFree") is not None:
+        taxable = share * max(0.0, r["monthlyPensionReal"] * f - p["fixedTaxFree"] * infl ** -(age_d - p["payoutStartAge"]))
+    else:
+        taxable = share * r["taxableMonthlyReal"] * f
+    return dict(gross=gross, taxable=taxable)
+
+
+def project_household_oi(persons, a, products, desired, extra):
+    for pr in persons:
+        pr["start"], pr["end"] = pr["birthYear"] + pr["targetRetirementAge"], pr["birthYear"] + pr["lifeExpectancyAge"]
+    first, snap, last = min(p["start"] for p in persons), max(p["start"] for p in persons), max(p["end"] for p in persons)
+    dead, left = sorted(persons, key=lambda p: p["end"])
+    assert extra.get("survivorPension") and dead["end"] < left["end"]
+    out = dict(firstYear=first, snapshotYear=snap, lastYear=last, scenarios={},
+               survivor=dict(deceasedId=dead["id"], survivorId=left["id"], deathYear=dead["end"]))
+    L = SURVIVOR_LEGAL
+    rate = L["rateOld"] if extra["survivorPension"] == "old" else L["rateNew"]
+
+    def own(pr, sc, y, with_extras):
+        age = y - pr["birthYear"]
+        if not (pr["targetRetirementAge"] <= age <= pr["lifeExpectancyAge"]):
+            return {}, 0.0
+        counted = [p for p in products[pr["id"]] if p["enabled"] and p["valid"]]
+        extras = []
+        if with_extras and pr["id"] == left["id"] and y > dead["end"]:
+            for p in products[dead["id"]]:
+                c = oi_continued(dead, p, y, a)
+                if c:
+                    extras.append(c)
+        nets, extra_nets = oi_hh_net(counted, extras, sc, age, a)
+        return nets, sum(extra_nets)
+
+    for sc in SCEN:
+        path, total_gap = [], 0.0
+        for y in range(first, last + 1):
+            by, survivor_amount, carried = {}, 0.0, 0.0
+            for pr in persons:
+                nets, extra_net = own(pr, sc, y, True)
+                by[pr["id"]] = sum(nets.values()) + extra_net
+                if pr["id"] == left["id"]:
+                    carried = extra_net
+                    mine = nets
+            if dead["end"] < y <= left["end"]:
+                base = own(dead, sc, dead["end"], False)[0].get("statutory", 0.0)
+                income = sum(mine.get(k, 0.0) for k in ("statutory", "occupational", "retirementDepot")) \
+                    + sum(v for k, v in mine.items() if k.startswith(OI_PREFIX)) + carried
+                credited = L["creditedPercent"] / 100 * max(0.0, income - L["freeFactor"] * L["pensionValue"])
+                survivor_amount = max(0.0, rate / 100 * base - credited)
+                by[left["id"]] += survivor_amount
+            tot = sum(by.values())
+            pt = dict(year=y, total=tot, byPerson=by)
+            if survivor_amount > 0:
+                pt["survivor"] = {left["id"]: survivor_amount}
+            if carried > 0:
+                pt["survivorOtherIncome"] = {left["id"]: carried}
+            if desired is not None:
+                pt["desired"] = desired
+                pt["gap"] = max(0.0, desired - tot)
+                if y < last:
+                    total_gap += 12 * pt["gap"]
+            path.append(pt)
+        at = next(pt for pt in path if pt["year"] == snap)
+        out["scenarios"][sc] = dict(
+            net=at["total"], byPerson=at["byPerson"],
+            gap=None if desired is None else max(0.0, at["desired"] - at["total"]),
+            surplus=None if desired is None else max(0.0, at["total"] - at["desired"]),
+            totalGapReal=None if desired is None else total_gap, path=path)
+    return out
+
+
+def oi_household_excel_sheet(wb, name, persons, a, entries_by_person, raw_by_person, products, desired, exp, extra):
+    """Excel check of the household vector with continued entries: derived amounts per product, tax on the sum
+    including the continued share, widow's pension with the credited income. Compare 'Excel' with 'Python' columns."""
+    ws = wb.create_sheet(name[:31])
+    L, pen = SURVIVOR_LEGAL, STAT_LEGAL["pension"]
+    surv = exp["survivor"]
+    by_id = {pr["id"]: pr for pr in persons}
+    for pr in persons:
+        pr["end"] = pr["birthYear"] + pr["lifeExpectancyAge"]
+    params = [("desired net income (blank = none)", desired), ("inflation % p.a.", a["inflationPercent"]),
+              ("pension adjustment % p.a.", a["pensionAdjustmentPercent"]), ("current year", 2026),
+              ("death year of the first person", surv["deathYear"]), ("last year of the survivor", by_id[surv["survivorId"]]["end"]),
+              ("widow's pension rate %", L["rateOld"] if extra["survivorPension"] == "old" else L["rateNew"]),
+              ("credited %", L["creditedPercent"]), ("free amount per month", L["freeFactor"] * L["pensionValue"]),
+              ("taxable share base %", pen["taxableShareBasePercent"]), ("taxable share base year", pen["taxableShareBaseYear"]),
+              ("taxable share increase per year", pen["taxableShareIncreasePerYear"]), ("taxable share max %", pen["taxableShareMaxPercent"]),
+              ("last year", exp["lastYear"])]
+    for r, (label, v) in enumerate(params, start=2):
+        ws.cell(row=r, column=1, value=label); ws.cell(row=r, column=2, value=v)
+    # B2 desired, B3 inflation, B4 adjustment, B5 current year, B6 death year, B7 survivor last year, B8 rate, B9 credited,
+    # B10 free amount, B11 share base, B12 base year, B13 increase, B14 max, B15 last year
+    heads = ["person", "product", "type (1 entry, 0 raw)", "birth", "retire age", "life age", "start age", "end age (999 = lifelong)",
+             "counts (1/0)", "amount (entry) or gross real (raw)", "basis (1 = nominal at start)", "adjustment % p.a.",
+             "tax mode (0 none, 1 full, 2 percent, 3 like statutory)", "taxable share % (entry) or taxable real (raw)",
+             "contributions real (raw)", "continues to partner %", "years to start n", "real at start Excel", "taxable real at start Excel"]
+    HR = 18
+    for c, h in enumerate(heads, start=1):
+        ws.cell(row=HR, column=c, value=h)
+    TAXMODE = dict(none=0, full=1, percent=2, pensionShare=3)
+    rows, rows_by_person, meta = [], {pr["id"]: [] for pr in persons}, {}
+    for pr in persons:
+        for raw in raw_by_person[pr["id"]]:
+            res = raw["results"]["neutral"]
+            r = HR + 1 + len(rows)
+            adj = "=$B$4" if raw["productId"] == "statutory" else 0
+            vals = [pr["id"], raw["productId"], 0, pr["birthYear"], pr["targetRetirementAge"], pr["lifeExpectancyAge"],
+                    raw["payoutStartAge"], raw.get("payoutEndAge", 999), 1 if raw["enabled"] else 0, res["monthlyPensionReal"], 0, adj,
+                    3 if raw["productId"] == "statutory" else 1, res["taxableMonthlyReal"], res["contributionsMonthlyReal"], 0]
+            for c, v in enumerate(vals, start=1):
+                ws.cell(row=r, column=c, value=v)
+            rows.append(r); rows_by_person[pr["id"]].append(r); meta[r] = dict(person=pr["id"])
+        for e in entries_by_person[pr["id"]]:
+            r = HR + 1 + len(rows)
+            m = e["adjustment"]["mode"]
+            g = "=$B$3" if m == "inflation" else "=$B$4" if m == "pension" else e["adjustment"]["percent"]
+            start = e["start"]["age"] if e["start"]["mode"] == "age" else pr["targetRetirementAge"]
+            vals = [pr["id"], OI_PREFIX + e["id"], 1, pr["birthYear"], pr["targetRetirementAge"], pr["lifeExpectancyAge"], start,
+                    e["end"]["age"] if e["end"]["mode"] == "age" else 999, 1 if e["enabled"] else 0, e["amountMonthly"],
+                    1 if e["amountBasis"] == "nominalAtStart" else 0, g, TAXMODE[e["taxMode"]], e.get("taxSharePercent", 0), 0,
+                    e["survivorPercent"]]
+            for c, v in enumerate(vals, start=1):
+                ws.cell(row=r, column=c, value=v)
+            rows.append(r); rows_by_person[pr["id"]].append(r); meta[r] = dict(person=pr["id"], entry=True)
+    for r in rows:
+        ws.cell(row=r, column=17, value=f"=D{r}+G{r}-$B$5")
+        ws.cell(row=r, column=18, value=f"=IF(C{r}=1,IF(K{r}=1,J{r},J{r}*(1+L{r}/100)^Q{r})/(1+$B$3/100)^Q{r},J{r})")
+        share = f"MIN($B$14,MAX($B$11,$B$11+$B$13*(D{r}+G{r}-$B$12)))"
+        ws.cell(row=r, column=19, value=f"=IF(C{r}=1,CHOOSE(M{r}+1,0,R{r},R{r}*N{r}/100,R{r}*{share}/100),N{r})")
+    n = len(rows)
+    head = HR + n + 3
+    col = lambda k: ws.cell(row=1, column=k).column_letter
+    ws.cell(row=head, column=1, value="year")
+    for j, r in enumerate(rows):
+        ws.cell(row=head, column=2 + j, value=f"factor row {r}")
+    dead_id, left_id = surv["deceasedId"], surv["survivorId"]
+    carried_rows = [r for r in rows_by_person[dead_id] if meta[r].get("entry")]
+    # columns after the factors: for each continued entry gross and taxable, then per person values
+    nxt = 2 + n
+    cont = {}
+    for r in carried_rows:
+        cont[r] = (nxt, nxt + 1)
+        ws.cell(row=head, column=nxt, value=f"continued gross row {r}")
+        ws.cell(row=head, column=nxt + 1, value=f"continued taxable row {r}")
+        nxt += 2
+    pcol = {}
+    for pr in persons:
+        pcol[pr["id"]] = (nxt, nxt + 1, nxt + 2)
+        ws.cell(row=head, column=nxt, value=f"taxable income per year {pr['id']}")
+        ws.cell(row=head, column=nxt + 1, value=f"net own {pr['id']}")
+        ws.cell(row=head, column=nxt + 2, value=f"net statutory {pr['id']}")
+        nxt += 3
+    wid, carried_net, tot = nxt, nxt + 1, nxt + 2
+    gap, py_total, diff, py_carried, diff_carried = nxt + 3, nxt + 4, nxt + 5, nxt + 6, nxt + 7
+    for c, h in [(wid, "widow's pension Excel"), (carried_net, "continued net Excel"), (tot, "total Excel"), (gap, "gap Excel"),
+                 (py_total, "total Python"), (diff, "difference"), (py_carried, "continued net Python"),
+                 (diff_carried, "difference continued")]:
+        ws.cell(row=head, column=c, value=h)
+    path = exp["scenarios"]["neutral"]["path"]
+    first_row, last_row = head + 1, head + len(path)
+    for i, pt in enumerate(path):
+        y = head + 1 + i
+        ws.cell(row=y, column=1, value=pt["year"])
+        for j, r in enumerate(rows):
+            age = f"($A{y}-$D${r})"
+            ws.cell(row=y, column=2 + j, value=(
+                f"=IF(AND($I${r}=1,{age}>=$E${r},{age}<=$F${r}),IF(AND({age}>=$G${r},{age}<$H${r}),"
+                f"((1+$L${r}/100)/(1+$B$3/100))^({age}-$G${r}),0),0)"))
+        fc = {r: f"{col(2 + j)}{y}" for j, r in enumerate(rows)}
+        # continued entries of the deceased partner, paid to the survivor from the year after the death
+        for r in carried_rows:
+            ageD = f"($A{y}-$D${r})"
+            sage = f"($A{y}-$D${rows_by_person[left_id][0]})"
+            alive = (f"AND($A{y}>$B$6,$A{y}<=$B$7,{sage}>=$E${rows_by_person[left_id][0]},($B$6-$D${r})>=$G${r},"
+                     f"($B$6-$D${r})<$H${r},{ageD}<$H${r})")
+            f_un = f"((1+$L${r}/100)/(1+$B$3/100))^({ageD}-$G${r})"
+            gc_, tc_ = cont[r]
+            ws.cell(row=y, column=gc_, value=f"=IF({alive},$P${r}/100*$R${r}*{f_un},0)")
+            ws.cell(row=y, column=tc_, value=(
+                f"=IF({alive},$P${r}/100*IF($M${r}=3,MAX(0,$R${r}*{f_un}-($R${r}-$S${r})*(1+$B$3/100)^-({ageD}-$G${r})),$S${r}*{f_un}),0)"))
+        for pr in persons:
+            prs = rows_by_person[pr["id"]]
+            taxable = {r: (f"IF($M${r}=3,MAX(0,{fc[r]}*$R${r}-IF({fc[r]}>0,($R${r}-$S${r})*(1+$B$3/100)^-($A{y}-$D${r}-$G${r}),0)),"
+                           f"{fc[r]}*$S${r})") for r in prs}
+            gross = {r: f"{fc[r]}*$R${r}" for r in prs}
+            contrib = {r: f"{fc[r]}*$O${r}" for r in prs}
+            ext_t = "+".join(f"{col(cont[r][1])}{y}" for r in carried_rows) if pr["id"] == left_id and carried_rows else "0"
+            ext_g = "+".join(f"{col(cont[r][0])}{y}" for r in carried_rows) if pr["id"] == left_id and carried_rows else "0"
+            T = "(" + "+".join(taxable[r] for r in prs) + f"+{ext_t})"
+            C = "(" + "+".join(contrib[r] for r in prs) + ")"
+            zc, nc, sc_ = pcol[pr["id"]]
+            ws.cell(row=y, column=zc, value=f"=INT(MAX(0,12*{T}-MIN(102,12*{T})-12*{C}-36))")
+            tax_m = f"({excel_tariff(f'{col(zc)}{y}')})/12"
+            share_of = lambda t: f"IF({T}>0,{tax_m}*({t})/{T},0)"
+            own = "+".join(f"({gross[r]}-{contrib[r]}-{share_of(taxable[r])})" for r in prs)
+            extra_net = f"({ext_g}-{share_of(ext_t)})"
+            ws.cell(row=y, column=nc, value=f"={own}+{extra_net}" if pr["id"] == left_id else f"={own}")
+            stat = [r for r in prs if meta[r].get("entry") is None and ws.cell(row=r, column=2).value == "statutory"]
+            ws.cell(row=y, column=sc_, value="=" + ("+".join(f"({gross[r]}-{contrib[r]}-{share_of(taxable[r])})" for r in stat) or "0"))
+        d_stat, l_net = col(pcol[dead_id][2]), col(pcol[left_id][1])
+        base = f"SUMIF($A${first_row}:$A${last_row},$B$6,{d_stat}${first_row}:{d_stat}${last_row})"
+        ws.cell(row=y, column=wid, value=(
+            f"=IF(AND($A{y}>$B$6,$A{y}<=$B$7),MAX(0,$B$8/100*{base}-$B$9/100*MAX(0,{l_net}{y}-$B$10)),0)"))
+        ext_g_all = "+".join(f"{col(cont[r][0])}{y}" for r in carried_rows) or "0"
+        ext_t_all = "+".join(f"{col(cont[r][1])}{y}" for r in carried_rows) or "0"
+        # the continued net is the part of the survivor's own net that comes from the continued gross
+        zc_l = col(pcol[left_id][0])
+        lprs = rows_by_person[left_id]
+        T_l = "(" + "+".join(f"IF($M${r}=3,MAX(0,{fc[r]}*$R${r}-IF({fc[r]}>0,($R${r}-$S${r})*(1+$B$3/100)^-($A{y}-$D${r}-$G${r}),0)),{fc[r]}*$S${r})" for r in lprs) + f"+{ext_t_all})"
+        ws.cell(row=y, column=carried_net, value=f"=({ext_g_all})-IF({T_l}>0,(({excel_tariff(f'{zc_l}{y}')})/12)*({ext_t_all})/{T_l},0)")
+        nets = "+".join(f"{col(pcol[pr['id']][1])}{y}" for pr in persons)
+        ws.cell(row=y, column=tot, value=f"={nets}+{col(wid)}{y}")
+        ws.cell(row=y, column=gap, value=f'=IF($B$2="","",MAX(0,$B$2-{col(tot)}{y}))')
+        ws.cell(row=y, column=py_total, value=pt["total"])
+        ws.cell(row=y, column=diff, value=f"={col(tot)}{y}-{col(py_total)}{y}")
+        ws.cell(row=y, column=py_carried, value=pt.get("survivorOtherIncome", {}).get(left_id, 0.0))
+        ws.cell(row=y, column=diff_carried, value=f"={col(carried_net)}{y}-{col(py_carried)}{y}")
+    r = last_row + 2
+    ws.cell(row=r, column=1, value="totalGapReal Excel")
+    ws.cell(row=r, column=2, value=f'=IF($B$2="","",12*SUMIF(A{first_row}:A{last_row},"<"&$B$15,{col(gap)}{first_row}:{col(gap)}{last_row}))')
+    ws.cell(row=r + 1, column=1, value="totalGapReal Python")
+    ws.cell(row=r + 1, column=2, value=exp["scenarios"]["neutral"]["totalGapReal"])
+    ws.column_dimensions["A"].width = 36
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     ADV_OUT.mkdir(parents=True, exist_ok=True)
@@ -1906,6 +2454,28 @@ def main():
             {"name": name, "description": desc, "synthetic": True, "profile": prof_out, "assumptions": a,
              "currentYear": 2026, "products": products, "expected": exp}, indent=2) + "\n")
         ov_excel_sheet(wb, name, prof, a, products, desired, exp)
+    OI_OUT.mkdir(parents=True, exist_ok=True)
+    for name, desc, entries, extras in OI_CASES:
+        prof = {**OI_PROFILE}; a = {**STAT_ASSUMPTIONS, **OI_ASSUMPTIONS}
+        products, exp = project_oi(prof, a, entries, extras, OI_DESIRED)
+        (OI_OUT / f"{name}.json").write_text(json.dumps(
+            {"name": name, "description": desc, "synthetic": True, "profile": {**prof, "desiredMonthlyIncomeToday": OI_DESIRED},
+             "assumptions": a, "currentYear": 2026, "entries": entries, "extraProducts": extras, "expected": exp}, indent=2) + "\n")
+        oi_excel_sheet(wb, name, prof, a, [e for e in entries if oi_valid(e, prof)], extras, OI_DESIRED, exp)
+    a_hh = {**STAT_ASSUMPTIONS, **OI_ASSUMPTIONS}
+    hh_persons = [dict(x) for x in OI_HH_PERSONS]
+    hh_products = {}
+    for pr in hh_persons:
+        pprof = dict(birthYear=pr["birthYear"], targetRetirementAge=pr["targetRetirementAge"],
+                     lifeExpectancyAge=pr["lifeExpectancyAge"], childrenBirthYears=[])
+        hh_products[pr["id"]] = [dict(x) for x in OI_HH_RAW[pr["id"]]] + [oi_product(e, pprof, a_hh) for e in OI_HH_ENTRIES[pr["id"]]]
+    hh_extra = dict(survivorPension="new")
+    hh_exp = project_household_oi([dict(x) for x in hh_persons], a_hh, hh_products, OI_DESIRED, hh_extra)
+    (OI_OUT / "oi07-household-survivor.json").write_text(json.dumps(
+        {"name": "oi07-household-survivor", "description": "Couple: partner a dies at 80 and 55 % of a's pension of 1,500 EUR goes on to b (example 7); tax on b's sum and credit against the widow's pension",
+         "synthetic": True, "persons": OI_HH_PERSONS, "assumptions": a_hh, "desiredMonthlyIncomeToday": OI_DESIRED,
+         "currentYear": 2026, **hh_extra, "entries": OI_HH_ENTRIES, "rawProducts": OI_HH_RAW, "expected": hh_exp}, indent=2) + "\n")
+    oi_household_excel_sheet(wb, "oi07-household-survivor", [dict(x) for x in hh_persons], a_hh, OI_HH_ENTRIES, OI_HH_RAW, hh_products, OI_DESIRED, hh_exp, hh_extra)
     for name, desc, po, ao, start, end, use_global, *rest in ETFP_CASES:
         month = rest[0] if rest else 1
         plan = {**ETFP_PLAN, **po}; a = {**STAT_ASSUMPTIONS, **ao}
@@ -1953,7 +2523,7 @@ def main():
              "profile": ETFP_PROFILE, "assumptions": a, "currentYear": 2026, "expected": exp}, indent=2) + "\n")
         wd_excel_sheet(wb, name, plan, ETFP_PROFILE, a, TAX, start, end, use_global, percent, exp["neutral"])
     wb.save(ROOT / "tools/golden-check.xlsx")
-    print(f"wrote {len(CASES)} ETF, {len(GOAL_CASES)} goal and {len(TARGET_CASES)} ETF target and {len(STAT_CASES)} statutory and {len(DEPOT_CASES)} depot and {len(BAV_CASES)} occupational and {len(OV_CASES)} overview and {len(ETFP_CASES)} ETF payout and {len(HH_CASES)} household and {len(ADV_CASES)} advance and {len(ADVP_CASES)} advance payout vectors")
+    print(f"wrote {len(CASES)} ETF, {len(GOAL_CASES)} goal and {len(TARGET_CASES)} ETF target and {len(STAT_CASES)} statutory and {len(DEPOT_CASES)} depot and {len(BAV_CASES)} occupational and {len(OV_CASES)} overview and {len(OI_CASES) + 1} other income and {len(ETFP_CASES)} ETF payout and {len(HH_CASES)} household and {len(ADV_CASES)} advance and {len(ADVP_CASES)} advance payout vectors")
 
 
 main()

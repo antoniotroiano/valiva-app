@@ -49,5 +49,7 @@ export function issueMessage(issue: ValidationIssue): string {
   if (issue.code === 'before_current_year') return de.issues.before_current_year(issue.min);
   if (issue.code === 'retirement_in_past') return de.issues.retirement_in_past(issue.min);
   if (issue.code === 'before_statement_year') return de.issues.before_statement_year(issue.min);
+  if (issue.code === 'end_not_after_start') return de.issues.end_not_after_start(issue.min);
+  if (issue.code === 'too_many_entries') return de.issues.too_many_entries(issue.max);
   return de.issues[issue.code];
 }

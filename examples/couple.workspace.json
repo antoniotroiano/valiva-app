@@ -1,6 +1,6 @@
 {
   "format": "valiva-workspace",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "appVersion": "0.0.0",
   "exportedAt": "2026-11-18T12:00:00.000Z",
   "meta": {
@@ -124,6 +124,56 @@
         "employerSubsidyMode": "auto15",
         "schemaVersion": 1,
         "startMonth": "2027-01"
+      },
+      "otherIncome": {
+        "entries": [
+          {
+            "adjustment": {
+              "mode": "fixed",
+              "percent": 0
+            },
+            "amountBasis": "nominalAtStart",
+            "amountMonthly": 140,
+            "contributions": "none",
+            "enabled": true,
+            "end": {
+              "mode": "lifelong"
+            },
+            "id": "riester",
+            "kind": "riester",
+            "name": "Riester laut Standmitteilung",
+            "start": {
+              "age": 67,
+              "mode": "age"
+            },
+            "survivorPercent": 0,
+            "taxMode": "full"
+          },
+          {
+            "adjustment": {
+              "mode": "fixed",
+              "percent": 1
+            },
+            "amountBasis": "nominalAtStart",
+            "amountMonthly": 220,
+            "contributions": "none",
+            "enabled": true,
+            "end": {
+              "mode": "lifelong"
+            },
+            "id": "rente",
+            "kind": "privateAnnuity",
+            "name": "Private Rentenversicherung",
+            "start": {
+              "age": 67,
+              "mode": "age"
+            },
+            "survivorPercent": 60,
+            "taxMode": "percent",
+            "taxSharePercent": 18
+          }
+        ],
+        "schemaVersion": 1
       }
     },
     "p2": {
@@ -167,6 +217,31 @@
         "employerSubsidyMode": "auto15",
         "schemaVersion": 1,
         "startMonth": "2027-01"
+      },
+      "otherIncome": {
+        "entries": [
+          {
+            "adjustment": {
+              "mode": "inflation"
+            },
+            "amountBasis": "today",
+            "amountMonthly": 450,
+            "contributions": "none",
+            "enabled": true,
+            "end": {
+              "mode": "lifelong"
+            },
+            "id": "miete",
+            "kind": "rent",
+            "name": "Mieteinnahmen nach Kosten",
+            "start": {
+              "mode": "retirement"
+            },
+            "survivorPercent": 0,
+            "taxMode": "full"
+          }
+        ],
+        "schemaVersion": 1
       }
     }
   }

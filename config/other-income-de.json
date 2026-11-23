@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "description": "Rule assumptions of the generic 'other income in retirement' block (concept 15, section 9). There is no amount here: every value is 1 (rule applies) and every status is 'unverified', because none of the legal sources was read. They exist so the app can show the assumptions instead of presenting them as certain. Review against primary sources before a release.",
+  "values": {
+    "basisPensionTaxShare": {
+      "value": 1,
+      "unit": "rule",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Assumption: a basic pension (Basisrente) is taxed like the statutory pension, with the taxable share by start year (section 22 no. 1 sentence 3 letter a aa EStG, named only, not read)",
+      "sourceDe": "Annahme: Die Basisrente wird wie die gesetzliche Rente besteuert (Besteuerungsanteil nach Beginnjahr); § 22 Nr. 1 Satz 3 Buchst. a aa EStG, nur genannt, nicht gelesen",
+      "status": "unverified"
+    },
+    "privateAnnuityEarningsShare": {
+      "value": 1,
+      "unit": "rule",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Assumption: a private annuity is taxed with its earnings share (Ertragsanteil); the app has no table, the user enters the share (section 22 no. 1 sentence 3 letter a bb EStG, named only, not read)",
+      "sourceDe": "Annahme: Eine private Leibrente wird mit dem Ertragsanteil besteuert; die App hat keine Tabelle, der Anteil wird selbst eingetragen (laut Versicherer oder Steuerbescheid); § 22 Nr. 1 Satz 3 Buchst. a bb EStG, nur genannt, nicht gelesen",
+      "status": "unverified"
+    },
+    "riesterFullyTaxable": {
+      "value": 1,
+      "unit": "rule",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Assumption: benefits from existing Riester contracts are fully taxable (section 22 no. 5 EStG, named only, not read)",
+      "sourceDe": "Annahme: Leistungen aus Riester-Altverträgen sind voll steuerpflichtig; § 22 Nr. 5 EStG, nur genannt, nicht gelesen",
+      "status": "unverified"
+    },
+    "sharedBenefitThreshold": {
+      "value": 1,
+      "unit": "rule",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Assumption: the health insurance allowance and the care threshold apply once per person across all pension-like benefits (section 226 para. 2 SGB V, section 57 SGB XI, named only, not read)",
+      "sourceDe": "Annahme: Freibetrag (Krankenversicherung) und Freigrenze (Pflegeversicherung) gelten je Person gemeinsam für alle Versorgungsbezüge; § 226 Abs. 2 SGB V, § 57 SGB XI, nur genannt, nicht gelesen",
+      "status": "unverified"
+    },
+    "survivorIncomeCredited": {
+      "value": 1,
+      "unit": "rule",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Assumption: own pensions, civil service pensions and rent count as income credited against the widow's pension (section 97 SGB VI, sections 18a ff. SGB IV, named only, not read)",
+      "sourceDe": "Annahme: Eigene Renten, Pensionen und Mieten zählen als anrechenbares Einkommen bei der Witwenrente; § 97 SGB VI, §§ 18a ff. SGB IV, nur genannt, nicht gelesen",
+      "status": "unverified"
+    }
+  }
+}

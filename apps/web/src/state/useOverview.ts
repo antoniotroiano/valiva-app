@@ -11,6 +11,7 @@ import type {
   LegalResolution,
   OverviewOutcome,
   OverviewBlock,
+  OverviewProductId,
   OverviewProductKind,
   OverviewState,
   OtherIncome,
@@ -56,7 +57,7 @@ export function useOverview(
     | {
         outcome: OverviewOutcome;
         gap: GapSolveResult;
-        otherIncome: Partial<Record<OverviewProductKind, Record<ScenarioName, OtherIncome>>>;
+        otherIncome: Partial<Record<OverviewProductId, Record<ScenarioName, OtherIncome>>>;
       }
     | undefined = useMemo(() => {
     if (!legal.ok || !profile.committedValid) return undefined;
@@ -84,7 +85,7 @@ export function useOverview(
       tax,
     );
     // Income of the other products when each pension block pays out, so its page taxes the sum.
-    const otherIncome: Partial<Record<OverviewProductKind, Record<ScenarioName, OtherIncome>>> = {};
+    const otherIncome: Partial<Record<OverviewProductId, Record<ScenarioName, OtherIncome>>> = {};
     for (const p of products) {
       otherIncome[p.productId] = concurrentIncome(
         products,

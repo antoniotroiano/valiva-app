@@ -1,0 +1,715 @@
+{
+  "name": "oi03-pension-adjustment",
+  "description": "Pension 1,200 EUR today, follows the statutory adjustment (example 3)",
+  "synthetic": true,
+  "profile": {
+    "birthYear": 1976,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": [],
+    "desiredMonthlyIncomeToday": 3000
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "entries": [
+    {
+      "id": "pension",
+      "name": "Civil service pension",
+      "kind": "civilServicePension",
+      "enabled": true,
+      "amountMonthly": 1200,
+      "amountBasis": "today",
+      "adjustment": {
+        "mode": "pension"
+      },
+      "start": {
+        "mode": "retirement"
+      },
+      "end": {
+        "mode": "lifelong"
+      },
+      "taxMode": "full",
+      "contributions": "none",
+      "survivorPercent": 0
+    }
+  ],
+  "extraProducts": [],
+  "expected": {
+    "firstPayoutEndAge": null,
+    "scenarios": {
+      "pessimistic": {
+        "net": 1259.5193557947923,
+        "gross": 1304.0193557947923,
+        "taxAndContributions": 44.5,
+        "gap": 1740.4806442052077,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 464468.2291015598,
+        "byProduct": [
+          {
+            "productId": "otherIncome:pension",
+            "grossReal": 1304.0193557947923,
+            "taxAndContributionsReal": 44.5,
+            "netReal": 1259.5193557947923
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 1259.5193557947923,
+            "byProduct": {
+              "otherIncome:pension": 1259.5193557947923
+            },
+            "gap": 1740.4806442052077
+          },
+          {
+            "age": 68,
+            "total": 1264.6616075388845,
+            "byProduct": {
+              "otherIncome:pension": 1264.6616075388845
+            },
+            "gap": 1735.3383924611155
+          },
+          {
+            "age": 69,
+            "total": 1269.8351938503497,
+            "byProduct": {
+              "otherIncome:pension": 1269.8351938503497
+            },
+            "gap": 1730.1648061496503
+          },
+          {
+            "age": 70,
+            "total": 1274.9569349966748,
+            "byProduct": {
+              "otherIncome:pension": 1274.9569349966748
+            },
+            "gap": 1725.0430650033252
+          },
+          {
+            "age": 71,
+            "total": 1280.110318664959,
+            "byProduct": {
+              "otherIncome:pension": 1280.110318664959
+            },
+            "gap": 1719.889681335041
+          },
+          {
+            "age": 72,
+            "total": 1285.2954999656042,
+            "byProduct": {
+              "otherIncome:pension": 1285.2954999656042
+            },
+            "gap": 1714.7045000343958
+          },
+          {
+            "age": 73,
+            "total": 1290.5126347693574,
+            "byProduct": {
+              "otherIncome:pension": 1290.5126347693574
+            },
+            "gap": 1709.4873652306426
+          },
+          {
+            "age": 74,
+            "total": 1295.761879711037,
+            "byProduct": {
+              "otherIncome:pension": 1295.761879711037
+            },
+            "gap": 1704.238120288963
+          },
+          {
+            "age": 75,
+            "total": 1300.9600588599474,
+            "byProduct": {
+              "otherIncome:pension": 1300.9600588599474
+            },
+            "gap": 1699.0399411400526
+          },
+          {
+            "age": 76,
+            "total": 1306.273997056973,
+            "byProduct": {
+              "otherIncome:pension": 1306.273997056973
+            },
+            "gap": 1693.726002943027
+          },
+          {
+            "age": 77,
+            "total": 1311.5371865850304,
+            "byProduct": {
+              "otherIncome:pension": 1311.5371865850304
+            },
+            "gap": 1688.4628134149696
+          },
+          {
+            "age": 78,
+            "total": 1316.8331205061986,
+            "byProduct": {
+              "otherIncome:pension": 1316.8331205061986
+            },
+            "gap": 1683.1668794938014
+          },
+          {
+            "age": 79,
+            "total": 1322.078625998876,
+            "byProduct": {
+              "otherIncome:pension": 1322.078625998876
+            },
+            "gap": 1677.921374001124
+          },
+          {
+            "age": 80,
+            "total": 1327.4405310282823,
+            "byProduct": {
+              "otherIncome:pension": 1327.4405310282823
+            },
+            "gap": 1672.5594689717177
+          },
+          {
+            "age": 81,
+            "total": 1332.7523310169831,
+            "byProduct": {
+              "otherIncome:pension": 1332.7523310169831
+            },
+            "gap": 1667.2476689830169
+          },
+          {
+            "age": 82,
+            "total": 1338.097522182099,
+            "byProduct": {
+              "otherIncome:pension": 1338.097522182099
+            },
+            "gap": 1661.902477817901
+          },
+          {
+            "age": 83,
+            "total": 1343.4762682058672,
+            "byProduct": {
+              "otherIncome:pension": 1343.4762682058672
+            },
+            "gap": 1656.5237317941328
+          },
+          {
+            "age": 84,
+            "total": 1348.8054002395563,
+            "byProduct": {
+              "otherIncome:pension": 1348.8054002395563
+            },
+            "gap": 1651.1945997604437
+          },
+          {
+            "age": 85,
+            "total": 1354.2517502407304,
+            "byProduct": {
+              "otherIncome:pension": 1354.2517502407304
+            },
+            "gap": 1645.7482497592696
+          },
+          {
+            "age": 86,
+            "total": 1359.6488176438713,
+            "byProduct": {
+              "otherIncome:pension": 1359.6488176438713
+            },
+            "gap": 1640.3511823561287
+          },
+          {
+            "age": 87,
+            "total": 1365.080102697681,
+            "byProduct": {
+              "otherIncome:pension": 1365.080102697681
+            },
+            "gap": 1634.919897302319
+          },
+          {
+            "age": 88,
+            "total": 1370.4624398024082,
+            "byProduct": {
+              "otherIncome:pension": 1370.4624398024082
+            },
+            "gap": 1629.5375601975918
+          },
+          {
+            "age": 89,
+            "total": 1375.9626641805246,
+            "byProduct": {
+              "otherIncome:pension": 1375.9626641805246
+            },
+            "gap": 1624.0373358194754
+          },
+          {
+            "age": 90,
+            "total": 1381.4142785474226,
+            "byProduct": {
+              "otherIncome:pension": 1381.4142785474226
+            },
+            "gap": 1618.5857214525774
+          }
+        ]
+      },
+      "neutral": {
+        "net": 1259.5193557947923,
+        "gross": 1304.0193557947923,
+        "taxAndContributions": 44.5,
+        "gap": 1740.4806442052077,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 464468.2291015598,
+        "byProduct": [
+          {
+            "productId": "otherIncome:pension",
+            "grossReal": 1304.0193557947923,
+            "taxAndContributionsReal": 44.5,
+            "netReal": 1259.5193557947923
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 1259.5193557947923,
+            "byProduct": {
+              "otherIncome:pension": 1259.5193557947923
+            },
+            "gap": 1740.4806442052077
+          },
+          {
+            "age": 68,
+            "total": 1264.6616075388845,
+            "byProduct": {
+              "otherIncome:pension": 1264.6616075388845
+            },
+            "gap": 1735.3383924611155
+          },
+          {
+            "age": 69,
+            "total": 1269.8351938503497,
+            "byProduct": {
+              "otherIncome:pension": 1269.8351938503497
+            },
+            "gap": 1730.1648061496503
+          },
+          {
+            "age": 70,
+            "total": 1274.9569349966748,
+            "byProduct": {
+              "otherIncome:pension": 1274.9569349966748
+            },
+            "gap": 1725.0430650033252
+          },
+          {
+            "age": 71,
+            "total": 1280.110318664959,
+            "byProduct": {
+              "otherIncome:pension": 1280.110318664959
+            },
+            "gap": 1719.889681335041
+          },
+          {
+            "age": 72,
+            "total": 1285.2954999656042,
+            "byProduct": {
+              "otherIncome:pension": 1285.2954999656042
+            },
+            "gap": 1714.7045000343958
+          },
+          {
+            "age": 73,
+            "total": 1290.5126347693574,
+            "byProduct": {
+              "otherIncome:pension": 1290.5126347693574
+            },
+            "gap": 1709.4873652306426
+          },
+          {
+            "age": 74,
+            "total": 1295.761879711037,
+            "byProduct": {
+              "otherIncome:pension": 1295.761879711037
+            },
+            "gap": 1704.238120288963
+          },
+          {
+            "age": 75,
+            "total": 1300.9600588599474,
+            "byProduct": {
+              "otherIncome:pension": 1300.9600588599474
+            },
+            "gap": 1699.0399411400526
+          },
+          {
+            "age": 76,
+            "total": 1306.273997056973,
+            "byProduct": {
+              "otherIncome:pension": 1306.273997056973
+            },
+            "gap": 1693.726002943027
+          },
+          {
+            "age": 77,
+            "total": 1311.5371865850304,
+            "byProduct": {
+              "otherIncome:pension": 1311.5371865850304
+            },
+            "gap": 1688.4628134149696
+          },
+          {
+            "age": 78,
+            "total": 1316.8331205061986,
+            "byProduct": {
+              "otherIncome:pension": 1316.8331205061986
+            },
+            "gap": 1683.1668794938014
+          },
+          {
+            "age": 79,
+            "total": 1322.078625998876,
+            "byProduct": {
+              "otherIncome:pension": 1322.078625998876
+            },
+            "gap": 1677.921374001124
+          },
+          {
+            "age": 80,
+            "total": 1327.4405310282823,
+            "byProduct": {
+              "otherIncome:pension": 1327.4405310282823
+            },
+            "gap": 1672.5594689717177
+          },
+          {
+            "age": 81,
+            "total": 1332.7523310169831,
+            "byProduct": {
+              "otherIncome:pension": 1332.7523310169831
+            },
+            "gap": 1667.2476689830169
+          },
+          {
+            "age": 82,
+            "total": 1338.097522182099,
+            "byProduct": {
+              "otherIncome:pension": 1338.097522182099
+            },
+            "gap": 1661.902477817901
+          },
+          {
+            "age": 83,
+            "total": 1343.4762682058672,
+            "byProduct": {
+              "otherIncome:pension": 1343.4762682058672
+            },
+            "gap": 1656.5237317941328
+          },
+          {
+            "age": 84,
+            "total": 1348.8054002395563,
+            "byProduct": {
+              "otherIncome:pension": 1348.8054002395563
+            },
+            "gap": 1651.1945997604437
+          },
+          {
+            "age": 85,
+            "total": 1354.2517502407304,
+            "byProduct": {
+              "otherIncome:pension": 1354.2517502407304
+            },
+            "gap": 1645.7482497592696
+          },
+          {
+            "age": 86,
+            "total": 1359.6488176438713,
+            "byProduct": {
+              "otherIncome:pension": 1359.6488176438713
+            },
+            "gap": 1640.3511823561287
+          },
+          {
+            "age": 87,
+            "total": 1365.080102697681,
+            "byProduct": {
+              "otherIncome:pension": 1365.080102697681
+            },
+            "gap": 1634.919897302319
+          },
+          {
+            "age": 88,
+            "total": 1370.4624398024082,
+            "byProduct": {
+              "otherIncome:pension": 1370.4624398024082
+            },
+            "gap": 1629.5375601975918
+          },
+          {
+            "age": 89,
+            "total": 1375.9626641805246,
+            "byProduct": {
+              "otherIncome:pension": 1375.9626641805246
+            },
+            "gap": 1624.0373358194754
+          },
+          {
+            "age": 90,
+            "total": 1381.4142785474226,
+            "byProduct": {
+              "otherIncome:pension": 1381.4142785474226
+            },
+            "gap": 1618.5857214525774
+          }
+        ]
+      },
+      "optimistic": {
+        "net": 1259.5193557947923,
+        "gross": 1304.0193557947923,
+        "taxAndContributions": 44.5,
+        "gap": 1740.4806442052077,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 464468.2291015598,
+        "byProduct": [
+          {
+            "productId": "otherIncome:pension",
+            "grossReal": 1304.0193557947923,
+            "taxAndContributionsReal": 44.5,
+            "netReal": 1259.5193557947923
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 1259.5193557947923,
+            "byProduct": {
+              "otherIncome:pension": 1259.5193557947923
+            },
+            "gap": 1740.4806442052077
+          },
+          {
+            "age": 68,
+            "total": 1264.6616075388845,
+            "byProduct": {
+              "otherIncome:pension": 1264.6616075388845
+            },
+            "gap": 1735.3383924611155
+          },
+          {
+            "age": 69,
+            "total": 1269.8351938503497,
+            "byProduct": {
+              "otherIncome:pension": 1269.8351938503497
+            },
+            "gap": 1730.1648061496503
+          },
+          {
+            "age": 70,
+            "total": 1274.9569349966748,
+            "byProduct": {
+              "otherIncome:pension": 1274.9569349966748
+            },
+            "gap": 1725.0430650033252
+          },
+          {
+            "age": 71,
+            "total": 1280.110318664959,
+            "byProduct": {
+              "otherIncome:pension": 1280.110318664959
+            },
+            "gap": 1719.889681335041
+          },
+          {
+            "age": 72,
+            "total": 1285.2954999656042,
+            "byProduct": {
+              "otherIncome:pension": 1285.2954999656042
+            },
+            "gap": 1714.7045000343958
+          },
+          {
+            "age": 73,
+            "total": 1290.5126347693574,
+            "byProduct": {
+              "otherIncome:pension": 1290.5126347693574
+            },
+            "gap": 1709.4873652306426
+          },
+          {
+            "age": 74,
+            "total": 1295.761879711037,
+            "byProduct": {
+              "otherIncome:pension": 1295.761879711037
+            },
+            "gap": 1704.238120288963
+          },
+          {
+            "age": 75,
+            "total": 1300.9600588599474,
+            "byProduct": {
+              "otherIncome:pension": 1300.9600588599474
+            },
+            "gap": 1699.0399411400526
+          },
+          {
+            "age": 76,
+            "total": 1306.273997056973,
+            "byProduct": {
+              "otherIncome:pension": 1306.273997056973
+            },
+            "gap": 1693.726002943027
+          },
+          {
+            "age": 77,
+            "total": 1311.5371865850304,
+            "byProduct": {
+              "otherIncome:pension": 1311.5371865850304
+            },
+            "gap": 1688.4628134149696
+          },
+          {
+            "age": 78,
+            "total": 1316.8331205061986,
+            "byProduct": {
+              "otherIncome:pension": 1316.8331205061986
+            },
+            "gap": 1683.1668794938014
+          },
+          {
+            "age": 79,
+            "total": 1322.078625998876,
+            "byProduct": {
+              "otherIncome:pension": 1322.078625998876
+            },
+            "gap": 1677.921374001124
+          },
+          {
+            "age": 80,
+            "total": 1327.4405310282823,
+            "byProduct": {
+              "otherIncome:pension": 1327.4405310282823
+            },
+            "gap": 1672.5594689717177
+          },
+          {
+            "age": 81,
+            "total": 1332.7523310169831,
+            "byProduct": {
+              "otherIncome:pension": 1332.7523310169831
+            },
+            "gap": 1667.2476689830169
+          },
+          {
+            "age": 82,
+            "total": 1338.097522182099,
+            "byProduct": {
+              "otherIncome:pension": 1338.097522182099
+            },
+            "gap": 1661.902477817901
+          },
+          {
+            "age": 83,
+            "total": 1343.4762682058672,
+            "byProduct": {
+              "otherIncome:pension": 1343.4762682058672
+            },
+            "gap": 1656.5237317941328
+          },
+          {
+            "age": 84,
+            "total": 1348.8054002395563,
+            "byProduct": {
+              "otherIncome:pension": 1348.8054002395563
+            },
+            "gap": 1651.1945997604437
+          },
+          {
+            "age": 85,
+            "total": 1354.2517502407304,
+            "byProduct": {
+              "otherIncome:pension": 1354.2517502407304
+            },
+            "gap": 1645.7482497592696
+          },
+          {
+            "age": 86,
+            "total": 1359.6488176438713,
+            "byProduct": {
+              "otherIncome:pension": 1359.6488176438713
+            },
+            "gap": 1640.3511823561287
+          },
+          {
+            "age": 87,
+            "total": 1365.080102697681,
+            "byProduct": {
+              "otherIncome:pension": 1365.080102697681
+            },
+            "gap": 1634.919897302319
+          },
+          {
+            "age": 88,
+            "total": 1370.4624398024082,
+            "byProduct": {
+              "otherIncome:pension": 1370.4624398024082
+            },
+            "gap": 1629.5375601975918
+          },
+          {
+            "age": 89,
+            "total": 1375.9626641805246,
+            "byProduct": {
+              "otherIncome:pension": 1375.9626641805246
+            },
+            "gap": 1624.0373358194754
+          },
+          {
+            "age": 90,
+            "total": 1381.4142785474226,
+            "byProduct": {
+              "otherIncome:pension": 1381.4142785474226
+            },
+            "gap": 1618.5857214525774
+          }
+        ]
+      }
+    },
+    "statuses": [
+      {
+        "productId": "otherIncome:pension",
+        "status": "included",
+        "empty": false
+      }
+    ],
+    "entries": {
+      "pension": {
+        "startAge": 67,
+        "startYear": 2043,
+        "yearsToStart": 17,
+        "adjustmentPercent": 2.5,
+        "nominalAtStart": 1825.9419134124914,
+        "realAtStart": 1304.0193557947923,
+        "taxableSharePercent": 100.0,
+        "taxableRealAtStart": 1304.0193557947923,
+        "fixedTaxFreeReal": null,
+        "contributionsRealStandalone": 0.0
+      }
+    }
+  }
+}

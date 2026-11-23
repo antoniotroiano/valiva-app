@@ -1,6 +1,6 @@
 import {
   type GapSolveResult,
-  type OverviewProductKind,
+  type OverviewProductId,
   type OverviewResult,
   type ScenarioName,
   type ValidationIssue,
@@ -12,9 +12,9 @@ import { ScrollTable } from '../../components/cards/ScrollTable';
 
 export type BudgetInfo = { budget?: number; otherSavingsMonthly: number };
 
-export function productName(id: OverviewProductKind): string {
+export function productName(id: OverviewProductId): string {
   const n = de.overview.retirement.productNames;
-  return n[id];
+  return id.startsWith('otherIncome:') ? n.otherIncome : n[id as keyof typeof n];
 }
 
 export function GapTile({

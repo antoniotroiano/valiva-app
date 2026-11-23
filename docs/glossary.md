@@ -71,3 +71,12 @@
 | Haushaltssicht (Startseite)            | `HouseholdOverview`                      |
 | Hinterbliebenenrente / Witwenrente     | `survivorPension`                        |
 | Wunsch nach dem ersten Todesfall       | `survivorWishPercent`                    |
+| Sonstige Einkünfte (Eintrag)           | `OtherIncomeEntry`                       |
+| Betrag Kaufkraft heute / nominal       | `amountBasis` (`today`/`nominalAtStart`) |
+| Anpassung pro Jahr                     | `adjustment`                             |
+| lebenslang                             | `lifelong`                               |
+| Steuer wie gesetzliche Rente           | `taxMode` `pensionShare`                 |
+| Abgaben wie bAV                        | `contributions` `likeOccupational`       |
+| Gemeinsame Schwelle (bAV, Einträge)    | `sharedThreshold`                        |
+| Weiterzahlung an den Partner           | `survivorPercent`                        |
+| Eintrag beendet                        | Status `ended`                           |

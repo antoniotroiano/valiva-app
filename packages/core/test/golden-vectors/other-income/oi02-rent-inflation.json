@@ -1,0 +1,715 @@
+{
+  "name": "oi02-rent-inflation",
+  "description": "Rent 600 EUR in today's purchasing power, like inflation, fully taxable (example 2)",
+  "synthetic": true,
+  "profile": {
+    "birthYear": 1976,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": [],
+    "desiredMonthlyIncomeToday": 3000
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "entries": [
+    {
+      "id": "rent",
+      "name": "Rent",
+      "kind": "rent",
+      "enabled": true,
+      "amountMonthly": 600,
+      "amountBasis": "today",
+      "adjustment": {
+        "mode": "inflation"
+      },
+      "start": {
+        "mode": "retirement"
+      },
+      "end": {
+        "mode": "lifelong"
+      },
+      "taxMode": "full",
+      "contributions": "none",
+      "survivorPercent": 0
+    }
+  ],
+  "extraProducts": [],
+  "expected": {
+    "firstPayoutEndAge": null,
+    "scenarios": {
+      "pessimistic": {
+        "net": 600.0,
+        "gross": 600.0,
+        "taxAndContributions": 0.0,
+        "gap": 2400.0,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 662400.0,
+        "byProduct": [
+          {
+            "productId": "otherIncome:rent",
+            "grossReal": 600.0,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 600.0
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 68,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 69,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 70,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 71,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 72,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 73,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 74,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 75,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 76,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 77,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 78,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 79,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 80,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 81,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 82,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 83,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 84,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 85,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 86,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 87,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 88,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 89,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 90,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          }
+        ]
+      },
+      "neutral": {
+        "net": 600.0,
+        "gross": 600.0,
+        "taxAndContributions": 0.0,
+        "gap": 2400.0,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 662400.0,
+        "byProduct": [
+          {
+            "productId": "otherIncome:rent",
+            "grossReal": 600.0,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 600.0
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 68,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 69,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 70,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 71,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 72,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 73,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 74,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 75,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 76,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 77,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 78,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 79,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 80,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 81,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 82,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 83,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 84,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 85,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 86,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 87,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 88,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 89,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 90,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          }
+        ]
+      },
+      "optimistic": {
+        "net": 600.0,
+        "gross": 600.0,
+        "taxAndContributions": 0.0,
+        "gap": 2400.0,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 662400.0,
+        "byProduct": [
+          {
+            "productId": "otherIncome:rent",
+            "grossReal": 600.0,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 600.0
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 68,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 69,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 70,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 71,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 72,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 73,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 74,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 75,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 76,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 77,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 78,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 79,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 80,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 81,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 82,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 83,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 84,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 85,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 86,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 87,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 88,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 89,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          },
+          {
+            "age": 90,
+            "total": 600.0,
+            "byProduct": {
+              "otherIncome:rent": 600.0
+            },
+            "gap": 2400.0
+          }
+        ]
+      }
+    },
+    "statuses": [
+      {
+        "productId": "otherIncome:rent",
+        "status": "included",
+        "empty": false
+      }
+    ],
+    "entries": {
+      "rent": {
+        "startAge": 67,
+        "startYear": 2043,
+        "yearsToStart": 17,
+        "adjustmentPercent": 2,
+        "nominalAtStart": 840.1448515154549,
+        "realAtStart": 600.0,
+        "taxableSharePercent": 100.0,
+        "taxableRealAtStart": 600.0,
+        "fixedTaxFreeReal": null,
+        "contributionsRealStandalone": 0.0
+      }
+    }
+  }
+}

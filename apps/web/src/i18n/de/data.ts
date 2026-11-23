@@ -64,6 +64,7 @@ export const data = {
     statutory: 'Gesetzliche Rente',
     depot: 'Altersvorsorgedepot',
     occupational: 'Betriebliche AV',
+    otherIncome: 'Sonstige Einkünfte',
     overview: 'Auswahl der Gesamtsicht',
   } as Record<string, string>,
   problems: {

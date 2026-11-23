@@ -4,6 +4,11 @@ import type { OtherIncome, TaxableIncome } from '../tax/retirementTax';
 import { validateAssumptions, validateProfile, validateRetirementTiming } from '../shared/profile';
 import type { GlobalAssumptions, Profile } from '../shared/profile';
 import type { ProjectionResult } from '../pension/projection';
+import {
+  OTHER_INCOME_PRODUCT_PREFIX,
+  sharedOccupationalContributions,
+} from '../pension/otherIncome';
+import type { SharedThresholdParameters } from '../pension/netPension';
 import { SCENARIO_NAMES } from '../shared/types';
 import type { ScenarioName, ValidationIssue } from '../shared/types';
 
@@ -14,16 +19,29 @@ export const OVERVIEW_PRODUCT_KINDS = [
   'occupational',
 ] as const;
 export type OverviewProductKind = (typeof OVERVIEW_PRODUCT_KINDS)[number];
+/** A fixed product kind or one entry of the generic block: `otherIncome:<entry id>` (`15` §6). */
+export type OverviewProductId = OverviewProductKind | `otherIncome:${string}`;
 
 /**
  * One product as the overview sees it: the projection result per scenario (or the issues that kept it from
  * being computed) plus the ages of its payout phase. `payoutEndAge` is absent for the statutory pension (lifelong).
  */
 export type OverviewProductInput = {
-  productId: OverviewProductKind;
+  productId: OverviewProductId;
   enabled: boolean;
   payoutStartAge: number;
   payoutEndAge?: number;
+  /**
+   * Set on entries with `contributions: 'likeOccupational'`: the product joins the shared threshold group of the
+   * person (together with the occupational pension), and carries the social values the group rule needs.
+   * Absent: contributions as the projector computed them.
+   */
+  sharedThreshold?: SharedThresholdParameters;
+  /**
+   * Set on entries with `survivorPercent > 0`: share of the amount that goes on to the partner after the
+   * death (household of two with the survivor's pension switched on, `15` §4.2). Absent: ends with the death.
+   */
+  survivorPercent?: number;
   outcome:
     | { ok: true; results: Record<ScenarioName, ProjectionResult> }
     | { ok: false; issues: ValidationIssue[] };
@@ -31,11 +49,12 @@ export type OverviewProductInput = {
 
 /**
  * `included`: counts from the target retirement age. `later`: valid, but pays out only after the target
- * age, so the snapshot carries it with 0. `disabled`/`invalid`: not counted; `invalid` lists the reasons.
+ * age, so the snapshot carries it with 0. `ended` (entries of the generic block only): the end age is at or
+ * before the target age, it contributes 0. `disabled`/`invalid`: not counted; `invalid` lists the reasons.
  */
 export type OverviewProductStatus = {
-  productId: OverviewProductKind;
-  status: 'included' | 'later' | 'disabled' | 'invalid';
+  productId: OverviewProductId;
+  status: 'included' | 'later' | 'ended' | 'disabled' | 'invalid';
   payoutStartAge?: number;
   payoutEndAge?: number;
   /** Valid, but pays nothing in any scenario (for example a contribution of 0). Ignored for end age and warnings. */
@@ -44,7 +63,7 @@ export type OverviewProductStatus = {
 };
 
 export type OverviewProductAmount = {
-  productId: OverviewProductKind;
+  productId: OverviewProductId;
   /** Monthly, in today's purchasing power, at the target retirement age. */
   netReal: number;
   grossReal: number;
@@ -71,7 +90,7 @@ export type OverviewPathPoint = {
   age: number;
   year: number;
   /** Net monthly income per product, in today's purchasing power. */
-  byProduct: Partial<Record<OverviewProductKind, number>>;
+  byProduct: Partial<Record<OverviewProductId, number>>;
   total: number;
   gap?: number;
 };
@@ -104,7 +123,7 @@ export type OverviewOutcome =
  * a payment indexed with the inflation keeps its value (`indexationPercent`);
  * the statutory pension grows with the pension adjustment and loses the inflation.
  */
-function activityFactor(
+export function activityFactor(
   p: OverviewProductInput,
   r: ProjectionResult,
   age: number,
@@ -138,21 +157,34 @@ function paysNothing(p: OverviewProductInput): boolean {
 }
 
 /**
+ * Part of the gross payment that is tax-free for good, as a fixed monthly amount at the payout start (today's
+ * purchasing power). The statutory pension derives it from its taxable share; other products (a basic pension
+ * entry with `pensionShare`) state it in `fixedTaxFreeMonthlyReal`. Absent: the taxable share stays constant.
+ */
+function fixedTaxFreeAmount(p: OverviewProductInput, r: ProjectionResult): number | undefined {
+  if (p.productId === 'statutory') return r.monthlyPensionReal - r.taxableMonthlyReal;
+  return r.fixedTaxFreeMonthlyReal;
+}
+
+/**
  * Taxable income and contributions of one product at `age`, in today's purchasing power. Later increases of a
- * statutory pension are fully taxable: its tax-free part is a fixed amount in euros from the first year (a
- * constant nominal amount, so it loses purchasing power with the inflation), not a share of the growing pension.
+ * payment with a fixed tax-free amount (statutory pension, basic pension entry) are fully taxable: its tax-free
+ * part is a fixed amount in euros from the first year (a constant nominal amount, so it loses purchasing power
+ * with the inflation), not a share of the growing payment. `contributions` overrides the projector's own
+ * contributions (shared threshold group).
  */
 function incomeAt(
   p: OverviewProductInput,
   scenario: ScenarioName,
   age: number,
   assumptions: GlobalAssumptions,
+  contributions?: number,
 ): TaxableIncome {
   const r = resultsOf(p, scenario);
   const f = activityFactor(p, r, age, assumptions);
   let taxable = r.taxableMonthlyReal * f;
-  if (p.productId === 'statutory' && f > 0) {
-    const taxFree = r.monthlyPensionReal - r.taxableMonthlyReal;
+  const taxFree = fixedTaxFreeAmount(p, r);
+  if (taxFree !== undefined && f > 0) {
     const inflation = 1 + assumptions.inflationPercent / 100;
     taxable = Math.max(
       0,
@@ -162,8 +194,34 @@ function incomeAt(
   return {
     id: p.productId,
     taxableMonthly: taxable,
-    contributionsMonthly: r.contributionsMonthlyReal * f,
+    contributionsMonthly: contributions ?? r.contributionsMonthlyReal * f,
   };
+}
+
+/**
+ * Contributions per member of the shared threshold group (occupational pension and entries with
+ * `likeOccupational`) at `age`, or undefined if no entry joins the group (then every product keeps its own).
+ */
+function sharedContributionsAt(
+  counted: OverviewProductInput[],
+  scenario: ScenarioName,
+  age: number,
+  assumptions: GlobalAssumptions,
+): Record<string, number> | undefined {
+  const social = counted.find(
+    (p) => p.sharedThreshold !== undefined && !paysNothing(p),
+  )?.sharedThreshold;
+  if (social === undefined) return undefined;
+  const members = counted
+    .filter((p) => p.productId === 'occupational' || p.sharedThreshold !== undefined)
+    .map((p) => {
+      const r = resultsOf(p, scenario);
+      return {
+        id: p.productId as string,
+        amount: r.monthlyPensionReal * activityFactor(p, r, age, assumptions),
+      };
+    });
+  return sharedOccupationalContributions(members, social, assumptions);
 }
 
 /**
@@ -173,7 +231,7 @@ function incomeAt(
  */
 export function concurrentIncome(
   products: OverviewProductInput[],
-  excludeId: OverviewProductKind,
+  excludeId: OverviewProductId,
   age: number,
   assumptions: GlobalAssumptions,
 ): Record<ScenarioName, OtherIncome> {
@@ -227,9 +285,13 @@ export function overview(
       statuses.push({ productId: p.productId, status: 'invalid', issues: p.outcome.issues });
     } else {
       counted.push(p);
+      const ended =
+        p.productId.startsWith(OTHER_INCOME_PRODUCT_PREFIX) &&
+        p.payoutEndAge !== undefined &&
+        p.payoutEndAge <= target;
       statuses.push({
         productId: p.productId,
-        status: p.payoutStartAge > target ? 'later' : 'included',
+        status: ended ? 'ended' : p.payoutStartAge > target ? 'later' : 'included',
         payoutStartAge: p.payoutStartAge,
         payoutEndAge: p.payoutEndAge,
         empty: isEmpty(p) || undefined,
@@ -249,11 +311,11 @@ export function overview(
   for (const scenario of SCENARIO_NAMES) {
     const results = counted.map((p) => ({ p, r: resultsOf(p, scenario) }));
     /** Tax on the sum of all products at `age`; the net of a product is its gross minus its own deductions and its share. */
-    const taxAt = (age: number) =>
-      retirementIncomeTax(
-        counted.map((p) => incomeAt(p, scenario, age, assumptions)),
-        incomeTaxParameters,
-      );
+    const incomesAt = (age: number) => {
+      const shared = sharedContributionsAt(counted, scenario, age, assumptions);
+      return counted.map((p) => incomeAt(p, scenario, age, assumptions, shared?.[p.productId]));
+    };
+    const taxAt = (age: number) => retirementIncomeTax(incomesAt(age), incomeTaxParameters);
     const amountsAt = (
       p: OverviewProductInput,
       r: ProjectionResult,
@@ -263,15 +325,19 @@ export function overview(
       const f = activityFactor(p, r, age, assumptions);
       const share = tax.byId[p.productId] ?? 0;
       const grossReal = r.monthlyPensionReal * f;
-      const deductions = (r.fixedTaxMonthlyReal + r.contributionsMonthlyReal) * f + share;
+      const shared = sharedContributionsAt(counted, scenario, age, assumptions)?.[p.productId];
+      // Without a shared group the original expression stays, so existing results do not change by a bit.
+      const deductions =
+        shared === undefined
+          ? (r.fixedTaxMonthlyReal + r.contributionsMonthlyReal) * f + share
+          : r.fixedTaxMonthlyReal * f + shared + share;
       return { grossReal, taxAndContributionsReal: deductions, netReal: grossReal - deductions };
     };
 
     /** Net of the one-off payout in the year it is paid, taxed on top of the other incomes of that year. */
     const lumpSumNet = (p: OverviewProductInput, r: ProjectionResult): number => {
       if (!r.lumpSum) return 0;
-      const incomes = counted.map((q) => incomeAt(q, scenario, p.payoutStartAge, assumptions));
-      const tax = lumpSumTax(incomes, r.lumpSum.grossReal, incomeTaxParameters);
+      const tax = lumpSumTax(incomesAt(p.payoutStartAge), r.lumpSum.grossReal, incomeTaxParameters);
       // Health contributions on the lump sum (only without compulsory insurance), as the projector computed them.
       const toReal = r.lumpSum.gross > 0 ? r.lumpSum.grossReal / r.lumpSum.gross : 0;
       const health = Math.max(0, (r.lumpSum.gross - r.lumpSum.tax - r.lumpSum.net) * toReal);
@@ -290,6 +356,10 @@ export function overview(
     for (const { p, r } of results) {
       if (isEmpty(p)) continue;
       for (const w of r.warnings) if (!warnings.includes(w)) warnings.push(w);
+    }
+
+    if (sharedContributionsAt(counted, scenario, target, assumptions) !== undefined) {
+      warnings.push('shared_occupational_threshold');
     }
 
     const snapshot: OverviewSnapshot = {

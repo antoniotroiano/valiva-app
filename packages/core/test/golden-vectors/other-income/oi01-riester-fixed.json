@@ -1,0 +1,717 @@
+{
+  "name": "oi01-riester-fixed",
+  "description": "Riester from the statement: 150 EUR nominal at 67, fixed (example 1)",
+  "synthetic": true,
+  "profile": {
+    "birthYear": 1976,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": [],
+    "desiredMonthlyIncomeToday": 3000
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "entries": [
+    {
+      "id": "riester",
+      "name": "Riester pension",
+      "kind": "riester",
+      "enabled": true,
+      "amountMonthly": 150,
+      "amountBasis": "nominalAtStart",
+      "adjustment": {
+        "mode": "fixed",
+        "percent": 0
+      },
+      "start": {
+        "mode": "age",
+        "age": 67
+      },
+      "end": {
+        "mode": "lifelong"
+      },
+      "taxMode": "full",
+      "contributions": "none",
+      "survivorPercent": 0
+    }
+  ],
+  "extraProducts": [],
+  "expected": {
+    "firstPayoutEndAge": null,
+    "scenarios": {
+      "pessimistic": {
+        "net": 107.12438436974033,
+        "gross": 107.12438436974033,
+        "taxAndContributions": 0.0,
+        "gap": 2892.8756156302597,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 804015.2168797236,
+        "byProduct": [
+          {
+            "productId": "otherIncome:riester",
+            "grossReal": 107.12438436974033,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 107.12438436974033
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 107.12438436974033,
+            "byProduct": {
+              "otherIncome:riester": 107.12438436974033
+            },
+            "gap": 2892.8756156302597
+          },
+          {
+            "age": 68,
+            "total": 105.02390624484346,
+            "byProduct": {
+              "otherIncome:riester": 105.02390624484346
+            },
+            "gap": 2894.9760937551564
+          },
+          {
+            "age": 69,
+            "total": 102.96461396553279,
+            "byProduct": {
+              "otherIncome:riester": 102.96461396553279
+            },
+            "gap": 2897.035386034467
+          },
+          {
+            "age": 70,
+            "total": 100.94569996620862,
+            "byProduct": {
+              "otherIncome:riester": 100.94569996620862
+            },
+            "gap": 2899.054300033791
+          },
+          {
+            "age": 71,
+            "total": 98.9663725158908,
+            "byProduct": {
+              "otherIncome:riester": 98.9663725158908
+            },
+            "gap": 2901.0336274841093
+          },
+          {
+            "age": 72,
+            "total": 97.02585540773607,
+            "byProduct": {
+              "otherIncome:riester": 97.02585540773607
+            },
+            "gap": 2902.974144592264
+          },
+          {
+            "age": 73,
+            "total": 95.12338765464321,
+            "byProduct": {
+              "otherIncome:riester": 95.12338765464321
+            },
+            "gap": 2904.876612345357
+          },
+          {
+            "age": 74,
+            "total": 93.25822319082667,
+            "byProduct": {
+              "otherIncome:riester": 93.25822319082667
+            },
+            "gap": 2906.741776809173
+          },
+          {
+            "age": 75,
+            "total": 91.42963057924183,
+            "byProduct": {
+              "otherIncome:riester": 91.42963057924183
+            },
+            "gap": 2908.570369420758
+          },
+          {
+            "age": 76,
+            "total": 89.63689272474687,
+            "byProduct": {
+              "otherIncome:riester": 89.63689272474687
+            },
+            "gap": 2910.3631072752532
+          },
+          {
+            "age": 77,
+            "total": 87.8793065928891,
+            "byProduct": {
+              "otherIncome:riester": 87.8793065928891
+            },
+            "gap": 2912.120693407111
+          },
+          {
+            "age": 78,
+            "total": 86.15618293420499,
+            "byProduct": {
+              "otherIncome:riester": 86.15618293420499
+            },
+            "gap": 2913.843817065795
+          },
+          {
+            "age": 79,
+            "total": 84.46684601392647,
+            "byProduct": {
+              "otherIncome:riester": 84.46684601392647
+            },
+            "gap": 2915.5331539860736
+          },
+          {
+            "age": 80,
+            "total": 82.81063334698672,
+            "byProduct": {
+              "otherIncome:riester": 82.81063334698672
+            },
+            "gap": 2917.189366653013
+          },
+          {
+            "age": 81,
+            "total": 81.18689543822228,
+            "byProduct": {
+              "otherIncome:riester": 81.18689543822228
+            },
+            "gap": 2918.813104561778
+          },
+          {
+            "age": 82,
+            "total": 79.59499552766889,
+            "byProduct": {
+              "otherIncome:riester": 79.59499552766889
+            },
+            "gap": 2920.4050044723313
+          },
+          {
+            "age": 83,
+            "total": 78.03430934085185,
+            "byProduct": {
+              "otherIncome:riester": 78.03430934085185
+            },
+            "gap": 2921.965690659148
+          },
+          {
+            "age": 84,
+            "total": 76.5042248439724,
+            "byProduct": {
+              "otherIncome:riester": 76.5042248439724
+            },
+            "gap": 2923.495775156028
+          },
+          {
+            "age": 85,
+            "total": 75.0041420038945,
+            "byProduct": {
+              "otherIncome:riester": 75.0041420038945
+            },
+            "gap": 2924.9958579961053
+          },
+          {
+            "age": 86,
+            "total": 73.53347255283775,
+            "byProduct": {
+              "otherIncome:riester": 73.53347255283775
+            },
+            "gap": 2926.466527447162
+          },
+          {
+            "age": 87,
+            "total": 72.09163975768406,
+            "byProduct": {
+              "otherIncome:riester": 72.09163975768406
+            },
+            "gap": 2927.908360242316
+          },
+          {
+            "age": 88,
+            "total": 70.6780781938079,
+            "byProduct": {
+              "otherIncome:riester": 70.6780781938079
+            },
+            "gap": 2929.321921806192
+          },
+          {
+            "age": 89,
+            "total": 69.29223352334107,
+            "byProduct": {
+              "otherIncome:riester": 69.29223352334107
+            },
+            "gap": 2930.707766476659
+          },
+          {
+            "age": 90,
+            "total": 67.93356227778537,
+            "byProduct": {
+              "otherIncome:riester": 67.93356227778537
+            },
+            "gap": 2932.0664377222147
+          }
+        ]
+      },
+      "neutral": {
+        "net": 107.12438436974033,
+        "gross": 107.12438436974033,
+        "taxAndContributions": 0.0,
+        "gap": 2892.8756156302597,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 804015.2168797236,
+        "byProduct": [
+          {
+            "productId": "otherIncome:riester",
+            "grossReal": 107.12438436974033,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 107.12438436974033
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 107.12438436974033,
+            "byProduct": {
+              "otherIncome:riester": 107.12438436974033
+            },
+            "gap": 2892.8756156302597
+          },
+          {
+            "age": 68,
+            "total": 105.02390624484346,
+            "byProduct": {
+              "otherIncome:riester": 105.02390624484346
+            },
+            "gap": 2894.9760937551564
+          },
+          {
+            "age": 69,
+            "total": 102.96461396553279,
+            "byProduct": {
+              "otherIncome:riester": 102.96461396553279
+            },
+            "gap": 2897.035386034467
+          },
+          {
+            "age": 70,
+            "total": 100.94569996620862,
+            "byProduct": {
+              "otherIncome:riester": 100.94569996620862
+            },
+            "gap": 2899.054300033791
+          },
+          {
+            "age": 71,
+            "total": 98.9663725158908,
+            "byProduct": {
+              "otherIncome:riester": 98.9663725158908
+            },
+            "gap": 2901.0336274841093
+          },
+          {
+            "age": 72,
+            "total": 97.02585540773607,
+            "byProduct": {
+              "otherIncome:riester": 97.02585540773607
+            },
+            "gap": 2902.974144592264
+          },
+          {
+            "age": 73,
+            "total": 95.12338765464321,
+            "byProduct": {
+              "otherIncome:riester": 95.12338765464321
+            },
+            "gap": 2904.876612345357
+          },
+          {
+            "age": 74,
+            "total": 93.25822319082667,
+            "byProduct": {
+              "otherIncome:riester": 93.25822319082667
+            },
+            "gap": 2906.741776809173
+          },
+          {
+            "age": 75,
+            "total": 91.42963057924183,
+            "byProduct": {
+              "otherIncome:riester": 91.42963057924183
+            },
+            "gap": 2908.570369420758
+          },
+          {
+            "age": 76,
+            "total": 89.63689272474687,
+            "byProduct": {
+              "otherIncome:riester": 89.63689272474687
+            },
+            "gap": 2910.3631072752532
+          },
+          {
+            "age": 77,
+            "total": 87.8793065928891,
+            "byProduct": {
+              "otherIncome:riester": 87.8793065928891
+            },
+            "gap": 2912.120693407111
+          },
+          {
+            "age": 78,
+            "total": 86.15618293420499,
+            "byProduct": {
+              "otherIncome:riester": 86.15618293420499
+            },
+            "gap": 2913.843817065795
+          },
+          {
+            "age": 79,
+            "total": 84.46684601392647,
+            "byProduct": {
+              "otherIncome:riester": 84.46684601392647
+            },
+            "gap": 2915.5331539860736
+          },
+          {
+            "age": 80,
+            "total": 82.81063334698672,
+            "byProduct": {
+              "otherIncome:riester": 82.81063334698672
+            },
+            "gap": 2917.189366653013
+          },
+          {
+            "age": 81,
+            "total": 81.18689543822228,
+            "byProduct": {
+              "otherIncome:riester": 81.18689543822228
+            },
+            "gap": 2918.813104561778
+          },
+          {
+            "age": 82,
+            "total": 79.59499552766889,
+            "byProduct": {
+              "otherIncome:riester": 79.59499552766889
+            },
+            "gap": 2920.4050044723313
+          },
+          {
+            "age": 83,
+            "total": 78.03430934085185,
+            "byProduct": {
+              "otherIncome:riester": 78.03430934085185
+            },
+            "gap": 2921.965690659148
+          },
+          {
+            "age": 84,
+            "total": 76.5042248439724,
+            "byProduct": {
+              "otherIncome:riester": 76.5042248439724
+            },
+            "gap": 2923.495775156028
+          },
+          {
+            "age": 85,
+            "total": 75.0041420038945,
+            "byProduct": {
+              "otherIncome:riester": 75.0041420038945
+            },
+            "gap": 2924.9958579961053
+          },
+          {
+            "age": 86,
+            "total": 73.53347255283775,
+            "byProduct": {
+              "otherIncome:riester": 73.53347255283775
+            },
+            "gap": 2926.466527447162
+          },
+          {
+            "age": 87,
+            "total": 72.09163975768406,
+            "byProduct": {
+              "otherIncome:riester": 72.09163975768406
+            },
+            "gap": 2927.908360242316
+          },
+          {
+            "age": 88,
+            "total": 70.6780781938079,
+            "byProduct": {
+              "otherIncome:riester": 70.6780781938079
+            },
+            "gap": 2929.321921806192
+          },
+          {
+            "age": 89,
+            "total": 69.29223352334107,
+            "byProduct": {
+              "otherIncome:riester": 69.29223352334107
+            },
+            "gap": 2930.707766476659
+          },
+          {
+            "age": 90,
+            "total": 67.93356227778537,
+            "byProduct": {
+              "otherIncome:riester": 67.93356227778537
+            },
+            "gap": 2932.0664377222147
+          }
+        ]
+      },
+      "optimistic": {
+        "net": 107.12438436974033,
+        "gross": 107.12438436974033,
+        "taxAndContributions": 0.0,
+        "gap": 2892.8756156302597,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 804015.2168797236,
+        "byProduct": [
+          {
+            "productId": "otherIncome:riester",
+            "grossReal": 107.12438436974033,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 107.12438436974033
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 107.12438436974033,
+            "byProduct": {
+              "otherIncome:riester": 107.12438436974033
+            },
+            "gap": 2892.8756156302597
+          },
+          {
+            "age": 68,
+            "total": 105.02390624484346,
+            "byProduct": {
+              "otherIncome:riester": 105.02390624484346
+            },
+            "gap": 2894.9760937551564
+          },
+          {
+            "age": 69,
+            "total": 102.96461396553279,
+            "byProduct": {
+              "otherIncome:riester": 102.96461396553279
+            },
+            "gap": 2897.035386034467
+          },
+          {
+            "age": 70,
+            "total": 100.94569996620862,
+            "byProduct": {
+              "otherIncome:riester": 100.94569996620862
+            },
+            "gap": 2899.054300033791
+          },
+          {
+            "age": 71,
+            "total": 98.9663725158908,
+            "byProduct": {
+              "otherIncome:riester": 98.9663725158908
+            },
+            "gap": 2901.0336274841093
+          },
+          {
+            "age": 72,
+            "total": 97.02585540773607,
+            "byProduct": {
+              "otherIncome:riester": 97.02585540773607
+            },
+            "gap": 2902.974144592264
+          },
+          {
+            "age": 73,
+            "total": 95.12338765464321,
+            "byProduct": {
+              "otherIncome:riester": 95.12338765464321
+            },
+            "gap": 2904.876612345357
+          },
+          {
+            "age": 74,
+            "total": 93.25822319082667,
+            "byProduct": {
+              "otherIncome:riester": 93.25822319082667
+            },
+            "gap": 2906.741776809173
+          },
+          {
+            "age": 75,
+            "total": 91.42963057924183,
+            "byProduct": {
+              "otherIncome:riester": 91.42963057924183
+            },
+            "gap": 2908.570369420758
+          },
+          {
+            "age": 76,
+            "total": 89.63689272474687,
+            "byProduct": {
+              "otherIncome:riester": 89.63689272474687
+            },
+            "gap": 2910.3631072752532
+          },
+          {
+            "age": 77,
+            "total": 87.8793065928891,
+            "byProduct": {
+              "otherIncome:riester": 87.8793065928891
+            },
+            "gap": 2912.120693407111
+          },
+          {
+            "age": 78,
+            "total": 86.15618293420499,
+            "byProduct": {
+              "otherIncome:riester": 86.15618293420499
+            },
+            "gap": 2913.843817065795
+          },
+          {
+            "age": 79,
+            "total": 84.46684601392647,
+            "byProduct": {
+              "otherIncome:riester": 84.46684601392647
+            },
+            "gap": 2915.5331539860736
+          },
+          {
+            "age": 80,
+            "total": 82.81063334698672,
+            "byProduct": {
+              "otherIncome:riester": 82.81063334698672
+            },
+            "gap": 2917.189366653013
+          },
+          {
+            "age": 81,
+            "total": 81.18689543822228,
+            "byProduct": {
+              "otherIncome:riester": 81.18689543822228
+            },
+            "gap": 2918.813104561778
+          },
+          {
+            "age": 82,
+            "total": 79.59499552766889,
+            "byProduct": {
+              "otherIncome:riester": 79.59499552766889
+            },
+            "gap": 2920.4050044723313
+          },
+          {
+            "age": 83,
+            "total": 78.03430934085185,
+            "byProduct": {
+              "otherIncome:riester": 78.03430934085185
+            },
+            "gap": 2921.965690659148
+          },
+          {
+            "age": 84,
+            "total": 76.5042248439724,
+            "byProduct": {
+              "otherIncome:riester": 76.5042248439724
+            },
+            "gap": 2923.495775156028
+          },
+          {
+            "age": 85,
+            "total": 75.0041420038945,
+            "byProduct": {
+              "otherIncome:riester": 75.0041420038945
+            },
+            "gap": 2924.9958579961053
+          },
+          {
+            "age": 86,
+            "total": 73.53347255283775,
+            "byProduct": {
+              "otherIncome:riester": 73.53347255283775
+            },
+            "gap": 2926.466527447162
+          },
+          {
+            "age": 87,
+            "total": 72.09163975768406,
+            "byProduct": {
+              "otherIncome:riester": 72.09163975768406
+            },
+            "gap": 2927.908360242316
+          },
+          {
+            "age": 88,
+            "total": 70.6780781938079,
+            "byProduct": {
+              "otherIncome:riester": 70.6780781938079
+            },
+            "gap": 2929.321921806192
+          },
+          {
+            "age": 89,
+            "total": 69.29223352334107,
+            "byProduct": {
+              "otherIncome:riester": 69.29223352334107
+            },
+            "gap": 2930.707766476659
+          },
+          {
+            "age": 90,
+            "total": 67.93356227778537,
+            "byProduct": {
+              "otherIncome:riester": 67.93356227778537
+            },
+            "gap": 2932.0664377222147
+          }
+        ]
+      }
+    },
+    "statuses": [
+      {
+        "productId": "otherIncome:riester",
+        "status": "included",
+        "empty": false
+      }
+    ],
+    "entries": {
+      "riester": {
+        "startAge": 67,
+        "startYear": 2043,
+        "yearsToStart": 17,
+        "adjustmentPercent": 0,
+        "nominalAtStart": 150,
+        "realAtStart": 107.12438436974033,
+        "taxableSharePercent": 100.0,
+        "taxableRealAtStart": 107.12438436974033,
+        "fixedTaxFreeReal": null,
+        "contributionsRealStandalone": 0.0
+      }
+    }
+  }
+}

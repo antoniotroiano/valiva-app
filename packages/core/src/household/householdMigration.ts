@@ -20,6 +20,7 @@ export const PERSON_BLOCKS = [
   'statutory',
   'depot',
   'occupational',
+  'otherIncome',
   'overview',
 ] as const;
 export type PersonBlock = (typeof PERSON_BLOCKS)[number];

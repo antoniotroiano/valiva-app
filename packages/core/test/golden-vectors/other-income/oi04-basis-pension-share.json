@@ -1,0 +1,717 @@
+{
+  "name": "oi04-basis-pension-share",
+  "description": "Basic pension 400 EUR nominal, 1 % per year, taxed like the statutory pension (example 4)",
+  "synthetic": true,
+  "profile": {
+    "birthYear": 1976,
+    "targetRetirementAge": 67,
+    "lifeExpectancyAge": 90,
+    "childrenBirthYears": [],
+    "desiredMonthlyIncomeToday": 3000
+  },
+  "assumptions": {
+    "inflationPercent": 2,
+    "returnScenarios": {
+      "pessimistic": 3,
+      "neutral": 5,
+      "optimistic": 7
+    },
+    "pensionAdjustmentPercent": 2.5,
+    "payoutPhaseReturnPercent": 2,
+    "marginalTaxRateTodayPercent": 35,
+    "employeeSocialInsuranceRatePercent": 20,
+    "health": {
+      "mode": "statutoryCompulsory",
+      "additionalRatePercent": 2.9,
+      "childless": false
+    }
+  },
+  "currentYear": 2026,
+  "entries": [
+    {
+      "id": "basis",
+      "name": "Basic pension",
+      "kind": "basisPension",
+      "enabled": true,
+      "amountMonthly": 400,
+      "amountBasis": "nominalAtStart",
+      "adjustment": {
+        "mode": "fixed",
+        "percent": 1
+      },
+      "start": {
+        "mode": "age",
+        "age": 67
+      },
+      "end": {
+        "mode": "lifelong"
+      },
+      "taxMode": "pensionShare",
+      "contributions": "none",
+      "survivorPercent": 0
+    }
+  ],
+  "extraProducts": [],
+  "expected": {
+    "firstPayoutEndAge": null,
+    "scenarios": {
+      "pessimistic": {
+        "net": 285.6650249859742,
+        "gross": 285.6650249859742,
+        "taxAndContributions": 0.0,
+        "gap": 2714.334975014026,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 757103.2364389526,
+        "byProduct": [
+          {
+            "productId": "otherIncome:basis",
+            "grossReal": 285.6650249859742,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 285.6650249859742
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 285.6650249859742,
+            "byProduct": {
+              "otherIncome:basis": 285.6650249859742
+            },
+            "gap": 2714.334975014026
+          },
+          {
+            "age": 68,
+            "total": 282.8643874861117,
+            "byProduct": {
+              "otherIncome:basis": 282.8643874861117
+            },
+            "gap": 2717.135612513888
+          },
+          {
+            "age": 69,
+            "total": 280.09120721664004,
+            "byProduct": {
+              "otherIncome:basis": 280.09120721664004
+            },
+            "gap": 2719.90879278336
+          },
+          {
+            "age": 70,
+            "total": 277.3452149890259,
+            "byProduct": {
+              "otherIncome:basis": 277.3452149890259
+            },
+            "gap": 2722.654785010974
+          },
+          {
+            "age": 71,
+            "total": 274.6261442538394,
+            "byProduct": {
+              "otherIncome:basis": 274.6261442538394
+            },
+            "gap": 2725.3738557461606
+          },
+          {
+            "age": 72,
+            "total": 271.9337310748802,
+            "byProduct": {
+              "otherIncome:basis": 271.9337310748802
+            },
+            "gap": 2728.06626892512
+          },
+          {
+            "age": 73,
+            "total": 269.26771410355786,
+            "byProduct": {
+              "otherIncome:basis": 269.26771410355786
+            },
+            "gap": 2730.732285896442
+          },
+          {
+            "age": 74,
+            "total": 266.627834553523,
+            "byProduct": {
+              "otherIncome:basis": 266.627834553523
+            },
+            "gap": 2733.372165446477
+          },
+          {
+            "age": 75,
+            "total": 264.0138361755473,
+            "byProduct": {
+              "otherIncome:basis": 264.0138361755473
+            },
+            "gap": 2735.986163824453
+          },
+          {
+            "age": 76,
+            "total": 261.42546523264974,
+            "byProduct": {
+              "otherIncome:basis": 261.42546523264974
+            },
+            "gap": 2738.57453476735
+          },
+          {
+            "age": 77,
+            "total": 258.8624704754669,
+            "byProduct": {
+              "otherIncome:basis": 258.8624704754669
+            },
+            "gap": 2741.137529524533
+          },
+          {
+            "age": 78,
+            "total": 256.32460311786434,
+            "byProduct": {
+              "otherIncome:basis": 256.32460311786434
+            },
+            "gap": 2743.675396882136
+          },
+          {
+            "age": 79,
+            "total": 253.81161681278724,
+            "byProduct": {
+              "otherIncome:basis": 253.81161681278724
+            },
+            "gap": 2746.188383187213
+          },
+          {
+            "age": 80,
+            "total": 251.32326762834816,
+            "byProduct": {
+              "otherIncome:basis": 251.32326762834816
+            },
+            "gap": 2748.6767323716517
+          },
+          {
+            "age": 81,
+            "total": 248.8593140241487,
+            "byProduct": {
+              "otherIncome:basis": 248.8593140241487
+            },
+            "gap": 2751.1406859758513
+          },
+          {
+            "age": 82,
+            "total": 246.4195168278335,
+            "byProduct": {
+              "otherIncome:basis": 246.4195168278335
+            },
+            "gap": 2753.5804831721666
+          },
+          {
+            "age": 83,
+            "total": 244.00363921187434,
+            "byProduct": {
+              "otherIncome:basis": 244.00363921187434
+            },
+            "gap": 2755.9963607881255
+          },
+          {
+            "age": 84,
+            "total": 241.61144667058147,
+            "byProduct": {
+              "otherIncome:basis": 241.61144667058147
+            },
+            "gap": 2758.3885533294188
+          },
+          {
+            "age": 85,
+            "total": 239.2427069973405,
+            "byProduct": {
+              "otherIncome:basis": 239.2427069973405
+            },
+            "gap": 2760.7572930026595
+          },
+          {
+            "age": 86,
+            "total": 236.89719026207246,
+            "byProduct": {
+              "otherIncome:basis": 236.89719026207246
+            },
+            "gap": 2763.1028097379276
+          },
+          {
+            "age": 87,
+            "total": 234.57466878891486,
+            "byProduct": {
+              "otherIncome:basis": 234.57466878891486
+            },
+            "gap": 2765.425331211085
+          },
+          {
+            "age": 88,
+            "total": 232.2749171341216,
+            "byProduct": {
+              "otherIncome:basis": 232.2749171341216
+            },
+            "gap": 2767.7250828658784
+          },
+          {
+            "age": 89,
+            "total": 229.99771206417927,
+            "byProduct": {
+              "otherIncome:basis": 229.99771206417927
+            },
+            "gap": 2770.0022879358207
+          },
+          {
+            "age": 90,
+            "total": 227.7428325341383,
+            "byProduct": {
+              "otherIncome:basis": 227.7428325341383
+            },
+            "gap": 2772.2571674658616
+          }
+        ]
+      },
+      "neutral": {
+        "net": 285.6650249859742,
+        "gross": 285.6650249859742,
+        "taxAndContributions": 0.0,
+        "gap": 2714.334975014026,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 757103.2364389526,
+        "byProduct": [
+          {
+            "productId": "otherIncome:basis",
+            "grossReal": 285.6650249859742,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 285.6650249859742
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 285.6650249859742,
+            "byProduct": {
+              "otherIncome:basis": 285.6650249859742
+            },
+            "gap": 2714.334975014026
+          },
+          {
+            "age": 68,
+            "total": 282.8643874861117,
+            "byProduct": {
+              "otherIncome:basis": 282.8643874861117
+            },
+            "gap": 2717.135612513888
+          },
+          {
+            "age": 69,
+            "total": 280.09120721664004,
+            "byProduct": {
+              "otherIncome:basis": 280.09120721664004
+            },
+            "gap": 2719.90879278336
+          },
+          {
+            "age": 70,
+            "total": 277.3452149890259,
+            "byProduct": {
+              "otherIncome:basis": 277.3452149890259
+            },
+            "gap": 2722.654785010974
+          },
+          {
+            "age": 71,
+            "total": 274.6261442538394,
+            "byProduct": {
+              "otherIncome:basis": 274.6261442538394
+            },
+            "gap": 2725.3738557461606
+          },
+          {
+            "age": 72,
+            "total": 271.9337310748802,
+            "byProduct": {
+              "otherIncome:basis": 271.9337310748802
+            },
+            "gap": 2728.06626892512
+          },
+          {
+            "age": 73,
+            "total": 269.26771410355786,
+            "byProduct": {
+              "otherIncome:basis": 269.26771410355786
+            },
+            "gap": 2730.732285896442
+          },
+          {
+            "age": 74,
+            "total": 266.627834553523,
+            "byProduct": {
+              "otherIncome:basis": 266.627834553523
+            },
+            "gap": 2733.372165446477
+          },
+          {
+            "age": 75,
+            "total": 264.0138361755473,
+            "byProduct": {
+              "otherIncome:basis": 264.0138361755473
+            },
+            "gap": 2735.986163824453
+          },
+          {
+            "age": 76,
+            "total": 261.42546523264974,
+            "byProduct": {
+              "otherIncome:basis": 261.42546523264974
+            },
+            "gap": 2738.57453476735
+          },
+          {
+            "age": 77,
+            "total": 258.8624704754669,
+            "byProduct": {
+              "otherIncome:basis": 258.8624704754669
+            },
+            "gap": 2741.137529524533
+          },
+          {
+            "age": 78,
+            "total": 256.32460311786434,
+            "byProduct": {
+              "otherIncome:basis": 256.32460311786434
+            },
+            "gap": 2743.675396882136
+          },
+          {
+            "age": 79,
+            "total": 253.81161681278724,
+            "byProduct": {
+              "otherIncome:basis": 253.81161681278724
+            },
+            "gap": 2746.188383187213
+          },
+          {
+            "age": 80,
+            "total": 251.32326762834816,
+            "byProduct": {
+              "otherIncome:basis": 251.32326762834816
+            },
+            "gap": 2748.6767323716517
+          },
+          {
+            "age": 81,
+            "total": 248.8593140241487,
+            "byProduct": {
+              "otherIncome:basis": 248.8593140241487
+            },
+            "gap": 2751.1406859758513
+          },
+          {
+            "age": 82,
+            "total": 246.4195168278335,
+            "byProduct": {
+              "otherIncome:basis": 246.4195168278335
+            },
+            "gap": 2753.5804831721666
+          },
+          {
+            "age": 83,
+            "total": 244.00363921187434,
+            "byProduct": {
+              "otherIncome:basis": 244.00363921187434
+            },
+            "gap": 2755.9963607881255
+          },
+          {
+            "age": 84,
+            "total": 241.61144667058147,
+            "byProduct": {
+              "otherIncome:basis": 241.61144667058147
+            },
+            "gap": 2758.3885533294188
+          },
+          {
+            "age": 85,
+            "total": 239.2427069973405,
+            "byProduct": {
+              "otherIncome:basis": 239.2427069973405
+            },
+            "gap": 2760.7572930026595
+          },
+          {
+            "age": 86,
+            "total": 236.89719026207246,
+            "byProduct": {
+              "otherIncome:basis": 236.89719026207246
+            },
+            "gap": 2763.1028097379276
+          },
+          {
+            "age": 87,
+            "total": 234.57466878891486,
+            "byProduct": {
+              "otherIncome:basis": 234.57466878891486
+            },
+            "gap": 2765.425331211085
+          },
+          {
+            "age": 88,
+            "total": 232.2749171341216,
+            "byProduct": {
+              "otherIncome:basis": 232.2749171341216
+            },
+            "gap": 2767.7250828658784
+          },
+          {
+            "age": 89,
+            "total": 229.99771206417927,
+            "byProduct": {
+              "otherIncome:basis": 229.99771206417927
+            },
+            "gap": 2770.0022879358207
+          },
+          {
+            "age": 90,
+            "total": 227.7428325341383,
+            "byProduct": {
+              "otherIncome:basis": 227.7428325341383
+            },
+            "gap": 2772.2571674658616
+          }
+        ]
+      },
+      "optimistic": {
+        "net": 285.6650249859742,
+        "gross": 285.6650249859742,
+        "taxAndContributions": 0.0,
+        "gap": 2714.334975014026,
+        "surplus": 0.0,
+        "lumpNetReal": 0.0,
+        "lumpGrossReal": 0.0,
+        "totalGapReal": 757103.2364389526,
+        "byProduct": [
+          {
+            "productId": "otherIncome:basis",
+            "grossReal": 285.6650249859742,
+            "taxAndContributionsReal": 0.0,
+            "netReal": 285.6650249859742
+          }
+        ],
+        "path": [
+          {
+            "age": 67,
+            "total": 285.6650249859742,
+            "byProduct": {
+              "otherIncome:basis": 285.6650249859742
+            },
+            "gap": 2714.334975014026
+          },
+          {
+            "age": 68,
+            "total": 282.8643874861117,
+            "byProduct": {
+              "otherIncome:basis": 282.8643874861117
+            },
+            "gap": 2717.135612513888
+          },
+          {
+            "age": 69,
+            "total": 280.09120721664004,
+            "byProduct": {
+              "otherIncome:basis": 280.09120721664004
+            },
+            "gap": 2719.90879278336
+          },
+          {
+            "age": 70,
+            "total": 277.3452149890259,
+            "byProduct": {
+              "otherIncome:basis": 277.3452149890259
+            },
+            "gap": 2722.654785010974
+          },
+          {
+            "age": 71,
+            "total": 274.6261442538394,
+            "byProduct": {
+              "otherIncome:basis": 274.6261442538394
+            },
+            "gap": 2725.3738557461606
+          },
+          {
+            "age": 72,
+            "total": 271.9337310748802,
+            "byProduct": {
+              "otherIncome:basis": 271.9337310748802
+            },
+            "gap": 2728.06626892512
+          },
+          {
+            "age": 73,
+            "total": 269.26771410355786,
+            "byProduct": {
+              "otherIncome:basis": 269.26771410355786
+            },
+            "gap": 2730.732285896442
+          },
+          {
+            "age": 74,
+            "total": 266.627834553523,
+            "byProduct": {
+              "otherIncome:basis": 266.627834553523
+            },
+            "gap": 2733.372165446477
+          },
+          {
+            "age": 75,
+            "total": 264.0138361755473,
+            "byProduct": {
+              "otherIncome:basis": 264.0138361755473
+            },
+            "gap": 2735.986163824453
+          },
+          {
+            "age": 76,
+            "total": 261.42546523264974,
+            "byProduct": {
+              "otherIncome:basis": 261.42546523264974
+            },
+            "gap": 2738.57453476735
+          },
+          {
+            "age": 77,
+            "total": 258.8624704754669,
+            "byProduct": {
+              "otherIncome:basis": 258.8624704754669
+            },
+            "gap": 2741.137529524533
+          },
+          {
+            "age": 78,
+            "total": 256.32460311786434,
+            "byProduct": {
+              "otherIncome:basis": 256.32460311786434
+            },
+            "gap": 2743.675396882136
+          },
+          {
+            "age": 79,
+            "total": 253.81161681278724,
+            "byProduct": {
+              "otherIncome:basis": 253.81161681278724
+            },
+            "gap": 2746.188383187213
+          },
+          {
+            "age": 80,
+            "total": 251.32326762834816,
+            "byProduct": {
+              "otherIncome:basis": 251.32326762834816
+            },
+            "gap": 2748.6767323716517
+          },
+          {
+            "age": 81,
+            "total": 248.8593140241487,
+            "byProduct": {
+              "otherIncome:basis": 248.8593140241487
+            },
+            "gap": 2751.1406859758513
+          },
+          {
+            "age": 82,
+            "total": 246.4195168278335,
+            "byProduct": {
+              "otherIncome:basis": 246.4195168278335
+            },
+            "gap": 2753.5804831721666
+          },
+          {
+            "age": 83,
+            "total": 244.00363921187434,
+            "byProduct": {
+              "otherIncome:basis": 244.00363921187434
+            },
+            "gap": 2755.9963607881255
+          },
+          {
+            "age": 84,
+            "total": 241.61144667058147,
+            "byProduct": {
+              "otherIncome:basis": 241.61144667058147
+            },
+            "gap": 2758.3885533294188
+          },
+          {
+            "age": 85,
+            "total": 239.2427069973405,
+            "byProduct": {
+              "otherIncome:basis": 239.2427069973405
+            },
+            "gap": 2760.7572930026595
+          },
+          {
+            "age": 86,
+            "total": 236.89719026207246,
+            "byProduct": {
+              "otherIncome:basis": 236.89719026207246
+            },
+            "gap": 2763.1028097379276
+          },
+          {
+            "age": 87,
+            "total": 234.57466878891486,
+            "byProduct": {
+              "otherIncome:basis": 234.57466878891486
+            },
+            "gap": 2765.425331211085
+          },
+          {
+            "age": 88,
+            "total": 232.2749171341216,
+            "byProduct": {
+              "otherIncome:basis": 232.2749171341216
+            },
+            "gap": 2767.7250828658784
+          },
+          {
+            "age": 89,
+            "total": 229.99771206417927,
+            "byProduct": {
+              "otherIncome:basis": 229.99771206417927
+            },
+            "gap": 2770.0022879358207
+          },
+          {
+            "age": 90,
+            "total": 227.7428325341383,
+            "byProduct": {
+              "otherIncome:basis": 227.7428325341383
+            },
+            "gap": 2772.2571674658616
+          }
+        ]
+      }
+    },
+    "statuses": [
+      {
+        "productId": "otherIncome:basis",
+        "status": "included",
+        "empty": false
+      }
+    ],
+    "entries": {
+      "basis": {
+        "startAge": 67,
+        "startYear": 2043,
+        "yearsToStart": 17,
+        "adjustmentPercent": 1,
+        "nominalAtStart": 400,
+        "realAtStart": 285.6650249859742,
+        "taxableSharePercent": 92.5,
+        "taxableRealAtStart": 264.24014811202613,
+        "fixedTaxFreeReal": 21.42487687394805,
+        "contributionsRealStandalone": 0.0
+      }
+    }
+  }
+}

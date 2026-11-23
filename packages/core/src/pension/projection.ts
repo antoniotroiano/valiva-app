@@ -30,6 +30,13 @@ export type ProjectionResult = {
    * payment. The overview lets such a payment keep its purchasing power if this equals the inflation.
    */
   indexationPercent?: number;
+  /**
+   * Monthly amount of the gross payment that is tax-free for good, in today's purchasing power at the payout
+   * start. It is fixed in euros (a constant nominal amount), so later increases of the payment are fully
+   * taxable (`incomeAt` in the overview). Absent for most products; the statutory pension derives it from
+   * `monthlyPensionReal - taxableMonthlyReal`.
+   */
+  fixedTaxFreeMonthlyReal?: number;
   /** Age at which the capital is used up before the planned end age; absent if it lasts. */
   payoutEndAge?: number;
   /** Codes such as `unverified:pension.pensionValue`; the UI maps them to texts. */

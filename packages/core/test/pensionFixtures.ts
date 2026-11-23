@@ -1,6 +1,7 @@
 import type {
   GlobalAssumptions,
   LegalParameters,
+  OtherIncomeEntry,
   ProjectionContext,
   Profile,
   StatutoryInput,
@@ -114,3 +115,57 @@ export const STATUTORY: StatutoryInput = {
   statementYear: 2026,
   retirementAge: 67,
 };
+
+/** Rule assumptions as in config/other-income-de.json: all `unverified` (a test checks they stay in sync). */
+export const OTHER_INCOME_RULE_KEYS = [
+  'basisPensionTaxShare',
+  'privateAnnuityEarningsShare',
+  'riesterFullyTaxable',
+  'sharedBenefitThreshold',
+  'survivorIncomeCredited',
+] as const;
+
+/** `LEGAL` plus the other-income rules, as the app resolves them with `config/other-income-de.json`. */
+export const LEGAL_OI: LegalParameters = {
+  ...LEGAL,
+  otherIncome: {
+    basisPensionTaxShare: 1,
+    privateAnnuityEarningsShare: 1,
+    riesterFullyTaxable: 1,
+    sharedBenefitThreshold: 1,
+    survivorIncomeCredited: 1,
+  },
+  unverified: [...LEGAL.unverified, ...OTHER_INCOME_RULE_KEYS.map((k) => `otherIncome.${k}`)],
+};
+
+/** Context of the concept examples (`15` §5.4): today 2026, born 1976, retirement at 67 (year 2043). */
+export const OI_CTX: ProjectionContext = {
+  profile: {
+    birthYear: 1976,
+    targetRetirementAge: 67,
+    lifeExpectancyAge: 90,
+    childrenBirthYears: [],
+  },
+  assumptions: ASSUMPTIONS,
+  legal: LEGAL_OI,
+  currentYear: 2026,
+};
+
+/** A valid entry (rent, 600 EUR in today's purchasing power, like inflation, from retirement, lifelong). */
+export function oiEntry(over: Partial<OtherIncomeEntry> = {}): OtherIncomeEntry {
+  return {
+    id: 'e1',
+    name: 'Rent',
+    kind: 'rent',
+    enabled: true,
+    amountMonthly: 600,
+    amountBasis: 'today',
+    adjustment: { mode: 'inflation' },
+    start: { mode: 'retirement' },
+    end: { mode: 'lifelong' },
+    taxMode: 'full',
+    contributions: 'none',
+    survivorPercent: 0,
+    ...over,
+  };
+}

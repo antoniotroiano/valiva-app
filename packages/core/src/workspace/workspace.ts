@@ -6,8 +6,11 @@ import { validateHousehold } from '../household/household';
 import type { Household, Person } from '../household/household';
 import type { HealthInsurance } from '../shared/profile';
 
-/** Current file format version. A change to any block raises it and adds a migration. */
-export const WORKSPACE_SCHEMA_VERSION = 1;
+/**
+ * Current file format version. A change to any block raises it and adds a migration. Version 2 adds the
+ * optional block `otherIncome` (`15` §7): an older app must refuse such a file instead of losing the entries.
+ */
+export const WORKSPACE_SCHEMA_VERSION = 2;
 
 export const WORKSPACE_LIMITS = {
   /** Characters of the file content (an upper bound of 2 MB for typical files). */
@@ -77,9 +80,12 @@ export type WorkspaceInfo = {
 const isObject = (v: unknown): v is Record<string, unknown> =>
   typeof v === 'object' && v !== null && !Array.isArray(v);
 
-/** One entry per step from version `n` to `n + 1`; empty while the file format is at version 1. */
+/**
+ * One entry per step from version `n` to `n + 1`. Version 1 to 2 is the identity: files of version 1 have no
+ * `otherIncome` block and load with the default (an empty list).
+ */
 export const WORKSPACE_MIGRATIONS: Record<number, (workspace: Record<string, unknown>) => unknown> =
-  {};
+  { 1: (workspace) => workspace };
 
 /**
  * Brings an older file up to `target` step by step. Returns the migrated object or an issue.

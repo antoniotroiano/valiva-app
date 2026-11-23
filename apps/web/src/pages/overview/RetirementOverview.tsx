@@ -1,6 +1,6 @@
 import { productName, gapMeta, type BudgetInfo } from './RetirementGap';
 import {
-  type OverviewProductKind,
+  type OverviewProductId,
   type OverviewProductStatus,
   type OverviewResult,
   type ScenarioName,
@@ -36,7 +36,9 @@ const PAGE_OF: Record<OverviewBlock, Target> = {
   occupational: 'occupational',
 };
 
-const pageOf = (id: OverviewProductKind): Target => (id === 'retirementDepot' ? 'depot' : id);
+/** Page of a product; entries of the generic block have no page yet (AP-15 part B). */
+const pageOf = (id: OverviewProductId): Target | undefined =>
+  id.startsWith('otherIncome:') ? undefined : id === 'retirementDepot' ? 'depot' : (id as Target);
 
 const warningsOf = (result: OverviewResult) =>
   SCENARIO_NAMES.flatMap((s) => result.scenarios[s].snapshot.warnings);
@@ -78,15 +80,20 @@ export function RetirementAlerts({
   const invalid = outcome.result.products.filter((p) => p.status === 'invalid');
   return (
     <>
-      {invalid.map((p) => (
-        <TopNotice key={p.productId} kind="bad">
-          <b>{t.sections.blockInvalid(productName(p.productId))}</b>{' '}
-          {p.issues?.map((i: ValidationIssue) => issueMessage(i)).join(' ')}{' '}
-          <button type="button" className="link" onClick={() => goTo(pageOf(p.productId))}>
-            {t.toBlock}
-          </button>
-        </TopNotice>
-      ))}
+      {invalid.map((p) => {
+        const page = pageOf(p.productId);
+        return (
+          <TopNotice key={p.productId} kind="bad">
+            <b>{t.sections.blockInvalid(productName(p.productId))}</b>{' '}
+            {p.issues?.map((i: ValidationIssue) => issueMessage(i)).join(' ')}{' '}
+            {page !== undefined && (
+              <button type="button" className="link" onClick={() => goTo(page)}>
+                {t.toBlock}
+              </button>
+            )}
+          </TopNotice>
+        );
+      })}
       <ImportantNotes codes={splitWarnings(warningsOf(outcome.result)).important} />
     </>
   );
@@ -122,6 +129,7 @@ export function RetirementOverview({
 const STATUS_KIND: Record<OverviewProductStatus['status'], StatusKind> = {
   included: 'ok',
   later: 'hint',
+  ended: 'hint',
   disabled: 'hint',
   invalid: 'error',
 };

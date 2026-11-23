@@ -114,7 +114,13 @@ export type ValidationIssue = {
     | 'before_current_year'
     | 'retirement_in_past'
     | 'before_first_contribution_year'
-    | 'required';
+    | 'required'
+    | 'invalid_id'
+    | 'duplicate_id'
+    | 'name_invalid'
+    | 'end_not_after_start'
+    | 'nominal_start_in_past'
+    | 'too_many_entries';
   /** Allowed range or limit, for message formatting in the UI. */
   min?: number;
   max?: number;

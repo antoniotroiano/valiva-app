@@ -1,6 +1,21 @@
 import type { DepotVariant } from '../pension/depot';
 import { DEPOT_VARIANTS } from '../pension/depot';
 import type { EmployerSubsidyMode } from '../pension/occupational';
+import {
+  OTHER_INCOME_BASES,
+  OTHER_INCOME_CONTRIBUTIONS,
+  OTHER_INCOME_KINDS,
+  OTHER_INCOME_LIMITS,
+  OTHER_INCOME_TAX_MODES,
+  hasControlCharacters,
+} from '../pension/otherIncome';
+import type {
+  OtherIncomeAdjustment,
+  OtherIncomeEnd,
+  OtherIncomeEntry,
+  OtherIncomeStart,
+  OtherIncomeState,
+} from '../pension/otherIncome';
 import type { PersonBlock } from '../household/householdMigration';
 import type { SavingsGoal, TargetBasis } from '../goals/goalTypes';
 import { validateSavingsGoal } from '../goals/goalValidation';
@@ -107,6 +122,8 @@ export type OverviewState = {
   enabled: Record<OverviewBlock, boolean>;
 };
 
+export type { OtherIncomeState } from '../pension/otherIncome';
+
 export type BlockStates = {
   etfPlan: EtfPlanInput;
   etfPayout: EtfPayoutState;
@@ -115,6 +132,7 @@ export type BlockStates = {
   statutory: StatutoryState;
   depot: DepotState;
   occupational: OccupationalState;
+  otherIncome: OtherIncomeState;
   overview: OverviewState;
 };
 
@@ -169,6 +187,7 @@ export function defaultBlock<B extends PersonBlock>(block: B, currentYear: numbe
       costPercentPerYear: 1,
       startMonth: '2027-01',
     },
+    otherIncome: { schemaVersion: 1, entries: [] },
     overview: DEFAULT_OVERVIEW,
   };
   return defaults[block] as BlockStates[B];
@@ -474,6 +493,204 @@ function parseOccupational(
   };
 }
 
+const hasForbiddenKey = (value: unknown, depth = 0): boolean => {
+  if (depth > 12) return true;
+  if (Array.isArray(value)) return value.some((item) => hasForbiddenKey(item, depth + 1));
+  if (isObject(value)) {
+    return Object.keys(value).some(
+      (key) => OTHER_INCOME_FORBIDDEN_KEYS.has(key) || hasForbiddenKey(value[key], depth + 1),
+    );
+  }
+  return false;
+};
+const OTHER_INCOME_FORBIDDEN_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
+/** A finite number within the range (and an integer if asked); a problem is recorded under `path + key`. */
+function readNumber(
+  src: Record<string, unknown>,
+  key: string,
+  path: string,
+  problems: string[],
+  range: { min?: number; max?: number; integer?: boolean },
+  required: boolean,
+): number | undefined {
+  const v = src[key];
+  if (v === undefined || v === null) {
+    if (required) problems.push(`${path}${key}`);
+    return undefined;
+  }
+  if (
+    typeof v !== 'number' ||
+    !Number.isFinite(v) ||
+    (range.integer === true && !Number.isInteger(v)) ||
+    (range.min !== undefined && v < range.min) ||
+    (range.max !== undefined && v > range.max)
+  ) {
+    problems.push(`${path}${key}`);
+    return undefined;
+  }
+  return v;
+}
+
+/** Reads a nested object with a `mode`; unknown fields are dropped, every wrong value is a problem. */
+function readModeObject(
+  src: Record<string, unknown>,
+  key: string,
+  path: string,
+  problems: string[],
+): Record<string, unknown> | undefined {
+  const v = src[key];
+  if (v === undefined || v === null) return undefined;
+  if (!isObject(v)) {
+    problems.push(`${path}${key}`);
+    return undefined;
+  }
+  return v;
+}
+
+/**
+ * Reads one entry of the generic block field by field into a new object (`15` §7): unknown fields are dropped,
+ * enums, ranges and the name are checked. Specialist rules (end after start, duplicate id, empty name, ...) are not
+ * import errors: such an entry is stored and shown with its message.
+ */
+function parseOtherIncomeEntry(
+  raw: unknown,
+  index: number,
+  problems: string[],
+): OtherIncomeEntry | undefined {
+  const path = `entries.${index}.`;
+  if (!isObject(raw)) {
+    problems.push(`entries.${index}`);
+    return undefined;
+  }
+  const L = OTHER_INCOME_LIMITS;
+  const before = problems.length;
+  const text = (key: string, required: boolean): string | undefined => {
+    const v = raw[key];
+    if (v === undefined || v === null) {
+      if (required) problems.push(`${path}${key}`);
+      return undefined;
+    }
+    return typeof v === 'string' ? v : (problems.push(`${path}${key}`), undefined);
+  };
+  const choice = <T extends string>(
+    key: string,
+    allowed: readonly T[],
+    fallback?: T,
+  ): T | undefined => {
+    const v = raw[key];
+    if (v === undefined || v === null) {
+      if (fallback === undefined) problems.push(`${path}${key}`);
+      return fallback;
+    }
+    if (allowed.includes(v as T)) return v as T;
+    problems.push(`${path}${key}`);
+    return undefined;
+  };
+
+  const id = text('id', true);
+  if (id !== undefined && !L.idPattern.test(id)) problems.push(`${path}id`);
+  const name = text('name', true);
+  if (name !== undefined && (name.length > L.nameMaxLength || hasControlCharacters(name))) {
+    problems.push(`${path}name`);
+  }
+  const kind = choice('kind', OTHER_INCOME_KINDS);
+  const amountMonthly = readNumber(raw, 'amountMonthly', path, problems, L.amountMonthly, true);
+  const amountBasis = choice('amountBasis', OTHER_INCOME_BASES, 'today');
+  const taxMode = choice('taxMode', OTHER_INCOME_TAX_MODES, 'full');
+  const contributions = choice('contributions', OTHER_INCOME_CONTRIBUTIONS, 'none');
+  const taxSharePercent = readNumber(raw, 'taxSharePercent', path, problems, L.percent, false);
+  const survivorPercent = readNumber(raw, 'survivorPercent', path, problems, L.percent, false);
+  const enabled = raw.enabled === undefined || raw.enabled === null ? true : raw.enabled;
+  if (typeof enabled !== 'boolean') problems.push(`${path}enabled`);
+
+  let adjustment: OtherIncomeAdjustment = { mode: 'inflation' };
+  const adj = readModeObject(raw, 'adjustment', path, problems);
+  if (adj) {
+    if (adj.mode === 'inflation' || adj.mode === 'pension') adjustment = { mode: adj.mode };
+    else if (adj.mode === 'fixed') {
+      const percent = readNumber(
+        adj,
+        'percent',
+        `${path}adjustment.`,
+        problems,
+        L.adjustmentPercent,
+        true,
+      );
+      adjustment = { mode: 'fixed', percent: percent ?? 0 };
+    } else problems.push(`${path}adjustment.mode`);
+  }
+  let start: OtherIncomeStart = { mode: 'retirement' };
+  const st = readModeObject(raw, 'start', path, problems);
+  if (st) {
+    if (st.mode === 'retirement') start = { mode: 'retirement' };
+    else if (st.mode === 'age') {
+      const age = readNumber(
+        st,
+        'age',
+        `${path}start.`,
+        problems,
+        { ...L.startAge, integer: true },
+        true,
+      );
+      start = { mode: 'age', age: age ?? 0 };
+    } else problems.push(`${path}start.mode`);
+  }
+  let end: OtherIncomeEnd = { mode: 'lifelong' };
+  const en = readModeObject(raw, 'end', path, problems);
+  if (en) {
+    if (en.mode === 'lifelong') end = { mode: 'lifelong' };
+    else if (en.mode === 'age') {
+      const age = readNumber(
+        en,
+        'age',
+        `${path}end.`,
+        problems,
+        { min: 1, max: L.endAgeMax, integer: true },
+        true,
+      );
+      end = { mode: 'age', age: age ?? 0 };
+    } else problems.push(`${path}end.mode`);
+  }
+
+  if (problems.length > before) return undefined;
+  const entry: OtherIncomeEntry = {
+    id: id as string,
+    name: name as string,
+    kind: kind as OtherIncomeEntry['kind'],
+    enabled: enabled as boolean,
+    amountMonthly: amountMonthly as number,
+    amountBasis: amountBasis as OtherIncomeEntry['amountBasis'],
+    adjustment,
+    start,
+    end,
+    taxMode: taxMode as OtherIncomeEntry['taxMode'],
+    contributions: contributions as OtherIncomeEntry['contributions'],
+    survivorPercent: survivorPercent ?? 0,
+  };
+  if (taxSharePercent !== undefined) entry.taxSharePercent = taxSharePercent;
+  return entry;
+}
+
+/**
+ * The block of the generic "other income" entries (`15` §7): at most 10 entries, every entry copied field by
+ * field, forbidden keys rejected on every level. Structure or range problems of an entry are listed in `problems`
+ * (an import then drops the block); specialist errors are kept for the page to show.
+ */
+function parseOtherIncome(raw: Record<string, unknown>): BlockParseResult<'otherIncome'> {
+  const r = new Reader(raw);
+  if (!r.version() || !Array.isArray(raw.entries) || hasForbiddenKey(raw)) return { ok: false };
+  const problems: string[] = [];
+  const entries: OtherIncomeEntry[] = [];
+  const max = OTHER_INCOME_LIMITS.maxEntries;
+  raw.entries.slice(0, max).forEach((item, i) => {
+    const entry = parseOtherIncomeEntry(item, i, problems);
+    if (entry) entries.push(entry);
+  });
+  if (raw.entries.length > max) problems.push('entries.too_many_entries');
+  return { ok: true, value: { schemaVersion: 1, entries }, problems };
+}
+
 function parseOverview(raw: Record<string, unknown>): BlockParseResult<'overview'> {
   const r = new Reader(raw);
   if (!r.version() || !isObject(raw.enabled)) return { ok: false };
@@ -517,6 +734,9 @@ export function parseBlock<B extends PersonBlock>(
       break;
     case 'occupational':
       result = parseOccupational(raw, currentYear);
+      break;
+    case 'otherIncome':
+      result = parseOtherIncome(raw);
       break;
     case 'overview':
       result = parseOverview(raw);
