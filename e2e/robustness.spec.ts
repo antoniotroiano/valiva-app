@@ -175,3 +175,36 @@ test('data stored under the old pathwise.* prefix is moved to valiva.* on start 
   expect(keys).toContain('valiva.lastExport');
   expect(await page.evaluate(() => localStorage.getItem('valiva.theme'))).toBe('dark');
 });
+
+for (const [which, removed, kept] of [
+  ['the active person', 'p1', 'p2'],
+  ['another person', 'p2', 'p1'],
+] as const) {
+  test(`removing ${which} leaves no storage keys of the removed person (AP-04, AP-21)`, async ({
+    page,
+  }) => {
+    await loadCouple(page);
+    await page.goto('/#household');
+    await expect(page.getByRole('heading', { level: 1, name: 'Haushalt' })).toBeVisible();
+    const keysOf = (id: string) =>
+      page.evaluate(
+        (prefix) => Object.keys(localStorage).filter((k) => k.startsWith(prefix)),
+        `valiva.p.${id}.`,
+      );
+    expect((await keysOf(removed)).length).toBeGreaterThan(0);
+    await page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('button', { name: /entfernen/i }) })
+      .nth(removed === 'p1' ? 0 : 1)
+      .getByRole('button', { name: /entfernen/i })
+      .click();
+    await page
+      .getByRole('dialog', { name: 'Person entfernen?' })
+      .getByRole('button', { name: 'Entfernen' })
+      .click();
+    // Give the unmount flush and the debounced saves time to (wrongly) write the keys again.
+    await page.waitForTimeout(1000);
+    expect(await keysOf(removed)).toEqual([]);
+    expect((await keysOf(kept)).length).toBeGreaterThan(0);
+  });
+}

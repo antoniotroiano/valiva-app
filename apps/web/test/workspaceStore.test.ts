@@ -113,6 +113,16 @@ describe('BrowserWorkspaceStore', () => {
     expect(storage.getItem(LAST_EXPORT_KEY)).not.toBeNull();
   });
 
+  it('markExported reports a refused write instead of swallowing it', () => {
+    const storage = new MemoryStorage();
+    const store = makeStore(storage);
+    expect(store.markExported('2026-11-18T10:00:00.000Z')).toEqual({ ok: true });
+    expect(store.lastExport()).toBe('2026-11-18T10:00:00.000Z');
+    storage.failWrite = 0;
+    expect(store.markExported('2026-11-19T10:00:00.000Z')).toEqual({ ok: false });
+    expect(store.lastExport()).toBe('2026-11-18T10:00:00.000Z');
+  });
+
   it('clear also removes the pre-household keys so they are not migrated back', () => {
     const { storage, store } = filled();
     storage.setItem('valiva.profile.v1', '{}');

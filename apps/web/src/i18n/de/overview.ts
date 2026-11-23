@@ -136,7 +136,11 @@ export const overview = {
     pathCaption: (scenario: string) =>
       `Monatliches Netto je Alter (${scenario}), Kaufkraft von heute`,
     age: 'Alter',
-    unverified: (key: string) => `Ungeprüfter Rechtswert verwendet: ${key}.`,
+    /** One note for all unverified legal values; `items` are the values with their amounts. */
+    unverifiedValues: (items: string) =>
+      `Ungeprüfte Rechtswerte (Details unter „Annahmen“): ${items}.`,
+    depotAssumptions:
+      'Altersvorsorgedepot: Auszahlungen werden als voll steuerpflichtig mit pauschalem Satz und ohne Kranken- und Pflegebeiträge angenommen (nicht bestätigt).',
     unknownWarning: 'Zu dieser Berechnung gibt es einen weiteren Hinweis zu den Annahmen.',
     unverifiedTax:
       'ETF: Die Steuerwerte (Abgeltungsteuer, Teilfreistellung, Sparerpauschbetrag) sind ungeprüft.',

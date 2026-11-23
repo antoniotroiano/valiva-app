@@ -79,6 +79,13 @@ test.describe('desktop', () => {
     await page.getByRole('radio', { name: 'Anna Beispiel' }).click();
     const important = page.locator('.notice.warn', { hasText: 'wichtig' });
     await expect(important).toContainText(/\d+ wichtige Hinweise/);
+    // AP-21: unverified legal values are one line that still names every value with its amount.
+    await expect(
+      important.getByRole('listitem').filter({ hasText: 'Ungeprüfte Rechtswerte' }),
+    ).toHaveCount(1);
+    await expect(important).toContainText('Kinderzulage nur für Kinder jünger als 18 Jahre');
+    await expect(important).toContainText('Bonus nur für Sparer unter 25 Jahren');
+    await expect(important).toContainText('72 €');
     const above = await important.evaluate(
       (n) =>
         !!(
@@ -94,7 +101,7 @@ test.describe('desktop', () => {
     await openRow(page, 'Hinweise');
     await expect(notes.getByRole('listitem').first()).toBeVisible();
     // Important notes are not repeated in the collapsed list.
-    await expect(notes).not.toContainText('Ungeprüfter Rechtswert');
+    await expect(notes).not.toContainText('Ungeprüfte Rechtswerte');
   });
 
   test('a person without any block gets the empty state with the next step', async ({ page }) => {

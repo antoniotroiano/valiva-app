@@ -1,9 +1,9 @@
 import { resolveTaxAssumptions } from '@valiva/core';
-import type { LegalValue } from '@valiva/core';
 import { Disclosure } from '../../components/cards/Disclosure';
 import { StatusChip } from '../../components/cards/StatusChip';
 import { de } from '../../i18n/de';
-import { formatDate, formatNumber, todayLocal } from '../../lib/format';
+import { formatDate, todayLocal } from '../../lib/format';
+import { formatLegalValue } from '../../lib/legalValue';
 import { currentLegal } from '../../lib/legalConfig';
 import {
   groupItems,
@@ -14,16 +14,6 @@ import {
 } from '../../lib/legalGroups';
 import { splitSourceText } from '../../lib/sourceText';
 import { taxConfig } from '../../lib/taxConfig';
-
-function formatValue(v: LegalValue): string {
-  // A rule assumption has no amount: the value 1 only means "the rule is applied".
-  if (v.unit === 'rule') return de.assumptions.legal.ruleApplies;
-  const units = de.assumptions.units as Record<string, string>;
-  const unit = units[v.unit] ?? v.unit;
-  // Years such as 2026 or 1964 are not grouped like amounts.
-  const num = v.unit === 'year' ? String(v.value) : formatNumber(v.value);
-  return unit ? `${num} ${unit}` : num;
-}
 
 /** Status of a group, always shown in its collapsed row: the number of unverified values or "all confirmed". */
 export function GroupStatus({ unverified }: { unverified: number }) {
@@ -50,7 +40,7 @@ export function LegalValueRow({ item }: { item: LegalItem }) {
     <li className={unverified ? 'val unv' : 'val'}>
       <div className="val-row">
         <span className="val-name">{item.name}</span>
-        <span className="val-amount">{formatValue(v)}</span>
+        <span className="val-amount">{formatLegalValue(v)}</span>
         <span className="val-since">{validity}</span>
         {unverified && (
           <StatusChip kind="warn" size="sm">

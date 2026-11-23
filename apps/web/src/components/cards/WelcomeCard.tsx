@@ -74,7 +74,12 @@ export function WelcomeCard({ goToProfile }: { goToProfile: () => void }) {
         onClose={() => setConfirming(false)}
         actions={
           <>
-            <button type="button" className="btn" autoFocus onClick={() => setConfirming(false)}>
+            <button
+              type="button"
+              className="btn"
+              data-autofocus
+              onClick={() => setConfirming(false)}
+            >
               {t.cancel}
             </button>
             <button type="button" className="btn primary" onClick={() => void loadExampleData()}>

@@ -13,6 +13,16 @@ body {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
+/* The heading that receives the focus after a page change (programmatic, tabindex -1) is a landmark for
+   screen readers, not a control: a slim ring that hugs the text instead of a box over the full width.
+   Still 2 px in the focus colour (3:1 against the page, see tokenContrast.test.ts). */
+h1[tabindex='-1']:focus-visible {
+  width: fit-content;
+  max-width: 100%;
+  outline-width: 2px;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
 .skip {
   position: absolute;
   left: -999px;

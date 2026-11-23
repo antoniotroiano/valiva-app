@@ -12,6 +12,7 @@ import { EmptyState, type EmptyAction } from '../../components/cards/EmptyState'
 import { FieldGroup } from '../../components/forms/FieldGroup';
 import { NumberField } from '../../components/forms/NumberField';
 import { BlockPage, BlockSection } from '../../components/layout/BlockPage';
+import { ConfirmRemove } from '../../components/layout/ConfirmRemove';
 import { de, issueMessage } from '../../i18n/de';
 import { formatEur, formatNumber } from '../../lib/format';
 import { type OtherIncomeApi } from '../../state/useOtherIncome';
@@ -63,6 +64,7 @@ export function OtherIncomePage({
   const kindId = useId();
   const entries = api.state.entries;
   const [chosen, setChosen] = useState<string>();
+  const [confirming, setConfirming] = useState(false);
   const [newKind, setNewKind] = useState<OtherIncomeKind>('riester');
   const selected = entries.find((e) => e.id === chosen) ?? entries[0];
   const full = entries.length >= OTHER_INCOME_LIMITS.maxEntries;
@@ -179,11 +181,18 @@ export function OtherIncomePage({
         error={err('name')}
         onName={(name) => set({ name })}
         onEnabled={(enabled) => set({ enabled })}
-        onRemove={() => {
-          if (window.confirm(t.list.removeConfirm(selected.name))) {
-            api.remove(selected.id);
-            setChosen(undefined);
-          }
+        onRemove={() => setConfirming(true)}
+      />
+      <ConfirmRemove
+        open={confirming}
+        title={t.list.removeTitle}
+        text={t.list.removeConfirm(selected.name)}
+        confirmLabel={t.list.removeButton}
+        onClose={() => setConfirming(false)}
+        onConfirm={() => {
+          setConfirming(false);
+          api.remove(selected.id);
+          setChosen(undefined);
         }}
       />
       <p className="hint">{t.kindHints[selected.kind]}</p>

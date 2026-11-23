@@ -38,8 +38,10 @@ test('several entries, invalid input is marked and removing an entry works', asy
   await page.getByLabel('Endalter').fill('60');
   await expect(page.getByText(/Das Ende muss nach dem Beginn liegen/)).toBeVisible();
 
-  page.once('dialog', (d) => void d.accept());
   await page.getByRole('button', { name: 'Entfernen' }).click();
+  const confirm = page.getByRole('dialog', { name: 'Eintrag entfernen?' });
+  await expect(confirm.getByRole('button', { name: 'Abbrechen' })).toBeFocused();
+  await confirm.getByRole('button', { name: 'Entfernen' }).click();
   await expect(page.getByText('1 von 10')).toBeVisible();
 });
 

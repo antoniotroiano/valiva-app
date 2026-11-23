@@ -143,6 +143,12 @@ export const assumptions = {
     number: '',
     months: 'Monate',
   },
+  /** Full sentences for values whose table label alone is no sentence; `n` is the value from `config/`. */
+  unverifiedItem: {
+    'depot.childGrantMaxAge': (n: number) => `Kinderzulage nur für Kinder jünger als ${n} Jahre`,
+    'depot.youthBonusMaxAge': (n: number) =>
+      `Bonus nur für Sparer unter ${n} Jahren (Alter zu Jahresbeginn)`,
+  } as Record<string, (n: number) => string>,
   status: { confirmed: 'bestätigt', unverified: 'ungeprüft' },
   unverifiedNote: 'Ungeprüfte Werte sind nicht gegen amtliche Quellen bestätigt.',
   configError: 'Für das heutige Datum gibt es keine gültigen Steuerwerte in der Konfiguration.',

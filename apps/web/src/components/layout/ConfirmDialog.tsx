@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef } from 'react';
 import type { ReactNode } from 'react';
 
-/** Modal dialog; the native element traps focus and closes on Esc. Focus starts on the safe action. */
+/** Modal dialog; the native element traps focus and closes on Esc. Focus starts on the element marked `data-autofocus` (the safe action). */
 export function ConfirmDialog({
   open,
   title,
@@ -21,7 +21,11 @@ export function ConfirmDialog({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      // React's `autoFocus` runs while the dialog is still closed, so the safe action is marked instead.
+      dialog.querySelector<HTMLElement>('[data-autofocus]')?.focus();
+    }
     if (!open && dialog.open) dialog.close();
   }, [open]);
 

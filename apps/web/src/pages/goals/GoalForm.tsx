@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { type GoalResult, type SavingsGoal, type ValidationIssue } from '@valiva/core';
 import { FieldGroup } from '../../components/forms/FieldGroup';
 import { MonthField } from '../../components/forms/MonthField';
 import { NumberField } from '../../components/forms/NumberField';
 import { de, issueMessage } from '../../i18n/de';
+import { ConfirmRemove } from '../../components/layout/ConfirmRemove';
 import { type GoalsApi } from '../../state/useGoals';
 import { AllowanceUsage } from './GoalCards';
 
@@ -21,6 +23,7 @@ export function GoalForm({
   onRemoved: () => void;
 }) {
   const t = de.goals;
+  const [confirming, setConfirming] = useState(false);
   const issues: ValidationIssue[] = result && !result.ok ? result.issues : [];
   const err = (field: string) => {
     const i = issues.find((x) => x.field === field);
@@ -133,18 +136,21 @@ export function GoalForm({
         {goal.taxEnabled && <AllowanceUsage goal={goal} api={api} />}
       </FieldGroup>
 
-      <button
-        type="button"
-        className="btn"
-        onClick={() => {
-          if (window.confirm(t.removeConfirm(goal.name))) {
-            api.removeGoal(goal.id);
-            onRemoved();
-          }
-        }}
-      >
+      <button type="button" className="btn" onClick={() => setConfirming(true)}>
         {t.remove}
       </button>
+      <ConfirmRemove
+        open={confirming}
+        title={t.removeTitle}
+        text={t.removeConfirm(goal.name)}
+        confirmLabel={t.removeButton}
+        onClose={() => setConfirming(false)}
+        onConfirm={() => {
+          setConfirming(false);
+          api.removeGoal(goal.id);
+          onRemoved();
+        }}
+      />
     </form>
   );
 }

@@ -143,11 +143,13 @@ export class BrowserWorkspaceStore implements WorkspaceStore {
     return this.read(LAST_EXPORT_KEY) ?? undefined;
   }
 
-  markExported(at: string): void {
+  /** Remembers the export date (it silences the export reminder); `ok: false` if the browser refused. */
+  markExported(at: string): StoreResult {
     try {
       this.o.storage.setItem(LAST_EXPORT_KEY, at);
+      return { ok: true };
     } catch {
-      /* ignore */
+      return { ok: false };
     }
   }
 }

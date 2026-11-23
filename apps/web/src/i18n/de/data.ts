@@ -12,6 +12,8 @@ export const data = {
     'Die Datei enthält persönliche Finanzdaten und ist nicht verschlüsselt. Bewahre sie sicher auf und gib sie nicht weiter.',
   exportButton: 'Daten exportieren',
   exportDone: (fileName: string) => `Export gestartet: ${fileName}`,
+  exportDoneNotRemembered: (fileName: string) =>
+    `Export gestartet: ${fileName}. Das Exportdatum konnte im Browser nicht gespeichert werden, deshalb erinnert dich die App weiter an eine Sicherung.`,
   importTitle: 'Importieren',
   importText:
     'Ersetzt alle aktuellen Daten durch den Inhalt der Datei. Vorher wird eine Sicherung deiner aktuellen Daten heruntergeladen.',

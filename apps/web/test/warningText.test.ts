@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { de } from '../src/i18n/de';
-import { mergeOtherIncomeRules, warningText } from '../src/lib/warningText';
+import { mergeUnverified, warningText } from '../src/lib/warningText';
 
 describe('warningText', () => {
   it('translates every code the projectors emit', () => {
@@ -29,22 +29,43 @@ describe('warningText', () => {
     }
   });
 
-  it('merges the rule assumptions of the entries into one note', () => {
+  it('merges all unverified legal values into one note and names every value with its amount', () => {
     const codes = [
+      'unverified:depot.childGrantMaxAge',
+      'unverified:depot.payoutTaxation',
+      'unverified:depot.noHealthContributions',
+      'unverified:depot.youthBonusMaxAge',
+      'unverified:jointAssessment.specialExpensesLumpSumJointYearly',
       'unverified:otherIncome.riesterFullyTaxable',
-      'etf_tax_simplified',
       'unverified:otherIncome.survivorIncomeCredited',
       'unverified:otherIncome.riesterFullyTaxable',
-    ];
-    const merged = mergeOtherIncomeRules(codes);
-    expect(merged).toEqual([
       'etf_tax_simplified',
-      'unverified:otherIncome.riesterFullyTaxable+survivorIncomeCredited',
+      'unverified:tax',
+    ];
+    const merged = mergeUnverified(codes);
+    expect(merged).toEqual([
+      'unverified:values:depot.childGrantMaxAge+depot.youthBonusMaxAge+jointAssessment.specialExpensesLumpSumJointYearly+otherIncome.riesterFullyTaxable+otherIncome.survivorIncomeCredited',
+      'unverified:depot.assumptions',
+      'etf_tax_simplified',
+      'unverified:tax',
     ]);
-    const text = warningText(merged[1]!);
-    expect(text).toContain(de.otherIncome.ruleNames.riesterFullyTaxable);
-    expect(text).toContain(de.otherIncome.ruleNames.survivorIncomeCredited);
-    expect(mergeOtherIncomeRules(['etf_tax_simplified'])).toEqual(['etf_tax_simplified']);
+    const values = warningText(merged[0]!);
+    // Amounts come from config/, with full sentences for the two age limits.
+    expect(values).toContain('Kinderzulage nur für Kinder jünger als 18 Jahre');
+    expect(values).toContain('Bonus nur für Sparer unter 25 Jahren (Alter zu Jahresbeginn)');
+    expect(values).toContain(
+      `${de.assumptions.jointAssessmentNames.specialExpensesLumpSumJointYearly}: 72 €`,
+    );
+    expect(values).toContain(de.otherIncome.ruleNames.riesterFullyTaxable);
+    expect(values).toContain(de.otherIncome.ruleNames.survivorIncomeCredited);
+    expect(warningText(merged[1]!)).toBe(de.overview.retirement.depotAssumptions);
+  });
+
+  it('leaves a single depot assumption and unrelated codes alone', () => {
+    expect(mergeUnverified(['etf_tax_simplified'])).toEqual(['etf_tax_simplified']);
+    expect(mergeUnverified(['unverified:depot.payoutTaxation'])).toEqual([
+      'unverified:depot.payoutTaxation',
+    ]);
   });
 
   it('never returns a raw code', () => {

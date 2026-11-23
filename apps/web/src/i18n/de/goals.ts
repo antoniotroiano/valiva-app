@@ -5,7 +5,10 @@ export const goals = {
   listTitle: 'Meine Sparziele',
   add: 'Ziel hinzufügen',
   remove: 'Ziel löschen',
-  removeConfirm: (name: string) => `Ziel „${name}“ wirklich löschen?`,
+  removeTitle: 'Sparziel löschen?',
+  removeButton: 'Löschen',
+  removeConfirm: (name: string) =>
+    `Das Ziel „${name}“ wird gelöscht. Das kann nicht rückgängig gemacht werden.`,
   empty: 'Noch keine Sparziele. Lege dein erstes Ziel an.',
   sortHint: 'Sortiert nach Priorität (nur Anzeige, keine automatische Verteilung).',
   newName: 'Neues Ziel',

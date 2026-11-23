@@ -1,5 +1,6 @@
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { NumberField } from '../../components/forms/NumberField';
+import { ConfirmRemove } from '../../components/layout/ConfirmRemove';
 import { PageShell } from '../../components/layout/PageShell';
 import { SURVIVOR_WISH_PERCENT_LIMITS } from '@valiva/core';
 import { de, issueMessage } from '../../i18n/de';
@@ -15,6 +16,8 @@ export function HouseholdPage({
   const t = de.household;
   const idBase = useId();
   const { persons } = api.state.household;
+  const [removingId, setRemovingId] = useState<string>();
+  const removing = persons.find((p) => p.id === removingId);
   return (
     <PageShell title={t.title} subtitle={t.subtitle}>
       <section className="card">
@@ -50,13 +53,7 @@ export function HouseholdPage({
                     </button>
                   )}
                   {persons.length > 1 && (
-                    <button
-                      type="button"
-                      className="btn"
-                      onClick={() => {
-                        if (window.confirm(t.removeConfirm(p.name))) api.removePerson(p.id);
-                      }}
-                    >
+                    <button type="button" className="btn" onClick={() => setRemovingId(p.id)}>
                       {t.remove(p.name || t.newPersonName(i + 1))}
                     </button>
                   )}
@@ -97,6 +94,17 @@ export function HouseholdPage({
           </button>
         </p>
       </section>
+      <ConfirmRemove
+        open={removing !== undefined}
+        title={t.removeTitle}
+        text={t.removeConfirm(removing?.name ?? '')}
+        confirmLabel={t.removeButton}
+        onClose={() => setRemovingId(undefined)}
+        onConfirm={() => {
+          if (removing) api.removePerson(removing.id);
+          setRemovingId(undefined);
+        }}
+      />
     </PageShell>
   );
 }

@@ -47,16 +47,20 @@ export function DataPage({ household }: { household: HouseholdApi }) {
     [store, household.state],
   );
 
-  const exportNow = (): string => {
+  /** Downloads the file and reports it; a failed save of the export date is shown, not swallowed. */
+  const exportNow = () => {
     const now = new Date();
     const fileName = workspaceFileName(now);
     downloadText(fileName, currentExport());
-    store.markExported(now.toISOString());
-    setLastExport(now.toISOString());
-    return fileName;
+    if (store.markExported(now.toISOString()).ok) {
+      setLastExport(now.toISOString());
+      setMessage({ kind: 'ok', text: t.exportDone(fileName) });
+    } else {
+      setMessage({ kind: 'error', text: t.exportDoneNotRemembered(fileName) });
+    }
   };
 
-  const onExport = () => setMessage({ kind: 'ok', text: t.exportDone(exportNow()) });
+  const onExport = exportNow;
 
   const preview = (name: string, text: string) => {
     const result = parseWorkspace(text, CURRENT_YEAR, WORKSPACE_FORMAT);
@@ -283,7 +287,7 @@ export function DataPage({ household }: { household: HouseholdApi }) {
             <button type="button" className="btn" onClick={confirmReplace}>
               {t.confirmReplaceButton}
             </button>
-            <button type="button" className="btn" autoFocus onClick={closeDialog}>
+            <button type="button" className="btn" data-autofocus onClick={closeDialog}>
               {t.cancel}
             </button>
           </>
@@ -298,17 +302,13 @@ export function DataPage({ household }: { household: HouseholdApi }) {
         onClose={closeDialog}
         actions={
           <>
-            <button
-              type="button"
-              className="btn"
-              onClick={() => setMessage({ kind: 'ok', text: t.exportDone(exportNow()) })}
-            >
+            <button type="button" className="btn" onClick={exportNow}>
               {t.confirmResetExport}
             </button>
             <button type="button" className="btn" onClick={confirmReset}>
               {t.confirmResetButton}
             </button>
-            <button type="button" className="btn" autoFocus onClick={closeDialog}>
+            <button type="button" className="btn" data-autofocus onClick={closeDialog}>
               {t.cancel}
             </button>
           </>

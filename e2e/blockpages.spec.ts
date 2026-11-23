@@ -271,7 +271,8 @@ test.describe('Depot, bAV and statutory pension on the block template (desktop)'
     await page.getByLabel('Eigenbeitrag pro Monat').fill('50');
     const depot = page.locator('#depot');
     await expect(depot.getByText(/Du lässt Zulage liegen/)).toBeVisible();
-    await expect(depot.getByText(/Besteuerung der Auszahlungen/)).toBeVisible();
+    // AP-21: the two payout assumptions are one note.
+    await expect(depot.getByText(/Auszahlungen werden als voll steuerpflichtig/)).toBeVisible();
 
     await page.goto('/#occupational');
     await page.getByLabel('Entgeltumwandlung pro Monat, brutto').fill('200');

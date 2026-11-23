@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { de } from '../../i18n/de';
-import { BLOCK_OF } from '../../app/pages';
+import { BLOCK_OF, BLOCK_PAGES, INPUT_PAGES, MORE_PAGES, SAVING_PAGES } from '../../app/pages';
 import type { Page } from '../../app/pages';
 import type { InputStatus } from '../../lib/inputStatus';
 import { Icon, type IconName } from './Icon';
@@ -8,10 +8,6 @@ import { NavStatus } from './NavStatus';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sheet = 'inputs' | 'more';
-
-/** Pages reachable from the "Inputs" sheet; the rest of the sheet pages live under "More". */
-const INPUT_PAGES = ['profile', 'etf', 'statutory', 'depot', 'occupational', 'other', 'goals'];
-const MORE_PAGES = ['assumptions', 'data'];
 
 function TabIcon({ name }: { name: IconName }) {
   return (
@@ -148,15 +144,11 @@ export function MobileNav({
           <p className="sheet-group" id="sheet-blocks">
             {de.nav.blocks}
           </p>
-          <ul aria-labelledby="sheet-blocks">
-            {['etf', 'statutory', 'depot', 'occupational', 'other'].map((p) =>
-              sheetLink('inputs', p),
-            )}
-          </ul>
+          <ul aria-labelledby="sheet-blocks">{BLOCK_PAGES.map((p) => sheetLink('inputs', p))}</ul>
           <p className="sheet-group" id="sheet-saving">
             {de.nav.saving}
           </p>
-          <ul aria-labelledby="sheet-saving">{sheetLink('inputs', 'goals')}</ul>
+          <ul aria-labelledby="sheet-saving">{SAVING_PAGES.map((p) => sheetLink('inputs', p))}</ul>
         </div>
       )}
       {open === 'more' && (

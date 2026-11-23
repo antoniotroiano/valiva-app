@@ -342,3 +342,6 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-23 – Review 14: AP-21 (Backlog-Durchsicht und Restpunkte) und AP-22 (Versionierung, automatisches Release, Start `0.1.0`) neu angelegt, vor AP-19/20 und AP-18. Details: `14-review-report-2026-11-22.md`. Kein Code geändert.
 
 - 2026-11-23 – Review 14: AP-23 (Rechtswerte gegen Primärquellen) und AP-24 (öffentliche Außenwirkung, `concept/` ordnen) angelegt; AP-17 laut Autor abgenommen (Test mit echten Daten erledigt); `.claude/launch.json` aus dem Index genommen. Reihenfolge: AP-21, AP-23, AP-24, AP-22.
+
+- 2026-11-23 – Review 14 AP-21: Backlog durchgesehen (Abschnitt 8 gegliedert, Erledigtes in 8a), Skip-Link-Ursache geklärt (StrictMode, nur Dev) und behoben, Playwright mit eigenem Port und Dev/Build-Schalter, Seitenliste einmal geführt, ungeprüfte Rechtswerte als ein Hinweis mit Beträgen, schlanker Fokusring, `theme-color` folgt dem Umschalter, `markExported`-Fehler sichtbar, `ConfirmRemove` statt `window.confirm`, WebKit/Firefox-Smoke lokal (`PW_CROSS=1`), Druck geprüft (Befunde im Backlog); 839 Unit- und 238 E2E-Tests grün; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+

@@ -28,7 +28,7 @@ apps/web/src/               React + Vite UI, imports only from `@valiva/core`
   i18n/de/                   all UI texts, one file per page; index.ts assembles `de` and exports issueMessage
   styles/                    tokens, base, layout, components, pages, print (index.css sets the order)
 apps/web/test/               unit tests for state/ and lib/ (flat)
-e2e/                         Playwright smoke, phone layout, navigation and accessibility tests
+e2e/                         Playwright smoke, phone layout, navigation and accessibility tests (see docs/testing.md)
 ```
 
 ## Direction of dependencies

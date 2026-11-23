@@ -1,4 +1,14 @@
+import type { LegalValue } from '@valiva/core';
 import { de } from '../i18n/de';
+import { formatLegalValue } from './legalValue';
+import {
+  depotConfig,
+  incomeTaxConfig,
+  jointAssessmentConfig,
+  otherIncomeConfig,
+  pensionConfig,
+  socialConfig,
+} from './legalConfig';
 
 type Names = Record<string, string>;
 
@@ -29,44 +39,84 @@ export function warningText(code: string): string {
   };
   if (direct[code]) return direct[code];
 
+  if (code.startsWith(VALUES_PREFIX)) {
+    const items = code
+      .slice(VALUES_PREFIX.length)
+      .split('+')
+      .map((path) => unverifiedItemText(path));
+    return o.unverifiedValues(items.join('; '));
+  }
+  if (code === DEPOT_ASSUMPTIONS) return o.depotAssumptions;
   if (code.startsWith('unverified:')) {
-    const [group, key] = code.slice('unverified:'.length).split('.');
-    if (group === 'otherIncome') {
-      // Merged code `unverified:otherIncome.a+b`: several rules in one note.
-      const names = (key ?? '')
-        .split('+')
-        .map((k) => de.otherIncome.ruleNames[k as keyof typeof de.otherIncome.ruleNames] ?? k);
-      return o.unverified(names.join('; '));
-    }
-    const names: Record<string, Names> = {
-      pension: de.assumptions.pensionNames,
-      social: de.assumptions.socialNames,
-      depot: de.assumptions.depotNames,
-      incomeTax: de.assumptions.incomeTaxNames,
-      jointAssessment: de.assumptions.jointAssessmentNames,
-      otherIncome: de.otherIncome.ruleNames,
-    };
-    return o.unverified(names[group ?? '']?.[key ?? ''] ?? key ?? '');
+    // A single code that was not merged (`mergeUnverified` is not applied): same text as a merged one.
+    return o.unverifiedValues(unverifiedItemText(code.slice('unverified:'.length)));
   }
   return o.unknownWarning;
 }
 
-const OTHER_INCOME_RULE = 'unverified:otherIncome.';
+const VALUES_PREFIX = 'unverified:values:';
+const DEPOT_ASSUMPTIONS = 'unverified:depot.assumptions';
+/** Unverified assumptions about how a payout is taxed: statements, not legal values with an amount. */
+const DEPOT_ASSUMPTION_CODES = [
+  'unverified:depot.payoutTaxation',
+  'unverified:depot.noHealthContributions',
+];
+/** Not a value of one config file, and has a text of its own. */
+const OWN_TEXT_CODES = new Set(['unverified:tax', ...DEPOT_ASSUMPTION_CODES]);
+
+const NAMES: Record<string, Names> = {
+  pension: de.assumptions.pensionNames,
+  social: de.assumptions.socialNames,
+  depot: de.assumptions.depotNames,
+  incomeTax: de.assumptions.incomeTaxNames,
+  jointAssessment: de.assumptions.jointAssessmentNames,
+  otherIncome: de.otherIncome.ruleNames,
+};
+const VALUES: Record<string, Record<string, LegalValue> | undefined> = {
+  pension: pensionConfig.values,
+  social: socialConfig.values,
+  depot: depotConfig.values,
+  incomeTax: incomeTaxConfig.values,
+  jointAssessment: jointAssessmentConfig.values,
+  otherIncome: otherIncomeConfig.values,
+};
+
+/** "group.key" (as in `unverified:group.key`) as a name with its amount from `config/`, e.g. "… : 72 €". */
+function unverifiedItemText(path: string): string {
+  const [group = '', key = ''] = path.split('.');
+  const value = VALUES[group]?.[key];
+  const sentence = de.assumptions.unverifiedItem[path];
+  if (sentence && value) return sentence(value.value);
+  const name = NAMES[group]?.[key] ?? key;
+  // A rule assumption has no amount; the name says it all.
+  if (!value || value.unit === 'rule') return name;
+  return `${name}: ${formatLegalValue(value)}`;
+}
 
 /**
- * Several `unverified:otherIncome.<rule>` codes become one merged code (`unverified:otherIncome.a+b`), so the
- * rule assumptions of the entries are one note instead of up to five bullets above the page.
+ * Unverified legal values become one note ("Ungeprüfte Rechtswerte: A; B; C"), the two unverified depot payout
+ * assumptions another one; everything else stays as it is. Every value stays named, so nothing unverified is
+ * hidden (CLAUDE.md). The merged codes are `unverified:values:<group.key>+…` and `unverified:depot.assumptions`.
  */
-export function mergeOtherIncomeRules(codes: readonly string[]): string[] {
-  const rules = [
+export function mergeUnverified(codes: readonly string[]): string[] {
+  const values = [
     ...new Set(
       codes
-        .filter((c) => c.startsWith(OTHER_INCOME_RULE))
-        .map((c) => c.slice(OTHER_INCOME_RULE.length)),
+        .filter((c) => c.startsWith('unverified:') && !OWN_TEXT_CODES.has(c))
+        .map((c) => c.slice('unverified:'.length)),
     ),
   ];
-  const rest = codes.filter((c) => !c.startsWith(OTHER_INCOME_RULE));
-  return rules.length === 0 ? [...codes] : [...rest, `${OTHER_INCOME_RULE}${rules.join('+')}`];
+  const bothDepot = DEPOT_ASSUMPTION_CODES.every((c) => codes.includes(c));
+  const rest = codes.filter(
+    (c) =>
+      !(c.startsWith('unverified:') && !OWN_TEXT_CODES.has(c)) &&
+      !(bothDepot && DEPOT_ASSUMPTION_CODES.includes(c)),
+  );
+  return [
+    ...(values.length > 0 ? [`${VALUES_PREFIX}${values.join('+')}`] : []),
+    ...(bothDepot ? [DEPOT_ASSUMPTIONS] : []),
+    ...rest,
+  ];
 }
 
 const INFO_CODES = new Set([

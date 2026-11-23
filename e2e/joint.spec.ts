@@ -87,10 +87,13 @@ test('the example couple answers yes: no answer means the same as no, yes lowers
 test('removing a person resets the answer; the next pair is asked again', async ({ page }) => {
   await loadExample(page, 'Paar');
   await page.goto('/#household');
-  page.once('dialog', (d) => void d.accept());
   await page
     .getByRole('button', { name: /Ben Beispiel entfernen|Entfernen/ })
     .last()
+    .click();
+  await page
+    .getByRole('dialog', { name: 'Person entfernen?' })
+    .getByRole('button', { name: 'Entfernen' })
     .click();
   await expect(page.locator('#joint-question')).toHaveCount(0);
   await page.getByRole('button', { name: 'Person hinzufügen' }).click();

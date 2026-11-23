@@ -1,5 +1,5 @@
 import { de } from '../../i18n/de';
-import { warningText, warningWeight } from '../../lib/warningText';
+import { mergeUnverified, warningText, warningWeight } from '../../lib/warningText';
 import { Disclosure } from './Disclosure';
 
 /** One note of a building block: a ready text and its weight (`important` stays visible, `info` is collapsed). */
@@ -7,7 +7,11 @@ export type Note = { id: string; text: string; weight: 'important' | 'info' };
 
 /** Core warning codes as notes; the weight comes from `warningWeight`. */
 export const notesFromCodes = (codes: readonly string[]): Note[] =>
-  [...new Set(codes)].map((c) => ({ id: c, text: warningText(c), weight: warningWeight(c) }));
+  mergeUnverified([...new Set(codes)]).map((c) => ({
+    id: c,
+    text: warningText(c),
+    weight: warningWeight(c),
+  }));
 
 /** Core warning codes as one notice with a list; nothing is rendered for an empty list. */
 export function WarningList({ codes }: { codes: readonly string[] }) {

@@ -20,6 +20,7 @@ import type { NavEntry, Page } from './pages';
 import { PersonWorkspace } from './PersonWorkspace';
 import { PageHeadProvider, type PageHeadValue } from '../components/layout/PageHead';
 import { PersonTabs } from '../components/layout/PersonTabs';
+import { applyThemeColor } from '../lib/themeColor';
 
 const HouseholdPage = lazy(() =>
   import('../pages/household/HouseholdPage').then((m) => ({ default: m.HouseholdPage })),
@@ -106,13 +107,13 @@ export function App() {
   }, []);
 
   // Page change: back to the top, focus on the new heading (screen readers announce it), page title.
-  const firstPage = useRef(true);
+  // The guard compares pages instead of counting runs: StrictMode runs the effect twice on mount in
+  // development, which used to move the focus to the heading on first load (skip link unreachable by Tab).
+  const handledPage = useRef(page);
   useEffect(() => {
     document.title = de.nav.pageTitle(de.nav[page]);
-    if (firstPage.current) {
-      firstPage.current = false;
-      return;
-    }
+    if (handledPage.current === page) return;
+    handledPage.current = page;
     window.scrollTo(0, 0); // instant on purpose: no smooth scrolling, also with reduced motion
     const focusHeading = () => {
       // While a lazy page loads, React keeps the old page hidden in the DOM: skip hidden headings.
@@ -142,6 +143,7 @@ export function App() {
   useEffect(() => {
     if (theme === 'system') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', theme);
+    applyThemeColor(theme);
     safeSetItem('valiva.theme', theme);
   }, [theme]);
 

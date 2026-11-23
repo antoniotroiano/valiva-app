@@ -36,7 +36,10 @@ export const otherIncome = {
     addKind: 'Art des neuen Eintrags',
     edit: 'Bearbeiten',
     remove: 'Entfernen',
-    removeConfirm: (name: string) => `Eintrag "${name}" entfernen?`,
+    removeTitle: 'Eintrag entfernen?',
+    removeButton: 'Entfernen',
+    removeConfirm: (name: string) =>
+      `Der Eintrag "${name}" wird entfernt. Das kann nicht rückgängig gemacht werden.`,
     full: (max: number) => `Es sind höchstens ${max} Einträge möglich.`,
     disabled: 'Aus',
     perMonth: (amount: string) => `${amount} pro Monat`,

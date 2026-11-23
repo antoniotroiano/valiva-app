@@ -356,6 +356,7 @@ fieldset.plain legend {
     transition: none !important;
   }
 }
+.card:not(.next):not(.empty-state) > .actions,
 .welcome .actions {
   display: flex;
   flex-wrap: wrap;

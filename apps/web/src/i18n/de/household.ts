@@ -11,6 +11,8 @@ export const household = {
   add: 'Person hinzufügen',
   newPersonName: (n: number) => `Person ${n}`,
   remove: (name: string) => `${name} entfernen`,
+  removeTitle: 'Person entfernen?',
+  removeButton: 'Entfernen',
   removeConfirm: (name: string) =>
     `${name} samt allen Einkommensquellen und Sparzielen dieser Person löschen? Das kann nicht rückgängig gemacht werden.`,
   sharedTitle: 'Gemeinsame Werte',
