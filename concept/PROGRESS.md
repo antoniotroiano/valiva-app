@@ -12,8 +12,8 @@ Legende: `[ ]` offen · `[x]` erledigt
 - [x] Konzept in `concept/` aufgeteilt, `CLAUDE.md` angelegt
 - [ ] Beispielwerte für Golden-Tests vom Autor erhalten (anonymisiert)
 - [x] Unsichere Gesetzeswerte gegen Primärquellen prüfen (2026-11-11, `03` Abschnitt 12); Rest bleibt `unverified`
-- [ ] Name festlegen (vor GitHub-Veröffentlichung)
-- [ ] Lizenz festlegen (vor GitHub-Veröffentlichung)
+- [x] Name festlegen (vor GitHub-Veröffentlichung): Valiva (2026-11-22)
+- [x] Lizenz festlegen (vor GitHub-Veröffentlichung): MIT, Urheber "antoniotroiano" (2026-11-23)
 
 ## Phase 1 – Rechenkern + ETF-Sparplan-Rechner (`04-phase-1-etf-calculator.md`)
 1. Repo-Skelett
@@ -193,18 +193,18 @@ Startet nach Abschluss von Phase 4b. Entschieden: Export als Download und Import
 6. CI
    - [x] `.github/workflows/ci.yml` (Typecheck, Lint, Format, Test, Build, Playwright mit Chromium); lokal noch nicht in GitHub gelaufen
 7. Klärung und Scan
-   - [ ] Name, Lizenz, Präfix `pathwise.` vom Autor entschieden
+   - [x] Name (Valiva), Lizenz (MIT, Urheber "antoniotroiano"), Präfix (`valiva.` bleibt) vom Autor entschieden (2026-11-23)
    - [x] Datenscan (keine echten Nutzerdaten, keine Geheimnisse; `.idea/` und `.claude/settings.local.json` ignoriert; `golden-check.xlsx` ohne Autor/Pfade). Archivdatei und `CLAUDE.md` noch nicht entschieden
 
 **5d Git/GitHub (mit dem Autor)**
 8. Einrichtung
-   - [ ] `git init`, erster Commit, privates Repo, Push, CI grün, Branch-Schutz, Dependabot
+   - [ ] `git init`, erster Commit, privates Repo, Push, CI grün, Branch-Schutz, Dependabot (Stand 2026-11-23: Repo `valiva-app` ist **öffentlich**, Push erfolgt, Dependabot-Branches vorhanden; offen beim Autor: CI grün (e2e rot), Branch-Schutz prüfen, Pages-Quelle prüfen)
 
 **Abschluss**
 9. Release und Abnahme
-   - [ ] Release-Checkliste (`12` §9)
-   - [ ] Abnahme durch den Autor (Export/Import mit eigenen Daten)
-   - [ ] Sichtprüfung der Seite "Daten" (Desktop, schmal, Dunkel, Tastatur)
+   - [ ] Release-Checkliste (`12` §9): teilweise (4 von 7 erledigt; offen: Rechtswerte, CI grün, Abnahme mit eigenen Daten; vom Autor zu tun)
+   - [ ] Abnahme durch den Autor (Export/Import mit eigenen Daten): vom Autor zu tun, Anleitung in Bericht 14, Protokoll AP-17
+   - [ ] Sichtprüfung der Seite "Daten" (Desktop, schmal, Dunkel, Tastatur): Session-Sichtprüfung mit Beispieldaten erledigt (2026-11-23, kein Überlauf); Abnahme mit eigenen Daten und Tastatur vom Autor zu tun
 
 ## Spätere Phasen (Platzhalter)
 - [ ] Phase 6 – Weitere Bausteine (Rest: echte Riester-/Rürup-Modelle, Immobilie, Frühstart-Rente; nur beschrieben in `15` §12)
@@ -329,6 +329,8 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-23 – AP-15 Teil B erledigt (Web: Seite `#other`, Hook `useOtherIncome`, Seitenleiste und "Eingaben"-Blatt, Rentenplan und Haushalt, sechste Gruppe der Annahmen-Seite, Farbe `--b-oth`, E2E und axe; AP-15 in der Statustabelle erledigt, offen nur die Excel-Stichprobe des Autors): Abweichungen von "bestehende Tests unverändert": (1) `e2e/assumptions.spec.ts` zählt jetzt sechs Wertegruppen (89 statt 84 Werte, "10 ungeprüft") und sieben Regelzeilen; (2) `e2e/overview.spec.ts` Höhenwächter der Haushaltsseite am Handy von 2.400 auf 2.550 px, weil das Paar-Beispiel jetzt Einträge hat und die ungeprüften Regeln als eine zusätzliche wichtige Zeile erscheinen (zusammengefasst, nicht fünf Zeilen); (3) `apps/web/test/inputStatus.test.ts` und `assumptionsPage.test.ts` kennen den neuen Block bzw. die sechste Gruppe; `a11y.spec.ts` und `mobile.spec.ts` prüfen die neue Seite mit. 760 Unit-Tests, E2E 200 von 201 (Skip-Link unverändert rot). Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md` und `15` §16.
 
 - 2026-11-23 – Review 14 AP-16: Paar-Besteuerung (Splitting §32a Abs. 5 EStG) nur nach ausdrücklicher Antwort bei zwei Personen (Feld `jointAssessment`, Workspace-Version 2 unverändert, Config `joint-assessment-de.json`, 72 € ungeprüft; gemeinsam ab dem Jahr, in dem beide in Rente sind, bis zum Jahr nach dem ersten Todesfall; Verteilung nach steuerpflichtigen Anteilen; Mockup `splitting-ap16.html` freigegeben). Abweichungen: Property "nie höher" nur bis 2 € Rundung; Höhenwächter Haushaltsseite 1.700/2.750 px; Annahmen-Tests auf sieben Gruppen (91 Werte). 834 Unit-Tests, E2E 207 von 209 (Skip-Link unverändert rot); Excel-Stichprobe des Autors steht aus; Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+
+- 2026-11-23 – Review 14 AP-17 (teilweise): Release-Entscheidungen des Autors festgehalten: Urheber "antoniotroiano", Präfix `valiva.` und Repo `valiva-app` bleiben, Archivdatei nach `docs/archive/`, `CLAUDE.md` bleibt, Hosting GitHub Pages, Veröffentlichung **bewusst ohne Rentner-Modus** (AP-19/AP-20 bleiben offen und kommen danach; README nennt die Grenze). Wichtig: Das Repo ist **öffentlich** und war es von Anfang an (Annahme "privat" in älteren Texten überholt). Datenscan Dateien und Verlauf sauber; CI-Lauf auf `56db5ea` im Job `e2e` rot (Skip-Link-Test); 11 Rechtswerte weiter `unverified`; Excel-Stichprobe und Abnahme mit eigenen Daten stehen beim Autor aus. Abweichung: Archivdatei per `mv` nach `docs/archive/` (`.prettierignore`, `CLAUDE.md`, `concept/README.md`, `01` angepasst). Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 ## Offene Fragen aus dem Bau
 - (leer)

@@ -45,4 +45,4 @@ Diese Dateien sind die **einzige gültige Version** des Konzepts. Es gibt keine 
 ## Regeln
 - Abweichungen vom Konzept zuerst in `PROGRESS.md` (Notizen) eintragen, bei Dauerhaftem die Konzeptdatei und `07` anpassen
 - Gesetzliche Werte nie im Code, sondern in `config/` mit Quelle und Status
-- Das Originaldokument `../ETF_Investment_Tracker_Technische_Architektur_und_Umsetzung.md` ist Archiv; nicht weiterpflegen
+- Das Originaldokument `../docs/archive/ETF_Investment_Tracker_Technische_Architektur_und_Umsetzung.md` ist Archiv; nicht weiterpflegen

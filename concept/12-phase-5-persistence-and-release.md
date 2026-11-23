@@ -90,13 +90,14 @@ Erst nach 5a bis 5c und nach ausdrücklicher Freigabe (`CLAUDE.md`).
 - **Regression:** bestehende Tests und Smokes bleiben grün
 
 ## 9. Release-Checkliste (vor "öffentlich")
-- [ ] Name festgelegt, Verfügbarkeit geprüft
-- [ ] Lizenz gewählt, `LICENSE` vorhanden, Abhängigkeitslizenzen geprüft
-- [ ] Datenscan sauber, keine echten Nutzerdaten, keine Geheimnisse
-- [ ] README mit Disclaimer, Datenschutz, Start, Export/Import
-- [ ] Unsichere Gesetzeswerte in `config/` erneut geprüft (`07` Punkt 3), Status in der UI sichtbar
-- [ ] CI grün, `npm audit` ohne offene hohe Funde
-- [ ] Sichtprüfung der Seite "Daten" (Desktop, schmal, Dunkel, Tastatur)
+Stand 2026-11-23 (AP-17). Hinweis: Das Repo ist bereits öffentlich (siehe Bericht 14, Backlog AP-17); die Liste dient jetzt der Nacharbeit.
+- [x] Name festgelegt (Valiva, 2026-11-22). Verfügbarkeit (GitHub, Domain, Marke) **vom Autor zu tun**: Repo `valiva-app` existiert; Domain und Marke nicht geprüft
+- [x] Lizenz MIT, `LICENSE` mit Urheber "antoniotroiano", Abhängigkeitslizenzen geprüft (Produktion MIT/ISC/BSD, MPL nur Entwicklungswerkzeuge)
+- [x] Datenscan sauber (Dateien und Verlauf: keine echten Nutzerdaten, keine Schlüssel, keine privaten Pfade oder E-Mail-Adressen außer der noreply-Adresse; `golden-check.xlsx` ohne Autor)
+- [x] README mit Disclaimer, Datenschutz, Start, Export/Import, Lizenz, bekannte Grenzen
+- [ ] Unsichere Gesetzeswerte erneut geprüft: **offen**, 11 Werte `unverified`, keiner ließ sich bestätigen (Bericht 14, Backlog AP-17); Status in der UI sichtbar (Annahmen-Seite, Hinweise)
+- [ ] CI grün: **offen**, e2e-Job auf `56db5ea` rot (Skip-Link-Test); `npm audit` ohne Funde erledigt
+- [ ] Sichtprüfung der Seite "Daten" (Desktop, schmal, Dunkel, Tastatur): Session-Sichtprüfung mit Beispieldaten erledigt (kein Überlauf); **vom Autor zu tun:** Abnahme mit eigenen Daten und Tastatur
 
 ## 10. Arbeitsschritte (Abhaken in `PROGRESS.md`)
 **5a Kern**

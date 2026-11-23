@@ -4,7 +4,7 @@ Name der App: **Valiva** (vorher Arbeitstitel "Pathwise", umbenannt 2026-11-22; 
 
 ## 1. Kontext
 
-Das alte MD-File (`ETF_Investment_Tracker_Technische_Architektur_und_Umsetzung.md`) beschreibt nur die Technik für einen ETF-Sparplan-Tracker (React, Spring Boot, PostgreSQL). Die neue App soll mehr leisten:
+Das alte MD-File (`docs/archive/ETF_Investment_Tracker_Technische_Architektur_und_Umsetzung.md`) beschreibt nur die Technik für einen ETF-Sparplan-Tracker (React, Spring Boot, PostgreSQL). Die neue App soll mehr leisten:
 
 1. **ETF-Sparplan-Prognose** wie ursprünglich gedacht (Rate, Rendite, Kosten, Dynamik, Szenarien).
 2. **Rentenplaner**: alle Vorsorgebausteine erfassen, je Baustein eine eigene Prognose, dazu eine Gesamtsicht (Rente in Kaufkraft von heute, Rentenlücke, Entnahmeplan).

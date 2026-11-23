@@ -54,7 +54,12 @@ The calculation rules by feature (ETF plan, savings goals, statutory pension, re
 
 ## License
 
-See [`LICENSE`](LICENSE). The copyright holder is still to be filled in by the author.
+MIT, see [`LICENSE`](LICENSE). Copyright (c) 2026 antoniotroiano.
+
+## Known limitations
+
+- Persons who already draw their pension are not supported yet; entering a retirement start in the past gives an error message instead of a result.
+- Some legal values in `config/` are marked `unverified`; the app shows this wherever such a value is used.
 
 ## Contributing
 
