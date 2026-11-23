@@ -110,7 +110,7 @@
 }
 dl.facts {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 6px 12px;
   margin: 0;
   font-variant-numeric: tabular-nums;
@@ -119,9 +119,24 @@ dl.facts dd {
   margin: 0;
   text-align: right;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 dl.facts dt {
   color: var(--muted);
+  overflow-wrap: anywhere;
+}
+/* On very narrow phones a label and its value no longer fit side by side: stack them */
+@media (max-width: 380px) {
+  dl.facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  dl.facts dt {
+    margin-top: 6px;
+  }
+  dl.facts dd {
+    text-align: left;
+  }
 }
 fieldset {
   min-width: 0;
