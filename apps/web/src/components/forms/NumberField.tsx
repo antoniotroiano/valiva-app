@@ -1,10 +1,13 @@
 import { useEffect, useId, useState } from 'react';
 import { withTerms } from '../cards/Terms';
 import { formatNumber, parseNumber } from '../../lib/format';
+import { de } from '../../i18n/de';
 
 type Props = {
   label: string;
   hint?: string;
+  /** Details behind "Mehr erfahren", for text that does not fit the one-sentence hint. */
+  more?: string;
   unit?: string;
   value: number | undefined;
   onChange: (value: number) => void;
@@ -23,6 +26,7 @@ const show = (v: number | undefined, plain?: boolean) =>
 export function NumberField({
   label,
   hint,
+  more,
   unit,
   value,
   onChange,
@@ -68,6 +72,12 @@ export function NumberField({
         <p className="hint" id={`${id}-hint`}>
           {withTerms(hint)}
         </p>
+      )}
+      {more && (
+        <details className="more">
+          <summary>{de.moreLabel}</summary>
+          <p className="hint">{withTerms(more)}</p>
+        </details>
       )}
       {error && (
         <p className="error" id={`${id}-err`}>

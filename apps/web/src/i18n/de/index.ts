@@ -16,6 +16,7 @@ import { occupational } from './occupational';
 import { glossary } from './glossary';
 import { assumptions } from './assumptions';
 import { issues } from './issues';
+import { blocks } from './blocks';
 
 export const de = {
   ...common,
@@ -35,6 +36,7 @@ export const de = {
   glossary,
   assumptions,
   issues,
+  blocks,
 } as const;
 
 export function issueMessage(issue: ValidationIssue): string {

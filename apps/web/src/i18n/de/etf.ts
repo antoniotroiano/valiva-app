@@ -1,34 +1,52 @@
 export const etf = {
   title: 'ETF-Sparplan',
-  subtitle: 'Wie entwickelt sich dein Sparplan über die Jahre?',
-  formLabel: 'Eingaben',
-  calculatorTitle: 'Sparplan-Rechner',
+  subtitle: 'Was wird aus deiner Sparrate, und was entnimmst du im Ruhestand?',
+  formLabel: 'Eingaben Sparphase',
+  formLabelRetirement: 'Eingaben Ruhestand',
   tableToggle: (years: number) => `Jahrestabelle anzeigen (${years} Jahre)`,
-  calculatorSubtitle: (years: number) => `Ergebnis nach ${years} Jahren Laufzeit.`,
+  sections: {
+    plan: { title: 'Sparphase', purpose: 'Wie wächst dein Depot bis zum Ende der Laufzeit?' },
+    retirement: { title: 'Ruhestand', purpose: 'Was bleibt monatlich, wenn du entnimmst?' },
+  },
+  rows: {
+    lumpSums: (count: number) => (count === 0 ? 'keine' : String(count)),
+    costs: (ter: string) => `TER ${ter}`,
+    taxOn: 'berücksichtigt',
+    taxOff: 'aus',
+    ratesGlobal: 'aus Annahmen',
+    ratesOwn: 'eigene Werte',
+    target: 'Rate ausrechnen',
+    chart: 'drei Szenarien',
+    scenarios: 'Alle Szenarien im Vergleich',
+    notes: 'Hinweise zur Rechnung',
+  },
+  taxFollowsPlan: 'Steuer: wie in der Sparphase eingestellt.',
   groups: {
     plan: 'Sparplan',
     lumpSums: 'Einmalzahlungen',
     costs: 'Kosten',
-    scenarios: 'Szenarien',
+    scenarios: 'Rendite und Inflation',
     tax: 'Steuer',
-    retirement: 'Ruhestand (Entnahme)',
+    retirement: 'Beginn und Ende',
   },
   fields: {
     initialCapital: {
       label: 'Startkapital',
-      hint: 'Bereits investiertes Kapital zu Beginn. Es fällt kein Ausgabeaufschlag an.',
+      hint: 'Schon investiertes Geld zu Beginn.',
+      more: 'Auf das Startkapital fällt kein Ausgabeaufschlag an.',
     },
     monthlyContribution: {
       label: 'Monatliche Sparrate',
-      hint: 'Betrag, der jeden Monat zu Monatsbeginn investiert wird.',
+      hint: 'Wird jeden Monatsanfang investiert.',
     },
     annualContributionIncreasePercent: {
       label: 'Jährliche Steigerung der Rate',
-      hint: 'Die Rate steigt einmal pro Jahr um diesen Prozentsatz.',
+      hint: 'Die Rate wächst einmal pro Jahr.',
     },
     durationYears: {
       label: 'Laufzeit',
-      hint: 'Ganze Jahre von 1 bis 60. Gilt nur für den Sparplan-Rechner. Der Rentenplan und der Abschnitt „ETF im Ruhestand“ rechnen bis zum Entnahmebeginn und ignorieren dieses Feld.',
+      hint: '1 bis 60 Jahre, nur für diese Rechnung.',
+      more: 'Der Rentenplan und der Abschnitt „Ruhestand“ rechnen bis zum Entnahmebeginn und ignorieren dieses Feld.',
     },
     ter: {
       label: 'Laufende Fondskosten (TER)',
@@ -36,7 +54,7 @@ export const etf = {
     },
     entryFeePercent: {
       label: 'Ausgabeaufschlag',
-      hint: 'Anteil jeder Einzahlung (Rate und Einmalzahlung), der als Kosten wegfällt.',
+      hint: 'Anteil jeder Einzahlung, der als Kosten wegfällt.',
     },
     custodyFeeEurPerYear: {
       label: 'Depotgebühr (Betrag pro Jahr)',
@@ -55,11 +73,13 @@ export const etf = {
     },
     taxEnabled: {
       label: 'Steuer am Ende berücksichtigen',
-      hint: 'Vereinfacht: Kirchensteuer nur, wenn im Profil gewählt. Standardmäßig ohne Vorabpauschale.',
+      hint: 'Vereinfacht: Kirchensteuer nur, wenn im Profil gewählt.',
+      more: 'Standardmäßig ohne Vorabpauschale.',
     },
     advanceLumpSum: {
       label: 'Vorabpauschale jedes Jahr berücksichtigen',
-      hint: 'Der Fonds gilt jedes Jahr als teilweise verkauft: Die Steuer darauf wird jeweils aus dem Depot bezahlt und beim Verkauf am Ende angerechnet. Der Sparerpauschbetrag gilt dann in jedem Jahr, nicht nur einmal am Ende. Der Basiszins steht auf der Seite Annahmen. Braucht die Steuer am Ende.',
+      hint: 'Die Steuer darauf wird jedes Jahr aus dem Depot bezahlt.',
+      more: 'Der Fonds gilt jedes Jahr als teilweise verkauft. Die Steuer wird beim Verkauf am Ende angerechnet. Der Sparerpauschbetrag gilt dann in jedem Jahr, nicht nur einmal am Ende. Der Basiszins steht auf der Seite Annahmen. Braucht die Steuer am Ende.',
       assumedRate:
         'Der Basiszins ist für die Jahre 2018 bis 2026 amtlich bestätigt (BMF). Für spätere Jahre nimmt die App 3,20 % an. Das ist nicht gesichert, der echte Satz wird jedes Jahr im Januar neu festgelegt.',
     },
@@ -67,24 +87,28 @@ export const etf = {
   units: { eur: '€', percent: '%', years: 'Jahre' },
   global: {
     label: 'Rendite-Szenarien und Inflation aus den Annahmen verwenden',
-    hint: 'Dann gelten die Werte aus dem Profil für alle Bausteine. Ausschalten, um eigene Werte nur für diesen Sparplan einzugeben.',
+    hint: 'Ausschalten für eigene Werte nur in diesem Sparplan.',
     values: (p: string, n: string, o: string, inflation: string) =>
       `Aus den Annahmen: Rendite ${p} / ${n} / ${o} pro Jahr, Inflation ${inflation}.`,
   },
   retirement: {
     payoutStartAge: {
       label: 'Beginn der Entnahme (Alter)',
-      hint: 'Die Sparphase endet zu diesem Alter. Vorgeschlagen aus dem Profil, hier überschreibbar.',
+      hint: 'Aus dem Profil vorgeschlagen, hier überschreibbar.',
     },
     payoutEndAge: {
       label: 'Ende der Entnahme (Alter)',
-      hint: 'Konstante Monatsrate, bis das Kapital bei diesem Alter aufgebraucht ist. Vorgeschlagen: Lebenserwartung.',
+      hint: 'Vorschlag: Lebenserwartung.',
     },
     fromProfile: 'Aus dem Profil übernehmen',
-    title: 'ETF im Ruhestand',
     badge: 'gilt für den Rentenplan',
-    subtitle: (start: number, years: number) =>
-      `Eigene Rechnung: Sparphase bis zum Entnahmealter ${start} (${years} Jahre ab heute), nicht bis zur Laufzeit im Sparplan-Rechner.`,
+    heroEyebrow: (start: number) =>
+      `Netto pro Monat ab Alter ${start}, Kaufkraft von heute, neutral`,
+    heroEyebrowPercent: (start: number) =>
+      `Netto im ersten Jahr pro Monat ab Alter ${start}, Kaufkraft von heute, neutral`,
+    perMonth: 'pro Monat',
+    capitalShort: 'Kapital bei Beginn',
+    range: (low: string, high: string) => `Pessimistisch ${low} · Optimistisch ${high}`,
     intro: (start: number, end: number, years: number) =>
       `Sparphase bis Alter ${start} (${years} Jahre ab heute), danach Entnahme bis Alter ${end}. Beträge pro Monat in Kaufkraft von heute.`,
     caption: 'ETF im Ruhestand je Szenario',
@@ -115,8 +139,8 @@ export const etf = {
   },
   reset: 'Eingaben zurücksetzen',
   kpi: {
-    finalAfterTax: 'Endwert nach Steuer (neutral)',
-    finalNoTax: 'Endwert ohne Steuer (neutral)',
+    heroAfterTax: (years: number) => `Endwert nach Steuer in ${years} Jahren, neutral`,
+    heroNoTax: (years: number) => `Endwert ohne Steuer in ${years} Jahren, neutral`,
     contributions: 'Einzahlungen',
     gain: 'Gewinn vor Steuer',
     tax: 'Steuer',
@@ -126,8 +150,6 @@ export const etf = {
     advanceNote:
       'Mit Vorabpauschale kann der Endwert höher liegen, weil der Sparerpauschbetrag dann jedes Jahr genutzt wird. Ohne Freibetrag wäre er etwas niedriger, weil die Steuer früher fällig wird.',
     real: 'Kaufkraft von heute',
-    realHint: 'Endwert nach Steuer, deflationiert',
-    realHintNoTax: 'Endwert ohne Steuer, deflationiert',
     range: (low: string, high: string) => `Spanne ${low} bis ${high}`,
   },
   chart: {

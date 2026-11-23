@@ -47,12 +47,20 @@ test('profile keeps the advanced groups collapsed with a summary; terms are expl
   );
 });
 
-test('ETF page separates the calculator from the retirement section', async ({ page }) => {
+test('ETF page has two parts, each with its own result next to the inputs', async ({ page }) => {
   await page.goto('/#etf');
-  await expect(page.getByRole('heading', { name: 'Sparplan-Rechner' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: /ETF im Ruhestand/ })).toContainText(
+  await expect(page.getByRole('heading', { level: 2, name: 'Sparphase' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: /Ruhestand/ })).toContainText(
     'gilt für den Rentenplan',
   );
+  for (const id of ['etf-plan', 'etf-retirement']) {
+    const part = page.locator(`#${id}`);
+    const inputs = await part.locator('.bp-in').boundingBox();
+    const result = await part.locator('.bp-result').boundingBox();
+    expect(result!.x).toBeGreaterThan(inputs!.x + inputs!.width - 1);
+    // The result is on the first screen next to (not below) the inputs
+    expect(Math.abs(result!.y - inputs!.y)).toBeLessThan(2);
+  }
 });
 
 test('what-if sliders change the net pension without saving', async ({ page }) => {

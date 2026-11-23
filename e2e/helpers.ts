@@ -7,6 +7,21 @@ export async function openRow(page: Page, title: string | RegExp) {
   if (!isOpen) await row.locator('summary').first().click();
 }
 
+/** Opens a collapsed input group (`details.group`, e.g. "Steuer" on the ETF page) by its title. */
+export async function openGroup(page: Page, title: string | RegExp) {
+  const group = page.locator('details.group', { has: page.locator('summary', { hasText: title }) });
+  const isOpen = await group.evaluate((e) => (e as HTMLDetailsElement).open);
+  if (!isOpen) await group.locator('summary').first().click();
+}
+
+/** Final value after tax of the saving phase (neutral) as shown in the hero figure of the ETF page. */
+export async function planFinalValue(page: Page): Promise<number> {
+  const text = await page.locator('#etf-plan .result-frame').innerText();
+  const match = /([\d.]+)\s*€/.exec(text);
+  if (!match) throw new Error(`no amount in "${text}"`);
+  return Number(match[1]!.replaceAll('.', ''));
+}
+
 /** Marks the current document; the marker disappears with it when the page reloads. */
 export const markDocument = (page: Page) =>
   page.evaluate(() => ((window as unknown as { __old: boolean }).__old = true));

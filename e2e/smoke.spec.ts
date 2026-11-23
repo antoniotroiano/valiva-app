@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test';
-import { openRow } from './helpers';
+import { openGroup, openRow } from './helpers';
 
 test('input leads to visible result and scenario chart', async ({ page }) => {
   await page.goto('/#etf');
   await page.getByLabel('Monatliche Sparrate').fill('300');
-  await expect(page.getByText('Endwert nach Steuer (neutral)')).toBeVisible();
+  await expect(page.getByText(/Endwert nach Steuer in \d+ Jahren, neutral/)).toBeVisible();
+  await openRow(page, 'Entwicklung des Depotwerts');
   await expect(page.getByRole('img', { name: /Liniendiagramm mit drei Szenarien/ })).toBeVisible();
-  await page.getByText(/Jahrestabelle anzeigen/).click();
+  await openRow(page, /Jahrestabelle anzeigen/);
   await expect(page.getByRole('table', { name: /Jahrestabelle/ })).toBeVisible();
 });
 
@@ -35,7 +36,7 @@ test('creating a savings goal shows the date the goal is reached', async ({ page
 
 test('ETF target value shows the required monthly rate per scenario', async ({ page }) => {
   await page.goto('/#etf');
-  await page.getByText('Zielvermögen', { exact: true }).click();
+  await openRow(page, 'Zielvermögen');
   const table = page.getByRole('table', { name: /Benötigte monatliche Startrate/ });
   await expect(table).toBeVisible();
   await expect(table.getByRole('row', { name: /Neutral/ })).toContainText('€');
@@ -174,9 +175,12 @@ test('ETF in retirement: global assumptions switch and net monthly withdrawal', 
   await page.getByLabel('Gewünschtes Rentenalter', { exact: true }).fill('67');
   await page.goto('/#etf');
   await page.getByLabel('Monatliche Sparrate').fill('300');
-  const card = page.getByRole('region', { name: 'ETF im Ruhestand' });
+  const card = page.locator('#etf-retirement');
+  await expect(card.getByText(/Netto pro Monat ab Alter \d+/)).toBeVisible();
+  await openRow(page, 'Alle Szenarien im Vergleich');
   await expect(card.getByRole('table', { name: /ETF im Ruhestand je Szenario/ })).toBeVisible();
   await expect(card.getByRole('row', { name: /Entnahme netto/ })).toContainText('€');
+  await openGroup(page, 'Rendite und Inflation');
   await expect(page.getByText(/Aus den Annahmen: Rendite/)).toBeVisible();
   await page.getByLabel(/Rendite-Szenarien und Inflation aus den Annahmen/).uncheck();
   await expect(page.getByLabel('Rendite neutral')).toBeVisible();

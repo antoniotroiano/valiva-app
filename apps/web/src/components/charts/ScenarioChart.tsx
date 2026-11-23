@@ -15,7 +15,14 @@ import { AXIS, TOOLTIP_STYLE } from './chartTheme';
 
 type Scenarios = Record<ScenarioName, EtfScenarioResult>;
 
-export function ScenarioChart({ scenarios }: { scenarios: Scenarios }) {
+/** `bare`: no own card and heading, for use inside a collapsible row that carries the title. */
+export function ScenarioChart({
+  scenarios,
+  bare = false,
+}: {
+  scenarios: Scenarios;
+  bare?: boolean;
+}) {
   const c = de.etf.chart;
   const neutral = scenarios.neutral;
   const data = neutral.series
@@ -49,8 +56,8 @@ export function ScenarioChart({ scenarios }: { scenarios: Scenarios }) {
   ];
 
   return (
-    <div className="card">
-      <h2>{c.title}</h2>
+    <div className={bare ? undefined : 'card'}>
+      {!bare && <h2>{c.title}</h2>}
       <div role="img" aria-label={`${c.alt} ${summary}`} style={{ width: '100%', height: 320 }}>
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 8, right: 16, bottom: 8, left: 8 }}>

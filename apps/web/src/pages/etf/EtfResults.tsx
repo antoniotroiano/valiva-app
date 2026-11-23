@@ -1,63 +1,147 @@
-import { type EtfPlanResult, type EtfProjection } from '@valiva/core';
+import { type EtfPlanResult, type EtfProjection, type ScenarioName } from '@valiva/core';
 import { SCENARIO_NAMES } from '@valiva/core';
-import { KpiTile } from '../../components/cards/KpiTile';
-import { ScenarioChart } from '../../components/charts/ScenarioChart';
+import { Disclosure } from '../../components/cards/Disclosure';
+import { ResultFrame, type ResultKpi } from '../../components/cards/ResultFrame';
+import { ScenarioTable } from '../../components/cards/ResultTable';
 import { YearTable } from '../../components/cards/YearTable';
-import { formatEur } from '../../lib/format';
-import { type EtfRetirement } from '../../lib/etfRetirement';
-import { de } from '../../i18n/de';
+import { ScenarioChart } from '../../components/charts/ScenarioChart';
+import { EtfTargetSection } from '../../components/forms/EtfTargetSection';
 import { WithdrawalChart, ageText } from '../../components/forms/WithdrawalFields';
-import { ScrollTable } from '../../components/cards/ScrollTable';
+import { de } from '../../i18n/de';
+import { type EtfRetirement } from '../../lib/etfRetirement';
+import { formatEur } from '../../lib/format';
+import type { EtfPlanInput, ChurchTaxChoice } from '@valiva/core';
 
-export function EtfResults({
+type PlanOk = Extract<EtfPlanResult, { ok: true }>;
+
+/** Result of the saving phase: hero figure, key figures, notes. */
+export function PlanResult({
   result,
   taxEnabled,
   years,
 }: {
-  result: Extract<EtfPlanResult, { ok: true }>;
+  result: PlanOk;
   taxEnabled: boolean;
   years: number;
 }) {
   const t = de.etf;
   const { pessimistic, neutral, optimistic } = result.scenarios;
   const advance = neutral.advanceTaxPaid !== undefined;
+  const kpis: ResultKpi[] = [
+    { label: t.kpi.contributions, value: formatEur(neutral.totalContributions) },
+    { label: t.kpi.gain, value: formatEur(neutral.gainBeforeTax) },
+    { label: advance ? t.kpi.taxSale : t.kpi.tax, value: formatEur(neutral.tax) },
+    ...(advance
+      ? [
+          {
+            label: t.kpi.advanceTax,
+            value: formatEur(neutral.advanceTaxPaid ?? 0),
+            note: t.kpi.advanceTaxNote,
+          },
+        ]
+      : []),
+    { label: t.kpi.real, value: formatEur(neutral.finalValueReal) },
+  ];
+  return (
+    <ResultFrame
+      eyebrow={taxEnabled ? t.kpi.heroAfterTax(years) : t.kpi.heroNoTax(years)}
+      value={formatEur(neutral.finalValueAfterTax)}
+      range={t.kpi.range(
+        formatEur(pessimistic.finalValueAfterTax),
+        formatEur(optimistic.finalValueAfterTax),
+      )}
+      kpis={kpis}
+      {...(advance ? { footnote: t.kpi.advanceNote } : {})}
+    />
+  );
+}
+
+/** Calculation of the saving phase: chart, year table and the reverse calculator as collapsible rows. */
+export function PlanCalculation({
+  result,
+  personId,
+  committed,
+  churchTax,
+}: {
+  result: PlanOk | undefined;
+  personId: string;
+  committed: EtfPlanInput;
+  churchTax: ChurchTaxChoice | undefined;
+}) {
+  const t = de.etf;
+  return (
+    <div className="dts">
+      {result && (
+        <>
+          <Disclosure title={t.chart.title} meta={t.rows.chart}>
+            <ScenarioChart scenarios={result.scenarios} bare />
+          </Disclosure>
+          <Disclosure title={t.tableToggle(result.scenarios.neutral.yearly.length)}>
+            <YearTable result={result.scenarios.neutral} bare />
+          </Disclosure>
+        </>
+      )}
+      <Disclosure title={t.target.title} meta={t.rows.target}>
+        <EtfTargetSection personId={personId} input={committed} churchTax={churchTax} />
+      </Disclosure>
+    </div>
+  );
+}
+
+/** Result of the retirement part (withdrawal for the retirement plan), or the reason there is none. */
+export function RetirementResult({ retirement }: { retirement: EtfRetirement }) {
+  const t = de.etf.retirement;
+  const w = de.withdrawal;
+  const outcome = retirement.outcome;
+  if (outcome === undefined) return <div className="card">{t.needsProfile}</div>;
+  if (!outcome.ok) return <div className="card">{de.etf.errors}</div>;
+  const r = outcome.results;
+  const d = r.neutral.details;
+  const percent = d.withdrawal.strategy === 'percent';
+  const kpis: ResultKpi[] = [
+    { label: t.capitalShort, value: formatEur(d.grossCapital) },
+    { label: percent ? w.gross : t.gross, value: formatEur(r.neutral.monthlyPensionReal) },
+    { label: t.tax, value: formatEur(r.neutral.taxAndContributions) },
+    ...(percent
+      ? [
+          {
+            label: w.lasts,
+            value:
+              d.depletionAge === undefined
+                ? w.lastsEnd(retirement.payoutEndAge)
+                : ageText(d.depletionAge),
+          },
+          { label: w.remaining, value: formatEur(d.remainingCapitalAtEnd) },
+        ]
+      : []),
+  ];
   return (
     <>
-      <h2>{t.calculatorTitle}</h2>
-      <p className="sub">{t.calculatorSubtitle(years)}</p>
-      <div className="kpis">
-        <KpiTile
-          label={taxEnabled ? t.kpi.finalAfterTax : t.kpi.finalNoTax}
-          value={formatEur(neutral.finalValueAfterTax)}
-          note={t.kpi.range(
-            formatEur(pessimistic.finalValueAfterTax),
-            formatEur(optimistic.finalValueAfterTax),
-          )}
-        />
-        <KpiTile label={t.kpi.contributions} value={formatEur(neutral.totalContributions)} />
-        <KpiTile label={t.kpi.gain} value={formatEur(neutral.gainBeforeTax)} />
-        <KpiTile label={advance ? t.kpi.taxSale : t.kpi.tax} value={formatEur(neutral.tax)} />
-        {advance && (
-          <KpiTile
-            label={t.kpi.advanceTax}
-            value={formatEur(neutral.advanceTaxPaid ?? 0)}
-            note={t.kpi.advanceTaxNote}
-          />
+      {d.depletionAge !== undefined && (
+        <div className="notice" role="status">
+          {w.depleted(ageText(d.depletionAge))}
+        </div>
+      )}
+      <ResultFrame
+        eyebrow={
+          percent
+            ? t.heroEyebrowPercent(retirement.payoutStartAge)
+            : t.heroEyebrow(retirement.payoutStartAge)
+        }
+        value={formatEur(r.neutral.netMonthlyPensionReal)}
+        unit={t.perMonth}
+        range={t.range(
+          formatEur(r.pessimistic.netMonthlyPensionReal),
+          formatEur(r.optimistic.netMonthlyPensionReal),
         )}
-        <KpiTile
-          label={t.kpi.real}
-          value={formatEur(neutral.finalValueReal)}
-          note={taxEnabled ? t.kpi.realHint : t.kpi.realHintNoTax}
-        />
-      </div>
-      {advance && <p className="hint">{t.kpi.advanceNote}</p>}
-      <ScenarioChart scenarios={result.scenarios} />
-      <YearTable result={neutral} />
+        kpis={kpis}
+      />
     </>
   );
 }
 
-export function RetirementCard({
+/** Calculation of the retirement part: scenario table, remaining-capital chart, notes. */
+export function RetirementCalculation({
   retirement,
   ownDuration,
 }: {
@@ -65,15 +149,15 @@ export function RetirementCard({
   ownDuration: number;
 }) {
   const t = de.etf.retirement;
-  const outcome = retirement.outcome;
-  const scenarios = de.overview.retirement.scenarios;
-  const advance =
-    outcome?.ok === true && outcome.results.neutral.details.advanceLumpSumSaving !== undefined;
   const w = de.withdrawal;
-  const percent =
-    outcome?.ok === true && outcome.results.neutral.details.withdrawal.strategy === 'percent';
+  const outcome = retirement.outcome;
+  if (!outcome?.ok) return null;
+  const scenarios = de.overview.retirement.scenarios;
+  const d = outcome.results.neutral.details;
+  const advance = d.advanceLumpSumSaving !== undefined;
+  const percent = d.withdrawal.strategy === 'percent';
   const eur = (pick: (r: EtfProjection) => number) => (r: EtfProjection) => formatEur(pick(r));
-  const rows: [string, (r: EtfProjection) => string][] = [
+  const lines: [string, (r: EtfProjection) => string][] = [
     [t.capital, eur((r) => r.details.grossCapital)],
     [percent ? w.gross : t.gross, eur((r) => r.monthlyPensionReal)],
     [t.tax, eur((r) => r.taxAndContributions)],
@@ -98,82 +182,47 @@ export function RetirementCard({
         ] as [string, (r: EtfProjection) => string][])
       : []),
   ];
+  const names: ScenarioName[] = [...SCENARIO_NAMES];
   return (
-    <section className="card" aria-labelledby="etf-retirement">
-      <h2 id="etf-retirement">
-        {t.title} <span className="badge">{t.badge}</span>
-      </h2>
-      {outcome?.ok && (
-        <p className="sub">
-          {t.subtitle(retirement.payoutStartAge, outcome.results.neutral.details.durationYears)}
+    <div className="dts">
+      <Disclosure title={de.etf.rows.scenarios}>
+        <ScenarioTable
+          title={t.caption}
+          columns={[t.row, ...names.map((s) => scenarios[s])]}
+          rows={lines.map(([label, pick]) => ({
+            label,
+            values: names.map((s) => pick(outcome.results[s])),
+          }))}
+        />
+      </Disclosure>
+      {percent && (
+        <Disclosure title={w.chart.title}>
+          <WithdrawalChart
+            bare
+            start={d.grossCapital}
+            years={{
+              pessimistic: outcome.results.pessimistic.details.withdrawalYears,
+              neutral: d.withdrawalYears,
+              optimistic: outcome.results.optimistic.details.withdrawalYears,
+            }}
+          />
+        </Disclosure>
+      )}
+      <Disclosure title={de.etf.rows.notes}>
+        <p className="hint">
+          {t.intro(retirement.payoutStartAge, retirement.payoutEndAge, d.durationYears)}
         </p>
-      )}
-      {outcome === undefined && <p>{t.needsProfile}</p>}
-      {outcome?.ok && (
-        <>
-          <p>
-            {t.intro(
-              retirement.payoutStartAge,
-              retirement.payoutEndAge,
-              outcome.results.neutral.details.durationYears,
-            )}
+        {d.savingMonths !== ownDuration * 12 && (
+          <p className="hint">{t.durationNote(ownDuration, d.savingMonths)}</p>
+        )}
+        <p className="hint">{t.taxNote}</p>
+        {percent && (
+          <p className="hint">
+            {w.note} {w.noteEtfTax}
           </p>
-          <ScrollTable label={t.caption}>
-            <table>
-              <caption>{t.caption}</caption>
-              <thead>
-                <tr>
-                  <th scope="col">{t.row}</th>
-                  {SCENARIO_NAMES.map((s) => (
-                    <th key={s} scope="col">
-                      {scenarios[s]}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map(([label, pick]) => (
-                  <tr key={label}>
-                    <th scope="row">{label}</th>
-                    {SCENARIO_NAMES.map((s) => (
-                      <td key={s} className="num">
-                        {pick(outcome.results[s])}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </ScrollTable>
-          {outcome.results.neutral.details.savingMonths !== ownDuration * 12 && (
-            <p className="hint">
-              {t.durationNote(ownDuration, outcome.results.neutral.details.savingMonths)}
-            </p>
-          )}
-          {outcome.results.neutral.details.depletionAge !== undefined && (
-            <div className="notice" role="status">
-              {w.depleted(ageText(outcome.results.neutral.details.depletionAge))}
-            </div>
-          )}
-          <p className="hint">{t.taxNote}</p>
-          {percent && (
-            <p className="hint">
-              {w.note} {w.noteEtfTax}
-            </p>
-          )}
-          {advance && <p className="hint">{t.taxNoteAdvance}</p>}
-          {percent && (
-            <WithdrawalChart
-              start={outcome.results.neutral.details.grossCapital}
-              years={{
-                pessimistic: outcome.results.pessimistic.details.withdrawalYears,
-                neutral: outcome.results.neutral.details.withdrawalYears,
-                optimistic: outcome.results.optimistic.details.withdrawalYears,
-              }}
-            />
-          )}
-        </>
-      )}
-    </section>
+        )}
+        {advance && <p className="hint">{t.taxNoteAdvance}</p>}
+      </Disclosure>
+    </div>
   );
 }

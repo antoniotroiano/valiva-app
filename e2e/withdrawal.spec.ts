@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openRow } from './helpers';
 
 test('ETF: percent withdrawal shows the first-year rows, warns when the capital runs out and is kept', async ({
   page,
@@ -10,10 +11,11 @@ test('ETF: percent withdrawal shows the first-year rows, warns when the capital 
   await expect(page.getByText('Kapital reicht bis Alter')).toHaveCount(0);
 
   await percent.check();
-  const card = page.locator('section', { hasText: 'ETF im Ruhestand' });
-  await expect(card.getByText('Entnahme im ersten Jahr, brutto')).toBeVisible();
-  await expect(card.getByText('Restkapital im Endalter (nominal)')).toBeVisible();
+  const card = page.locator('#etf-retirement');
+  await expect(card.locator('dt', { hasText: 'Entnahme im ersten Jahr, brutto' })).toBeVisible();
+  await expect(card.locator('dt', { hasText: 'Restkapital im Endalter (nominal)' })).toBeVisible();
   await expect(card.getByText(/\(Ende\)/).first()).toBeVisible();
+  await openRow(page, 'Restkapital im Ruhestand');
   await expect(page.getByRole('img', { name: /Restkapitals je Alter/ })).toBeVisible();
   await expect(page.getByText('Tabelle zum Diagramm')).toBeVisible();
 

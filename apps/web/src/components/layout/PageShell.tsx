@@ -27,7 +27,7 @@ export function PageShell({
   personInTitle?: boolean;
   children: ReactNode;
 }) {
-  const { person, switcher } = usePageHead();
+  const { person, switcher, note } = usePageHead();
   return (
     <>
       {above}
@@ -35,6 +35,7 @@ export function PageShell({
         <div>
           <h1>{person && personInTitle ? de.nav.titleWithPerson(title, person) : title}</h1>
           <p className="sub">{subtitle}</p>
+          {note}
         </div>
         {(badge || switcher || tools) && (
           <div className="head-tools">

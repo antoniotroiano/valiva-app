@@ -1,4 +1,5 @@
 import { lazy, useMemo } from 'react';
+import { PageHeadProvider, usePageHead } from '../components/layout/PageHead';
 import { de } from '../i18n/de';
 import { currentLegal } from '../lib/legalConfig';
 import { useDepot } from '../state/useDepot';
@@ -58,10 +59,14 @@ export function PersonWorkspace({
 
   const multi = household.state.household.persons.length > 1;
   const shared = multi && (page === 'profile' || page === 'assumptions');
+  const head = usePageHead();
+  // Values shared by all persons: the note sits under the heading (PageShell), not above it.
+  const pageHead = shared
+    ? { ...head, note: <p className="hint">{de.household.sharedNote}</p> }
+    : head;
 
   return (
-    <>
-      {shared && <p className="hint">{de.household.sharedNote}</p>}
+    <PageHeadProvider value={pageHead}>
       {page === 'overview' && (
         <OverviewPage
           retirement={retirement}
@@ -132,6 +137,6 @@ export function PersonWorkspace({
         />
       )}
       {page === 'assumptions' && <AssumptionsPage />}
-    </>
+    </PageHeadProvider>
   );
 }

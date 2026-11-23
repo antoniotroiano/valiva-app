@@ -83,9 +83,12 @@ type Row = { age: number; pessimistic: number; neutral: number; optimistic: numb
 export function WithdrawalChart({
   start,
   years,
+  bare = false,
 }: {
   start: number;
   years: Record<'pessimistic' | 'neutral' | 'optimistic', WithdrawalYear[] | undefined>;
+  /** No own card and heading, for use inside a collapsible row that carries the title. */
+  bare?: boolean;
 }) {
   const t = de.withdrawal.chart;
   const c = de.depot.chart;
@@ -104,8 +107,8 @@ export function WithdrawalChart({
     { key: 'optimistic', name: c.optimistic, color: 'var(--c-opt)', dash: '2 4', width: 2.5 },
   ];
   return (
-    <div className="card">
-      <h2>{t.title}</h2>
+    <div className={bare ? undefined : 'card'}>
+      {!bare && <h2>{t.title}</h2>}
       <div role="img" aria-label={`${t.alt} ${summary}`} style={{ width: '100%', height: 280 }}>
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 8, right: 16, bottom: 8, left: 8 }}>
