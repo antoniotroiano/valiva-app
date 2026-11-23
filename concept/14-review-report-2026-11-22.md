@@ -261,6 +261,7 @@ Aus `PROGRESS.md`, `07`, `12`, `13`:
 | **P2 – Oberfläche** | AP-08 Design-Umsetzung, AP-09 Rentenplan, AP-10 Bausteinseiten-Vorlage mit ETF, AP-11 Depot/bAV/Rente, AP-12 Annahmen, AP-13 Führung | Hebt die Bedienbarkeit am stärksten an. Reihenfolge wie nummeriert. |
 | **P3 – Funktionen** | AP-14/15 Generischer Baustein, AP-19/20 Rentner-Modus, AP-16 Paar-Steuer (nach P2) | Neuer Nutzen, erst wenn die Oberfläche trägt. AP-14 und AP-19 (Konzept und Mockup) können früher und parallel laufen. |
 | **Gate – mit dem Autor** | AP-17 GitHub-Release | **Letzte Session.** Fragt die Release-Entscheidungen (Abschnitt 9, Frage 8) selbst beim Autor ab. |
+| **Nacharbeit vor dem ersten Versions-Release** | AP-21 Restpunkte, AP-23 Rechtswerte, AP-24 öffentliche Doku, danach AP-22 Versionierung und Release-Automatik | Der Autor will zuerst offene Punkte aus AP-01 bis AP-17 schließen und dann mit `0.1.0` starten. |
 | **Optional** | AP-18 Komfort (verschlüsselter Export, PWA) | Nach der Smartphone-Reparatur sinnvoll, nicht dringend. |
 
 ---
@@ -286,10 +287,14 @@ Aus `PROGRESS.md`, `07`, `12`, `13`:
 | 14 | Generischer Baustein: Konzept und Mockup | P3 | – | `concept/`, `docs/mockups/` | [x] erledigt 2026-11-23 (Commit offen beim Autor) |
 | 15 | Generischer Baustein: Kern und Web | P3 | 05, 06, 14 (Freigabe) | Kern, Seiten, Config, Golden | [x] erledigt (2026-11-23, Teile A und B; Excel-Stichprobe des Autors: passt) |
 | 16 | Paar-Besteuerung (Splitting) | P3 | 05 | Steuerkern, Haushaltsansicht, Config | [x] erledigt (2026-11-23; Excel-Stichprobe des Autors steht aus; Commit offen beim Autor) |
-| 17 | GitHub-Release mit dem Autor | Gate (zuletzt) | 01, alle anderen | Wurzel, `.github/`, Doku | [x] erledigt 2026-11-23 (Rechtswerte bewusst `unverified`; Test mit echten Daten und Testpersonen folgt beim Autor; Commit offen beim Autor) |
+| 17 | GitHub-Release mit dem Autor | Gate (zuletzt) | 01, alle anderen | Wurzel, `.github/`, Doku | [x] erledigt 2026-11-23 (Abnahme und Test mit echten Daten und Testpersonen laut Autor erledigt; Pages-Quelle "GitHub Actions" läuft; Rechtswerte bewusst `unverified` → AP-23; Branch-Schutz: Autor prüft) |
 | 18 | Komfort: verschlüsselter Export, PWA | optional | 02, 06 | `DataPage`, Kern (Format), Service Worker | [ ] offen |
 | 19 | Rentner-Modus: Konzept und Mockup | P3 | – | `concept/`, `docs/mockups/` | [ ] offen |
 | 20 | Rentner-Modus: Kern und Web | P3 | 04, 05, 06, 09, 19 (Freigabe) | Kern, Profil, Seiten, Config, Golden | [ ] offen |
+| 21 | Nachbesserung: Backlog-Durchsicht und Restpunkte aus AP-01 bis AP-17 | P2 (Nacharbeit) | 17 | Web (Navigation, Texte, Tests), Playwright-Konfiguration | [ ] offen |
+| 23 | Rechtswerte gegen Primärquellen prüfen | P2 (Nacharbeit) | 17 | `config/`, Tests, Doku | [ ] offen |
+| 24 | Öffentliche Außenwirkung: Repo aufräumen, Doku für Besucher | P2 (Nacharbeit) | 17, besser nach 23 | Wurzel, `docs/`, `concept/`, `.gitignore`, README | [ ] offen |
+| 22 | Versionierung und automatisches GitHub-Release | Gate (Release-Prozess) | 17, besser nach 21, 23, 24 | Wurzel, `.github/`, `CHANGELOG.md`, Web (Versionsanzeige), Doku | [ ] offen |
 
 **Parallel möglich:** AP-07, AP-14 und AP-19 (nur Mockup/Konzept) laufen neben allen anderen. AP-02, AP-03 und AP-04 berühren teils dieselben Web-Dateien: nacheinander. AP-05 und AP-06 verschieben Dateien und laufen **allein**, ohne andere offene Code-Session. AP-09 bis AP-13 ändern verschiedene Seiten, laufen wegen des Commits nach jeder Session aber **nacheinander** (Kollisionen außerdem in `de.ts` und CSS).
 
@@ -567,7 +572,7 @@ Status: erledigt (2026-11-23, Excel-Stichprobe des Autors steht aus) · Vorausse
 **Fertig wenn:** Bei einem Paar mit ungleichen Renten ist das Netto mit Splitting nachweislich höher, Test deckt es ab, Hinweistext stimmt.
 
 ### AP-17 GitHub-Release mit dem Autor
-Status: erledigt (2026-11-23; Rechtswerte und Test mit echten Daten bewusst verschoben, siehe Aufgaben) · Voraussetzung: AP-01 (Git eingerichtet, erster Commit vom Autor) · **letzte Session**
+Status: erledigt (2026-11-23; Autor bestätigt am 2026-11-23: Abnahme und Test mit echten Daten und Testpersonen erledigt, Pages mit "GitHub Actions" läuft; Rechtswerte → AP-23; Branch-Schutz muss der Autor noch prüfen) · Voraussetzung: AP-01 (Git eingerichtet, erster Commit vom Autor) · **letzte Session**
 
 **Ablauf-Regel (Entscheidung des Autors):** Die Release-Fragen (Abschnitt 9, Frage 8) werden **jetzt noch nicht** entschieden. **Diese Session fragt den Autor am Anfang danach**, bevor sie irgendetwas vorbereitet. Pushen, Tags, Releases und alle Einstellungen auf GitHub macht der Autor selbst (GitHub Desktop bzw. Weboberfläche); die Session bereitet Dateien vor und gibt Schritt-für-Schritt-Anleitungen. Die Antworten stehen in Abschnitt 9, Frage 8.
 
@@ -593,6 +598,93 @@ Status: offen · Voraussetzung: AP-02, AP-06
 **Fertig wenn:** Exportdatei ist ohne Passwort unlesbar, Import mit Passwort funktioniert, die App startet installiert auch ohne Netz.
 
 ---
+
+### AP-21 Nachbesserung: Backlog-Durchsicht und Restpunkte
+Status: offen · Voraussetzung: AP-17 · Entscheidung des Autors 2026-11-23: offene Punkte aus AP-01 bis AP-17 zuerst schließen
+
+**Warum:** Der Abschnitt 8 ist durch 17 Pakete lang geworden (rund 100 Zeilen), und ein Teil davon ist inzwischen erledigt oder überholt (z. B. Punkte aus AP-02, die AP-11 und AP-12 gelöst haben). Außerdem stehen dort echte Restpunkte, die vor einem ersten Versions-Release erledigt sein sollten. Dieses Paket sortiert und behebt eine **begrenzte** Auswahl.
+
+**Teil 1: Durchsicht (nur lesen und einordnen, keine Änderung am Code).**
+- [ ] Jede Zeile in Abschnitt 8 prüfen gegen den heutigen Code und einordnen: **erledigt** (durchstreichen mit Verweis auf AP), **überholt** (streichen), **offen** (bleibt), **Entscheidung nötig** (Autor). Ergebnis als Tabelle in der Session zeigen, dann den Abschnitt 8 aufräumen (erledigte Zeilen durchgestrichen lassen, aber nach `## 8a Erledigtes Backlog` am Ende des Abschnitts verschieben, damit die offene Liste kurz wird).
+
+**Teil 2: Umsetzen (nur was in Teil 1 als offen bestätigt ist, in dieser Reihenfolge):**
+- [ ] **Skip-Link-Test** (`e2e/navigation.spec.ts`, seit AP-10 lokal rot, im CI grün): Ursache klären. Ist es ein echter Fehler (Tab fokussiert den Skip-Link nicht) oder ein Test-/Umgebungsproblem (Dev-Server vs. Produktions-Build, Fokus beim Laden)? Beheben, Test grün, ohne den Test abzuschwächen.
+- [ ] **Playwright-Konfiguration:** fester Port 5173 mit `reuseExistingServer` kollidiert mit fremden Dev-Servern (mehrfach passiert). Eigenen Port für dieses Projekt und `reuseExistingServer: false` bzw. Port-Prüfung; Doku in `CONTRIBUTING`-Ersatz (`docs/`) kurz anpassen. Außerdem sicherstellen, dass lokal und im CI dieselbe Variante (Dev oder Produktions-Build) getestet werden kann (z. B. Schalter), weil die Abweichung schon einen Fehler verdeckt hat.
+- [ ] **Seitenliste nur einmal führen:** `app/pages.ts` (`NAV`) und `MobileNav.tsx` zusammenführen (Backlog AP-03/AP-06/AP-13/AP-14). Verhalten und Optik unverändert.
+- [ ] **Warnzeilen und Beschriftungen:** abgekürzte Texte vervollständigen (z. B. "Kinderzulage: Kind jünger als." ohne Zahl; "Bonus: Alter zu Jahresbeginn unter."), Texte in `i18n/de/assumptions.ts`. Gewichtung der "6 wichtigen Hinweise" auf der Startseite des Paar-Beispiels: Vorschlag machen und mit dem Autor abstimmen (ungeprüfte Rechtswerte bleiben sichtbar, siehe `CLAUDE.md`).
+- [ ] **Fokusrahmen um die `h1`** nach dem Seitenwechsel dezenter (nur bei Tastaturbedienung sichtbar bzw. schlanker Ring); Kontrast und Sichtbarkeit für Tastaturnutzer bleiben erhalten.
+- [ ] **`theme-color`** folgt dem manuellen Hell/Dunkel-Umschalter (Meta-Tag per Skript setzen).
+- [ ] **Speichern:** `BrowserWorkspaceStore.markExported` und verwaiste `valiva.p.<id>.*`-Schlüssel nach `removePerson` (AP-04): Schreibfehler nicht still schlucken, Aufräumen der Schlüssel entfernter Personen mit Test.
+- [ ] **`window.confirm`** beim Entfernen eines Eintrags (Sonstige Einkünfte) durch das vorhandene `ConfirmDialog` ersetzen.
+- [ ] **Browser und Druck:** Prüfen, ob Playwright WebKit und Firefox für einen Smoke-Test nutzbar ist (Download der Browser vorher beim Autor erfragen). Mindestens Rentenplan, Daten, Annahmen im WebKit-Smoke (Hintergrund: `light-dark()` braucht Safari 17.5, `localStorage` in Safari wird nach Inaktivität geleert). Druckansicht von Rentenplan, Haushalt und Annahmen hell und dunkel prüfen und festhalten.
+
+**Nicht Teil davon:** neue Funktionen, größere Optik-Änderungen (Haushaltsdiagramm mit Bausteinfarben, Wisch-Gesten), Rentner-Modus, Rechtswerte hochstufen (AP-23), öffentliche Doku und Aufräumen von `concept/` (AP-24). `.claude/launch.json` ist am 2026-11-23 aus dem Index genommen und in `.gitignore` eingetragen (Commit durch den Autor).
+
+**Fertig wenn:** Abschnitt 8 hat eine kurze offene Liste, alle Tests (inklusive Skip-Link) sind lokal und im CI grün, WebKit-Smoke läuft oder ist begründet verschoben.
+
+### AP-23 Rechtswerte gegen Primärquellen prüfen
+Status: offen · Voraussetzung: AP-17 · Der Autor erwartet, dass die ungeprüften Werte geklärt werden (2026-11-23)
+
+**Warum:** In AP-17 blieben 11 von 91 Werten `unverified`, weil die Session nur Ratgeberseiten per Websuche fand und keine Primärtexte. `CLAUDE.md`: unsichere Werte dürfen nicht stillschweigend als gesichert erscheinen, deshalb wurde nichts hochgestuft. Das Paket holt die Prüfung nach.
+
+**Die 11 Werte (nach Protokoll AP-17, in `config/` nachsehen):** Kirchensteuer 8 % (BW, BY) und 9 % (übrige Länder); Basiszins-Annahme 3,2 % ab 2027; Altersgrenze Kinderzulage (18) und Jugendbonus (25); Sonderausgaben-Pauschbetrag 72 €; Renteneinkünfte-Pauschbetrag 102 € (je Person bzw. "insgesamt"); fünf Regelannahmen "Sonstige Einkünfte" (`other-income`).
+
+**Aufgaben:**
+- [ ] Zuerst klären, ob Primärquellen erreichbar sind: eingebauter Browser oder Web-Abruf auf `gesetze-im-internet.de`, `recht.bund.de` (BGBl. 2026 I Nr. 156), Landesrecht von BW und BY (Kirchensteuer), BMF-Schreiben. Wenn eine Quelle nicht erreichbar ist: **den Autor bitten, den Text einzufügen**, nichts aus dem Gedächtnis oder aus Ratgeberseiten hochstufen.
+- [ ] Je Wert: Primärtext lesen, Fassung und Stand notieren, Wert, Gültigkeit (`validFrom`, `validTo`) und Wortlaut (Absatz, Satz) gegen `config/` abgleichen, Quelle (Link, Fundstelle) eintragen. Nur wenn der Primärtext den Wert trägt: `status` auf `confirmed`. Sonst bleibt `unverified` mit kurzer Begründung in der Quelle.
+- [ ] Wenn ein Wert **abweicht**: nicht stillschweigend ändern, mit dem Autor besprechen (ändert Rechenergebnisse, Golden-Vektoren und Excel).
+- [ ] Die fünf Regelannahmen "Sonstige Einkünfte" sind **App-Annahmen**, keine Gesetzeswerte: Welche davon lassen sich mit einer Rechtsquelle belegen (z. B. Pflegeversicherung auf Mieten bei Pflichtversicherten), welche bleiben bewusst eine Annahme? Entscheidung mit dem Autor, dann Beschriftung "Annahme" statt "ungeprüft" prüfen, falls es die Sache besser trifft.
+- [ ] Gültigkeit: Werte, die sich jährlich ändern (Basiszins, Pauschbeträge), mit `validTo` versehen und eine Notiz in `docs/` aufnehmen, wann sie zu prüfen sind (jeweils im Januar).
+- [ ] Tests und Anzeige anpassen (Statusabzeichen, Anzahl "ungeprüft" in README und Annahmen-Seite, Hinweis in `07` Punkt 3); `docs/assumptions.md` aktualisieren; Golden-Vektoren und Ergebnisse dürfen sich nur ändern, wenn ein Wert abweicht.
+
+**Nicht Teil davon:** Steuer- oder Rechtsberatung; Werte schätzen. Was nicht belegt werden kann, bleibt `unverified` und sichtbar.
+
+**Fertig wenn:** Jeder der 11 Werte ist `confirmed` mit Primärquelle oder bleibt `unverified` mit Begründung; Tests, README und Annahmen-Seite stimmen überein.
+
+### AP-24 Öffentliche Außenwirkung: Repo aufräumen, Doku für Besucher
+Status: offen · Voraussetzung: AP-17, besser nach AP-23 · Entscheidung des Autors 2026-11-23: `concept/` aufräumen, Dinge in `.gitignore`, richtige Doku für die Öffentlichkeit
+
+**Warum:** Das Repo ist öffentlich (AP-17). Besucher sehen README, `concept/` (über 20 Planungsdateien auf Deutsch, Review-Berichte, Fortschrittsprotokolle), `CLAUDE.md`, `docs/mockups/`, `tools/`. Das wirkt wie ein internes Arbeitsverzeichnis und beantwortet nicht "Was ist das, was kann es, wie benutze ich es, darf ich meine Daten eingeben?".
+
+**Wichtig vorab:** Was in `.gitignore` kommt oder gelöscht wird, verschwindet nur aus dem **aktuellen** Stand. Der **Verlauf bleibt öffentlich lesbar**. Nach dem Scan in AP-17 steht dort nichts Heikles (keine Schlüssel, keine echten Daten, nur noreply-Adressen). Den Verlauf umzuschreiben wird nicht vorgeschlagen.
+
+**Aufgaben:**
+- [ ] **Besucher-Sicht beschreiben:** Wurzelordner, README, `docs/`, `concept/`, GitHub-Seite (Beschreibung, Themen, Pages-Link) wie ein Fremder durchgehen und festhalten, was verwirrt oder fehlt. Mir und dem Autor als Liste zeigen, bevor etwas verschoben wird.
+- [ ] **Vorschlag zur Struktur** mit dem Autor abstimmen: (a) `concept/` bleibt (CLAUDE.md und alle Sessions verweisen darauf), bekommt aber eine eigene `concept/README.md` als Einstieg ("Entwicklungsunterlagen, intern, Deutsch") und eine Ordnung: Review-Berichte, Fortschrittsarchiv und alte Phasenkonzepte in Unterordner (z. B. `concept/archive/`), nur aktuelle Konzeptdateien oben; (b) oder `concept/` nach `docs/internal/` verschieben (dann sämtliche Verweise anpassen, `CLAUDE.md`, Berichte, Tests, `docs/architecture.md`). Empfehlung: (a), weil kein Verweis bricht.
+- [ ] **`.gitignore`** prüfen: was gehört lokal und nicht ins Repo (`playwright-report/`, `test-results/` stehen schon drin; `.claude/launch.json` ist ergänzt; weitere lokale Dateien?). Dateien, die schon getrackt sind, aber lokal bleiben sollen, nennen (der Autor nimmt sie in GitHub Desktop bzw. mit `git rm --cached` aus dem Index; eine Session darf das nur auf ausdrückliche Bitte).
+- [ ] **README für Besucher** neu gliedern: Was ist die App (ein Absatz, ohne Fachjargon), Live-Link (Pages), Screenshots (Rentenplan hell/dunkel, Smartphone), Funktionen, **Datenschutz** (alles bleibt im Browser, nichts wird gesendet, Export/Import), **Grenzen und Haftungsausschluss** (keine Anlage- oder Steuerberatung, Prognose keine Garantie, ungeprüfte Werte sichtbar, Rentner-Modus fehlt), Schnellstart für Entwickler (kurz), Lizenz. Sprache: Deutsch, falls die Oberfläche nur Deutsch ist; kurze englische Zusammenfassung als Vorschlag mit dem Autor abstimmen.
+- [ ] **Doku für Nutzer** in `docs/`: kurze "Erste Schritte" (Profil, Bausteine, Rentenplan, Daten sichern; mit Screenshots), "So rechnet die App (Überblick)" mit Verweis auf die Annahmen-Seite, "Häufige Fragen" (Wo liegen meine Daten, was passiert beim Löschen des Browserspeichers, Safari, Smartphone, Export/Import). Keine Rechtsberatung, einfache Sprache.
+- [ ] **Doku für Mitwirkende:** `CONTRIBUTING` liegt unter `docs/archive/`; prüfen, ob eine kurze Fassung für Besucher nötig ist (Fehler melden, Vorschläge machen), und ob Issues auf GitHub aktiviert bleiben sollen (Entscheidung Autor). Dazu `SECURITY.md` (wie man Sicherheitsprobleme meldet) als Vorschlag.
+- [ ] **Rechtliches (nur als Frage an den Autor, keine Rechtsberatung):** Die App liegt öffentlich auf `antoniotroiano.github.io/valiva-app/` mit Namen des Urhebers in der Lizenz. Ob eine Anbieterkennzeichnung (Impressum) oder eine Datenschutzerklärung für die Seite nötig ist, hängt vom Einzelfall ab (z. B. privat oder geschäftsmäßig, Reichweite); die Session weist darauf hin, listet technische Fakten auf (kein Tracking, `connect-src 'none'`, GitHub als Hoster sieht Abrufe) und der Autor entscheidet, ob er sich beraten lässt.
+- [ ] **GitHub-Seite (Anleitung für den Autor, die Session führt nichts aus):** Beschreibung, Themen, Webseite-Link, Vorschaubild, Issues/Discussions, Release-Bereich.
+- [ ] Alle Links in README und Doku prüfen (relative Pfade, Pages-Link), Verweise nach Verschiebungen reparieren.
+
+**Nicht Teil davon:** Verlauf umschreiben; Inhalte der Konzeptdateien inhaltlich ändern; neue Funktionen.
+
+**Fertig wenn:** Ein Fremder versteht in einer Minute, was die App ist, was sie kann, was sie nicht kann und wie seine Daten behandelt werden; `concept/` hat eine lesbare Ordnung; keine kaputten Verweise.
+
+### AP-22 Versionierung und automatisches GitHub-Release
+Status: offen · Voraussetzung: AP-17, besser nach AP-21, AP-23 und AP-24 · Wunsch des Autors 2026-11-23: Versionsnummer einführen, bei Erhöhung automatisch ein GitHub-Release
+
+**Ziel:** Ein einziger Ort für die Versionsnummer. Wer die Version erhöht, committet und pusht (der Autor, wie bisher), und GitHub erzeugt danach selbst Tag und Release. Sessions committen und pushen weiterhin nicht.
+
+**Vorgabe (Empfehlung, mit dem Autor zu bestätigen):**
+- **Schema:** Semantic Versioning `MAJOR.MINOR.PATCH`. Start bei `0.1.0` (die `0.x` sagt "noch in Entwicklung, Format und Verhalten können sich ändern"). `1.0.0` erst, wenn das Datenformat als stabil zugesagt ist, Rechtswerte geprüft sind und der Test mit echten Daten abgeschlossen ist. Datenformat-Version (`schemaVersion` im Workspace) und App-Version sind **zwei getrennte Dinge** und bleiben getrennt.
+- **Quelle:** `version` im Wurzel-`package.json`; die Pakete unter `apps/` und `packages/` bleiben `private` und folgen nicht (oder werden per Skript geprüft, falls der Autor das wünscht).
+- **Release-Notizen:** `CHANGELOG.md` im Format "Keep a Changelog" (Abschnitt `Unreleased`, je Version ein Abschnitt); das Release nimmt den Abschnitt der Version, ersatzweise GitHub-generierte Notizen.
+
+**Aufgaben:**
+- [ ] Vorab Entscheidungen beim Autor einholen (je mit Empfehlung): Startversion (`0.1.0`), Sprache des Changelogs (Empfehlung Englisch wie Commit-Nachrichten, Oberfläche bleibt Deutsch), Pages-Deployment **bei jedem Push auf `main` (heute)** oder **nur bei einem Release** (Empfehlung: nur bei Release, damit die öffentliche Seite nicht jeden Zwischenstand zeigt), Version im Exportdatei-Kopf (`appVersion`, nur Information, nicht für die Formatprüfung; Empfehlung ja, optionales Feld mit Import-Grenzen).
+- [ ] `package.json` Version setzen, `CHANGELOG.md` anlegen mit einem ersten Eintrag für `0.1.0` (zusammengefasst aus `PROGRESS.md`/Bericht: was die App kann, was bekannt fehlt: Rentner-Modus, 11 ungeprüfte Rechtswerte). Kein Verlauf aus allen 17 Paketen, nur eine lesbare Zusammenfassung.
+- [ ] Versionsanzeige in der Oberfläche (z. B. Fuß der Seite "Daten" oder Annahmen: "Version 0.1.0"), Wert zur Build-Zeit aus `package.json` (Vite `define`), Text in `i18n/de/`, Unit-Test.
+- [ ] Workflow `.github/workflows/release.yml`: läuft bei Push auf `main`, wenn sich die Version geändert hat und der Tag `v<version>` noch nicht existiert (und nur nach grünem CI); führt die Prüfungen aus oder wartet auf den CI-Lauf (`workflow_run`), erzeugt Tag und GitHub-Release mit dem Changelog-Abschnitt; Berechtigung `contents: write` **nur** in diesem Job; Actions auf Commit-SHAs gepinnt (wie in `ci.yml`), keine neue Abhängigkeit im Repo (die `gh`-Befehlszeile ist auf den Runnern vorhanden). Schutz gegen Fehlbedienung: Version nicht höher als im Changelog, Format `x.y.z`, Tag existiert schon → nichts tun.
+- [ ] Je nach Entscheidung `pages.yml` anpassen (Deployment bei Release statt bei jedem Push).
+- [ ] Prüfskript (Unit-Test oder Node-Skript im CI): `package.json` Version hat einen Changelog-Eintrag und ist gültiges SemVer.
+- [ ] Anleitung `docs/releasing.md` (kurz, Deutsch): So veröffentliche ich eine Version (1. Changelog füllen, 2. Version erhöhen, 3. committen und pushen, 4. Release prüfen), was bei einem Fehler zu tun ist (Release/Tag auf GitHub löschen, Version korrigieren), und welche GitHub-Einstellung der Autor einmal prüfen muss (Actions: Workflow-Berechtigungen, Pages-Quelle).
+- [ ] Trockenlauf: Workflow-Syntax prüfen (lokal, z. B. `actionlint` nur wenn ohnehin vorhanden, sonst sorgfältig lesen); den echten ersten Lauf macht der Autor mit dem Push von `0.1.0`. Die Session sagt dem Autor genau, was er danach in GitHub prüfen soll.
+
+**Fertig wenn:** `0.1.0` ist in `package.json`, `CHANGELOG.md` und der Oberfläche gleich; der Release-Workflow ist geprüft und dokumentiert; der Autor weiß, wie er ein Release auslöst. Der **erste echte Release** entsteht erst beim Push des Autors und wird danach im Protokoll nachgetragen.
+**Nicht Teil davon:** Veröffentlichen, Pushen, Taggen durch die Session; Signieren der Releases; Paket-Veröffentlichung (npm); automatisches Hochzählen der Version.
 
 ## 8. Backlog und bewusst nicht
 
@@ -702,7 +794,7 @@ Status: offen · Voraussetzung: AP-02, AP-06
 - (AP-17) **CI rot:** Der Lauf auf `56db5ea` (Push 2026-11-23 17:07 UTC) ist im Job `e2e` fehlgeschlagen (`typecheck`, `lint`, `format:check`, `test`, `build` grün; Pages-Deploy grün). Lokal schlägt nur `e2e/navigation.spec.ts` "skip link focuses the content and keeps the page" fehl (Tab fokussiert den Skip-Link nicht, seit AP-10 unverändert rot); der Test im CI-Log wurde nicht gelesen (Log braucht Anmeldung), es ist wahrscheinlich derselbe. Ob das ein echter Tastaturfehler (Skip-Link nicht als erstes Tab-Ziel) oder ein Testproblem ist, wurde nicht untersucht. Vorschlag: eigene kleine Session, vor dem Branch-Schutz mit "CI muss grün sein".
 - (AP-17) **Das Repo ist öffentlich und war es von Anfang an** (GitHub-API: `private: false`, Pages aktiv unter `antoniotroiano.github.io/valiva-app/`). Folgen: `concept/`, `CLAUDE.md`, `docs/mockups/`, Archivdatei und der ganze Verlauf sind öffentlich lesbar; Befund S-A (gemeinsamer `localStorage` auf `antoniotroiano.github.io`) und S-B (kein `frame-ancestors`) gelten bereits. Älterer Text in diesem Bericht ("Das Repo ist privat", AP-01-Backlog) ist damit überholt.
 - (AP-17) Branch-Schutz lässt sich ohne Anmeldung nicht lesen (HTTP 401); ob er aktiv ist, muss der Autor prüfen. 5 offene Dependabot-Branches (`checkout`, `deploy-pages`, `setup-node`, `upload-artifact`, `upload-pages-artifact`, jeweils neue Hauptversion) liegen auf GitHub, nicht gemergt; die Workflows sind noch auf die alten Commit-SHAs gepinnt.
-- (AP-17) `.claude/launch.json` ist getrackt, obwohl `launch.json` in `.gitignore` steht (vor dem Eintrag committet). Inhalt harmlos (Dev-Server-Start). Optional: aus dem Index nehmen, dann Autor.
+- ~~(AP-17) `.claude/launch.json` getrackt~~: Am 2026-11-23 aus dem Index genommen (`git rm --cached`, Datei bleibt lokal) und `.claude/launch.json` in `.gitignore` eingetragen (die frühere Aussage, die Datei stehe schon in `.gitignore`, stimmte nicht). Commit durch den Autor. Hinweis: Die Datei startet den Dev-Server auf Port 5173, derselbe Port wie in `playwright.config.ts` (Ursache der Kollisionen mit anderen Projekten, AP-21).
 - (AP-17) Die Warnzeilen der Gesamtsicht kürzen Werte-Beschriftungen ab ("Ungeprüfter Rechtswert verwendet: Kinderzulage: Kind jünger als." ohne Zahl; "Bonus: Alter zu Jahresbeginn unter."). Texte in `i18n/de/assumptions.ts`: Zahl anhängen oder Beschriftung umformulieren. Außerdem zeigt die Startseite des Paar-Beispiels "6 wichtige Hinweise" als erstes: für Besucher eines öffentlichen Projekts viel; Zusammenfassen wäre ein Design-Thema.
 - (AP-17) Fokusrahmen um die `h1` nach jedem Seitenwechsel wirkt weiter als großer Kasten (Backlog AP-08/AP-09), im Release-Screenshot der Startseite und der Daten-Seite sichtbar.
 - (AP-17) Rechtswerte: 11 von 91 bleiben `unverified` (Kirchensteuer 8/9 %, Basiszins-Annahme 3,2 % ab 2027, Altersgrenzen Kinderzulage und Jugendbonus, 72 € Sonderausgaben-Pauschbetrag, fünf Regelannahmen "Sonstige Einkünfte"). Primärquellen am 2026-11-23: § 10c EStG bestätigt die Verdopplung des 36-€-Betrags, nennt 72 € nicht; § 9a Satz 1 Nr. 3 EStG nennt 102 € "insgesamt" und sagt nichts zu Ehegatten (je-Person-Annahme bleibt Auslegung); bundesfinanzministerium.de lieferte HTTP 503 (Basiszins 2026 nicht gelesen); Kirchensteuersätze stehen im Landesrecht, keine Landesquelle erreicht; das Altersvorsorgereformgesetz war über die erreichbaren Seiten nicht auffindbar. Nichts davon hochgestuft.
@@ -795,3 +887,5 @@ Format: `JJJJ-MM-TT – AP-xx – was gemacht – Abweichungen – was offen bli
 - 2026-11-23 – AP-17 (Nachträge, Teil 2) – Auf Wunsch des Autors: `CONTRIBUTING.md` nach `docs/archive/` verschoben (nicht gelöscht). Rebase: Der lokale Commit `Record successful CI verification` lag 10 Commits hinter `origin/main` (Dependabot-PRs, Höhenwächter); `git rebase origin/main` ohne Konflikt, nichts gepusht (Abweichung von `CLAUDE.md`, "kein rebase", nur wegen der ausdrücklichen Bitte des Autors). CI laut Autor grün, Dependabot-PRs gemergt. Excel-Stichprobe vom Autor bestätigt (ohne Aufstellung je Blatt). Name "Valiva": Autor ließ ihn von einer anderen KI prüfen (passt); eigene Websuche am 2026-11-23 fand keinen Treffer zu Valiva (kein Beleg für Freiheit, nur US-Markenregister-Treffer zu anderen Namen; amtliche Prüfung DPMA/EUIPO/USPTO nicht gemacht); keine eigene Domain, Hosting GitHub Pages (Entscheidung des Autors). Offen: Abnahme mit eigenen Daten (Autor), Rechtswerte (11 `unverified`), AP-19/20 und AP-18. Commit-Vorschlag: `docs: move CONTRIBUTING to archive, record Excel check and release status`. Geänderte Ordner: Wurzel (`CONTRIBUTING.md` verschoben), `docs/archive/`, `concept/`.
 
 - 2026-11-23 – AP-17 (Rechtswerte, Abschluss) – Auf Wunsch des Autors erneut gegen Quellen geprüft (Websuche, keine Primärtexte erreichbar). **Bestätigt durch mehrere Quellen, nicht hochgestuft:** (1) Basiszins 2026 = 3,20 % (BMF-Schreiben vom 13.01.2026, BStBl 2026 I S. 155, laut NWB-Datenbank, finanz.de, IWW; der Eintrag 2026 in der Config steht schon `confirmed`); der Wert ab 2027 (`baseInterestAssumed` 3,2 %) ist eine Annahme und wird erst im Januar 2027 veröffentlicht: bleibt `unverified`. (2) Kirchensteuer 8 % in Baden-Württemberg und Bayern, 9 % sonst: Ratgeberquellen (test.de, finanz.de, Sparkasse u. a.) stimmen überein, die Landeskirchensteuergesetze wurden nicht gelesen: bleibt `unverified`. (3) Altersvorsorgereformgesetz: BGBl. 2026 I Nr. 156 (ausgegeben 29.05.2026, Bundesrat 08.05.2026, Beginn 2027) bestätigt; Kinderzulage 300 € je Kind laut Deloitte-Zusammenfassung; Altersgrenzen (Kind 18, Bonus 25) und "einmalig" nicht im Gesetzestext gelesen: bleiben `unverified`. (4) 72 €, 102 € je Person und die fünf Regelannahmen "Sonstige Einkünfte": keine Primärquelle (§ 10c und § 9a EStG nennen 72 € bzw. Ehegatten nicht): bleiben `unverified`. **Entscheidung:** nichts hochgestuft, weil Ratgeberseiten keine Primärquelle sind (`CLAUDE.md`: unsichere Werte nicht stillschweigend als gesichert). Die UI zeigt alle 11 weiter als ungeprüft. Für ein späteres Hochstufen: Landeskirchensteuergesetze (BW, BY), Gesetzestext § 84 ff. EStG/AltZertG im BGBl. 2026 I Nr. 156 auf recht.bund.de lesen. **AP-17 damit abgeschlossen**; offen bleiben beim Autor nur der Test mit echten Daten und Testpersonen. Commit-Vorschlag: `docs: close AP-17 release preparation, record legal value review`. Geänderte Ordner: `concept/`.
+- 2026-11-23 – Nach AP-17: Autor will offene Punkte aus AP-01 bis AP-17 vor weiteren Paketen schließen und eine Versionierung mit automatischem GitHub-Release einführen. Neu: AP-21 (Backlog-Durchsicht und Restpunkte), AP-22 (Versionierung, `0.1.0`, Release-Workflow). Kein Code geändert.
+- 2026-11-23 – Nach AP-17, Rückmeldung des Autors: Abnahme und Test mit echten Daten und Testpersonen sind erledigt (Statuszeile AP-17 angepasst; im Protokoll von AP-17 stand die Abnahme schon als erledigt, nur der Test mit echten Daten als "folgt"); Pages-Quelle "GitHub Actions" läuft seit Tagen; Name Valiva vom Autor mit ChatGPT geprüft ("alles ok", amtliche Markenprüfung nicht gemacht, Entscheidung des Autors); Branch-Schutz weiter vom Autor zu prüfen. `.claude/launch.json` aus dem Index genommen und in `.gitignore` aufgenommen. Neu: AP-23 (Rechtswerte gegen Primärquellen) und AP-24 (öffentliche Außenwirkung: `concept/` ordnen, `.gitignore`, Besucher-Doku). Reihenfolge: AP-21, AP-23, AP-24, AP-22, dann AP-19/20, AP-18. Commit-Vorschlag: `docs: add AP-21 to AP-24, untrack launch.json`. Geänderte Ordner: Wurzel (`.gitignore`, `.claude/launch.json` aus dem Index), `concept/`.
