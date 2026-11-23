@@ -61,13 +61,14 @@ test.describe('desktop', () => {
     ).toBeVisible();
   });
 
-  test('household page stays under 1.700 px with the details collapsed', async ({ page }) => {
+  test('household page stays under 1.760 px with the details collapsed', async ({ page }) => {
     await loadExample(page, 'Paar');
     await page.goto('/#overview');
     await page.getByRole('radio', { name: 'Haushalt' }).click();
     await expect(page.getByRole('region', { name: 'Gesamtsicht Haushalt' })).toBeVisible();
-    // 1.672 px with the joint assessment note of AP-16 (1.600 px limit before it, the note is one block).
-    expect(await height(page)).toBeLessThan(1700);
+    // 1.672 px locally with the joint assessment note of AP-16 (1.600 px limit before it, the note is one block),
+    // 1.717 px on the Linux CI runner (other fonts, other line breaks): the limit leaves room for both.
+    expect(await height(page)).toBeLessThan(1760);
   });
 
   test('important notes stand above the page head, the other notes are collapsed with their count', async ({
