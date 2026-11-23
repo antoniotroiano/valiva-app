@@ -198,13 +198,13 @@ Startet nach Abschluss von Phase 4b. Entschieden: Export als Download und Import
 
 **5d Git/GitHub (mit dem Autor)**
 8. Einrichtung
-   - [ ] `git init`, erster Commit, privates Repo, Push, CI grün, Branch-Schutz, Dependabot (Stand 2026-11-23: Repo `valiva-app` ist **öffentlich**, Push erfolgt, Dependabot-Branches vorhanden; offen beim Autor: CI grün (e2e rot), Branch-Schutz prüfen, Pages-Quelle prüfen)
+   - [x] `git init`, erster Commit, Repo (**öffentlich**, nicht privat), Push, CI grün, Branch-Schutz, Dependabot, Pages (vom Autor eingerichtet und bestätigt, 2026-11-23)
 
 **Abschluss**
 9. Release und Abnahme
-   - [ ] Release-Checkliste (`12` §9): teilweise (5 von 7 erledigt, CI grün vom Autor bestätigt 2026-11-23; offen: Rechtswerte, Abnahme mit eigenen Daten; vom Autor zu tun)
-   - [ ] Abnahme durch den Autor (Export/Import mit eigenen Daten): vom Autor zu tun, Anleitung in Bericht 14, Protokoll AP-17
-   - [ ] Sichtprüfung der Seite "Daten" (Desktop, schmal, Dunkel, Tastatur): Session-Sichtprüfung mit Beispieldaten erledigt (2026-11-23, kein Überlauf); Abnahme mit eigenen Daten und Tastatur vom Autor zu tun
+   - [x] Release-Checkliste (`12` §9) abgearbeitet (2026-11-23); 11 Rechtswerte bewusst `unverified` (nur Ratgeberquellen erreichbar)
+   - [x] Abnahme durch den Autor (2026-11-23); Test mit echten Daten und Testpersonen folgt in den nächsten Tagen
+   - [x] Sichtprüfung der Seite "Daten" (Session mit Beispieldaten, Abnahme durch den Autor, 2026-11-23)
 
 ## Spätere Phasen (Platzhalter)
 - [ ] Phase 6 – Weitere Bausteine (Rest: echte Riester-/Rürup-Modelle, Immobilie, Frühstart-Rente; nur beschrieben in `15` §12)
@@ -334,6 +334,7 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-23 – AP-17 Nachtrag: README auf Nutzer ausgerichtet (Link zur App `https://antoniotroiano.github.io/valiva-app/`, kurze Funktionsübersicht; Start, Befehle, Struktur, Beitragen entfernt, weil nur der Autor entwickelt). `CONTRIBUTING.md` besteht noch, ist aber nicht mehr verlinkt (Entscheidung offen). CI: laut Autor seit dem vorletzten Lauf e2e wieder mit einem Fehler rot; Logs folgen vom Autor.
 - 2026-11-23 – AP-17 Nachtrag 2: CI-Fehler war der Höhenwächter der Haushaltsseite am Desktop (`e2e/overview.spec.ts`, CI 1.717 px gegen Grenze 1.700, lokal 1.672 px; Linux-Schriften). Abweichung von "bestehende Tests unverändert": Grenze auf 1.760 px. Der Skip-Link-Test ist in der CI grün, lokal mit Google Chrome weiter rot (Ursache nicht untersucht). Commit beim Autor.
 - 2026-11-23 – AP-17 Nachtrag 3: `CONTRIBUTING.md` nach `docs/archive/`; Excel-Stichprobe vom Autor bestätigt (wichtige Blätter angesehen, ohne Aufstellung je Blatt); Name Valiva vom Autor extern geprüft, keine eigene Domain (GitHub Pages); Rebase auf `origin/main` auf Wunsch des Autors ausgeführt (Abweichung von "kein rebase"). Offen: Abnahme mit eigenen Daten, Rechtswerte, AP-19/20. Commit beim Autor.
+- 2026-11-23 – AP-17 abgeschlossen (erledigt): Abnahme durch den Autor, Excel bestätigt, CI grün, Pages und Dependabot laufen. Rechtswerte erneut geprüft (Basiszins 2026 = 3,20 % durch mehrere Quellen bestätigt, Eintrag war schon `confirmed`); die 11 `unverified`-Werte bleiben bewusst, weil keine Primärquelle erreichbar war, die UI markiert sie weiter. Offen nur: Test mit echten Daten und Testpersonen (Autor), AP-18 bis AP-20 in eigenen Sessions. Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 ## Offene Fragen aus dem Bau
 - (leer)
