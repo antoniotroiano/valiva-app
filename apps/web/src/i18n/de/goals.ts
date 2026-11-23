@@ -8,7 +8,6 @@ export const goals = {
   removeConfirm: (name: string) => `Ziel „${name}“ wirklich löschen?`,
   empty: 'Noch keine Sparziele. Lege dein erstes Ziel an.',
   sortHint: 'Sortiert nach Priorität (nur Anzeige, keine automatische Verteilung).',
-  select: (name: string) => `Ziel auswählen: ${name}`,
   newName: 'Neues Ziel',
   perMonth: (amount: string) => `${amount} pro Monat`,
   desired: (month: string) => `Wunschtermin ${month}`,

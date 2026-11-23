@@ -20,13 +20,7 @@ export function GoalListItem({
   const percent = percentOf(goal);
   return (
     <li className={current ? 'current' : undefined}>
-      <button
-        type="button"
-        className="goal-btn"
-        aria-pressed={current}
-        aria-label={t.select(goal.name)}
-        onClick={onSelect}
-      >
+      <button type="button" className="goal-btn" aria-pressed={current} onClick={onSelect}>
         <span className="row">
           <strong>{goal.name}</strong>
           <span>
