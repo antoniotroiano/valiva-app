@@ -171,10 +171,10 @@ Neuer Baustein = neuer Projector + Registereintrag + UI-Formular. Die Gesamtsich
 | Phase | Neue Entitäten/Felder |
 |---|---|
 | 1 | Workspace-Hülle (noch ohne Speichern), GlobalAssumptions (Teil), Person (minimal), Product `etf`, ProjectionResult (Teil) |
-| 2 | SavingsGoal, GoalResult, `GoalsState` (lokal, `valiva.goals.v1`, später in den Workspace migriert), Budget-Feld (siehe `08-phase-2-savings-goals.md`) |
-| 3 | `statutory`, `occupational`, `retirementDepot`, Profil (Person) und vollständige Assumptions mit `health`; `ProjectionResult` und `ProductProjector` erstmals gebaut; lokale Zustände `valiva.profile.v1`, `valiva.statutory.v1`, `valiva.depot.v1`, `valiva.occupational.v1` (Details `09-phase-3-pension-blocks.md`) |
-| 4 | `OverviewResult` (Snapshot, Verlauf, Issues je Baustein), `Profile.desiredMonthlyIncomeToday`, ETF als `ProductProjector` mit Entnahmefeldern, `GapSolveResult`, Zustand `valiva.overview.v1` (Details `10-phase-4-overview.md`; `lifeExpectancyAge` existiert seit 3a) |
-| 4b | `Household` mit `persons[]`, `Person` (vereint Phase-1-`Person` und `Profile`), haushaltsweite und persönliche Annahmen, `HouseholdResult`, Zustand `valiva.household.v2` mit Migration der Alt-Schlüssel (Details `11-phase-4b-household.md`) |
+| 2 | SavingsGoal, GoalResult, `GoalsState` (lokal, `valiva.goals.v1`, später in den Workspace migriert), Budget-Feld (siehe `archive/08-phase-2-savings-goals.md`) |
+| 3 | `statutory`, `occupational`, `retirementDepot`, Profil (Person) und vollständige Assumptions mit `health`; `ProjectionResult` und `ProductProjector` erstmals gebaut; lokale Zustände `valiva.profile.v1`, `valiva.statutory.v1`, `valiva.depot.v1`, `valiva.occupational.v1` (Details `archive/09-phase-3-pension-blocks.md`) |
+| 4 | `OverviewResult` (Snapshot, Verlauf, Issues je Baustein), `Profile.desiredMonthlyIncomeToday`, ETF als `ProductProjector` mit Entnahmefeldern, `GapSolveResult`, Zustand `valiva.overview.v1` (Details `archive/10-phase-4-overview.md`; `lifeExpectancyAge` existiert seit 3a) |
+| 4b | `Household` mit `persons[]`, `Person` (vereint Phase-1-`Person` und `Profile`), haushaltsweite und persönliche Annahmen, `HouseholdResult`, Zustand `valiva.household.v2` mit Migration der Alt-Schlüssel (Details `archive/11-phase-4b-household.md`) |
 | 5 | Persistenz, Migrationen, Export/Import, Beispieldateien |
 | 6 | 6b: `OtherIncomeEntry` und Block `otherIncome` (`valiva.p.<id>.otherIncome.v1`, Workspace-Version 1 auf 2 mit leerer Migration, `OverviewProductId` mit `otherIncome:<id>`, `survivorOtherIncome` im Haushaltsergebnis; Details `15-phase-6-generic-block.md`). Später: `legacy`, `realEstate`, `generic`, `childStart` |
 | 7 | Server-Persistenz, Nutzerkonto, Sync (UUIDs, `updatedAt` je Entität) |

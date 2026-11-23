@@ -63,9 +63,9 @@ Nicht in V1: Erwerbsminderungs- und Hinterbliebenenrente.
 | 0 | Konzept finalisieren, Fachregeln recherchieren | Konzept in `concept/` |
 | 1 | Rechenkern + ETF-Sparplan-Rechner (Szenarien, Diagramme) | ursprüngliche Idee lauffähig |
 | 2 | Sparziele (Tagesgeld, Zieldatum), Rückwärtsrechner | kurzfristiger Teil |
-| 3 | Gesetzliche Rente, bAV, Altersvorsorgedepot (Teilphasen 3a Profil + gesetzliche Rente, 3b Depot, 3c bAV; siehe `09-phase-3-pension-blocks.md`) | je Baustein Prognose |
-| 4 | Gesamtsicht: Netto-Rente real, Lücke, Verlauf je Alter, ETF-Entnahme, Lücke schließen (Teilphasen 4a-1 bis 4a-4; siehe `10-phase-4-overview.md`). Inflationsangepasste Entnahme und 4-%-Regel später | Kernnutzen Rentenplaner |
-| 4b | Mehrere Personen / Haushaltsrente (Partner): Teilphasen 4b-1 Kern, 4b-2 Zustände und Personenverwaltung, 4b-3 Haushaltssicht; siehe `11-phase-4b-household.md` | Gesamtrente je Person und Haushalt |
+| 3 | Gesetzliche Rente, bAV, Altersvorsorgedepot (Teilphasen 3a Profil + gesetzliche Rente, 3b Depot, 3c bAV; siehe `archive/09-phase-3-pension-blocks.md`) | je Baustein Prognose |
+| 4 | Gesamtsicht: Netto-Rente real, Lücke, Verlauf je Alter, ETF-Entnahme, Lücke schließen (Teilphasen 4a-1 bis 4a-4; siehe `archive/10-phase-4-overview.md`). Inflationsangepasste Entnahme und 4-%-Regel später | Kernnutzen Rentenplaner |
+| 4b | Mehrere Personen / Haushaltsrente (Partner): Teilphasen 4b-1 Kern, 4b-2 Zustände und Personenverwaltung, 4b-3 Haushaltssicht; siehe `archive/11-phase-4b-household.md` | Gesamtrente je Person und Haushalt |
 | 5 | Speichern (Profil, Bausteine), Export/Import, README/Lizenz, Git/GitHub | Repo teilbar (Phase B) |
 | 6 | Weitere Bausteine. **6b Generischer Baustein "Sonstige Einkünfte im Alter"** (Konzept `15-phase-6-generic-block.md`, AP-14 Konzept und Mockup, AP-15 Kern und Web); danach echte Riester-/Rürup-Modelle, Immobilie, Frühstart-Rente (nur beschrieben, `15` §12). Die frühere Teilphase 6a war die Einkommensteuer im Alter (Review 13) | Erweiterung |
 | 7 | Desktop-Paket + Server/Sync/Login | Phase C |

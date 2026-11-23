@@ -15,17 +15,17 @@
 | 2026-11-09 | UI | Deutsch, nüchternes Dashboard | Texte zentral, Englisch später möglich |
 | 2026-11-09 | Name | 2026-11-22: "Valiva" (vorher Arbeitstitel "Pathwise") | Name nur an zentraler Stelle |
 | 2026-11-09 | Sprachregel | Code und Konfig auf Englisch, UI-Texte Deutsch | `docs/glossary.md` DE → EN |
-| 2026-11-09 | Phase 1 | Depotgebühr als Betrag und/oder Prozent; Rückwärtsrechner später (Phase 2/4); Recharts | siehe `04-phase-1-etf-calculator.md` |
+| 2026-11-09 | Phase 1 | Depotgebühr als Betrag und/oder Prozent; Rückwärtsrechner später (Phase 2/4); Recharts | siehe `archive/04-phase-1-etf-calculator.md` |
 | 2026-11-09 | Unsichere Fachwerte | Vor Phase 3 gegen Primärquellen prüfen | siehe `03-domain-rules.md` |
 | 2026-11-09 | UI-Konzept | Seitenleiste, Muster "Formular + Live-Ergebnis", Hell/Dunkel, WCAG AA | `05-ui-concept.md` |
 | 2026-11-09 | Datenmodell | Globale Annahmen + Override je Baustein; Sparziele getrennt mit gemeinsamer Sparrate; JSON mit `schemaVersion` | `06-data-model.md` |
 | 2026-11-09 | Dokumentation | Konzept in `concept/` aufgeteilt, `PROGRESS.md` für Fortschritt, `CLAUDE.md` mit Regeln | Git/GitHub erst in Phase 5 |
-| 2026-11-10 | Phase 2: Rückwärtsrechner | Für Sparziele **und** ETF-Plan, gemeinsamer Solver im Kern | `08-phase-2-savings-goals.md` |
+| 2026-11-10 | Phase 2: Rückwärtsrechner | Für Sparziele **und** ETF-Plan, gemeinsamer Solver im Kern | `archive/08-phase-2-savings-goals.md` |
 | 2026-11-10 | Phase 2: Zinsmodell | Effektiver Jahreszins, geometrisch auf Monat umgerechnet (wie ETF) | `08` |
 | 2026-11-10 | Phase 2: Zinssteuer | Optional, laufend bei Gutschrift, Freibetrag je Kalenderjahr pro Ziel wählbar (Default 1.000 €), nicht geteilt | `08`, `03` Abschnitt 9 |
 | 2026-11-10 | Phase 2: Budget | Anzeige und Warnung, keine automatische Verteilung | `08` |
 | 2026-11-11 | Fachwerte geprüft | Zulagen, Mindesteigenbeitrag, Produkte und Auszahlphase aus dem BGBl. bestätigt; Zuschuss 15 % (§ 1a BetrAVG), Pflege, Zusatzbeitrag bestätigt; Rest bleibt `unverified` | `03` Abschnitt 12 |
-| 2026-11-11 | Phase 3: Rente-Eingabe | Hochrechnung aus der Renteninformation, keine Entgeltpunkte | `09-phase-3-pension-blocks.md` |
+| 2026-11-11 | Phase 3: Rente-Eingabe | Hochrechnung aus der Renteninformation, keine Entgeltpunkte | `archive/09-phase-3-pension-blocks.md` |
 | 2026-11-11 | Phase 3: Auszahlphase | Auszahlplan bis Alter X mit Rendite in der Rentenphase (Default 2 %), gemeinsame Funktion `payoutPlan` | `09` |
 | 2026-11-11 | Phase 3: Netto | Pauschale Sätze, Besteuerungsanteil, KV-Status (KVdR oder andere) | `09` |
 | 2026-11-11 | Phase 3: bAV | Netto-Aufwand vereinfacht, Arbeitgeberzuschuss 15 % | `09` |

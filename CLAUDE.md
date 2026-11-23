@@ -4,7 +4,7 @@ Private App zur ETF-Sparplan-Prognose, Rentenplanung (gesetzliche Rente, bAV, ET
 
 ## Quelle der Wahrheit
 
-- Konzept: `concept/README.md` (Index und Lesereihenfolge) und die Dateien `concept/01` bis `11`
+- Konzept: `concept/README.md` (Index und Lesereihenfolge) und die Dateien `concept/01` bis `15` (erledigte Phasenkonzepte und alte Berichte in `concept/archive/`)
 - Fortschritt: `concept/PROGRESS.md`. Nach jedem abgeschlossenen Arbeitsschritt abhaken
 - Abweichungen vom Konzept in `PROGRESS.md` unter "Notizen und Abweichungen" eintragen, nicht stillschweigend umsetzen
 - Das alte `ETF_Investment_Tracker_...md` in `docs/archive/` ist Archiv und gilt nicht mehr

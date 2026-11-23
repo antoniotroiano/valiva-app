@@ -12,3 +12,6 @@ tools/~$*
 test-results/
 playwright-report/
 .idea/
+# local environment and logs
+.env*
+*.log

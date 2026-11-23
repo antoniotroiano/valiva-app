@@ -33,7 +33,7 @@ Begründung: Vorkenntnisse in beiden Sprachen kaum, Ergebnis zählt; die Kriteri
 | Finanzmathe-Bibliotheken | ausreichend (IRR selbst, kleine Libs) | sehr gut (numpy, pandas) |
 | Daten überall (Phase C) | Backend (z. B. Node/Hono) oder BaaS ergänzen | FastAPI passt natürlich |
 
-Monte-Carlo-Simulationen sind auch in TypeScript machbar. Konkrete Projektstruktur und Bibliotheken für Phase 1: `04-phase-1-etf-calculator.md`.
+Monte-Carlo-Simulationen sind auch in TypeScript machbar. Konkrete Projektstruktur und Bibliotheken für Phase 1: `archive/04-phase-1-etf-calculator.md`.
 
 ## 3. Datenhaltung
 

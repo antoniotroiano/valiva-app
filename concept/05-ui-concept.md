@@ -65,7 +65,7 @@ Menüpunkte erscheinen erst, wenn die Funktion existiert; keine leeren Seiten. A
 - ETF-Seite: einklappbarer Abschnitt "Zielvermögen" (nominal oder Kaufkraft von heute) mit benötigter Monatsrate je Szenario
 - Übersicht: Liste "Sparziele" mit Fortschritt als Text und Balken (`aktueller Stand / Zielbetrag`) und voraussichtlichem Zieldatum; ohne Ziele leerer Zustand mit Button
 - Vor dem Bauen: Mockup `docs/mockups/sparziele.html` vom Autor freigeben lassen
-- Details und Rechenregeln: `08-phase-2-savings-goals.md`
+- Details und Rechenregeln: `archive/08-phase-2-savings-goals.md`
 
 ## 8. Phase-3-UI (Rentenbausteine)
 - Seitenleiste: Gruppe "Bausteine" (ETF-Sparplan, Gesetzliche Rente, Altersvorsorgedepot, Betriebliche AV) und neuer Punkt **Profil** (Person und globale Annahmen), siehe Abschnitt 2
@@ -75,20 +75,20 @@ Menüpunkte erscheinen erst, wenn die Funktion existiert; keine leeren Seiten. A
 - Gesetzliche Rente: Hinweisbox zur Vereinfachung (Abschlag ohne Verlust von Entgeltpunkten)
 - `unverified`-Werte tragen an der Stelle der Anzeige einen Hinweis; die Annahmen-Seite listet die neuen Config-Dateien
 - Vor dem Bauen je Teilphase ein Mockup (`profil.html`, `rente.html`, `depot.html`, `bav.html`) vom Autor freigeben lassen
-- Details: `09-phase-3-pension-blocks.md`
+- Details: `archive/09-phase-3-pension-blocks.md`
 
 ## 9. Phase-4-UI (Gesamtsicht)
 - Startseite = "Rentenplan": Kennzahl Netto-Rente mit Szenario-Spanne, Wunsch und Lücke, Zusammensetzung je Baustein, Verlaufsdiagramm je Alter mit Wunsch-Linie, Kachel "Lücke schließen"
 - Bausteine ohne Eingaben oder mit Fehlern: Hinweis mit Link, nicht stillschweigend weglassen
 - Mockup `gesamtsicht.html` vor dem Bauen freigeben lassen
-- Details: `10-phase-4-overview.md` §7
+- Details: `archive/10-phase-4-overview.md` §7
 
 ## 10. Phase-4b-UI (Haushalt)
 - Personen-Umschalter oben in der Seitenleiste, Seite "Haushalt" (Personen verwalten, gemeinsames Wunscheinkommen)
 - Startseite mit Umschalter Haushalt/Person, Zusammensetzung nach Person und Baustein, Verlauf nach Kalenderjahren
 - Hinweis auf fehlende Hinterbliebenenrente und pauschale Steuer je Person
 - Mockup `haushalt.html` vor dem Bauen freigeben lassen
-- Details: `11-phase-4b-household.md` §6
+- Details: `archive/11-phase-4b-household.md` §6
 
 ## 11. Offen
 - Farbpalette und Schrift (bei Umsetzung, mit Kontrastprüfung)
