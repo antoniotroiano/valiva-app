@@ -96,7 +96,7 @@ Stand 2026-11-23 (AP-17). Hinweis: Das Repo ist bereits öffentlich (siehe Beric
 - [x] Datenscan sauber (Dateien und Verlauf: keine echten Nutzerdaten, keine Schlüssel, keine privaten Pfade oder E-Mail-Adressen außer der noreply-Adresse; `golden-check.xlsx` ohne Autor)
 - [x] README mit Disclaimer, Datenschutz, Start, Export/Import, Lizenz, bekannte Grenzen
 - [ ] Unsichere Gesetzeswerte erneut geprüft: **offen**, 11 Werte `unverified`, keiner ließ sich bestätigen (Bericht 14, Backlog AP-17); Status in der UI sichtbar (Annahmen-Seite, Hinweise)
-- [ ] CI grün: **offen**, e2e-Job auf `56db5ea` rot (Skip-Link-Test); `npm audit` ohne Funde erledigt
+- [x] CI grün (vom Autor bestätigt 2026-11-23 nach Anhebung des Höhenwächters), `npm audit` ohne Funde
 - [ ] Sichtprüfung der Seite "Daten" (Desktop, schmal, Dunkel, Tastatur): Session-Sichtprüfung mit Beispieldaten erledigt (kein Überlauf); **vom Autor zu tun:** Abnahme mit eigenen Daten und Tastatur
 
 ## 10. Arbeitsschritte (Abhaken in `PROGRESS.md`)

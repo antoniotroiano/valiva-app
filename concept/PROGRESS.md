@@ -202,7 +202,7 @@ Startet nach Abschluss von Phase 4b. Entschieden: Export als Download und Import
 
 **Abschluss**
 9. Release und Abnahme
-   - [ ] Release-Checkliste (`12` §9): teilweise (4 von 7 erledigt; offen: Rechtswerte, CI grün, Abnahme mit eigenen Daten; vom Autor zu tun)
+   - [ ] Release-Checkliste (`12` §9): teilweise (5 von 7 erledigt, CI grün vom Autor bestätigt 2026-11-23; offen: Rechtswerte, Abnahme mit eigenen Daten; vom Autor zu tun)
    - [ ] Abnahme durch den Autor (Export/Import mit eigenen Daten): vom Autor zu tun, Anleitung in Bericht 14, Protokoll AP-17
    - [ ] Sichtprüfung der Seite "Daten" (Desktop, schmal, Dunkel, Tastatur): Session-Sichtprüfung mit Beispieldaten erledigt (2026-11-23, kein Überlauf); Abnahme mit eigenen Daten und Tastatur vom Autor zu tun
 
