@@ -26,6 +26,25 @@ async function expectNoOverflow(page: Page, hash: string) {
   await page.evaluate(() => {
     document.querySelectorAll('details').forEach((d) => (d.open = true));
   });
+  // Charts measure their container after the first paint, so the width may overshoot for a moment on a slow
+  // machine. Only a width that stays too large counts; the failure names the elements sticking out.
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const el = document.documentElement;
+          if (el.scrollWidth <= el.clientWidth) return 'fits';
+          const wide = [...document.querySelectorAll<HTMLElement>('main *')]
+            .filter(
+              (e) => !e.closest('.table-wrap') && e.getBoundingClientRect().right > el.clientWidth,
+            )
+            .slice(0, 6)
+            .map((e) => `${e.tagName}.${e.className}`);
+          return `scrollWidth ${el.scrollWidth} > ${el.clientWidth}: ${wide.join(', ')}`;
+        }),
+      { message: `${hash}: page wider than the screen`, timeout: 5000 },
+    )
+    .toBe('fits');
   const m = await page.evaluate(() => {
     const el = document.documentElement;
     const scrollRegions = [...document.querySelectorAll<HTMLElement>('main *')].filter(
