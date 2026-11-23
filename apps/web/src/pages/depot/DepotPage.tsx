@@ -9,14 +9,16 @@ import {
 import { useId, useMemo } from 'react';
 import { MonthField } from '../../components/forms/MonthField';
 import { NumberField } from '../../components/forms/NumberField';
-import { PageShell } from '../../components/layout/PageShell';
+import { FieldGroup } from '../../components/forms/FieldGroup';
+import { MoreInfo } from '../../components/forms/MoreInfo';
+import { BlockPage, BlockSection } from '../../components/layout/BlockPage';
 import { WithdrawalFields } from '../../components/forms/WithdrawalFields';
 import { formatNumber } from '../../lib/format';
 import { de, issueMessage } from '../../i18n/de';
 import { type DepotApi } from '../../state/useDepot';
 import { type ProfileApi } from '../../state/useProfile';
 import { CURRENT_YEAR } from '../../state/useProfile';
-import { ScenarioResults, DepotResults } from './DepotResults';
+import { DepotCalculation, DepotResult, type ScenarioResults } from './DepotResults';
 
 type Props = {
   api: DepotApi;
@@ -100,214 +102,236 @@ export function DepotPage({
   const empty =
     !(state.ownContributionMonthly > 0) && Number.isFinite(state.ownContributionMonthly);
 
-  return (
-    <PageShell title={t.title} subtitle={t.subtitle}>
-      <div className="grid">
-        <div>
-          <form className="card" aria-label={t.formLabel} onSubmit={(e) => e.preventDefault()}>
-            <fieldset className="plain">
-              <legend>{t.groups.contribution}</legend>
-              <div id="depot-contribution-field">
-                <NumberField
-                  label={t.fields.ownContributionMonthly.label}
-                  hint={t.fields.ownContributionMonthly.hint}
-                  unit="€"
-                  value={state.ownContributionMonthly}
-                  onChange={(v) => api.update({ ownContributionMonthly: v })}
-                  error={err('ownContributionMonthly')}
-                />
-              </div>
-              <MonthField
-                label={t.fields.startMonth.label}
-                hint={t.fields.startMonth.hint}
-                value={state.startMonth}
-                onChange={(v) => api.update({ startMonth: v })}
-                error={err('startMonth')}
-              />
-            </fieldset>
-            <fieldset className="plain">
-              <legend>{t.groups.variant}</legend>
-              <div className="field">
-                <label htmlFor={variantId}>{t.fields.variant.label}</label>
-                <select
-                  id={variantId}
-                  value={state.variant}
-                  onChange={(e) => api.update({ variant: e.target.value as DepotInput['variant'] })}
-                >
-                  {DEPOT_VARIANTS.map((v) => (
-                    <option key={v} value={v}>
-                      {t.variants[v]}
-                    </option>
-                  ))}
-                </select>
-                <p className="hint">{t.fields.variant.hint}</p>
-              </div>
-              <NumberField
-                label={t.fields.annualContributionIncreasePercent.label}
-                hint={t.fields.annualContributionIncreasePercent.hint}
-                unit="%"
-                value={state.annualContributionIncreasePercent}
-                onChange={(v) => api.update({ annualContributionIncreasePercent: v })}
-                onClear={() => api.update({ annualContributionIncreasePercent: undefined })}
-                error={err('annualContributionIncreasePercent')}
-              />
-              <NumberField
-                label={t.fields.costPercentPerYear.label}
-                hint={
-                  state.variant === 'standard'
-                    ? t.fields.costPercentPerYear.hintStandard
-                    : t.fields.costPercentPerYear.hint
-                }
-                unit="%"
-                value={state.costPercentPerYear}
-                onChange={(v) => api.update({ costPercentPerYear: v })}
-                error={err('costPercentPerYear')}
-              />
-              {isGuarantee && (
-                <NumberField
-                  label={t.fields.returnOverridePercent.label}
-                  hint={t.fields.returnOverridePercent.hint}
-                  unit="%"
-                  value={state.returnOverridePercent ?? Number.NaN}
-                  onChange={(v) =>
-                    api.update({ returnOverridePercent: Number.isNaN(v) ? undefined : v })
-                  }
-                  error={err('returnOverridePercent')}
-                />
-              )}
-            </fieldset>
-            <fieldset className="plain">
-              <legend>{t.groups.payout}</legend>
-              <NumberField
-                plain
-                label={t.fields.payoutStartAge.label}
-                hint={t.fields.payoutStartAge.hint}
-                unit={de.profile.units.years}
-                value={payoutStartAge}
-                onChange={(v) => api.update({ payoutStartAge: v })}
-                error={err('payoutStartAge')}
-              />
-              {state.payoutStartAge !== undefined &&
-                state.payoutStartAge !== suggestedStart(p.targetRetirementAge) && (
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={() => api.update({ payoutStartAge: undefined })}
-                  >
-                    {t.fromProfile}
-                  </button>
-                )}
-              <NumberField
-                plain
-                label={t.fields.payoutEndAge.label}
-                hint={t.fields.payoutEndAge.hint}
-                unit={de.profile.units.years}
-                value={state.payoutEndAge}
-                onChange={(v) => api.update({ payoutEndAge: v })}
-                error={err('payoutEndAge')}
-              />
-              <NumberField
-                label={t.fields.lumpSumSharePercent.label}
-                hint={t.fields.lumpSumSharePercent.hint}
-                unit="%"
-                value={state.lumpSumSharePercent}
-                onChange={(v) => api.update({ lumpSumSharePercent: v })}
-                error={err('lumpSumSharePercent')}
-              />
-              <WithdrawalFields
-                value={state}
-                onChange={(patch) => api.update(patch)}
-                error={err('withdrawal.percent')}
-              />
-            </fieldset>
-            <details className="group">
-              <summary>{t.profileTitle}</summary>
-              <div className="group-body">
-                <dl className="facts">
-                  <dt>{t.profileRows.scenarios}</dt>
-                  <dd>
-                    {formatNumber(a.returnScenarios.pessimistic)} % /{' '}
-                    {formatNumber(a.returnScenarios.neutral)} % /{' '}
-                    {formatNumber(a.returnScenarios.optimistic)} %
-                  </dd>
-                  <dt>{t.profileRows.payoutReturn}</dt>
-                  <dd>{formatNumber(a.payoutPhaseReturnPercent)} %</dd>
-                  <dt>{t.profileRows.inflation}</dt>
-                  <dd>{formatNumber(a.inflationPercent)} %</dd>
-                  <dt>{t.profileRows.tax}</dt>
-                  <dd>{t.profileRows.taxValue}</dd>
-                  <dt>{t.profileRows.health}</dt>
-                  <dd>
-                    {a.health.mode === 'other'
-                      ? t.profileRows.healthOther
-                      : t.profileRows.healthCompulsory}
-                  </dd>
-                  <dt>{t.profileRows.children}</dt>
-                  <dd>
-                    {p.childrenBirthYears.length > 0
-                      ? p.childrenBirthYears.join(', ')
-                      : t.profileRows.noChildren}
-                  </dd>
-                </dl>
-                <p>
-                  <button type="button" className="link" onClick={goToProfile}>
-                    {t.profileLink}
-                  </button>
-                </p>
-              </div>
-            </details>
-          </form>
+  const profileFacts = (
+    <>
+      <dl className="facts">
+        <dt>{t.profileRows.scenarios}</dt>
+        <dd>
+          {formatNumber(a.returnScenarios.pessimistic)} % /{' '}
+          {formatNumber(a.returnScenarios.neutral)} % / {formatNumber(a.returnScenarios.optimistic)}{' '}
+          %
+        </dd>
+        <dt>{t.profileRows.payoutReturn}</dt>
+        <dd>{formatNumber(a.payoutPhaseReturnPercent)} %</dd>
+        <dt>{t.profileRows.inflation}</dt>
+        <dd>{formatNumber(a.inflationPercent)} %</dd>
+        <dt>{t.profileRows.tax}</dt>
+        <dd>{t.profileRows.taxValue}</dd>
+        <dt>{t.profileRows.health}</dt>
+        <dd>
+          {a.health.mode === 'other' ? t.profileRows.healthOther : t.profileRows.healthCompulsory}
+        </dd>
+        <dt>{t.profileRows.children}</dt>
+        <dd>
+          {p.childrenBirthYears.length > 0
+            ? p.childrenBirthYears.join(', ')
+            : t.profileRows.noChildren}
+        </dd>
+      </dl>
+      <p>
+        <button type="button" className="link" onClick={goToProfile}>
+          {t.profileLink}
+        </button>
+      </p>
+    </>
+  );
 
-          <div className="card">
-            <h2>{t.simplification.title}</h2>
-            <p>{t.simplification.text}</p>
-          </div>
+  const inputs = (
+    <form className="card" aria-label={t.formLabel} onSubmit={(e) => e.preventDefault()}>
+      <FieldGroup title={t.groups.contribution} defaultOpen>
+        <div id="depot-contribution-field">
+          <NumberField
+            label={t.fields.ownContributionMonthly.label}
+            hint={t.fields.ownContributionMonthly.hint}
+            more={t.fields.ownContributionMonthly.more}
+            unit="€"
+            value={state.ownContributionMonthly}
+            onChange={(v) => api.update({ ownContributionMonthly: v })}
+            error={err('ownContributionMonthly')}
+          />
         </div>
-
-        <section aria-live="polite">
-          {!legal.ok ? (
-            <div className="notice">{de.profile.configError}</div>
-          ) : !profile.committedValid ? (
-            <div className="notice" role="status">
-              {t.profileInvalid}{' '}
-              <button type="button" className="link" onClick={goToProfile}>
-                {t.profileLinkInvalid}
-              </button>
-            </div>
-          ) : empty ? (
-            <div className="notice" role="status">
-              {t.empty}{' '}
-              <button
-                type="button"
-                className="btn inline-btn"
-                onClick={() =>
-                  document
-                    .querySelector<HTMLInputElement>('#depot-contribution-field input')
-                    ?.focus()
-                }
-              >
-                {t.jumpToField}
-              </button>
-            </div>
-          ) : outcome?.ok ? (
-            <DepotResults
-              results={outcome.results}
-              input={input}
-              assumptions={profile.committed.assumptions}
-              legal={legal.legal}
-            />
-          ) : (
-            <div className="notice" role="status">
-              {t.inputInvalid}
-            </div>
-          )}
-          <p>
-            <button type="button" className="link" onClick={goToAssumptions}>
-              {t.assumptionsLink}
+        <MonthField
+          label={t.fields.startMonth.label}
+          hint={t.fields.startMonth.hint}
+          value={state.startMonth}
+          onChange={(v) => api.update({ startMonth: v })}
+          error={err('startMonth')}
+        />
+        <NumberField
+          label={t.fields.annualContributionIncreasePercent.label}
+          hint={t.fields.annualContributionIncreasePercent.hint}
+          more={t.fields.annualContributionIncreasePercent.more}
+          unit="%"
+          value={state.annualContributionIncreasePercent}
+          onChange={(v) => api.update({ annualContributionIncreasePercent: v })}
+          onClear={() => api.update({ annualContributionIncreasePercent: undefined })}
+          error={err('annualContributionIncreasePercent')}
+        />
+      </FieldGroup>
+      <FieldGroup
+        title={t.groups.variant}
+        summary={t.variants[state.variant]}
+        hasError={['costPercentPerYear', 'returnOverridePercent'].some((f) => err(f) !== undefined)}
+      >
+        <div className="field">
+          <label htmlFor={variantId}>{t.fields.variant.label}</label>
+          <select
+            id={variantId}
+            value={state.variant}
+            onChange={(e) => api.update({ variant: e.target.value as DepotInput['variant'] })}
+          >
+            {DEPOT_VARIANTS.map((v) => (
+              <option key={v} value={v}>
+                {t.variants[v]}
+              </option>
+            ))}
+          </select>
+          <p className="hint">{t.fields.variant.hint}</p>
+          <MoreInfo text={t.fields.variant.more} />
+        </div>
+        <NumberField
+          label={t.fields.costPercentPerYear.label}
+          hint={
+            state.variant === 'standard'
+              ? t.fields.costPercentPerYear.hintStandard
+              : t.fields.costPercentPerYear.hint
+          }
+          unit="%"
+          value={state.costPercentPerYear}
+          onChange={(v) => api.update({ costPercentPerYear: v })}
+          error={err('costPercentPerYear')}
+        />
+        {isGuarantee && (
+          <NumberField
+            label={t.fields.returnOverridePercent.label}
+            hint={t.fields.returnOverridePercent.hint}
+            more={t.fields.returnOverridePercent.more}
+            unit="%"
+            value={state.returnOverridePercent ?? Number.NaN}
+            onChange={(v) => api.update({ returnOverridePercent: Number.isNaN(v) ? undefined : v })}
+            error={err('returnOverridePercent')}
+          />
+        )}
+      </FieldGroup>
+      <FieldGroup
+        title={t.groups.payout}
+        summary={t.rows.payout(payoutStartAge, state.payoutEndAge)}
+        hasError={[
+          'payoutStartAge',
+          'payoutEndAge',
+          'lumpSumSharePercent',
+          'withdrawal.percent',
+        ].some((f) => err(f) !== undefined)}
+      >
+        <NumberField
+          plain
+          label={t.fields.payoutStartAge.label}
+          hint={t.fields.payoutStartAge.hint}
+          unit={de.profile.units.years}
+          value={payoutStartAge}
+          onChange={(v) => api.update({ payoutStartAge: v })}
+          error={err('payoutStartAge')}
+        />
+        {state.payoutStartAge !== undefined &&
+          state.payoutStartAge !== suggestedStart(p.targetRetirementAge) && (
+            <button
+              type="button"
+              className="btn"
+              onClick={() => api.update({ payoutStartAge: undefined })}
+            >
+              {t.fromProfile}
             </button>
-          </p>
-        </section>
-      </div>
-    </PageShell>
+          )}
+        <NumberField
+          plain
+          label={t.fields.payoutEndAge.label}
+          hint={t.fields.payoutEndAge.hint}
+          more={t.fields.payoutEndAge.more}
+          unit={de.profile.units.years}
+          value={state.payoutEndAge}
+          onChange={(v) => api.update({ payoutEndAge: v })}
+          error={err('payoutEndAge')}
+        />
+        <NumberField
+          label={t.fields.lumpSumSharePercent.label}
+          hint={t.fields.lumpSumSharePercent.hint}
+          unit="%"
+          value={state.lumpSumSharePercent}
+          onChange={(v) => api.update({ lumpSumSharePercent: v })}
+          error={err('lumpSumSharePercent')}
+        />
+        <WithdrawalFields
+          value={state}
+          onChange={(patch) => api.update(patch)}
+          error={err('withdrawal.percent')}
+        />
+      </FieldGroup>
+    </form>
+  );
+
+  const result = !legal.ok ? (
+    <div className="notice">{de.profile.configError}</div>
+  ) : !profile.committedValid ? (
+    <div className="notice" role="status">
+      {t.profileInvalid}{' '}
+      <button type="button" className="link" onClick={goToProfile}>
+        {t.profileLinkInvalid}
+      </button>
+    </div>
+  ) : empty ? (
+    <div className="notice" role="status">
+      {t.empty}{' '}
+      <button
+        type="button"
+        className="btn inline-btn"
+        onClick={() =>
+          document.querySelector<HTMLInputElement>('#depot-contribution-field input')?.focus()
+        }
+      >
+        {t.jumpToField}
+      </button>
+    </div>
+  ) : outcome?.ok ? (
+    <DepotResult
+      results={outcome.results}
+      input={input}
+      assumptions={profile.committed.assumptions}
+      legal={legal.legal}
+    />
+  ) : (
+    <div className="notice" role="status">
+      {t.inputInvalid}
+    </div>
+  );
+
+  return (
+    <BlockPage title={t.title} subtitle={t.subtitle}>
+      <BlockSection
+        id="depot"
+        inputs={inputs}
+        result={result}
+        calculation={
+          <DepotCalculation
+            props={
+              legal.ok && profile.committedValid && !empty && outcome?.ok
+                ? {
+                    results: outcome.results,
+                    input,
+                    assumptions: profile.committed.assumptions,
+                    legal: legal.legal,
+                  }
+                : undefined
+            }
+            profileFacts={profileFacts}
+            simplification={t.simplification.text}
+          />
+        }
+      />
+      <p className="inline-link">
+        <button type="button" className="link" onClick={goToAssumptions}>
+          {t.assumptionsLink}
+        </button>
+      </p>
+    </BlockPage>
   );
 }

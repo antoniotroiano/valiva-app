@@ -4,8 +4,9 @@ export const withdrawal = {
   percent: 'Prozent vom Kapital bei Rentenbeginn',
   annuityHint: 'Annuität: Jeden Monat dieselbe Summe, das Kapital ist am Endalter aufgebraucht.',
   percentLabel: 'Entnahme pro Jahr (nur bei „Prozent“)',
-  percentHint:
-    'Im ersten Jahr wird dieser Anteil des Kapitals bei Rentenbeginn entnommen, ein Zwölftel pro Monat. Danach steigt die Summe jedes Jahr um die Inflation, die Kaufkraft bleibt also gleich. Erlaubt: größer als 0 und höchstens 100. Das Restkapital wächst weiter mit der Rendite der Entnahmephase.',
+  percentHint: 'Anteil des Kapitals bei Rentenbeginn, der im ersten Jahr entnommen wird.',
+  percentMore:
+    'Entnommen wird ein Zwölftel pro Monat. Danach steigt die Summe jedes Jahr um die Inflation, die Kaufkraft bleibt also gleich. Erlaubt: größer als 0 und höchstens 100. Das Restkapital wächst weiter mit der Rendite der Entnahmephase.',
   gross: 'Entnahme im ersten Jahr, brutto',
   net: 'Netto im ersten Jahr',
   lasts: 'Kapital reicht bis Alter',

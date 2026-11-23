@@ -11,11 +11,13 @@ export const depot = {
   fields: {
     annualContributionIncreasePercent: {
       label: 'Jährliche Steigerung des Beitrags',
-      hint: 'Jeden Januar nach dem Start steigt der Beitrag um diesen Satz. Leer lassen: der Beitrag bleibt gleich. Über 570 € im Monat wird er gekappt.',
+      hint: 'Der Beitrag steigt jeden Januar um diesen Satz.',
+      more: 'Leer lassen: der Beitrag bleibt gleich. Über 570 € im Monat wird er gekappt.',
     },
     ownContributionMonthly: {
       label: 'Eigenbeitrag pro Monat',
-      hint: 'Höchstens 6.840 € im Jahr (570 € im Monat). Die volle Grundzulage gibt es ab 1.800 € im Jahr (150 € im Monat). Unter 120 € im Jahr gibt es gar keine Zulage.',
+      hint: 'Höchstens 570 € im Monat, die volle Grundzulage gibt es ab 150 €.',
+      more: 'Höchstens 6.840 € im Jahr. Die volle Grundzulage gibt es ab 1.800 € im Jahr (150 € im Monat). Unter 120 € im Jahr gibt es gar keine Zulage.',
     },
     startMonth: {
       label: 'Beitragsbeginn (Monat)',
@@ -23,7 +25,8 @@ export const depot = {
     },
     variant: {
       label: 'Variante',
-      hint: 'Die Varianten unterscheiden sich hier nur bei Kosten und Garantie. Ein Wechsel der Anlage vor dem Rentenbeginn (Glide Path) ist nicht berechnet.',
+      hint: 'Die Varianten unterscheiden sich hier nur bei Kosten und Garantie.',
+      more: 'Ein Wechsel der Anlage vor dem Rentenbeginn (Glide Path) ist nicht berechnet.',
     },
     costPercentPerYear: {
       label: 'Kosten pro Jahr',
@@ -32,29 +35,30 @@ export const depot = {
     },
     returnOverridePercent: {
       label: 'Rendite überschreiben (nur Garantievarianten, optional)',
-      hint: 'Leer lassen, dann gelten die Szenarien aus dem Profil. Mit Wert gelten alle drei Szenarien gleich. Rendite vor Kosten.',
+      hint: 'Leer lassen: dann gelten die Szenarien aus dem Profil.',
+      more: 'Mit Wert gelten alle drei Szenarien gleich. Gemeint ist die Rendite vor Kosten.',
     },
     payoutStartAge: {
       label: 'Auszahlbeginn (Alter)',
-      hint: '65 bis 70. Vorgeschlagen aus dem Profil, hier überschreibbar.',
+      hint: '65 bis 70, vorgeschlagen aus dem Profil.',
     },
     payoutEndAge: {
       label: 'Auszahlplan bis (Alter)',
-      hint: 'Mindestens 85. Eine lebenslange Rente ist nicht berechnet.',
+      hint: 'Mindestens 85.',
+      more: 'Eine lebenslange Rente ist nicht berechnet.',
     },
     lumpSumSharePercent: {
       label: 'Einmalauszahlung zu Beginn (% des Kapitals)',
-      hint: '0 bis 30 %. Der Rest wird als Auszahlplan verteilt.',
+      hint: '0 bis 30 %, der Rest wird als Auszahlplan verteilt.',
     },
   },
   variants: {
-    standard: 'Standarddepot (Kosten höchstens 1,0 %)',
+    standard: 'Standarddepot (Kosten bis 1,0 %)',
     guarantee80: 'Garantie 80 % der Beiträge',
     guarantee100: 'Garantie 100 % der Beiträge',
     noGuarantee: 'Depot ohne Garantie',
   },
   fromProfile: 'Wie im Profil',
-  profileTitle: 'Annahmen aus dem Profil (nur Anzeige)',
   profileRows: {
     scenarios: 'Rendite pessimistisch / neutral / optimistisch',
     payoutReturn: 'Rendite in der Auszahlphase',
@@ -72,11 +76,12 @@ export const depot = {
     title: 'Vereinfachungen',
     text: 'Nicht berechnet sind Sonderausgabenabzug und Günstigerprüfung, Ehegattenzulage, der Wechsel aus einem Riester-Vertrag und die lebenslange Rente. Die Steuer auf die Auszahlungen ist eine Pauschale, die Beitragsfreiheit in der Krankenversicherung eine Annahme.',
   },
-  scenarioNote: (label: string) => `Kennzahlen für das ${label} Szenario.`,
-  scenarioNames: {
-    pessimistic: 'pessimistische',
-    neutral: 'neutrale',
-    optimistic: 'optimistische',
+  perMonth: 'pro Monat',
+  heroEyebrow: (year: number) => `Netto pro Monat ab ${year}, Kaufkraft von heute, neutral`,
+  heroEyebrowPercent: (year: number) =>
+    `Netto im ersten Jahr pro Monat ab ${year}, Kaufkraft von heute, neutral`,
+  rows: {
+    payout: (start: number, end: number) => `Alter ${start} bis ${end}`,
   },
   kpi: {
     capital: (year: number) => `Kapital bei Auszahlbeginn (${year})`,
@@ -85,7 +90,6 @@ export const depot = {
     grossNominal: 'Brutto pro Monat (nominal)',
     grossReal: 'Brutto pro Monat (Kaufkraft heute)',
     tax: 'Steuer pro Monat (heute)',
-    netReal: 'Netto pro Monat (Kaufkraft heute)',
     lumpGross: 'Einmalauszahlung brutto',
     lumpNet: 'Einmalauszahlung nach Steuer',
     lumpReal: 'Kaufkraft heute',
@@ -115,7 +119,13 @@ export const depot = {
   },
   allowanceTable: {
     title: 'Zulagen je Kalenderjahr',
-    toggle: (years: number) => `Zulagen je Kalenderjahr anzeigen (${years} Jahre)`,
+    meta: (years: number) => `${years} Jahre`,
+    cardsLabel: 'Zulagen je Kalenderjahr als Liste',
+    sumCard: (from: number, to: number) => `Summe ${from} bis ${to}`,
+    cardTotal: (amount: string) => `Zulage ${amount}`,
+    showAll: (shown: number, total: number) =>
+      `Alle ${total} Jahre anzeigen (${shown} von ${total} sichtbar)`,
+    showFirst: (shown: number) => `Nur die ersten ${shown} Jahre zeigen`,
     year: 'Jahr',
     contribution: 'Eigenbeitrag',
     basic: 'Grundzulage',
@@ -167,7 +177,7 @@ export const depot = {
   empty:
     'Noch kein Beitrag eingetragen. Trage oben einen Monatsbeitrag ein, dann rechnen wir Zulagen, Kapital und Auszahlplan.',
   jumpToField: 'Zum Feld springen',
-  inputInvalid: 'Bitte die markierten Eingaben links korrigieren, dann zeigen wir das Ergebnis.',
+  inputInvalid: 'Bitte die markierten Eingaben korrigieren, dann zeigen wir das Ergebnis.',
   profileInvalid: 'Das Profil enthält Fehler. Bitte dort korrigieren, dann rechnen wir weiter.',
   profileLinkInvalid: 'Zum Profil',
   assumptionsLink: 'Annahmen anzeigen',

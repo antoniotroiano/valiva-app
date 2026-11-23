@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { openRow } from './helpers';
+import { openGroup, openRow } from './helpers';
 
 test('ETF: percent withdrawal shows the first-year rows, warns when the capital runs out and is kept', async ({
   page,
@@ -41,6 +41,7 @@ test('Depot: percent withdrawal shows when the capital lasts', async ({ page }) 
     .getByLabel(/Eigenbeitrag/)
     .first()
     .fill('150');
+  await openGroup(page, 'Auszahlphase');
   await page.getByRole('radio', { name: 'Prozent vom Kapital bei Rentenbeginn' }).check();
   await expect(page.getByText('Kapital reicht bis Alter')).toBeVisible();
   await expect(page.getByText('Restkapital im Endalter (nominal)')).toBeVisible();

@@ -33,6 +33,13 @@ async function expectNoViolations(page: Page) {
 }
 
 async function choosePercent(page: Page) {
+  // The withdrawal fields sit in a collapsed input group on the Depot page (loaded lazily).
+  await page.locator('details.group').first().waitFor();
+  await page.evaluate(() => {
+    document
+      .querySelectorAll('details.group')
+      .forEach((d) => ((d as HTMLDetailsElement).open = true));
+  });
   await page.getByRole('radio', { name: 'Prozent vom Kapital bei Rentenbeginn' }).check();
 }
 

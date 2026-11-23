@@ -178,7 +178,8 @@ details.more > summary {
     line-height: 1.3;
   }
   .result-kpis {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* two columns: the long labels of the Depot, bAV and statutory pages do not fit into three */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--s2);
   }
   .result-kpis dd {
@@ -201,4 +202,69 @@ details.more > summary {
 }
 .result-kpis dt {
   overflow-wrap: anywhere;
+}
+
+/* Allowances per year (AP-11): table on wide screens, list of cards under 640 px. Mockup: docs/mockups/depot-ap11.html */
+.only-narrow {
+  display: none;
+}
+.year-cards {
+  list-style: none;
+  margin: var(--s2) 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s2);
+}
+.year-cards > li {
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: var(--s2) var(--s3);
+}
+.year-cards > li.sum {
+  background: var(--accent-soft);
+}
+.year-cards h3 {
+  margin: 0;
+  font-size: var(--fs-text);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s2);
+  align-items: baseline;
+}
+.year-cards .tot {
+  color: var(--ok);
+}
+.year-cards dl {
+  margin: var(--s1) 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 var(--s3);
+  font-size: var(--fs-small);
+}
+.year-cards dt {
+  color: var(--muted);
+}
+.year-cards dd {
+  margin: 0;
+  text-align: right;
+}
+.year-cards-more {
+  width: 100%;
+  margin-top: var(--s1);
+}
+@media (max-width: 640px) {
+  .only-wide {
+    display: none;
+  }
+  .only-narrow {
+    display: block;
+  }
+}
+@media print {
+  .only-wide {
+    display: block;
+  }
+  .only-narrow {
+    display: none;
+  }
 }

@@ -59,6 +59,7 @@ export function WithdrawalFields({ value, onChange, error }: Props) {
         <NumberField
           label={t.percentLabel}
           hint={t.percentHint}
+          more={t.percentMore}
           unit="%"
           value={value.withdrawalPercent ?? DEFAULT_WITHDRAWAL_PERCENT}
           onChange={(v) => onChange({ withdrawalPercent: v })}

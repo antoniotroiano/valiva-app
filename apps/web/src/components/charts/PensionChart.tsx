@@ -13,7 +13,14 @@ import { formatEur, formatEur2 } from '../../lib/format';
 import { de } from '../../i18n/de';
 import { AXIS, TOOLTIP_STYLE } from './chartTheme';
 
-export function PensionChart({ details }: { details: StatutoryDetails }) {
+/** `bare`: no own card and heading, for use inside a collapsible row that carries the title. */
+export function PensionChart({
+  details,
+  bare = false,
+}: {
+  details: StatutoryDetails;
+  bare?: boolean;
+}) {
   const c = de.statutory.chart;
   const data = details.path.map((p) => ({ year: p.year, nominal: p.nominal, real: p.real }));
   const last = details.path[details.path.length - 1];
@@ -23,8 +30,8 @@ export function PensionChart({ details }: { details: StatutoryDetails }) {
     formatEur(last?.real ?? 0),
   );
   return (
-    <div className="card">
-      <h2>{c.title}</h2>
+    <div className={bare ? undefined : 'card'}>
+      {!bare && <h2>{c.title}</h2>}
       <div role="img" aria-label={`${c.alt} ${summary}`} style={{ width: '100%', height: 280 }}>
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 8, right: 16, bottom: 8, left: 8 }}>

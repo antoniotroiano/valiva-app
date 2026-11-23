@@ -11,16 +11,18 @@ export const occupational = {
   fields: {
     annualContributionIncreasePercent: {
       label: 'Jährliche Steigerung der Umwandlung',
-      hint: 'Jeden Januar nach dem Start steigt die Umwandlung um diesen Satz, höchstens bis zur steuerfreien Grenze. Leer lassen: sie bleibt gleich. Arbeitgeberbeitrag und ein eigener Zuschuss bleiben gleich.',
+      hint: 'Die Umwandlung steigt jeden Januar um diesen Satz.',
+      more: 'Sie steigt höchstens bis zur steuerfreien Grenze. Leer lassen: sie bleibt gleich. Arbeitgeberbeitrag und ein eigener Zuschuss bleiben gleich.',
     },
     employeeContributionMonthlyGross: {
       label: 'Entgeltumwandlung pro Monat, brutto',
-      hint: 'Der Betrag, der vor Steuer und Sozialabgaben von deinem Gehalt in die Betriebsrente fließt. Steuerfrei bis 676 € im Monat, sozialabgabenfrei bis 338 € (2026).',
+      hint: 'Der Betrag, der vor Steuer und Sozialabgaben in die Betriebsrente fließt.',
+      more: 'Steuerfrei bis 676 € im Monat, sozialabgabenfrei bis 338 € (2026).',
     },
     employerSubsidyMode: {
       label: 'Arbeitgeberzuschuss',
       hint: 'Gesetzlicher Pflichtzuschuss, konservativ auf höchstens 338 € Umwandlung angesetzt.',
-      auto15: 'Automatisch: 15 % auf den sozialabgabenfreien Teil',
+      auto15: 'Automatisch (15 %)',
       custom: 'Eigener Betrag',
     },
     employerSubsidyCustomMonthly: {
@@ -37,19 +39,22 @@ export const occupational = {
     },
     costPercentPerYear: {
       label: 'Kosten pro Jahr',
-      hint: 'Abschluss-, Verwaltungs- und Fondskosten zusammen, als Abzug von der Rendite. Der Vertrag zeigt sie meist als Effektivkosten.',
+      hint: 'Abschluss-, Verwaltungs- und Fondskosten zusammen, als Abzug von der Rendite.',
+      more: 'Der Vertrag zeigt sie meist als Effektivkosten.',
     },
     guaranteedRatePercent: {
       label: 'Garantierte Mindestrendite (optional)',
-      hint: 'Leer lassen, wenn dein Vertrag keine Garantie hat. Mit Wert gilt: Die Rendite nach Kosten fällt in keinem Szenario unter diesen Satz.',
+      hint: 'Leer lassen, wenn dein Vertrag keine Garantie hat.',
+      more: 'Mit Wert fällt die Rendite nach Kosten in keinem Szenario unter diesen Satz.',
     },
     payoutStartAge: {
       label: 'Auszahlbeginn (Alter)',
-      hint: '62 bis 70. Vorgeschlagen aus dem Profil, hier überschreibbar.',
+      hint: '62 bis 70, vorgeschlagen aus dem Profil.',
     },
     payoutEndAge: {
       label: 'Auszahlplan bis (Alter)',
-      hint: 'Vorgeschlagen: deine Lebenserwartung aus dem Profil, hier überschreibbar. Eine lebenslange Rente ist nicht berechnet.',
+      hint: 'Vorgeschlagen: deine Lebenserwartung aus dem Profil.',
+      more: 'Eine lebenslange Rente ist nicht berechnet.',
     },
   },
   errors: {
@@ -60,7 +65,6 @@ export const occupational = {
       `Der Beitragsbeginn muss vor dem Auszahlbeginn liegen (${year}).`,
   },
   fromProfile: 'Wie im Profil',
-  profileTitle: 'Annahmen aus dem Profil (nur Anzeige)',
   profileRows: {
     scenarios: 'Rendite pessimistisch / neutral / optimistisch',
     payoutReturn: 'Rendite in der Auszahlphase',
@@ -79,11 +83,11 @@ export const occupational = {
     title: 'Vereinfachungen',
     text: 'Nicht berechnet sind die Kapitalauszahlung mit Verbeitragung über 120 Monate, die Doppelverbeitragung bei alten Verträgen, Direktzusage und Unterstützungskasse sowie die lebenslange Rente. Der Netto-Aufwand ist eine Schätzung mit pauschalen Sätzen. Die Krankenkassen-Freigrenzen sind noch nicht gesichert.',
   },
-  scenarioNote: (label: string) => `Kennzahlen für das ${label} Szenario.`,
-  scenarioNames: {
-    pessimistic: 'pessimistische',
-    neutral: 'neutrale',
-    optimistic: 'optimistische',
+  perMonth: 'pro Monat',
+  heroEyebrow: (year: number) => `Netto pro Monat ab ${year}, Kaufkraft von heute, neutral`,
+  rows: {
+    payout: (start: number, end: number) => `Alter ${start} bis ${end}`,
+    costs: (rate: string) => `Kosten ${rate} %`,
   },
   kpi: {
     netEffort: 'Netto-Aufwand pro Monat (heute)',
@@ -96,7 +100,6 @@ export const occupational = {
     grossNominal: 'Brutto pro Monat (nominal)',
     grossReal: 'Brutto pro Monat (Kaufkraft heute)',
     tax: 'Steuer und Abgaben pro Monat (heute)',
-    netReal: 'Netto pro Monat (Kaufkraft heute)',
   },
   effort: {
     title: (conversion: string, net: string) =>
@@ -170,7 +173,7 @@ export const occupational = {
   empty:
     'Noch keine Umwandlung eingetragen. Trage oben einen Monatsbetrag ein, dann rechnen wir Netto-Aufwand, Kapital und Betriebsrente.',
   jumpToField: 'Zum Feld springen',
-  inputInvalid: 'Bitte die markierten Eingaben links korrigieren, dann zeigen wir das Ergebnis.',
+  inputInvalid: 'Bitte die markierten Eingaben korrigieren, dann zeigen wir das Ergebnis.',
   profileInvalid: 'Das Profil enthält Fehler. Bitte dort korrigieren, dann rechnen wir weiter.',
   profileLinkInvalid: 'Zum Profil',
   assumptionsLink: 'Annahmen anzeigen',

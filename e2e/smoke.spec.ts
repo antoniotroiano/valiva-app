@@ -66,14 +66,21 @@ test('statutory pension: profile and statement lead to a net pension', async ({ 
   await expect(page.getByText('Noch keine Renteninformation eingetragen')).toBeVisible();
   await page.getByLabel('Voraussichtliche Monatsrente laut Renteninformation').fill('1800');
   await page.getByLabel('Jahr der Renteninformation').fill(String(new Date().getFullYear()));
-  await expect(
-    page.locator('.kpi', { hasText: 'Netto pro Monat (Kaufkraft heute)' }),
-  ).toContainText('€');
+  await expect(page.locator('#statutory .result-frame')).toContainText('Netto pro Monat ab');
+  await expect(page.locator('#statutory .result-frame .kpi-value')).toContainText('€');
+  // The calculation rows are collapsed by default and hold the chart and the tables.
+  await expect(page.getByRole('table', { name: /So wird aus der Renteninformation/ })).toBeHidden();
+  await openRow(page, 'Verlauf bis Rentenbeginn');
   await expect(
     page.getByRole('img', { name: /Liniendiagramm der Brutto-Monatsrente/ }),
   ).toBeVisible();
+  await openRow(page, 'So wird aus der Renteninformation');
   await expect(
     page.getByRole('table', { name: /So wird aus der Renteninformation/ }),
+  ).toBeVisible();
+  await openRow(page, 'Verlauf als Tabelle');
+  await expect(
+    page.getByRole('table', { name: /Verlauf bis Rentenbeginn \(Brutto/ }),
   ).toBeVisible();
 
   await page.getByLabel('Alter bei Rentenbeginn').fill('63');
@@ -90,15 +97,17 @@ test('retirement depot: contribution leads to allowances and a net pension', asy
   await page.goto('/#depot');
   await expect(page.getByText('Noch kein Beitrag eingetragen')).toBeVisible();
   await page.getByLabel('Eigenbeitrag pro Monat').fill('150');
-  await expect(page.locator('.kpi', { hasText: 'Davon Zulagen' })).toContainText('18.000');
-  await expect(
-    page.locator('.kpi', { hasText: 'Netto pro Monat (Kaufkraft heute)' }),
-  ).toContainText('€');
+  await expect(page.locator('#depot .result-kpis div', { hasText: 'Davon Zulagen' })).toContainText(
+    '18.000',
+  );
+  await expect(page.locator('#depot .result-frame .kpi-value')).toContainText('€');
   // The long yearly table is collapsed by default
   await expect(page.getByRole('table', { name: 'Zulagen je Kalenderjahr' })).toBeHidden();
-  await page.getByText(/Zulagen je Kalenderjahr anzeigen/).click();
+  await openRow(page, 'Zulagen je Kalenderjahr');
   await expect(page.getByRole('table', { name: 'Zulagen je Kalenderjahr' })).toBeVisible();
+  await openRow(page, 'Alle Szenarien im Vergleich');
   await expect(page.getByRole('table', { name: /Szenarien im Vergleich/ })).toBeVisible();
+  await openRow(page, 'Kapital bis Auszahlbeginn');
   await expect(page.getByRole('img', { name: /Liniendiagramm: Eigenbeiträge/ })).toBeVisible();
 
   await page.getByLabel('Eigenbeitrag pro Monat').fill('50');
@@ -114,13 +123,15 @@ test('occupational pension: conversion leads to net effort and a net pension', a
   await page.goto('/#occupational');
   await expect(page.getByText('Noch keine Umwandlung eingetragen')).toBeVisible();
   await page.getByLabel('Entgeltumwandlung pro Monat, brutto').fill('200');
-  await expect(page.locator('.kpi', { hasText: 'Netto-Aufwand pro Monat' })).toContainText('90');
-  await expect(page.locator('.kpi', { hasText: 'Einzahlung in den Vertrag' })).toContainText('230');
-  await expect(
-    page.locator('.kpi', { hasText: 'Netto pro Monat (Kaufkraft heute)' }),
-  ).toContainText('€');
+  const kpi = (label: string) => page.locator('#occupational .result-kpis div', { hasText: label });
+  await expect(kpi('Netto-Aufwand pro Monat')).toContainText('90');
+  await expect(kpi('Einzahlung in den Vertrag')).toContainText('230');
+  await expect(page.locator('#occupational .result-frame .kpi-value')).toContainText('€');
+  await openRow(page, /Netto-Aufwand: so wird/);
   await expect(page.getByRole('table', { name: /Netto-Aufwand: so wird/ })).toBeVisible();
+  await openRow(page, 'Alle Szenarien im Vergleich');
   await expect(page.getByRole('table', { name: /Szenarien im Vergleich/ })).toBeVisible();
+  await openRow(page, 'Kapital bis Auszahlbeginn');
   await expect(page.getByRole('img', { name: /Liniendiagramm: Umwandlung/ })).toBeVisible();
 
   await page.getByLabel('Entgeltumwandlung pro Monat, brutto').fill('800');

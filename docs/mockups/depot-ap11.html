@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup AP-11: Zulagentabelle als Kartenliste auf dem Smartphone</title>
+    <style>
+      /* Tokens as in apps/web/src/styles/tokens.css (excerpt). Static mockup, only the theme switch uses a script. */
+      :root {
+        color-scheme: light dark;
+        --bg: light-dark(#f3f6f6, #0d1413);
+        --surface: light-dark(#ffffff, #151e1d);
+        --surface-2: light-dark(#eaf0ef, #1e2928);
+        --text: light-dark(#15201e, #e5eeec);
+        --muted: light-dark(#54635f, #9db0ac);
+        --line: light-dark(#dde5e3, #28353a);
+        --field-border: light-dark(#76847f, #6d807c);
+        --accent: light-dark(#0f766e, #4fd1c0);
+        --accent-soft: light-dark(#dff1ee, #17332f);
+        --b-dep: light-dark(#a21caf, #f08fd0);
+        --ok-fg: light-dark(#166534, #7fdca0);
+        --ok-bg: light-dark(#e2f4e7, #12301f);
+      }
+      :root[data-theme='light'] {
+        color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px 16px 48px;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 4px;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 32px 0 8px;
+      }
+      p.lead {
+        color: var(--muted);
+        margin: 0 0 16px;
+        max-width: 70ch;
+      }
+      .bar {
+        display: flex;
+        gap: 8px;
+        margin: 16px 0;
+      }
+      button {
+        font: inherit;
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 8px;
+        border: 1px solid var(--field-border);
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+      }
+      .frame {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--bg);
+        padding: 12px;
+      }
+      .frame.desktop {
+        width: 640px;
+        max-width: 100%;
+      }
+      .frame.phone {
+        width: 375px;
+        max-width: 100%;
+      }
+      .frame > .cap {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        margin: 0 0 8px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 12px 16px;
+      }
+      /* collapsible row, as .dts / .dt in the app */
+      .dt {
+        border-top: 1px solid var(--line);
+      }
+      .dt:first-child {
+        border-top: 0;
+      }
+      .dt > summary {
+        list-style: none;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .dt > summary::-webkit-details-marker {
+        display: none;
+      }
+      .dt > summary::after {
+        content: '›';
+        transform: rotate(90deg);
+        color: var(--muted);
+      }
+      .dt[open] > summary::after {
+        transform: rotate(-90deg);
+      }
+      .meta {
+        margin-left: auto;
+        color: var(--muted);
+        font-weight: 400;
+        font-size: 14px;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 8px 0;
+      }
+      /* desktop: table as today */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+      th,
+      td {
+        padding: 6px 8px;
+        text-align: right;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+      }
+      th[scope='row'],
+      thead th:first-child {
+        text-align: left;
+      }
+      thead th {
+        background: var(--surface-2);
+        color: var(--muted);
+        font-size: 13px;
+      }
+      tr.sum td,
+      tr.sum th {
+        font-weight: 700;
+      }
+      .scroll {
+        overflow-x: auto;
+      }
+      /* phone: card list */
+      ol.yc {
+        list-style: none;
+        margin: 8px 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+      }
+      ol.yc > li {
+        background: var(--surface-2);
+        border-radius: 10px;
+        padding: 8px 12px;
+      }
+      ol.yc > li.sum {
+        background: var(--accent-soft);
+      }
+      ol.yc h3 {
+        margin: 0;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: baseline;
+      }
+      ol.yc h3 .tot {
+        font-size: 16px;
+        color: var(--ok-fg);
+      }
+      ol.yc dl {
+        margin: 4px 0 0;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0 12px;
+        font-size: 14px;
+      }
+      ol.yc dt {
+        color: var(--muted);
+      }
+      ol.yc dd {
+        margin: 0;
+        text-align: right;
+      }
+      .more-btn {
+        width: 100%;
+        margin-top: 4px;
+      }
+      ul.notes {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 4px 0 0;
+        padding-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>AP-11: Zulagen je Kalenderjahr auf dem Smartphone</h1>
+    <p class="lead">
+      Nur dieser eine Baustein ist neu. Desktop bleibt die Tabelle (jetzt als eingeklappte Zeile im
+      Rechenweg, wie die ETF-Seite). Unter 640 px Breite wird jede Tabellenzeile zu einer Karte. Die
+      Zahlen sind erfunden. Alle sieben Spalten bleiben erreichbar.
+    </p>
+    <div class="bar">
+      <button type="button" id="theme">Hell / Dunkel umschalten</button>
+    </div>
+
+    <div class="wrap">
+      <section class="frame desktop" aria-label="Desktop, Ausschnitt Rechenweg">
+        <p class="cap">Desktop (Breite ab 640 px): Tabelle wie heute, eingeklappt im Rechenweg</p>
+        <div class="card">
+          <details class="dt" open>
+            <summary>Zulagen je Kalenderjahr <span class="meta">28 Jahre</span></summary>
+            <div class="scroll" role="region" tabindex="0" aria-label="Zulagen je Kalenderjahr">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Jahr</th>
+                    <th scope="col">Eigenbeitrag</th>
+                    <th scope="col">Grundzulage</th>
+                    <th scope="col">Kinderzulage</th>
+                    <th scope="col">Bonus unter 25</th>
+                    <th scope="col">Zulage gesamt</th>
+                    <th scope="col">Kapital Jahresende</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">2027</th>
+                    <td>1.800 €</td>
+                    <td>540 €</td>
+                    <td>600 €</td>
+                    <td>0 €</td>
+                    <td>1.140 €</td>
+                    <td>2.987 €</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2028</th>
+                    <td>1.800 €</td>
+                    <td>540 €</td>
+                    <td>600 €</td>
+                    <td>0 €</td>
+                    <td>1.140 €</td>
+                    <td>6.183 €</td>
+                  </tr>
+                  <tr class="sum">
+                    <th scope="row">Summe</th>
+                    <td>50.400 €</td>
+                    <td>15.120 €</td>
+                    <td>7.200 €</td>
+                    <td>0 €</td>
+                    <td>22.320 €</td>
+                    <td>109.205 €</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hint">Zulagen werden zum Jahresende gutgeschrieben und ab dann verzinst …</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="frame phone" aria-label="Smartphone 375 Pixel">
+        <p class="cap">Smartphone (unter 640 px): Kartenliste statt Tabelle</p>
+        <div class="card">
+          <details class="dt" open>
+            <summary>Zulagen je Kalenderjahr <span class="meta">28 Jahre</span></summary>
+            <ol class="yc" aria-label="Zulagen je Kalenderjahr">
+              <li class="sum">
+                <h3>
+                  <span>Summe 2027 bis 2054</span>
+                  <span class="tot">22.320 €</span>
+                </h3>
+                <dl>
+                  <dt>Eigenbeitrag</dt>
+                  <dd>50.400 €</dd>
+                  <dt>Grundzulage</dt>
+                  <dd>15.120 €</dd>
+                  <dt>Kinderzulage</dt>
+                  <dd>7.200 €</dd>
+                  <dt>Bonus unter 25</dt>
+                  <dd>0 €</dd>
+                  <dt>Kapital Jahresende</dt>
+                  <dd>109.205 €</dd>
+                </dl>
+              </li>
+              <li>
+                <h3>
+                  <span>2027</span>
+                  <span class="tot">Zulage 1.140 €</span>
+                </h3>
+                <dl>
+                  <dt>Eigenbeitrag</dt>
+                  <dd>1.800 €</dd>
+                  <dt>Grundzulage</dt>
+                  <dd>540 €</dd>
+                  <dt>Kinderzulage</dt>
+                  <dd>600 €</dd>
+                  <dt>Bonus unter 25</dt>
+                  <dd>0 €</dd>
+                  <dt>Kapital Jahresende</dt>
+                  <dd>2.987 €</dd>
+                </dl>
+              </li>
+              <li>
+                <h3>
+                  <span>2028</span>
+                  <span class="tot">Zulage 1.140 €</span>
+                </h3>
+                <dl>
+                  <dt>Eigenbeitrag</dt>
+                  <dd>1.800 €</dd>
+                  <dt>Grundzulage</dt>
+                  <dd>540 €</dd>
+                  <dt>Kinderzulage</dt>
+                  <dd>600 €</dd>
+                  <dt>Bonus unter 25</dt>
+                  <dd>0 €</dd>
+                  <dt>Kapital Jahresende</dt>
+                  <dd>6.183 €</dd>
+                </dl>
+              </li>
+            </ol>
+            <button type="button" class="more-btn">
+              Alle 28 Jahre anzeigen (5 von 28 sichtbar)
+            </button>
+            <p class="hint">Zulagen werden zum Jahresende gutgeschrieben und ab dann verzinst …</p>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <h2>Entscheidungen, die ich brauche</h2>
+    <ul class="notes">
+      <li>
+        <b>Länge:</b> 28 Karten wären rund 3.400 px hoch. Vorschlag: zuerst Summe und die ersten 5
+        Jahre, darunter der Knopf „Alle … Jahre anzeigen“ (alles bleibt erreichbar, nichts geht
+        verloren). Alternative: immer alle Karten.
+      </li>
+      <li>
+        <b>Summe</b> als erste Karte (getönt), nicht als letzte, damit man sie ohne Scrollen sieht.
+      </li>
+      <li>
+        <b>Umschaltung</b> rein per CSS (Breite), dieselben Daten, dieselbe Überschrift. Tabelle und
+        Karten stehen beide im Text, je eine ist verborgen. Die sichtbare Liste hat eine
+        Beschriftung.
+      </li>
+      <li>
+        Die vierspaltige Tabelle „Verlauf bis Rentenbeginn“ der gesetzlichen Rente und die
+        Szenario-Tabellen bleiben Tabellen (passen in 375 px, scrollen bei Bedarf).
+      </li>
+    </ul>
+    <script>
+      const root = document.documentElement;
+      document.getElementById('theme').addEventListener('click', () => {
+        const dark =
+          getComputedStyle(root).colorScheme.includes('dark') && root.dataset.theme !== 'light';
+        root.dataset.theme = dark ? 'light' : 'dark';
+      });
+    </script>
+  </body>
+</html>

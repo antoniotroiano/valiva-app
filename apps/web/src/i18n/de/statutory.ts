@@ -7,11 +7,13 @@ export const statutory = {
   fields: {
     projectedMonthlyPensionToday: {
       label: 'Voraussichtliche Monatsrente laut Renteninformation',
-      hint: 'Steht in deiner Renteninformation unter „Regelaltersrente bei Beitragszahlung bis zur Altersgrenze“, in heutigen Werten, ohne künftige Anpassung.',
+      hint: 'Aus deiner Renteninformation, in heutigen Werten.',
+      more: 'Der Betrag steht dort unter „Regelaltersrente bei Beitragszahlung bis zur Altersgrenze“, ohne künftige Anpassung.',
     },
     projectedMonthlyPensionAtRetirementAgeToday: {
       label: 'Rente für genau diesen Rentenbeginn (optional)',
-      hint: 'Steht in der Rentenauskunft für deinen Wunschtermin, in heutigen Werten. Sie enthält schon den Abschlag und die geänderte Zahl der Beitragsjahre. Leer lassen: dann wird die Rente oben nur mit Abschlag oder Zuschlag verrechnet.',
+      hint: 'Aus der Rentenauskunft für deinen Wunschtermin, in heutigen Werten.',
+      more: 'Dieser Betrag enthält schon den Abschlag und die geänderte Zahl der Beitragsjahre. Leer lassen: dann wird die Rente oben nur mit Abschlag oder Zuschlag verrechnet.',
     },
     statementYear: {
       label: 'Jahr der Renteninformation',
@@ -25,8 +27,8 @@ export const statutory = {
       label: 'Regelaltersgrenze (Jahre)',
       hintConfig: (birthYear: number, age: string) =>
         `Für Jahrgang ${birthYear} ${age} nach dem Gesetz (aus der Konfiguration).`,
-      hintOverride: (age: string) =>
-        `Leer lassen: ${age} nach dem Gesetz für deinen Jahrgang. Nur bei Sonderfällen selbst eingeben, z. B. 66,67 für 66 Jahre und 8 Monate.`,
+      hintOverride: (age: string) => `Leer lassen: ${age} nach dem Gesetz für deinen Jahrgang.`,
+      moreOverride: 'Nur bei Sonderfällen selbst eingeben, z. B. 66,67 für 66 Jahre und 8 Monate.',
     },
   },
   fromProfile: 'Aus Profil übernehmen',
@@ -45,12 +47,17 @@ export const statutory = {
     title: 'Vereinfachung',
     text: 'Ein früherer Rentenbeginn senkt in Wirklichkeit auch deine Entgeltpunkte, weil dir Beitragsjahre fehlen. Hier wird ohne weitere Angabe nur der Abschlag von 0,3 % je Monat angesetzt. Ein späterer Beginn erhöht keine Entgeltpunkte, nur den Zuschlag von 0,5 % je Monat. Trage bei frühem oder spätem Rentenbeginn im Feld „Rente für genau diesen Rentenbeginn“ den Wert aus deiner Rentenauskunft ein, dann entfällt diese Vereinfachung.',
   },
+  perMonth: 'pro Monat',
+  heroEyebrow: (year: number) => `Netto pro Monat ab ${year}, Kaufkraft von heute`,
+  rows: {
+    table: 'Verlauf als Tabelle',
+    tableMeta: 'alle 5 Jahre',
+  },
   kpi: {
     start: 'Rentenbeginn',
     grossNominal: 'Brutto pro Monat (nominal)',
     grossReal: 'Brutto pro Monat (Kaufkraft heute)',
     deductions: 'Steuer und Abgaben pro Monat (heute)',
-    netReal: 'Netto pro Monat (Kaufkraft heute)',
   },
   chart: {
     title: 'Verlauf bis Rentenbeginn',
@@ -92,13 +99,13 @@ export const statutory = {
     start: (year: number) => `${year} (Rentenbeginn)`,
   },
   early: (percent: string, months: number) =>
-    `Abschlag von ${percent} %. Du gehst ${months} Monate vor der Regelaltersgrenze in Rente. Die Rente sinkt dauerhaft um 0,3 % je Monat. Entgeltpunkte, die dir bis zur Regelaltersgrenze noch zugewachsen wären, sind nicht abgezogen (siehe Vereinfachung).`,
+    `Abschlag von ${percent} %: Du gehst ${months} Monate vor der Regelaltersgrenze in Rente, die Rente sinkt dauerhaft um 0,3 % je Monat.`,
   late: (percent: string, months: number) =>
-    `Zuschlag von ${percent} %. Du gehst ${months} Monate nach der Regelaltersgrenze in Rente, 0,5 % je Monat. Weitere Entgeltpunkte durch Arbeit nach der Regelaltersgrenze sind nicht angesetzt.`,
+    `Zuschlag von ${percent} %: Du gehst ${months} Monate nach der Regelaltersgrenze in Rente, 0,5 % je Monat. Weitere Entgeltpunkte durch Arbeit sind nicht angesetzt.`,
   empty:
     'Noch keine Renteninformation eingetragen. Trage oben den Betrag aus deiner Renteninformation ein, dann rechnen wir Anpassung, Steuer und Abgaben.',
   jumpToField: 'Zum Feld springen',
-  inputInvalid: 'Bitte die markierten Eingaben links korrigieren, dann zeigen wir das Ergebnis.',
+  inputInvalid: 'Bitte die markierten Eingaben korrigieren, dann zeigen wir das Ergebnis.',
   profileInvalid: 'Das Profil enthält Fehler. Bitte dort korrigieren, dann rechnen wir weiter.',
   profileLinkInvalid: 'Zum Profil',
   warnings: {

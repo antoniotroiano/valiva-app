@@ -297,5 +297,7 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 
 - 2026-11-23 – Review 14 AP-10: Bausteinseiten-Vorlage (`BlockPage`/`BlockSection`, `ResultFrame`, `StepsTable`, `ScenarioTable`, `WarningList`) und ETF-Seite in Sparphase und Ruhestand (Mockup `etf-ap10.html` freigegeben; 540 auf 270 Wörter, 2.843 auf 2.078 px); U-G aus AP-09 erledigt. Abweichung: Smartphone-Reihenfolge Ergebnis, Eingaben, Rechenweg; Schalter "aus den Annahmen" bleibt als eingeklappte Zeile. 590 Unit- und 140 von 141 E2E-Tests grün (Skip-Link-Test schlägt auch auf HEAD im Dev-Server fehl, Backlog); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
+- 2026-11-23 – Review 14 AP-11: Depot, bAV und gesetzliche Rente auf `BlockPage` (Mockup `depot-ap11.html` freigegeben; Wörter 596/728/471 auf 277/260/191; Zulagentabelle am Smartphone als Kartenliste; Hinweise nach Gewicht gebündelt; `MoreInfo` öffnet bei Fehler). Abweichungen: Smartphone-Kennzahlen in 2 Spalten, Eingabegruppen eingeklappt. 594 Unit- und 163 von 164 E2E-Tests grün (Skip-Link-Test unverändert rot); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+
 ## Offene Fragen aus dem Bau
 - (leer)

@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from 'react';
 import { withTerms } from '../cards/Terms';
 import { formatNumber, parseNumber } from '../../lib/format';
-import { de } from '../../i18n/de';
+import { MoreInfo } from './MoreInfo';
 
 type Props = {
   label: string;
@@ -73,12 +73,7 @@ export function NumberField({
           {withTerms(hint)}
         </p>
       )}
-      {more && (
-        <details className="more">
-          <summary>{de.moreLabel}</summary>
-          <p className="hint">{withTerms(more)}</p>
-        </details>
-      )}
+      {more && <MoreInfo text={more} hasError={error !== undefined} />}
       {error && (
         <p className="error" id={`${id}-err`}>
           {error}

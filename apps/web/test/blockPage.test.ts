@@ -18,17 +18,26 @@ import type { DepotProjection, OccupationalProjection, ScenarioName } from '@val
 import { WORKSPACE_FORMAT } from '../src/app/appConfig';
 import { ResultFrame } from '../src/components/cards/ResultFrame';
 import { ScenarioTable, StepsTable } from '../src/components/cards/ResultTable';
-import { WarningList } from '../src/components/cards/WarningList';
+import {
+  ImportantNotes,
+  InfoNotes,
+  WarningList,
+  notesFromCodes,
+  type Note,
+} from '../src/components/cards/WarningList';
 import { BlockSection } from '../src/components/layout/BlockPage';
 import { currentLegal } from '../src/lib/legalConfig';
-import { DepotResults } from '../src/pages/depot/DepotResults';
-import { OccupationalResults } from '../src/pages/occupational/OccupationalResults';
-import { StatutoryResults } from '../src/pages/statutory/StatutoryResults';
+import { DepotCalculation, DepotResult } from '../src/pages/depot/DepotResults';
+import { AllowanceTable } from '../src/pages/depot/DepotTables';
+import {
+  OccupationalCalculation,
+  OccupationalResult,
+} from '../src/pages/occupational/OccupationalResults';
+import { StatutoryCalculation, StatutoryResult } from '../src/pages/statutory/StatutoryResults';
 
 /**
- * AP-10 proof: the unchanged result components of the Depot, bAV and statutory pension pages fit into
- * the slots of `BlockSection`, and the shared tables express the tables of those pages. The three pages
- * themselves are rebuilt in AP-11.
+ * AP-10/AP-11: the result and calculation components of the Depot, bAV and statutory pension pages fill
+ * the slots of `BlockSection`, the shared tables express their tables, notes are bundled by weight.
  */
 const YEAR = new Date().getFullYear();
 const parsed = parseWorkspace(
@@ -113,39 +122,102 @@ const slots = (result: ReturnType<typeof h>, calculation?: ReturnType<typeof h>)
     }),
   );
 
-describe('BlockSection takes the unchanged result components of the other three pages', () => {
-  it('Depot', () => {
+const facts = h('dl', { className: 'facts' });
+
+describe('the three pages fill the slots of BlockSection (AP-11)', () => {
+  it('Depot: hero, all key figures, collapsed calculation rows', () => {
     const results = scenarios<DepotProjection>((s) => projectDepot(depotInput, ctx, s));
+    const props = { results, input: depotInput, assumptions: ctx.assumptions, legal };
     const html = slots(
-      h(DepotResults, {
-        results,
-        input: depotInput,
-        assumptions: ctx.assumptions,
-        legal,
-      }),
+      h(DepotResult, props),
+      h(DepotCalculation, { props, profileFacts: facts, simplification: 'Vereinfachung' }),
     );
     expect(html).toContain('class="bp-result"');
-    expect(html).toContain('class="bp-in"');
-    expect(html).toContain('kpi');
+    expect(html).toContain('class="bp-calc"');
+    expect(html).toContain('result-frame');
+    for (const label of ['Davon Zulagen', 'Davon Eigenbeiträge', 'Steuer pro Monat'])
+      expect(html).toContain(label);
+    for (const row of [
+      'Alle Szenarien im Vergleich',
+      'Kapital bis Auszahlbeginn',
+      'Zulagen je Kalenderjahr',
+      'So wird aus dem Kapital die Nettorente',
+      'Annahmen aus dem Profil',
+    ])
+      expect(html).toContain(row);
+    expect(html).not.toContain('<details class="dt" open');
   });
 
-  it('bAV', () => {
+  it('Depot allowances: table and cards carry every year and all seven columns', () => {
+    const results = scenarios<DepotProjection>((s) => projectDepot(depotInput, ctx, s));
+    const d = results.neutral.details;
+    const html = renderToStaticMarkup(h(AllowanceTable, { details: d }));
+    // Table: header + one row per year + sum row.
+    expect(html.match(/<th scope="col"/g)).toHaveLength(7);
+    expect(html.match(/<tr/g)).toHaveLength(1 + d.yearly.length + 1);
+    // Cards: sum card + first five years, "show all" button names the total.
+    expect(html.match(/<li/g)).toHaveLength(1 + Math.min(5, d.yearly.length));
+    expect(html).toContain(`Alle ${d.yearly.length} Jahre anzeigen`);
+    for (const label of ['Eigenbeitrag', 'Grundzulage', 'Kinderzulage', 'Bonus unter 25'])
+      expect(html.split(label).length - 1).toBeGreaterThanOrEqual(2);
+  });
+
+  it('bAV: hero, key figures including the net effort, collapsed rows', () => {
     const results = scenarios<OccupationalProjection>((s) => projectOccupational(occInput, ctx, s));
+    const props = { results, input: occInput, assumptions: ctx.assumptions, legal };
     const html = slots(
-      h(OccupationalResults, { results, input: occInput, assumptions: ctx.assumptions, legal }),
+      h(OccupationalResult, props),
+      h(OccupationalCalculation, { props, profileFacts: facts, simplification: 'Vereinfachung' }),
     );
     expect(html).toContain('class="bp-result"');
-    expect(html).toContain('kpi');
+    expect(html).toContain('Netto-Aufwand pro Monat');
+    expect(html).toContain('Einzahlung in den Vertrag');
+    expect(html).toContain('Netto-Aufwand: so wird aus');
+    expect(html).toContain('Alle Szenarien im Vergleich');
   });
 
-  it('statutory pension', () => {
+  it('statutory pension: hero, key figures, collapsed rows', () => {
     const r = projectStatutory(statutoryInput, ctx);
     if (!r.ok) throw new Error('projection failed');
     const html = slots(
-      h(StatutoryResults, { result: r.result, assumptions: ctx.assumptions, legal }),
+      h(StatutoryResult, { result: r.result }),
+      h(StatutoryCalculation, {
+        result: r.result,
+        assumptions: ctx.assumptions,
+        legal,
+        profileFacts: facts,
+        showSimplification: true,
+      }),
     );
     expect(html).toContain('class="bp-result"');
-    expect(html).toContain('kpi');
+    expect(html).toContain('Rentenbeginn');
+    expect(html).toContain('So wird aus der Renteninformation die Nettorente');
+    expect(html).toContain('Verlauf als Tabelle');
+  });
+});
+
+describe('notes are bundled by weight', () => {
+  const notes: Note[] = [
+    { id: 'a', text: 'Wichtig A', weight: 'important' },
+    { id: 'b', text: 'Hintergrund B', weight: 'info' },
+  ];
+  it('important notes are visible, info notes sit in a collapsed row with a count', () => {
+    const visible = renderToStaticMarkup(h(ImportantNotes, { notes }));
+    expect(visible).toContain('Wichtig A');
+    expect(visible).not.toContain('Hintergrund B');
+    const rows = renderToStaticMarkup(h(InfoNotes, { notes }));
+    expect(rows).toContain('Hintergrund B');
+    expect(rows).not.toContain('Wichtig A');
+    expect(rows).toContain('1 Hinweis');
+    expect(rows).not.toContain('open');
+  });
+  it('renders nothing when there is nothing of that weight', () => {
+    expect(renderToStaticMarkup(h(ImportantNotes, { notes: [notes[1]!] }))).toBe('');
+    expect(renderToStaticMarkup(h(InfoNotes, { notes: [notes[0]!] }))).toBe('');
+  });
+  it('core warning codes get their weight from warningWeight', () => {
+    const list = notesFromCodes(['cost_capped', 'etf_tax_simplified', 'cost_capped']);
+    expect(list.map((n) => n.weight)).toEqual(['important', 'info']);
   });
 });
 
