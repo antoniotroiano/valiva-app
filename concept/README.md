@@ -28,6 +28,7 @@ Diese Dateien sind die **einzige gültige Version** des Konzepts. Es gibt keine 
 | `12-phase-5-persistence-and-release.md` | Phase 5 im Detail: Workspace-Format, Export/Import, Repo-Reife (Beispieldaten, README, Lizenz, CI), Git/GitHub, Teilphasen 5a bis 5d |
 | `13-review-report.md` | Review-Bericht 2026-11-18: Sicherheit/GitHub Pages, Rechenfehler, Usability, Design, fehlende Funktionen, Umsetzungsreihenfolge |
 | `14-review-report-2026-11-22.md` | Review-Bericht 2026-11-22 in 18 Arbeitspaketen (je eine Session, mit Abhaken): Smartphone-Fehler, Navigation, Struktur, Design, Rentenplan, Bausteinseiten, neue Funktionen, Release |
+| `15-phase-6-generic-block.md` | Phase 6b im Detail: generischer Baustein "Sonstige Einkünfte im Alter" (Felder, Validierung, Gesamtsicht und Haushalt, Workspace-Format, Rechenregeln mit Beispielen, Tests, Golden-Vektoren, Abgrenzung), Mockup `docs/mockups/sonstige-einkuenfte.html` |
 
 ## Lesereihenfolge je Aufgabe
 - **Phase 1 bauen:** `04`, dann `02` (Abschnitt Stack/Tests), `03` (Abschnitte 1 und 8), `06` (Abschnitte 3 bis 5 und 7), `05` (Abschnitt 3 und 6), dabei `PROGRESS.md` pflegen
@@ -36,6 +37,7 @@ Diese Dateien sind die **einzige gültige Version** des Konzepts. Es gibt keine 
 - **Phase 4 bauen (je Teilphase 4a-1 bis 4a-4):** `10`, dann `09` (Abschnitte 5.1 und 5.2, `payoutPlan`, `netPension`), `06` (ProjectionResult, ProductProjector), `05` (Abschnitte 4 und 9), `03` (Steuerwerte), `08` (Solver) als Vorbild, dabei `PROGRESS.md` pflegen
 - **Phase 4b bauen (je Teilphase 4b-1 bis 4b-3):** `11`, dann `10` (`overview`, Lücke schließen), `06` (Household, Person, Migration), `05` (Abschnitte 2 und 9), `09` (`Profile`, `GlobalAssumptions`), dabei `PROGRESS.md` pflegen
 - **Phase 5 bauen (je Teilphase 5a bis 5d):** `12`, dann `06` (§7 Speicherformat, Migration), `02` (Abschnitte 3 und 4), `05` (Abschnitt 2, Seite Daten), `11` (§5 Zustände und Schlüssel), dabei `PROGRESS.md` pflegen
+- **Phase 6b bauen (AP-15):** `15`, dann `10` (§5.2 `overview`), `11` (§4.1a Hinterbliebene), `09` (§5.2 Besteuerungsanteil, §5.4 bAV-Abgaben), `12` (§3 und §4 Workspace), `06` (§3 und §4), `03` (§4, §5), `docs/design.md` (Farben, `BlockPage`), dabei `PROGRESS.md` pflegen
 - **Neue Phase planen:** `PROGRESS.md`, `01` (Roadmap), `06` (Phasenzuordnung), betroffene Fachabschnitte in `03`
 - **Fachwerte prüfen:** `03`, danach `07` (offene Punkte)
 - **UI bauen:** `05`, danach `04` Abschnitt 7

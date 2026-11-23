@@ -207,7 +207,26 @@ Startet nach Abschluss von Phase 4b. Entschieden: Export als Download und Import
    - [ ] Sichtprüfung der Seite "Daten" (Desktop, schmal, Dunkel, Tastatur)
 
 ## Spätere Phasen (Platzhalter)
-- [ ] Phase 6 – Weitere Bausteine
+- [ ] Phase 6 – Weitere Bausteine (Rest: echte Riester-/Rürup-Modelle, Immobilie, Frühstart-Rente; nur beschrieben in `15` §12)
+
+## Phase 6b – Generischer Baustein "Sonstige Einkünfte im Alter" (`15-phase-6-generic-block.md`)
+Konzept und Mockup in AP-14 (Review 14), Kern und Web in AP-15. Voraussetzung für AP-15: AP-05, AP-06 erledigt, Mockup freigegeben.
+
+**6b-1 Konzept und Mockup (AP-14)**
+- [x] Fachfragen a bis l beantwortet (2026-11-23, alle wie empfohlen)
+- [x] Konzeptdatei `15-phase-6-generic-block.md` (Felder, Validierung, Gesamtsicht und Haushalt, Workspace-Format, Rechenregeln mit Beispielen, Tests, Golden-Vektoren, Abgrenzung, offene Punkte)
+- [x] Mockup `docs/mockups/sonstige-einkuenfte.html` vom Autor freigegeben ("Ja, bauen", 2026-11-23)
+- [x] `01`, `06`, `07`, `README.md` ergänzt
+
+**6b-2 Kern (AP-15)**
+- [ ] Typen, `validateOtherIncome*`, Config-Entscheidung (`other-income-de.json`), Tests
+- [ ] `otherIncomeProjector`, Erweiterung `overview` (`OverviewProductId`, `incomeAt`, gemeinsame Schwelle, Status `ended`), Golden-Vektoren `oi01`–`oi06`
+- [ ] `householdOverview` (Weiterzahlung an Hinterbliebene), Golden-Vektoren `oi07`, `oi08`, Regressionsvektoren
+- [ ] Workspace: Block `otherIncome`, Validator, Version 2 mit Migration, Beispieldateien, Format-Golden
+
+**6b-3 Web (AP-15)**
+- [ ] Zustand `valiva.p.<id>.otherIncome.v1`, Seite `#other`, Seitenleiste und "Eingaben"-Blatt, Rentenplan und Haushalt, Texte in `i18n/de/`, Farbe `--b-oth` mit Kontrasttest
+- [ ] E2E-Smoke und axe, README und `docs/assumptions.md`, Excel-Stichprobe des Autors
 - [ ] Phase 7 – Desktop, Server/Sync/Login
 
 ## Notizen und Abweichungen
@@ -302,6 +321,8 @@ Lange Notizen stehen unverändert in `PROGRESS-notes-archive.md` (Nummern wie in
 - 2026-11-23 – Review 14 AP-12: Annahmen-Seite zweigeteilt ("Deine Annahmen" nur lesend, "Gesetzliche Werte" je Bereich eingeklappt mit Abzeichen "n ungeprüft"/"alle bestätigt", Regeln und Begriffe eingeklappt; Mockup `annahmen-ap12.html` freigegeben; 3.093 auf 171 Wörter, 10.472 auf 1.350 px). Abweichungen: Prüfprotokoll in Quellentexten per Anzeige-Parser abgetrennt (`config/` unverändert), Gültigkeit als deutsches Datum, Glossar eingeklappt. 5 Werte ungeprüft, alle sichtbar markiert. 611 Unit- und 174 von 175 E2E-Tests grün (Skip-Link-Test unverändert rot); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 - 2026-11-23 – Review 14 AP-13: Geführter Einstieg (Status je Eingabeseite in Seitenleiste und Handy-Blatt, Karte "Nächster Schritt" statt Willkommenskarte, ausblendbar, `valiva.onboarding` mit `hidden`; leere Zustände mit Knopf; Begriff "Einkommensquellen" statt "Bausteine"; Mockup `fuehrung-ap13.html` freigegeben). Abweichungen: Seitenleiste 272 px, "leer" bei Profil/ETF = unverändert gegenüber den Vorgaben, Export-Mahnung weicht auf dem Rentenplan der Karte. 621 Unit- und 189 von 190 E2E-Tests grün (Skip-Link-Test unverändert rot); Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+
+- 2026-11-23 – Review 14 AP-14: Konzept `15-phase-6-generic-block.md` und Mockup `docs/mockups/sonstige-einkuenfte.html` (freigegeben, "Ja, bauen"); `01`, `06`, `07`, `README.md` ergänzt, kein Code geändert. Abweichungen vom bisherigen Konzept: (1) `12` §3/§4: Workspace-Version 1 auf 2 für einen neuen optionalen Block (statt Version unverändert wie bei F-16), damit ältere App-Versionen neue Dateien ablehnen; (2) `10` §5.2: `OverviewProductKind` wird zu `OverviewProductId` mit `otherIncome:<id>` (ein Produkt je Eintrag), Status `ended` neu, `incomeAt` verallgemeinert; (3) `11` §4.1a: Weiterzahlung `survivorPercent` je Eintrag wirkt nur mit `survivorPension` und genau zwei Personen, Steuer bei der überlebenden Person; (4) `06` §4: Riester/Rürup/Versicherung laufen bis zu echten Modellen über den Eintragstyp statt über `legacy`; (5) Bezeichnung "Phase 6b", weil 6a die Einkommensteuer im Alter war; (6) ein Eintrag mit Fachfehlern wird gespeichert und in der UI markiert, nur Struktur-/Bereichsfehler verwerfen beim Import den Block. Rechtsregeln des Konzepts sind ungeprüft (`07` Punkt 14). Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 ## Offene Fragen aus dem Bau
 - (leer)

@@ -25,8 +25,9 @@ Rahmen:
 | Gesetzliche Rente | ja | Werte aus Renteninformation (Anspruch heute, Hochrechnung), Eintrittsalter, Rentenanpassung %/Jahr, Abschläge/Zuschläge bei früherem/späterem Rentenbeginn |
 | Betriebliche AV | ja | Brutto-Umwandlung, AG-Zuschuss, Garantie/Rendite, Kosten, Auszahlung als Rente oder Kapital, vereinfachte Steuer/KV im Alter |
 | Altersvorsorgedepot (ab 2027) | ja | Eigenbeitrag, Zulagen (Grund-/Kinderzulage), Produktvariante (Garantie 80/100 %, ohne Garantie, Standarddepot), Kostenmodell, Auszahlphase, nachgelagerte Besteuerung |
-| Riester / Rürup / Lebensversicherung | später | Garantiewert + Hochrechnung laut Versicherer, Beitrag, Laufzeit |
-| Immobilie / mietfreies Wohnen | später | ersparte Miete oder Mieteinnahme, Restschuld, Instandhaltung |
+| Sonstige Einkünfte im Alter (generischer Eintragstyp) | Phase 6, geplant | Mehrere Einträge je Person: Betrag, Beginn, Ende, Anpassung, Steuer, Abgaben, Weiterzahlung an den Partner; deckt bestehende Riester-Rente laut Standmitteilung, Basisrente, private Rentenversicherung, Pension und Mieteinnahmen ab (`15-phase-6-generic-block.md`) |
+| Riester / Rürup / Lebensversicherung (echtes Modell) | später | Garantiewert + Hochrechnung laut Versicherer, Beitrag, Laufzeit; bis dahin über den generischen Eintragstyp als Betrag |
+| Immobilie / mietfreies Wohnen | später | ersparte Miete oder Mieteinnahme, Restschuld, Instandhaltung; Mieteinnahme nach Kosten ohne Restschuld geht über den generischen Eintragstyp |
 | Tagesgeld/Festgeld/Gold/Krypto | später | generischer Baustein: Sparrate, freie Rendite |
 | Frühstart-Rente / Kinder | später | 10 €/Monat Staat, Alter 6–18, Zusatzzahlungen (Gesetzgebungsstand zuerst prüfen) |
 
@@ -66,7 +67,7 @@ Nicht in V1: Erwerbsminderungs- und Hinterbliebenenrente.
 | 4 | Gesamtsicht: Netto-Rente real, Lücke, Verlauf je Alter, ETF-Entnahme, Lücke schließen (Teilphasen 4a-1 bis 4a-4; siehe `10-phase-4-overview.md`). Inflationsangepasste Entnahme und 4-%-Regel später | Kernnutzen Rentenplaner |
 | 4b | Mehrere Personen / Haushaltsrente (Partner): Teilphasen 4b-1 Kern, 4b-2 Zustände und Personenverwaltung, 4b-3 Haushaltssicht; siehe `11-phase-4b-household.md` | Gesamtrente je Person und Haushalt |
 | 5 | Speichern (Profil, Bausteine), Export/Import, README/Lizenz, Git/GitHub | Repo teilbar (Phase B) |
-| 6 | Weitere Bausteine (Riester, Immobilie, Frühstart-Rente, Generisch) | Erweiterung |
+| 6 | Weitere Bausteine. **6b Generischer Baustein "Sonstige Einkünfte im Alter"** (Konzept `15-phase-6-generic-block.md`, AP-14 Konzept und Mockup, AP-15 Kern und Web); danach echte Riester-/Rürup-Modelle, Immobilie, Frühstart-Rente (nur beschrieben, `15` §12). Die frühere Teilphase 6a war die Einkommensteuer im Alter (Review 13) | Erweiterung |
 | 7 | Desktop-Paket + Server/Sync/Login | Phase C |
 
 Nach jeder Phase ist die App lauffähig. Die Fachwerte für Phase 3 sind am 2026-11-11 gegen Primärquellen geprüft (`03-domain-rules.md` Abschnitt 12); verbleibende unsichere Werte bleiben in der Config als `unverified` markiert.

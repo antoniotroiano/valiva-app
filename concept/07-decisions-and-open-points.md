@@ -41,6 +41,15 @@
 | 2026-11-18 | Phase 4b: Sparziele | Pro Person mit eigenem Budget; Haushaltssumme nur Anzeige | `11` §2 |
 | 2026-11-18 | Phase 4b: Personenzahl | Beliebig viele, UI für Paare | `11` §2 |
 | 2026-11-18 | Phase 4b: Annahmen, Zeitachse, Snapshot (Vorschläge Planer) | Haushaltsweite und persönliche Annahmen getrennt; Kalenderjahre; Snapshot im Jahr der letzten Rente | `11` §2 |
+| 2026-11-23 | Phase 6: Generischer Baustein | Ein wiederverwendbarer Eintragstyp "Sonstige Einkünfte im Alter" statt je eines Bausteins pro Produkt; Review 14 Frage 6, Konzept `15` | `15-phase-6-generic-block.md` |
+| 2026-11-23 | Phase 6: Betrag und Anpassung | Basis `today` oder `nominalAtStart`; Anpassung `inflation`, `pension` oder `fixed` (0 % = Festbetrag) | `15` §2 |
+| 2026-11-23 | Phase 6: Beginn, Ende | Alter in ganzen Jahren, `lifelong` als eigener Fall, beliebiger Beginn plus Schalter "mit Rentenbeginn"; Rechnung ab Rentenbeginn | `15` §2, §5.3 |
+| 2026-11-23 | Phase 6: Steuer | `none`/`full`/`percent`/`pensionShare` (fester steuerfreier Betrag in Euro ab Beginn wie bei der gesetzlichen Rente); Einträge gehen als eigene Einkünfte in `retirementIncomeTax` (Steuer auf die Summe) | `15` §2, §5.1 |
+| 2026-11-23 | Phase 6: Abgaben | `none` oder `likeOccupational` mit gemeinsamer Schwelle zusammen mit der bAV der Person (Annahme, ungeprüft) | `15` §5.2 |
+| 2026-11-23 | Phase 6: Einmalbeträge | Nicht in V1, nur laufende Zahlungen | `15` §2, §12 |
+| 2026-11-23 | Phase 6: Hinterbliebene | `survivorPercent` je Eintrag, wirksam nur bei genau zwei Personen und gesetztem `survivorPension`; Steuer bei der überlebenden Person; zählt als anrechenbares Einkommen (Annahme, ungeprüft) | `15` §4.2 |
+| 2026-11-23 | Phase 6: Grenzen und Vereinfachung | Höchstens 10 Einträge je Person; Sparerpauschbetrag und Werbungskosten nicht berücksichtigt (UI nennt es) | `15` §2, §7 |
+| 2026-11-23 | Phase 6: Format und Darstellung | Neuer Block `otherIncome`, Workspace-Version 1 auf 2 (leere Migration); ein Segment "Sonstige Einkünfte" je Person, neue Farbe `--b-oth` Olivgrün; Mockup `docs/mockups/sonstige-einkuenfte.html` vom Autor mit "Ja, bauen" freigegeben | `15` §7, §8 |
 | 2026-11-10 | Phase 2: Solver | Bisektion über ganze Cent statt Toleranz 0,005 €; Ergebnis = kleinster Cent-Betrag, der das Ziel erreicht | `08` §4 |
 
 ## 2. Offene Punkte
@@ -63,3 +72,11 @@
     - **ETF-Entnahme (eigener, größerer Schritt):** Beim Paar teilen sich beide auch dort die 2.000 €. `householdOverview` besteuert den ETF bisher je Person; eine gemeinsame Besteuerung bräuchte eine Jahressimulation über beide Personen (siehe auch Review `13` C-8, ETF-Entnahme vereinfacht).
     - **Nutzen:** Gering, solange beide Partner ihren Freibetrag je selbst weitgehend nutzen; spürbar, wenn die Zinsen oder Gewinne einer Person deutlich über 1.000 € liegen und die des Partners kaum.
     - **Nicht Teil davon:** Verteilung des Freibetrags zwischen Sparzielen und ETF-Sparplan einer Person (Stufe 1 rechnet nur die Ziele; der ETF wird meist Jahre später verkauft).
+14. **Phase 6b, Generischer Baustein (Konzept `15`, offene Punkte dort §14):**
+    - **Regelannahmen ungeprüft** (alle `unverified`, Quellen nur genannt, nicht gelesen): Basisrente wie gesetzliche Rente besteuert (§22 Nr. 1 S. 3 Buchst. a aa EStG), Ertragsanteil der privaten Leibrente (a bb), Riester-Leistungen voll steuerpflichtig (§22 Nr. 5), gemeinsame KV-Freibetrag-/Pflege-Freigrenze-Schwelle je Person (§226 Abs. 2 SGB V, §57 SGB XI), Anrechnung auf die Witwenrente (§97 SGB VI, §§18a ff. SGB IV). Vor Release prüfen (Punkt 3).
+    - **Eigene Config-Datei `config/other-income-de.json` für diese Regeln** oder nur Hinweiscodes: Vorschlag Datei, Entscheidung in AP-15.
+    - **Gemeinsame Schwelle `likeOccupational`** koppelt Gesamtsicht und bAV-Seite (bAV-Seite zeigt weiter den Einzelwert, Hinweis `shared_occupational_threshold`); prüfen, ob der Hinweis genügt.
+    - **Versorgungsfreibetrag** (Pension, §19 Abs. 2 EStG) und **Werbungskosten bei Mieten** nicht berücksichtigt; der Pauschbetrag von 102 € auf Renteneinkünfte wirkt in `retirementIncomeTax` auch auf Mieten. Abgaben auf den weitergezahlten Anteil an Hinterbliebene: keine (Vereinfachung).
+    - **Ertragsanteil und Besteuerungsanteil der Basisrente:** Nutzer trägt den Anteil bei `percent` selbst ein; eine Tabelle mit Vorschlag wäre eine spätere Option.
+    - **Formular am Smartphone** (bis zu 12 Felder) und **Farbe `--b-oth`** nach dem Bau erneut bewerten; die Grenze von 10 Einträgen ist eine App-Grenze, keine Rechtsgrenze.
+    - **Bewusst später** (`15` §12): echte Riester-, Rürup- und Lebensversicherungsmodelle, Immobilie mit Restschuld, Einmalbeträge.

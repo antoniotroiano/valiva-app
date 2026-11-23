@@ -1,0 +1,1236 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup AP-14: Sonstige Einkünfte im Alter</title>
+    <style>
+      /* Tokens as in apps/web/src/styles/tokens.css (excerpt) plus the proposed new block colour --b-oth. */
+      :root {
+        color-scheme: light dark;
+        --bg: light-dark(#f3f6f6, #0d1413);
+        --surface: light-dark(#ffffff, #151e1d);
+        --surface-2: light-dark(#eaf0ef, #1e2928);
+        --nav-bg: light-dark(#fbfcfc, #111918);
+        --text: light-dark(#15201e, #e5eeec);
+        --muted: light-dark(#54635f, #9db0ac);
+        --line: light-dark(#dde5e3, #28353a);
+        --field-border: light-dark(#76847f, #6d807c);
+        --accent: light-dark(#0f766e, #4fd1c0);
+        --accent-soft: light-dark(#dff1ee, #17332f);
+        --on-accent: light-dark(#ffffff, #052420);
+        --ok-fg: light-dark(#166534, #7fdca0);
+        --ok-bg: light-dark(#e2f4e7, #12301f);
+        --ok-bd: light-dark(#9fd0ae, #245b3a);
+        --hint-fg: light-dark(#3b4a47, #c0cdca);
+        --hint-bg: light-dark(#eaf0ef, #1e2928);
+        --hint-bd: light-dark(#c3d0cd, #3a4a47);
+        --warn-fg: light-dark(#8a4b00, #f0b46a);
+        --warn-bg: light-dark(#fdf1e4, #2e2214);
+        --warn-bd: light-dark(#ecc08a, #6b4a1d);
+        --b-etf: light-dark(#1d4ed8, #7aa2ff);
+        --b-stat: light-dark(#475569, #a9b8b4);
+        --b-dep: light-dark(#a21caf, #f08fd0);
+        --b-bav: light-dark(#b45309, #e0a24a);
+        --b-oth: light-dark(#47750a, #a3d46b);
+        --on-block: light-dark(#ffffff, #0d1413);
+        --wish: light-dark(#b42318, #ff8a80);
+        --scrim: rgb(0 0 0/0.4);
+      }
+      :root[data-theme='light'] {
+        color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px 16px 64px;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
+      h1.top {
+        font-size: 24px;
+        margin: 0 0 4px;
+      }
+      h2.top {
+        font-size: 20px;
+        margin: 40px 0 4px;
+        border-top: 1px solid var(--line);
+        padding-top: 24px;
+      }
+      p.lead {
+        color: var(--muted);
+        margin: 0 0 16px;
+        max-width: 90ch;
+      }
+      .bar0 {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 12px 0;
+      }
+      button.theme,
+      .bar0 a {
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+      }
+      .row {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .cap {
+        margin: 0 0 8px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      /* frames */
+      .desk {
+        width: 1100px;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 252px 1fr;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      .phone {
+        width: 375px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        background: var(--bg);
+        position: relative;
+      }
+      .phone .topbar {
+        padding: 10px 16px;
+        background: var(--nav-bg);
+        border-bottom: 1px solid var(--line);
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+      }
+      .phone .tabbar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--line);
+        background: var(--nav-bg);
+        font-size: 13px;
+        text-align: center;
+        padding: 8px 0;
+        color: var(--muted);
+      }
+      .phone .tabbar b {
+        color: var(--accent);
+      }
+      .phone main {
+        padding: 16px;
+      }
+      .sheet {
+        background: var(--surface);
+        border-top: 1px solid var(--line);
+        border-radius: 18px 18px 0 0;
+        padding: 8px 8px 12px;
+      }
+      .sheet .grab {
+        width: 40px;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--field-border);
+        margin: 4px auto 12px;
+      }
+      /* sidebar */
+      .side {
+        background: var(--nav-bg);
+        border-right: 1px solid var(--line);
+        padding: 16px 8px;
+        font-size: 15px;
+      }
+      .side strong {
+        display: block;
+        padding: 0 8px 12px;
+        font-size: 18px;
+      }
+      .nl {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        color: var(--text);
+        min-height: 40px;
+      }
+      .nl.on {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .nl .lab {
+        flex: 1;
+      }
+      .grp {
+        padding: 12px 10px 4px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .grp.sub2 {
+        padding-left: 18px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex: none;
+      }
+      [data-block='etf'] .dot {
+        background: var(--b-etf);
+      }
+      [data-block='stat'] .dot {
+        background: var(--b-stat);
+      }
+      [data-block='dep'] .dot {
+        background: var(--b-dep);
+      }
+      [data-block='bav'] .dot {
+        background: var(--b-bav);
+      }
+      [data-block='oth'] .dot {
+        background: var(--b-oth);
+      }
+      .st {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        flex: none;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .st.open {
+        color: var(--muted);
+      }
+      .st.done {
+        color: var(--ok-fg);
+      }
+      .st.hint {
+        color: var(--warn-fg);
+      }
+      .newtag {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+        border-radius: 999px;
+        padding: 0 6px;
+      }
+      /* main */
+      main.m {
+        padding: 24px;
+        min-width: 0;
+      }
+      .ph {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        margin-bottom: 16px;
+      }
+      h1.t {
+        font-size: 28px;
+        line-height: 1.2;
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+      .phone h1.t {
+        font-size: 24px;
+      }
+      .sub {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .seg {
+        display: inline-flex;
+        border: 1px solid var(--field-border);
+        border-radius: 999px;
+        padding: 3px;
+        background: var(--surface-2);
+        max-width: 100%;
+        flex-wrap: wrap;
+      }
+      .seg span {
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 14px;
+        white-space: nowrap;
+        min-height: 36px;
+      }
+      .seg .on {
+        background: var(--surface);
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .seg.sm span {
+        padding: 8px 12px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      .phone .card {
+        padding: 16px;
+      }
+      .card.hero {
+        box-shadow:
+          0 1px 2px rgb(16 40 36 / 8%),
+          0 6px 20px rgb(16 40 36 / 7%);
+      }
+      .bp {
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+      h2.bh {
+        font-size: 18px;
+        margin: 0 0 12px;
+      }
+      .eyebrow {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .display {
+        font-size: 48px;
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .phone .display {
+        font-size: 40px;
+      }
+      .unit {
+        font-size: 18px;
+        color: var(--muted);
+        margin-left: 6px;
+        font-weight: 400;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid;
+        font-size: 13px;
+        font-weight: 600;
+        vertical-align: middle;
+      }
+      .chip.ok {
+        color: var(--ok-fg);
+        background: var(--ok-bg);
+        border-color: var(--ok-bd);
+      }
+      .chip.hint {
+        color: var(--hint-fg);
+        background: var(--hint-bg);
+        border-color: var(--hint-bd);
+      }
+      .chip.warn {
+        color: var(--warn-fg);
+        background: var(--warn-bg);
+        border-color: var(--warn-bd);
+      }
+      .kp {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .phone .kp {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .kp div {
+        background: var(--surface-2);
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+      .kp b {
+        display: block;
+        font-size: 20px;
+        white-space: nowrap;
+      }
+      .kp span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th {
+        text-align: left;
+        color: var(--muted);
+        font-weight: 600;
+        background: var(--surface-2);
+        padding: 8px 10px;
+      }
+      td {
+        padding: 8px 10px;
+        border-top: 1px solid var(--line);
+      }
+      th.n,
+      td.n {
+        text-align: right;
+        white-space: nowrap;
+      }
+      tr.sum td {
+        font-weight: 700;
+        border-top: 2px solid var(--field-border);
+      }
+      td code {
+        white-space: nowrap;
+      }
+      .swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        margin-right: 8px;
+        background: var(--b-oth);
+      }
+      /* entries list */
+      .entries {
+        list-style: none;
+        margin: 0 0 12px;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+      }
+      .entry {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        padding: 12px 14px;
+      }
+      .entry.open {
+        border-color: var(--accent);
+        outline: 1px solid var(--accent);
+      }
+      .entry .hd {
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+      .entry .hd strong {
+        font-size: 16px;
+      }
+      .entry .net {
+        margin-left: auto;
+        font-weight: 700;
+      }
+      .entry .meta {
+        margin: 2px 0 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .entry .act {
+        display: flex;
+        gap: 4px;
+        margin-top: 4px;
+      }
+      .tbtn {
+        min-height: 44px;
+        padding: 0 10px;
+        border: 0;
+        background: none;
+        color: var(--accent);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+      }
+      .btn {
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 8px;
+        border: 1px solid var(--field-border);
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .btn.primary {
+        background: var(--accent);
+        color: var(--on-accent);
+        border-color: var(--accent);
+      }
+      .btn.full {
+        width: 100%;
+      }
+      .cnt {
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        margin: 6px 0 0;
+      }
+      /* form */
+      .ff {
+        display: grid;
+        gap: 14px;
+        margin-top: 12px;
+      }
+      .ff.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .f .lb {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .in {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        min-height: 44px;
+        padding: 0 12px;
+        background: var(--surface);
+        font-size: 16px;
+      }
+      .in span {
+        margin-left: auto;
+        color: var(--muted);
+      }
+      .hp {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 6px 0 0;
+      }
+      .more {
+        font-size: 14px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .notice {
+        border: 1px solid var(--hint-bd);
+        background: var(--hint-bg);
+        color: var(--hint-fg);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 14px;
+        margin-top: 12px;
+      }
+      .notice.warn {
+        border-color: var(--warn-bd);
+        background: var(--warn-bg);
+        color: var(--warn-fg);
+      }
+      .dts details {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-bottom-width: 0;
+      }
+      .dts details:first-child {
+        border-radius: 14px 14px 0 0;
+      }
+      .dts details:last-child {
+        border-radius: 0 0 14px 14px;
+        border-bottom-width: 1px;
+      }
+      .dts summary {
+        min-height: 48px;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .dts .meta {
+        margin-left: auto;
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .dts .body {
+        padding: 0 16px 14px;
+        font-size: 14px;
+      }
+      /* stack bars */
+      .stack {
+        display: flex;
+        gap: 2px;
+        height: 44px;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 8px 0;
+      }
+      .stack span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--on-block);
+        font-size: 13px;
+        font-weight: 600;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .s-etf {
+        background: var(--b-etf);
+      }
+      .s-stat {
+        background: var(--b-stat);
+      }
+      .s-dep {
+        background: var(--b-dep);
+      }
+      .s-bav {
+        background: var(--b-bav);
+      }
+      .s-oth {
+        background: var(--b-oth);
+      }
+      .hatch {
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgb(255 255 255 / 0.45) 0 3px,
+          transparent 3px 8px
+        );
+        background-blend-mode: normal;
+      }
+      .legend {
+        display: flex;
+        gap: 6px 16px;
+        flex-wrap: wrap;
+        font-size: 14px;
+        color: var(--muted);
+        margin: 4px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .legend i {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        margin-right: 6px;
+      }
+      .wishline {
+        position: relative;
+      }
+      .wl {
+        position: absolute;
+        top: -4px;
+        bottom: -4px;
+        border-left: 2px dashed var(--wish);
+      }
+      .hb {
+        display: grid;
+        grid-template-columns: 70px 1fr 90px;
+        gap: 10px;
+        align-items: center;
+        margin: 10px 0;
+      }
+      .phone .hb {
+        grid-template-columns: 52px 1fr;
+      }
+      .phone .hb .tot {
+        grid-column: 2;
+        margin-top: -6px;
+      }
+      .hb .stack {
+        margin: 0;
+        height: 36px;
+      }
+      .hb .tot {
+        text-align: right;
+        font-weight: 700;
+      }
+      .phone .hb .tot {
+        text-align: left;
+      }
+      .empty {
+        text-align: center;
+        padding: 28px 16px;
+      }
+      .empty h3 {
+        margin: 8px 0 4px;
+        font-size: 18px;
+      }
+      .empty p {
+        margin: 0 auto 12px;
+        max-width: 46ch;
+        color: var(--muted);
+      }
+      .ex {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 0 0 14px;
+        padding: 0;
+        list-style: none;
+      }
+      .ex li {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 12px;
+        font-size: 14px;
+        color: var(--muted);
+        background: var(--surface-2);
+      }
+      ul.notes {
+        max-width: 90ch;
+        color: var(--muted);
+      }
+      .strip {
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .strip b {
+        font-size: 22px;
+      }
+      .phone .ph {
+        margin-bottom: 12px;
+      }
+      @media (max-width: 1140px) {
+        .desk {
+          grid-template-columns: 1fr;
+        }
+        .desk .side {
+          display: none;
+        }
+        .bp {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="top">Mockup AP-14: Sonstige Einkünfte im Alter</h1>
+    <p class="lead">
+      Neuer Eintragstyp „Sonstige Einkünfte“ (Riester laut Standmitteilung, Basisrente, private
+      Rente, Pension, Miete). Alle Personen, Beträge und Zahlen sind erfunden. Zahlen des Beispiels
+      (Anna, Jahrgang 1976, Rentenbeginn mit 67 im Jahr 2043, Inflation 2 %) sind mit den Regeln aus
+      <code>concept/15-phase-6-generic-block.md</code> nachgerechnet. Hell/Dunkel mit dem Schalter;
+      die Rahmen zeigen Desktop (Ausschnitt 1100 px) und Smartphone (375 px).
+    </p>
+    <div class="bar0">
+      <button class="theme" type="button" id="themeBtn">Hell/Dunkel umschalten</button>
+      <a href="#s1">1 Farbe</a><a href="#s2">2 Seite Desktop</a><a href="#s3">3 Formular</a
+      ><a href="#s4">4 Leerer Zustand</a><a href="#s5">5 Smartphone</a><a href="#s6">6 Rentenplan</a
+      ><a href="#s7">7 Haushalt</a>
+    </div>
+
+    <!-- 1 colour -->
+    <h2 class="top" id="s1">1 Neue Farbe für den Baustein</h2>
+    <p class="lead">
+      Olivgrün ist der einzige Ton, der weder Blau (ETF), Schiefer (gesetzliche Rente), Magenta
+      (Depot), Ochsenbraun (bAV) noch dem Türkis-Akzent und den Statusfarben zu nahe kommt. Die
+      Segmente tragen wie bisher Name und Wert, dazwischen 2 px Lücke in Kartenfarbe. Die
+      Statusfarbe „ok“ ist ein helles Grün mit Haken-Symbol und bleibt dadurch unterscheidbar.
+    </p>
+    <div class="card" style="max-width: 980px">
+      <div class="stack" style="height: 56px">
+        <span class="s-etf" style="flex: 1">ETF</span
+        ><span class="s-stat" style="flex: 1">Gesetzliche Rente</span
+        ><span class="s-dep" style="flex: 1">Depot</span
+        ><span class="s-bav" style="flex: 1">bAV</span
+        ><span class="s-oth" style="flex: 1">Sonstige Einkünfte</span>
+      </div>
+      <table>
+        <tr>
+          <th>Token</th>
+          <th>Hell</th>
+          <th>Dunkel</th>
+          <th class="n">Kontrast gegen Karte (hell / dunkel)</th>
+          <th class="n">Beschriftung auf Füllung (hell / dunkel)</th>
+        </tr>
+        <tr>
+          <td><span class="swatch"></span><code>--b-oth</code></td>
+          <td>#47750a</td>
+          <td>#a3d46b</td>
+          <td class="n">5,50 : 1 / 9,87 : 1</td>
+          <td class="n">5,50 : 1 / 10,82 : 1</td>
+        </tr>
+      </table>
+      <p class="hp" style="font-size: 14px; color: var(--muted)">
+        Gegen die Fläche <code>surface-2</code> 4,77 : 1 (hell) und 8,69 : 1 (dunkel), alle über 3 :
+        1. Kleinster Farbabstand (CIELAB) zu den vier Baustein-Farben 69 (hell) und 49 (dunkel), zum
+        Akzent 52 und 49. Der Kontrast gegen die anderen vier Segmente ist wie dort nicht
+        erreichbar, daher Lücke, Beschriftung und Tabelle. Prüfung zusätzlich im Kontrasttest bei
+        AP-15.
+      </p>
+    </div>
+
+    <!-- 2 desktop page -->
+    <h2 class="top" id="s2">2 Seite „Sonstige Einkünfte“ (Desktop)</h2>
+    <p class="lead">
+      Bausteinvorlage wie ETF, Depot und bAV: Eingaben links (340 px), Ergebnis rechts, Rechenweg
+      und Hinweise eingeklappt darunter. Ein Eintrag ist aufgeklappt, die anderen zeigen eine Zeile.
+    </p>
+    <div class="desk" id="deskPage" style="width: 1260px"></div>
+
+    <!-- 3 form -->
+    <h2 class="top" id="s3">3 Formular für einen Eintrag</h2>
+    <p class="lead">
+      Alle Felder in einem Formular, eine Frage je Feld, Details hinter „Mehr erfahren“. Links der
+      Fall Riester laut Standmitteilung (Desktop), rechts am Smartphone eine Mietwohnung.
+      „Weiterzahlung an den Partner“ erscheint nur, wenn der Haushalt genau zwei Personen hat.
+    </p>
+    <div class="row">
+      <div style="width: 640px; max-width: 100%">
+        <p class="cap">Desktop: Formular in zwei Spalten</p>
+        <div class="card" id="formDesk"></div>
+      </div>
+      <div class="phone" style="width: 375px">
+        <div class="topbar"><span>Valiva</span><span>Anna</span></div>
+        <main id="formPhone"></main>
+      </div>
+    </div>
+
+    <!-- 4 empty -->
+    <h2 class="top" id="s4">4 Leerer Zustand</h2>
+    <p class="lead">
+      <code>EmptyState</code> wie bei Rente, Depot und bAV: Titel, zwei Sätze, Beispiele, ein Knopf.
+      Die Seitenleiste zeigt „noch leer“; der Baustein trägt 0 bei und wird im Rentenplan nicht als
+      fehlend gemeldet.
+    </p>
+    <div class="row">
+      <div class="desk" style="width: 720px" id="deskEmpty"></div>
+      <div class="phone" id="phoneEmpty"></div>
+    </div>
+
+    <!-- 5 phone -->
+    <h2 class="top" id="s5">5 Smartphone (375 px)</h2>
+    <p class="lead">
+      Reihenfolge wie bei den anderen Seiten: Ergebnis, Eingaben, Rechenweg. Der Ergebnisstreifen
+      bleibt beim Tippen sichtbar. Die Zeile im „Eingaben“-Blatt steht ganz rechts im Bild.
+    </p>
+    <div class="row">
+      <div class="phone" id="phoneA"></div>
+      <div class="phone" id="phoneB"></div>
+      <div class="phone" id="phoneSheet"></div>
+    </div>
+
+    <!-- 6 Rentenplan -->
+    <h2 class="top" id="s6">6 Darstellung im Rentenplan</h2>
+    <p class="lead">
+      Zusammensetzung nach Einkommensquelle: alle Einträge einer Person bilden <b>ein</b> Segment
+      „Sonstige Einkünfte“. Die einzelnen Einträge stehen darunter in der Tabelle (eingeklappt unter
+      „Mehr dazu“). Beispiel Anna, Wunsch 3.200 € netto, Kaufkraft von heute.
+    </p>
+    <div class="row">
+      <div class="desk" style="width: 820px" id="deskPlan"></div>
+      <div class="phone" id="phonePlan"></div>
+    </div>
+
+    <!-- 7 Haushalt -->
+    <h2 class="top" id="s7">7 Darstellung im Haushalt</h2>
+    <p class="lead">
+      Ein Balken je Person, darin die Segmente nach Quelle; Ben (Person 2) mit Schraffur wie im
+      Design (Person 1 gefüllt, Person 2 schraffiert). Wunsch des Haushalts 5.200 €. Ein Eintrag von
+      Ben mit „Weiterzahlung 55 %“ ist im Rechenweg des Haushalts erklärt.
+    </p>
+    <div class="row">
+      <div class="desk" style="width: 820px" id="deskHouse"></div>
+      <div class="phone" id="phoneHouse"></div>
+    </div>
+
+    <h2 class="top">Offene Punkte zur Freigabe</h2>
+    <ul class="notes">
+      <li>
+        Farbe <code>--b-oth</code> Olivgrün (Abschnitt 1) und die Schraffur der Person 2 wie im
+        bestehenden Design.
+      </li>
+      <li>
+        Alle Einträge einer Person als <b>ein</b> Segment, Einzelwerte in der Tabelle (Entscheidung
+        l).
+      </li>
+      <li>
+        Ergebnis der Seite ohne Szenario-Spanne, weil alle drei Szenarien gleich sind (kein Kapital,
+        keine Rendite).
+      </li>
+      <li>
+        Die Steuer in der Tabelle ist der Anteil an der Steuer auf die <b>Summe</b> aller Renten von
+        Anna (hier mit gesetzlicher Rente 1.450 €), ohne die gesetzliche Rente wäre sie 0 €.
+      </li>
+      <li>
+        Formular mit bis zu 12 Feldern ist lang; am Smartphone sind Beginn, Ende, Steuer und Abgaben
+        je eine Gruppe, die sich einzeln einklappen lässt (offener Punkt 8 im Konzept).
+      </li>
+    </ul>
+
+    <script>
+      const root = document.documentElement;
+      document.getElementById('themeBtn').addEventListener('click', () => {
+        const dark =
+          getComputedStyle(root).colorScheme.startsWith('dark') || root.dataset.theme === 'dark';
+        root.dataset.theme = dark ? 'light' : 'dark';
+      });
+      const q = new URLSearchParams(location.search).get('theme');
+      if (q) root.dataset.theme = q;
+
+      const svg = (d, w = 20, sw = 1.8) =>
+        `<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+      const I = {
+        home: '<path d="M3 11l9-7 9 7M5 10v10h14V10" />',
+        user: '<circle cx="12" cy="8" r="3.6" /><path d="M5 20c0-3.6 3-6 7-6s7 2.4 7 6" />',
+        etf: '<path d="M3 17l6-6 4 4 8-8M15 7h6v6" />',
+        stat: '<path d="M4 20h16M6 20V10l6-5 6 5v10M10 20v-5h4v5" />',
+        dep: '<rect x="4" y="5" width="16" height="14" rx="3" /><path d="M8 12h8" />',
+        bav: '<rect x="3" y="8" width="18" height="11" rx="2" /><path d="M9 8V6h6v2" />',
+        oth: '<circle cx="12" cy="12" r="8.5" /><path d="M12 8v8M8 12h8" />',
+        goal: '<circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" />',
+        data: '<path d="M5 6h14M5 12h14M5 18h14" />',
+        done: '<circle cx="12" cy="12" r="8.5" /><path d="M8 12.3l2.8 2.8L16.2 9.5" />',
+        open: '<circle cx="12" cy="12" r="8" stroke-dasharray="3 3" />',
+      };
+      const st = (k, t) =>
+        `<span class="st ${k}">${svg(I[k === 'open' ? 'open' : 'done'], 18, 2)}${t ? `<span>${t}</span>` : ''}</span>`;
+
+      const nl = (blk, label, icon, status, on, extra = '') =>
+        `<a class="nl${on ? ' on' : ''}" ${blk ? `data-block="${blk}"` : ''}>${svg(I[icon])}<span class="lab">${label}</span>${blk ? '<span class="dot"></span>' : ''}${extra}${status}</a>`;
+
+      const side = (othStatus) => `
+        <nav class="side" aria-label="Seitenleiste">
+          <strong>Valiva</strong>
+          ${nl('', 'Rentenplan', 'home', '', false)}
+          <div class="grp">Eingaben</div>
+          ${nl('', 'Profil', 'user', st('done'), false)}
+          <div class="grp sub2">Einkommensquellen</div>
+          ${nl('etf', 'ETF-Sparplan', 'etf', st('done'), false)}
+          ${nl('stat', 'Gesetzliche Rente', 'stat', st('done'), false)}
+          ${nl('dep', 'Altersvorsorgedepot', 'dep', st('open'), false)}
+          ${nl('bav', 'Betriebliche AV', 'bav', st('open'), false)}
+          ${nl('oth', 'Sonstige Einkünfte', 'oth', othStatus, true)}
+          <div class="grp">Sparen</div>
+          ${nl('', 'Sparziele', 'goal', st('open'), false)}
+          <div class="grp">Mehr</div>
+          ${nl('', 'Daten', 'data', '', false)}
+        </nav>`;
+
+      const people = (n) => `<div class="seg"><span class="on">Anna</span><span>Ben</span></div>`;
+
+      const entries = [
+        {
+          name: 'Riester-Rente',
+          kind: 'Riester',
+          meta: '150 € nominal bei Beginn · ab 67, lebenslang · fest 0 % · voll steuerpflichtig',
+          net: '95 €',
+          open: false,
+        },
+        {
+          name: 'Basisrente (Rürup)',
+          kind: 'Basisrente',
+          meta: '400 € nominal bei Beginn · ab 67, lebenslang · +1 % pro Jahr · wie gesetzliche Rente (92,5 %)',
+          net: '257 €',
+          open: false,
+        },
+        {
+          name: 'Wohnung Hamburg',
+          kind: 'Mieteinnahme',
+          meta: '600 € nach Kosten, Kaufkraft heute · ab 67, lebenslang · wie Inflation · voll steuerpflichtig',
+          net: '535 €',
+          open: false,
+        },
+        {
+          name: 'Rentenversicherung Nord',
+          kind: 'Private Rente',
+          meta: '220 € nominal bei Beginn · ab 67, lebenslang · fest 0 % · Anteil 17 %',
+          net: '154 €',
+          open: false,
+        },
+      ];
+      const entryRow = (e, withAct = true) => `
+        <li class="entry${e.open ? ' open' : ''}">
+          <div class="hd"><strong>${e.name}</strong><span class="chip hint">${e.kind}</span><span class="net">${e.net}<span style="font-weight:400;color:var(--muted)"> netto</span></span></div>
+          <p class="meta">${e.meta}</p>
+          ${withAct ? '<div class="act"><button class="tbtn" type="button">Bearbeiten</button><button class="tbtn" type="button">Duplizieren</button><button class="tbtn" type="button">Löschen</button></div>' : ''}
+        </li>`;
+
+      const field = (lb, val, unit, hint) => `
+        <div class="f"><span class="lb">${lb}</span><div class="in">${val}${unit ? `<span>${unit}</span>` : ''}</div>${hint ? `<p class="hp">${hint}</p>` : ''}</div>`;
+      const segf = (lb, opts, on, hint) => `
+        <div class="f"><span class="lb">${lb}</span><div class="seg sm">${opts.map((o, i) => `<span${i === on ? ' class="on"' : ''}>${o}</span>`).join('')}</div>${hint ? `<p class="hp">${hint}</p>` : ''}</div>`;
+
+      const formRiester = (cols) => `
+        <h2 class="bh" style="margin:0">Eintrag bearbeiten: Riester-Rente</h2>
+        <div class="ff ${cols ? 'two' : ''}">
+          ${field('Art', 'Riester-Rente', '▾')}
+          ${field('Name', 'Riester-Rente')}
+          ${field('Betrag pro Monat, brutto', '150,00', '€', 'Laut Standmitteilung „Rente ab Alter 67“.')}
+          ${segf('Betrag in', ['Kaufkraft heute', 'Nominal bei Beginn'], 1, '<span class="more">Mehr erfahren</span>')}
+          ${field('Anpassung pro Jahr', 'Fester Satz', '▾')}
+          ${field('Fester Satz', '0,0', '%', '0 % = Festbetrag, wie in der Standmitteilung.')}
+          ${segf('Beginn', ['Mit meinem Rentenbeginn', 'Ab Alter'], 1)}
+          ${field('Beginn ab Alter', '67', 'Jahre', 'Das ist das Jahr 2043.')}
+          ${segf('Ende', ['Lebenslang', 'Bis Alter'], 0)}
+          ${field('Steuer', 'Voll steuerpflichtig', '▾', '<span class="more">Mehr erfahren</span>')}
+          ${field('Kranken- und Pflegeversicherung', 'Keine Beiträge', '▾', 'Oder „wie betriebliche Altersvorsorge“.')}
+          ${field('Weiterzahlung an den Partner', '0', '%', 'Nur bei zwei Personen. 0 = fällt mit deinem Tod weg.')}
+        </div>
+        <div class="notice">Sparerpauschbetrag und Werbungskosten sind nicht berücksichtigt (Vereinfachung).</div>
+        <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn primary" type="button">Speichern</button><button class="btn" type="button">Abbrechen</button></div>`;
+
+      const formRent = `
+        <h2 class="bh" style="margin:0 0 4px">Neuer Eintrag: Mieteinnahme</h2>
+        <div class="ff">
+          ${field('Art', 'Mieteinnahme', '▾')}
+          ${field('Name', 'Wohnung Hamburg')}
+          ${field('Betrag pro Monat nach Kosten', '600,00', '€', 'Nach Instandhaltung, Zinsen und Abschreibung.')}
+          ${segf('Betrag in', ['Kaufkraft heute', 'Nominal bei Beginn'], 0)}
+          ${field('Anpassung pro Jahr', 'Wie Inflation', '▾')}
+        </div>
+        <div class="dts" style="margin-top:14px">
+          <details><summary>Beginn und Ende <span class="meta">Mit Rentenbeginn, lebenslang</span></summary></details>
+          <details><summary>Steuer <span class="meta">Voll steuerpflichtig</span></summary></details>
+          <details><summary>Abgaben und Partner <span class="meta">Keine, 0 %</span></summary></details>
+        </div>
+        <div class="notice">Sparerpauschbetrag und Werbungskosten sind nicht berücksichtigt (Vereinfachung).</div>
+        <button class="btn primary full" type="button" style="margin-top:14px">Speichern</button>`;
+
+      const result = (phone) => `
+        <section class="card hero" aria-label="Ergebnis">
+          <p class="eyebrow">Anna · ab Rentenbeginn mit 67 · Kaufkraft von heute</p>
+          <div class="display">1.041 €<span class="unit">netto pro Monat</span></div>
+          <p style="margin:8px 0 0"><span class="chip hint">Prognose, keine Garantie</span></p>
+          <div class="kp">
+            <div><b>1.150 €</b><span>Brutto</span></div>
+            <div><b>109 €</b><span>Steuer (Anteil)</span></div>
+            <div><b>0 €</b><span>Kranken- und Pflege</span></div>
+            <div><b>1.041 €</b><span>Netto</span></div>
+          </div>
+        </section>
+        <section class="card" aria-label="Einträge im Überblick">
+          <h2 class="bh">Einträge im Überblick</h2>
+          <div style="overflow-x:auto">
+          <table>
+            <tr><th>Eintrag</th><th>Ab / bis</th><th class="n">Brutto</th><th class="n">Steuer</th><th class="n">Netto</th></tr>
+            <tr><td>Riester-Rente</td><td>67 / lebenslang</td><td class="n">107 €</td><td class="n">12 €</td><td class="n">95 €</td></tr>
+            <tr><td>Basisrente</td><td>67 / lebenslang</td><td class="n">286 €</td><td class="n">29 €</td><td class="n">257 €</td></tr>
+            <tr><td>Wohnung Hamburg</td><td>67 / lebenslang</td><td class="n">600 €</td><td class="n">65 €</td><td class="n">535 €</td></tr>
+            <tr><td>Rentenversicherung Nord</td><td>67 / lebenslang</td><td class="n">157 €</td><td class="n">3 €</td><td class="n">154 €</td></tr>
+            <tr class="sum"><td>Summe</td><td></td><td class="n">1.150 €</td><td class="n">109 €</td><td class="n">1.041 €</td></tr>
+          </table></div>
+          <p class="hp">Beträge in Kaufkraft von heute (Inflation 2 %). Steuer: Anteil an der Steuer auf alle Renten von Anna.</p>
+        </section>
+        <div class="dts">
+          <details><summary>Rechenweg <span class="meta">Umrechnung, Steuer, Abgaben</span></summary>
+            <div class="body"><p>Riester: 150 € nominal bei Beginn, durch 1,02<sup>17</sup> = 107,12 € heute. Der Festbetrag verliert danach weiter an Kaufkraft (mit 80 Jahren 82,81 €).</p>
+            <p>Steuer: Alle steuerpflichtigen Teile (2.339 € im Monat inklusive gesetzlicher Rente) bilden eine Summe, darauf die Einkommensteuer nach Tarif (255 € im Monat), verteilt nach steuerpflichtigem Anteil.</p></div></details>
+          <details><summary>Hinweise zur Rechnung <span class="chip hint" style="margin-left:auto">3</span></summary>
+            <div class="body"><p><span class="chip warn">Ungeprüft</span> Die Basisrente wird wie die gesetzliche Rente besteuert (Annahme).</p><p>Sparerpauschbetrag und Werbungskosten sind nicht berücksichtigt.</p><p>Der Anteil der privaten Rente (17 %) ist deine Eingabe.</p></div></details>
+        </div>`;
+
+      const inputsDesk = `
+        <section aria-label="Eingaben">
+          <h2 class="bh">Einträge von Anna</h2>
+          <ul class="entries">
+            ${entryRow({ ...entries[0], open: true }, true)}
+            ${entries
+              .slice(1)
+              .map((e) => entryRow(e, false))
+              .join('')}
+          </ul>
+          <button class="btn full" type="button">+ Eintrag hinzufügen</button>
+          <p class="cnt">4 von 10 Einträgen</p>
+        </section>`;
+
+      document.getElementById('deskPage').innerHTML = `${side(st('done'))}
+        <main class="m">
+          <div class="ph"><div><h1 class="t">Sonstige Einkünfte – Anna</h1><p class="sub">Altverträge und weitere Einkünfte im Alter, je Eintrag ein Betrag.</p></div>${people()}</div>
+          <div class="bp">${inputsDesk}<div>${result(false)}</div></div>
+        </main>`;
+
+      document.getElementById('formDesk').innerHTML = formRiester(true);
+      document.getElementById('formPhone').innerHTML =
+        `<h1 class="t" style="margin:0 0 8px">Sonstige Einkünfte</h1><div class="card">${formRent}</div>`;
+
+      const emptyCard = `
+        <section class="card empty" aria-label="Noch keine Einträge">
+          ${svg(I.oth, 36, 1.6)}
+          <h3>Noch keine sonstigen Einkünfte</h3>
+          <p>Erfasse Altverträge und weitere Einkünfte im Alter, ohne jedes Produkt einzeln nachzubauen. Du trägst Betrag, Beginn und Steuer ein, den Rest rechnet die App.</p>
+          <ul class="ex"><li>Riester-Rente laut Standmitteilung</li><li>Mieteinnahmen</li><li>Pension</li></ul>
+          <button class="btn primary" type="button">Ersten Eintrag anlegen</button>
+        </section>`;
+      document.getElementById('deskEmpty').innerHTML = `${side(st('open', ''))}
+        <main class="m"><div class="ph"><div><h1 class="t">Sonstige Einkünfte – Anna</h1></div></div>${emptyCard}</main>`;
+      document.getElementById('phoneEmpty').innerHTML =
+        `<div class="topbar"><span>Valiva</span><span>Anna</span></div>
+        <main><h1 class="t">Sonstige Einkünfte</h1>${emptyCard}</main>
+        <div class="tabbar"><span>Rentenplan</span><b>Eingaben</b><span>Sparen</span><span>Mehr</span></div>`;
+
+      document.getElementById('phoneA').innerHTML =
+        `<div class="topbar"><span>Valiva</span><span>Anna ▾</span></div>
+        <main><h1 class="t">Sonstige Einkünfte – Anna</h1>
+          <div class="strip"><span>Netto ab 67</span><b>1.041 €</b></div>
+          ${result(true).split('<section class="card" aria-label="Einträge')[0]}
+          <section aria-label="Eingaben"><h2 class="bh">Einträge von Anna</h2><ul class="entries">${entries.map((e) => entryRow(e, false)).join('')}</ul>
+          <button class="btn full" type="button">+ Eintrag hinzufügen</button><p class="cnt">4 von 10 Einträgen</p></section></main>
+        <div class="tabbar"><span>Rentenplan</span><b>Eingaben</b><span>Sparen</span><span>Mehr</span></div>`;
+
+      document.getElementById('phoneB').innerHTML =
+        `<div class="topbar"><span>Valiva</span><span>Anna ▾</span></div>
+        <main><h2 class="bh">Einträge im Überblick</h2>
+          <div class="card" style="padding:0;overflow:hidden"><table>
+            <tr><th>Eintrag</th><th class="n">Brutto</th><th class="n">Netto</th></tr>
+            <tr><td>Riester-Rente</td><td class="n">107 €</td><td class="n">95 €</td></tr>
+            <tr><td>Basisrente</td><td class="n">286 €</td><td class="n">257 €</td></tr>
+            <tr><td>Wohnung Hamburg</td><td class="n">600 €</td><td class="n">535 €</td></tr>
+            <tr><td>Rentenversicherung Nord</td><td class="n">157 €</td><td class="n">154 €</td></tr>
+            <tr class="sum"><td>Summe</td><td class="n">1.150 €</td><td class="n">1.041 €</td></tr></table></div>
+          <div class="dts"><details><summary>Rechenweg</summary></details><details><summary>Hinweise zur Rechnung <span class="chip hint" style="margin-left:auto">3</span></summary></details></div>
+        </main><div class="tabbar"><span>Rentenplan</span><b>Eingaben</b><span>Sparen</span><span>Mehr</span></div>`;
+
+      const sheetRow = (blk, label, icon, status, on) =>
+        `<a class="nl${on ? ' on' : ''}" ${blk ? `data-block="${blk}"` : ''} style="min-height:48px">${svg(I[icon])}<span class="lab">${label}</span>${blk ? '<span class="dot"></span>' : ''}${status}</a>`;
+      document.getElementById('phoneSheet').innerHTML =
+        `<div class="topbar"><span>Valiva</span><span>Anna ▾</span></div>
+        <main style="opacity:.45"><h1 class="t">Rentenplan</h1></main>
+        <div class="sheet" style="min-height:430px"><div class="grab"></div>
+          <div class="grp">Eingaben</div>
+          ${sheetRow('', 'Profil', 'user', st('done', 'ausgefüllt'), false)}
+          <div class="grp sub2">Einkommensquellen</div>
+          ${sheetRow('etf', 'ETF-Sparplan', 'etf', st('done', 'ausgefüllt'), false)}
+          ${sheetRow('stat', 'Gesetzliche Rente', 'stat', st('done', 'ausgefüllt'), false)}
+          ${sheetRow('dep', 'Altersvorsorgedepot', 'dep', st('open', 'leer'), false)}
+          ${sheetRow('bav', 'Betriebliche AV', 'bav', st('open', 'leer'), false)}
+          ${sheetRow('oth', 'Sonstige Einkünfte', 'oth', st('done', 'ausgefüllt'), true)}
+        </div>
+        <div class="tabbar"><span>Rentenplan</span><b>Eingaben</b><span>Sparen</span><span>Mehr</span></div>`;
+
+      // Rentenplan composition (Anna): stat 1125, etf 520, dep 210, oth 1041 = 2896; wish 3200
+      const segs = [
+        ['stat', 1125, 'Gesetzliche Rente'],
+        ['etf', 520, 'ETF-Sparplan'],
+        ['dep', 210, 'Depot'],
+        ['oth', 1041, 'Sonstige Einkünfte'],
+      ];
+      const total = 2896;
+      const stack = (hatch, scale = 1, withLabel = true) =>
+        `<div class="stack">${segs
+          .map(
+            ([k, v, n]) =>
+              `<span class="s-${k}${hatch ? ' hatch' : ''}" style="flex:${v}" title="${n}">${withLabel && (v / total) * 100 * scale > 12 ? `${v.toLocaleString('de-DE')} €` : ''}</span>`,
+          )
+          .join('')}</div>`;
+      const legend = `<ul class="legend">${segs.map(([k, v, n]) => `<li><i class="s-${k}"></i>${n} ${v.toLocaleString('de-DE')} €</li>`).join('')}</ul>`;
+      const planBody = (phone) => `
+        <div class="ph"><div><h1 class="t">Rentenplan – Anna</h1><p class="sub">Kaufkraft von heute, neutrales Szenario</p></div></div>
+        <section class="card hero"><p class="eyebrow">Voraussichtliche Netto-Rente ab 67</p>
+          <div class="display">2.896 €<span class="unit">pro Monat</span></div>
+          <p style="margin:8px 0 0"><span class="chip warn">Es fehlen etwa 304 € pro Monat</span></p></section>
+        <section class="card"><h2 class="bh">Zusammensetzung nach Einkommensquelle</h2>
+          <div class="wishline"><div style="width:${(2896 / 3200) * 100}%">${stack(false, phone ? 0.8 : 1)}</div><div class="wl" style="left:calc(100% - 1px)"></div></div>
+          ${legend}<p class="hp">Gestrichelte Linie: Wunsch 3.200 € netto.</p></section>
+        <div class="dts"><details open><summary>Sonstige Einkünfte im Detail <span class="meta">4 Einträge</span></summary>
+          <div class="body" style="overflow-x:auto"><table>
+            <tr><th>Eintrag</th><th class="n">Netto</th></tr>
+            <tr><td><span class="swatch"></span>Wohnung Hamburg</td><td class="n">535 €</td></tr>
+            <tr><td><span class="swatch"></span>Basisrente (Rürup)</td><td class="n">257 €</td></tr>
+            <tr><td><span class="swatch"></span>Rentenversicherung Nord</td><td class="n">154 €</td></tr>
+            <tr><td><span class="swatch"></span>Riester-Rente</td><td class="n">95 €</td></tr>
+            <tr class="sum"><td>Zusammen</td><td class="n">1.041 €</td></tr></table>
+            <p class="hp"><a class="more">Zu den sonstigen Einkünften</a></p></div></details>
+          <details><summary>Verlauf <span class="meta">Alter 67 bis 90</span></summary></details></div>`;
+      document.getElementById('deskPlan').innerHTML =
+        `${side(st('done'))}<main class="m">${planBody(false)}</main>`;
+      document.getElementById('phonePlan').innerHTML =
+        `<div class="topbar"><span>Valiva</span><span>Anna ▾</span></div><main>${planBody(true)}</main><div class="tabbar"><b>Rentenplan</b><span>Eingaben</span><span>Sparen</span><span>Mehr</span></div>`;
+
+      // Haushalt: Anna 2896, Ben 1820 (stat 1380, etf 300, oth 140); wish 5200
+      const bar = (name, parts, hatch, tot) => {
+        const maxv = 2896;
+        const sum = parts.reduce((s, p) => s + p[1], 0);
+        return `<div class="hb"><b>${name}</b><div class="stack" style="width:${(sum / maxv) * 100}%">${parts
+          .map(
+            ([k, v, n]) =>
+              `<span class="s-${k}${hatch ? ' hatch' : ''}" style="flex:${v}" title="${n}">${v / maxv > 0.12 ? v.toLocaleString('de-DE') : ''}</span>`,
+          )
+          .join('')}</div><span class="tot">${tot}</span></div>`;
+      };
+      const house = () => `
+        <div class="ph"><div><h1 class="t">Rentenplan – Haushalt</h1><p class="sub">Anna und Ben, Kaufkraft von heute, neutral</p></div></div>
+        <section class="card hero"><p class="eyebrow">Netto-Rente des Haushalts ab dem Jahr der letzten Rente</p>
+          <div class="display">4.716 €<span class="unit">pro Monat</span></div>
+          <p style="margin:8px 0 0"><span class="chip warn">Es fehlen etwa 484 € pro Monat</span></p></section>
+        <section class="card"><h2 class="bh">Zusammensetzung nach Person und Quelle</h2>
+          ${bar(
+            'Anna',
+            [
+              ['stat', 1125, 'Gesetzliche Rente'],
+              ['etf', 520, 'ETF'],
+              ['dep', 210, 'Depot'],
+              ['oth', 1041, 'Sonstige'],
+            ],
+            false,
+            '2.896 €',
+          )}
+          ${bar(
+            'Ben',
+            [
+              ['stat', 1380, 'Gesetzliche Rente'],
+              ['etf', 300, 'ETF'],
+              ['oth', 140, 'Sonstige'],
+            ],
+            true,
+            '1.820 €',
+          )}
+          <ul class="legend"><li><i class="s-stat"></i>Gesetzliche Rente</li><li><i class="s-etf"></i>ETF-Sparplan</li><li><i class="s-dep"></i>Depot</li><li><i class="s-oth"></i>Sonstige Einkünfte</li><li>Anna gefüllt, Ben schraffiert</li></ul>
+          <p class="hp">Wunsch des Haushalts: 5.200 € netto.</p></section>
+        <div class="dts"><details open><summary>Sonstige Einkünfte je Person <span class="meta">5 Einträge</span></summary><div class="body" style="overflow-x:auto"><table>
+          <tr><th>Person</th><th>Eintrag</th><th class="n">Netto</th><th>Nach dem Tod</th></tr>
+          <tr><td>Anna</td><td>4 Einträge (Riester, Basisrente, Miete, private Rente)</td><td class="n">1.041 €</td><td>fallen weg</td></tr>
+          <tr><td>Ben</td><td>Pension Zusatzversorgung</td><td class="n">140 €</td><td>55 % an Anna</td></tr></table>
+          <p class="hp">Weiterzahlung wirkt nur bei zwei Personen und gesetztem Hinterbliebenen-Schalter. Der Anteil wird bei Anna versteuert und zählt als anrechenbares Einkommen bei der Witwenrente (Annahme, ungeprüft).</p></div></details></div>`;
+      document.getElementById('deskHouse').innerHTML =
+        `${side(st('done'))}<main class="m">${house()}</main>`;
+      document.getElementById('phoneHouse').innerHTML =
+        `<div class="topbar"><span>Valiva</span><span>Haushalt ▾</span></div><main>${house()}</main><div class="tabbar"><b>Rentenplan</b><span>Eingaben</span><span>Sparen</span><span>Mehr</span></div>`;
+    </script>
+  </body>
+</html>

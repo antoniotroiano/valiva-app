@@ -84,7 +84,7 @@ type Product =
   | StatutoryPension      // 'statutory'        Phase 3
   | OccupationalPension   // 'occupational'     Phase 3
   | RetirementDepot       // 'retirementDepot'  Phase 3
-  | LegacyContract        // 'legacy' (Riester/Rürup/insurance) Phase 6
+  | LegacyContract        // 'legacy' (Riester/Rürup/insurance) later; until then OtherIncomeEntry (see `15`)
   | RealEstate            // 'realEstate'       Phase 6
   | GenericSavings        // 'generic' (cash/gold/crypto) Phase 6
   | ChildStartPension;    // 'childStart'       Phase 6
@@ -116,6 +116,7 @@ type SavingsGoal = {
 | `legacy` | contractKind (riester/ruerup/lifeInsurance/other), currentValue, monthlyContribution, guaranteedPensionMonthly, projectedPensionMonthly, endMonth |
 | `realEstate` | mode (ownerOccupied/rental), monthlyRentSaved ODER monthlyRentalIncome, remainingDebt, monthlyDebtService, maintenancePercent |
 | `generic` | assetKind (cash/gold/crypto/other), initialCapital, monthlyContribution, returnPercent, taxMode |
+| `otherIncome` (kein `Product`, eigener Eintragstyp, Liste je Person, `15` §3) | name, kind (`riester`/`basisPension`/`privateAnnuity`/`civilServicePension`/`rent`/`other`), enabled, amountMonthly, amountBasis (`today`/`nominalAtStart`), adjustment (`inflation`/`pension`/`fixed`+percent), start (`retirement`/Alter), end (`lifelong`/Alter), taxMode (`none`/`full`/`percent`/`pensionShare`), taxSharePercent, contributions (`none`/`likeOccupational`), survivorPercent; höchstens 10 je Person |
 | `childStart` | childBirthYear, monthlyStateContribution (10), startAge (6), endAge (18), additionalContributionMonthly |
 
 ## 5. Ergebnisse (nicht gespeichert, immer berechnet)
@@ -175,7 +176,7 @@ Neuer Baustein = neuer Projector + Registereintrag + UI-Formular. Die Gesamtsich
 | 4 | `OverviewResult` (Snapshot, Verlauf, Issues je Baustein), `Profile.desiredMonthlyIncomeToday`, ETF als `ProductProjector` mit Entnahmefeldern, `GapSolveResult`, Zustand `valiva.overview.v1` (Details `10-phase-4-overview.md`; `lifeExpectancyAge` existiert seit 3a) |
 | 4b | `Household` mit `persons[]`, `Person` (vereint Phase-1-`Person` und `Profile`), haushaltsweite und persönliche Annahmen, `HouseholdResult`, Zustand `valiva.household.v2` mit Migration der Alt-Schlüssel (Details `11-phase-4b-household.md`) |
 | 5 | Persistenz, Migrationen, Export/Import, Beispieldateien |
-| 6 | `legacy`, `realEstate`, `generic`, `childStart` |
+| 6 | 6b: `OtherIncomeEntry` und Block `otherIncome` (`valiva.p.<id>.otherIncome.v1`, Workspace-Version 1 auf 2 mit leerer Migration, `OverviewProductId` mit `otherIncome:<id>`, `survivorOtherIncome` im Haushaltsergebnis; Details `15-phase-6-generic-block.md`). Später: `legacy`, `realEstate`, `generic`, `childStart` |
 | 7 | Server-Persistenz, Nutzerkonto, Sync (UUIDs, `updatedAt` je Entität) |
 
 ## 10. Offen
