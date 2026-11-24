@@ -34,8 +34,8 @@ Das Konzept ist die **einzige gültige Version**. Änderungen am Konzept direkt 
 | `archive/11-phase-4b-household.md` | Archiv | Phase 4b im Detail: Haushalt mit mehreren Personen, Haushaltslücke, Zustandsmigration, Teilphasen 4b-1 bis 4b-3 |
 | `archive/12-phase-5-persistence-and-release.md` | Archiv | Phase 5 im Detail: Workspace-Format, Export/Import, Repo-Reife (Beispieldaten, README, Lizenz, CI), Git/GitHub, Teilphasen 5a bis 5d |
 | `archive/13-review-report.md` | Archiv | Review-Bericht 2026-11-18: Sicherheit/GitHub Pages, Rechenfehler, Usability, Design, fehlende Funktionen, Umsetzungsreihenfolge |
-| `14-review-report-2026-11-22.md` | laufend | Review-Bericht 2026-11-22 in 18 Arbeitspaketen (je eine Session, mit Abhaken): Smartphone-Fehler, Navigation, Struktur, Design, Rentenplan, Bausteinseiten, neue Funktionen, Release |
-| `16-retired-mode.md` | Konzept (AP-19, Mockup freigegeben, Bau in AP-20) | Rentner-Modus: Personen, die schon in Rente sind, allein und im Paar (Schalter am Profil, Ist-Rente laut Bescheid, bAV und Depot in Auszahlung, ETF-Bestand, Übergangsjahre im Paar, Workspace-Version 3, Rechenbeispiele, Golden-Vektoren `r`/`rh`), Mockup `docs/mockups/rentner-modus.html` |
+| `14-review-report-2026-11-22.md` | laufend | Review-Bericht 2026-11-22 in 25 Arbeitspaketen (je eine Session, mit Abhaken): Smartphone-Fehler, Navigation, Struktur, Design, Rentenplan, Bausteinseiten, neue Funktionen, Release |
+| `16-retired-mode.md` | aktuell (AP-19 Konzept, AP-20 gebaut) | Rentner-Modus: Personen, die schon in Rente sind, allein und im Paar (Schalter am Profil, Ist-Rente laut Bescheid, bAV und Depot in Auszahlung, ETF-Bestand, Übergangsjahre im Paar, Workspace-Version 3, Rechenbeispiele, Golden-Vektoren `r`/`rh`), Mockup `docs/mockups/rentner-modus.html` |
 | `15-phase-6-generic-block.md` | aktuell | Phase 6b im Detail: generischer Baustein "Sonstige Einkünfte im Alter" (Felder, Validierung, Gesamtsicht und Haushalt, Workspace-Format, Rechenregeln mit Beispielen, Tests, Golden-Vektoren, Abgrenzung), Mockup `docs/mockups/sonstige-einkuenfte.html` |
 
 ## Lesereihenfolge je Aufgabe

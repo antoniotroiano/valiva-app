@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Sicherheitsproblem melden (privat)
+    url: https://github.com/antoniotroiano/valiva-app/security/advisories/new
+    about: Bitte Sicherheitsprobleme nicht als öffentliches Issue melden, sondern hier privat.

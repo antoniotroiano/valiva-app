@@ -6,7 +6,7 @@ App öffnen: <https://antoniotroiano.github.io/valiva-app/>
 
 ## Erst ausprobieren
 
-Auf der Startseite "Rentenplan" gibt es die Karte **Willkommen** mit dem Knopf **Mit Beispieldaten ausprobieren**. Damit lädst du einen erfundenen Haushalt und siehst sofort, wie fertige Ergebnisse aussehen. Auf der Seite "Daten" findest du drei Beispiele (Einzelperson, Paar, Paar mit Rentenlücke). Beim Laden ersetzen sie deine aktuellen Daten; die App fragt vorher nach und lädt eine Sicherung deiner bisherigen Daten herunter.
+Auf der Startseite "Rentenplan" gibt es die Karte **Willkommen** mit dem Knopf **Mit Beispieldaten ausprobieren**. Damit lädst du einen erfundenen Haushalt und siehst sofort, wie fertige Ergebnisse aussehen. Auf der Seite "Daten" findest du fünf Beispiele (Einzelperson, Paar, Paar mit Rentenlücke, Rentnerin, Paar mit einer Person in Rente). Beim Laden ersetzen sie deine aktuellen Daten; die App fragt vorher nach und lädt eine Sicherung deiner bisherigen Daten herunter.
 
 ## Mit deinen Daten beginnen
 
@@ -15,6 +15,8 @@ Wähle **Mit meinen Daten beginnen**. Die Karte "Nächster Schritt" zeigt dir, w
 ### 1. Profil prüfen
 
 Auf der Seite **Profil** stehen Geburtsjahr, gewünschtes Rentenalter und Planungshorizont (bis zu welchem Alter gerechnet wird). Optional trägst du die Geburtsjahre deiner Kinder ein (für die Kinderzulage beim Altersvorsorgedepot) und dein **Wunscheinkommen im Ruhestand**: Wie viel Netto pro Monat möchtest du, in Kaufkraft von heute? Ohne dieses Wunscheinkommen kann die App keine Rentenlücke berechnen.
+
+**Beziehst du schon Rente?** Schalte hier "Ich beziehe bereits Rente" ein und trage das Jahr des Rentenbeginns laut Rentenbescheid ein. Die Bausteinseiten fragen dann nach den tatsächlichen Werten aus Bescheiden und Kontoauszügen statt nach einer Prognose, und die App rechnet ab heute. Bei Paaren mit einer Person in Rente zeigt der Rentenplan, was heute schon ankommt; die Jahre, bis die andere Person in Rente geht, zählen nicht zur Lücke, weil ihr Gehalt nicht modelliert ist.
 
 Darunter stehen Annahmen wie Inflation und die drei Renditeszenarien. Sie sind mit Standardwerten vorbelegt und gelten für alle Einkommensquellen. Die Werte sind Annahmen, keine Prognosen.
 

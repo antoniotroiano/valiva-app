@@ -1,7 +1,7 @@
 {
   "name": "valiva",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Private retirement and savings planner (ETF savings plan, statutory pension, bAV, retirement depot, savings goals, household)",
   "license": "MIT",
   "engines": {

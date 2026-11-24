@@ -12,4 +12,5 @@
 - [`legal-values-review.md`](legal-values-review.md): Prüfstand der gesetzlichen Werte (Deutsch)
 - [`architecture.md`](architecture.md), [`testing.md`](testing.md), [`design.md`](design.md), [`glossary.md`](glossary.md)
 - [`releasing.md`](releasing.md): Versionen und automatisches GitHub-Release (Deutsch)
+- [`../SECURITY.md`](../SECURITY.md): Sicherheitsprobleme melden (Deutsch)
 - `mockups/`: Entwurfsskizzen der Oberfläche (intern), `archive/`: überholte Dokumente

@@ -90,7 +90,7 @@ The rules the projections use, by phase. The legal values themselves live in `co
 - Import replaces all current data after a confirmation; a backup of the current data is downloaded first. There is no merging. The theme is a device setting and not part of the file
 - The file is plain text and not encrypted. It contains personal financial data; keep it safe and never commit it (`*.workspace.json` is ignored except `examples/`)
 - Files are not trusted: size limit 2 MB, JSON only, unknown fields are dropped, `__proto__`, `constructor` and `prototype` keys are refused, person ids must match `[A-Za-z0-9_-]{1,32}`, numbers must be finite and within sane limits, at most 20 persons. A broken household stops the import; a single broken block is replaced by its defaults and reported as a warning
-- `schemaVersion` of the file starts at 1. A file from a newer version is refused; older versions go through a chain of migrations (none yet)
+- `schemaVersion` of the file starts at 1 and is 3 today (2: other income, 3: retiree mode; both migrations are identity steps because the new fields are optional). A file from a newer version is refused, older versions go through the chain of migrations. It is a different number from the app version
 - `examples/` holds invented workspaces (`meta.synthetic: true`) that can be loaded from the page "Daten"
 
 ## Income tax on pensions (Phase 6a)

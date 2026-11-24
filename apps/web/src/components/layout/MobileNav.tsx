@@ -5,6 +5,7 @@ import type { Page } from '../../app/pages';
 import type { InputStatus } from '../../lib/inputStatus';
 import { Icon, type IconName } from './Icon';
 import { NavStatus } from './NavStatus';
+import { Logo } from './Logo';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sheet = 'inputs' | 'more';
@@ -128,6 +129,7 @@ export function MobileNav({
   return (
     <>
       <header className="mobile-top">
+        <Logo />
         <strong>{de.appName}</strong>
       </header>
 

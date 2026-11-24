@@ -7,7 +7,7 @@ Kurzfassung: Changelog füllen, Version in `package.json` erhöhen, committen, p
 - **Schema:** Semantic Versioning `MAJOR.MINOR.PATCH`, immer genau `x.y.z` (kein `-beta`, kein `v` im `package.json`). Der Tag heißt `v<version>`, zum Beispiel `v0.1.0`.
 - **Eine Quelle:** `version` im Wurzel-`package.json`. Die Pakete unter `apps/` und `packages/` sind `private` und behalten `0.0.0`. Die Oberfläche zeigt die Version am Fuß der Seite "Daten", und die Exportdatei trägt sie im Feld `appVersion` (nur zur Information, sie entscheidet nie über den Import).
 - **Zwei getrennte Nummern:** Die App-Version (`package.json`) und die Version des Dateiformats (`schemaVersion` im Workspace) sind nicht dasselbe. Die Formatversion steigt nur, wenn sich das Dateiformat ändert, und hat eine Migration.
-- **`0.x` heißt "in Entwicklung":** Verhalten und Dateiformat können sich ändern. `1.0.0` erst, wenn das Datenformat als stabil zugesagt ist und die offenen Punkte geklärt sind (Rentner-Modus, die fünf ungeprüften Rechtswerte).
+- **`0.x` heißt "in Entwicklung":** Verhalten und Dateiformat können sich ändern. `1.0.0` erst, wenn das Datenformat als stabil zugesagt ist und die offenen Punkte geklärt sind (Impressum und Datenschutzerklärung entschieden, die fünf ungeprüften Rechtswerte geklärt oder bewusst akzeptiert; siehe Bericht 14, Abschnitt 11).
 
 ## Welche Ziffer steigt
 

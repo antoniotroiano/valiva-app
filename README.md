@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/images/valiva-logo.png" alt="Valiva-Logo: ein gefaltetes türkises V auf dunkelblauem Grund" width="128" height="128">
+</p>
+
 # Valiva
 
 **Zur App: <https://antoniotroiano.github.io/valiva-app/>**
@@ -44,6 +48,16 @@ Anleitungen für Nutzer:
 - **Rentner-Modus mit Grenzen.** Nicht abgebildet sind Erwerbsminderungsrente, eine schon bezogene Witwenrente (trage sie als „Sonstige Einkünfte“ ein), der Altersentlastungsbetrag und Versicherte mit eigenem Beitragsmodell (freiwillig gesetzlich oder privat). Die Jahresrente des Jahres nach dem Rentenbeginn, die den steuerfreien Betrag bestimmt, schätzt die App, wenn du sie nicht einträgst.
 - Die Oberfläche gibt es nur auf Deutsch, gerechnet wird nach deutschem Recht.
 - Die Software wird ohne Gewähr bereitgestellt (siehe [Lizenz](LICENSE)).
+
+## Mitwirken
+
+Valiva wird von einer einzelnen Person privat gepflegt. Fehler und Vorschläge sind als [Issue](https://github.com/antoniotroiano/valiva-app/issues) willkommen, es gibt dafür zwei kurze Vorlagen. Bitte beachte:
+
+- **Kein Anspruch auf Antwort**, Korrektur oder Umsetzung.
+- **Keine Beratung:** Issues sind kein Ort für Fragen zu deiner Anlage-, Steuer- oder Rentenplanung.
+- **Keine echten Finanzdaten** in Issues, sie sind öffentlich. Nutze erfundene Beispielwerte.
+- **Pull Requests werden nicht angenommen.**
+- **Sicherheitsprobleme** bitte nicht als Issue, sondern privat melden, siehe [`SECURITY.md`](SECURITY.md).
 
 ## Versionen
 

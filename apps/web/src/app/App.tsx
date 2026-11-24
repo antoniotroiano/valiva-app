@@ -15,6 +15,7 @@ import { AppNotices } from '../components/layout/AppNotices';
 import { useNarrowScreen } from '../state/useNarrowScreen';
 import { HouseholdOverviewPage } from './HouseholdOverviewPage';
 import { Icon } from '../components/layout/Icon';
+import { Logo } from '../components/layout/Logo';
 import { BLOCK_OF, NAV, PAGES } from './pages';
 import type { NavEntry, Page } from './pages';
 import { PersonWorkspace } from './PersonWorkspace';
@@ -314,6 +315,7 @@ export function App() {
       ) : (
         <nav className="sidebar" aria-label={de.nav.label}>
           <div className="nav-head">
+            <Logo />
             <strong>{de.appName}</strong>
           </div>
           <ul className="nav-list">{NAV.map(navEntry)}</ul>

@@ -21,6 +21,8 @@ Wie sich Märkte entwickeln, ist unbekannt. Deshalb rechnet die App ETF, Depot u
 - **Sonstige Einkünfte:** Ein von dir eingegebener Monatsbetrag, der durch die Zeit getragen und je nach Auswahl besteuert wird. Hier prognostiziert die App kein Kapital.
 - **Sparziele:** Zinsen auf ein kurzfristiges Sparziel mit Zinssteuer, getrennt von der Rente.
 
+**Personen, die schon in Rente sind (Rentner-Modus):** Statt einer Prognose trägst du Werte aus Bescheiden ein (Bruttorente, Betriebsrente oder Restkapital, Restkapital des Altersvorsorgedepots, ETF-Bestand mit der Summe aller Einzahlungen). Die App rechnet ab heute. Der steuerpflichtige Anteil der Rente hängt vom Jahr des Rentenbeginns ab, der steuerfreie Betrag wird ab dem Folgejahr festgeschrieben. Bei Paaren mit einer Person in Rente gibt es Übergangsjahre bis zum Rentenbeginn der anderen Person, die ohne Lücke gezeigt werden.
+
 **Steuer im Alter:** Die Einkommensteuer auf Renten rechnet die App nach dem Tarif auf die Summe aller deiner Renten. Nicht berücksichtigt sind unter anderem Solidaritätszuschlag und Kirchensteuer auf Renten.
 
 ## Gesetzliche Werte und was "ungeprüft" heißt

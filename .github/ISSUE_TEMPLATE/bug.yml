@@ -1,0 +1,27 @@
+name: Fehler melden
+description: Etwas funktioniert nicht oder rechnet offensichtlich falsch.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für die Meldung. Es gibt keinen Anspruch auf eine Antwort. Valiva ist keine Anlage- oder Steuerberatung.
+        **Schreibe keine echten persönlichen Finanzdaten in dieses Issue**, es ist öffentlich. Nutze erfundene Beispielwerte.
+        Sicherheitsprobleme bitte privat über den Reiter "Security" melden.
+  - type: textarea
+    id: what
+    attributes:
+      label: Was ist passiert?
+      description: Was hast du erwartet, was hast du gesehen?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Schritte zum Nachstellen
+      description: Welche Seite, welche (erfundenen) Eingaben?
+  - type: input
+    id: env
+    attributes:
+      label: Version, Browser und Gerät
+      description: Die Version steht unten auf der Seite "Daten".

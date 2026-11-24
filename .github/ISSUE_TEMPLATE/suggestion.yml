@@ -1,0 +1,16 @@
+name: Vorschlag
+description: Eine Idee oder ein Wunsch für die App.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für den Vorschlag. Es gibt keinen Anspruch auf eine Antwort oder Umsetzung. Pull Requests werden nicht angenommen.
+        **Schreibe keine echten persönlichen Finanzdaten in dieses Issue**, es ist öffentlich.
+  - type: textarea
+    id: idea
+    attributes:
+      label: Was wünschst du dir?
+      description: Beschreibe das Problem, das du lösen willst, nicht nur die Lösung.
+    validations:
+      required: true

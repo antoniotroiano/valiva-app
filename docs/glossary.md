@@ -39,6 +39,7 @@
 | Gesetzliche Rente                         | `statutory`                                                    |
 | Renteninformation (Hochrechnung)          | `projectedMonthlyPensionToday`                                 |
 | Rentenbeginn / Regelaltersgrenze          | `retirementAge` / `regularRetirementAge`                       |
+| Rentner-Modus (bezieht schon Rente)       | `retired` (retiree mode), `retirementStartYear`                |
 | Abschlag / Zuschlag                       | `earlyReduction` / `lateIncrease`                              |
 | Rentenanpassung                           | `pensionAdjustmentPercent`                                     |
 | Besteuerungsanteil                        | `taxableShare`                                                 |

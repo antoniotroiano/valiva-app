@@ -6,11 +6,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-24
+
 ### Added
 
-- Beta build channel: every green `main` is published to a separate beta site with its own storage prefix (`valiva-beta.`), a beta notice and no search-engine indexing. The released app is unaffected.
-- Retiree mode: a person who already draws a pension is switched on in the profile ("Ich beziehe bereits Rente", with the start year from the pension notice) and enters actual values instead of a forecast: gross statutory pension from the notice, a running company pension or a rest capital, a rest capital of the retirement depot and an ETF holding with the sum paid in. The calculation runs from today. The taxable share follows the year the pension started (table of § 22 EStG up to 2025) and the tax-free part is fixed from the following year; childless people born before 1940 pay no care insurance surcharge.
+- Retiree mode: a person who already draws a pension switches it on in the profile ("Ich beziehe bereits Rente", with the start year from the pension notice) and enters actual values instead of a forecast: the gross statutory pension from the notice, a running company pension or a rest capital, a rest capital of the retirement depot, and an ETF holding with the sum paid in. The calculation runs from today. The taxable share follows the year the pension started (table of § 22 EStG up to 2025) and the tax-free part is fixed from the following year; childless people born before 1940 pay no care insurance surcharge.
 - Household with one retired person: a tile "Heute schon in Rente", transition years until the other person retires (shown without a gap, because that person's salary is not modelled) and joint assessment from the year both pensions run.
+- Valiva logo: shown next to the app name (sidebar and phone top bar) and as browser tab and home screen icon.
 - Example data for a retired person and for a couple with one retired person; the assumptions page lists the new legal values (all confirmed) and a calculation-rules row "Personen in Rente".
 
 ### Changed
@@ -39,9 +41,11 @@ First tagged version. Valiva is a retirement and savings planner that runs entir
 
 - Retiree mode: disability pensions, a widow's pension already drawn (enter it as other income), the age-related relief allowance, voluntarily or privately insured people with their own contribution model and the pension adjustment on 1 July are not modelled.
 - Five legal values are still `unverified` and marked as such everywhere in the app: church tax rates (8 % and 9 %), base interest rate from 2027, age limit of the child allowance in the pension depot, and the simplification that Riester pensions are fully taxable. See `docs/legal-values-review.md`.
+- The salary of a person who still works is not modelled. In a couple with one retired person, the years until the other person retires are shown without a gap.
 - Taxes and social contributions are simplified. The assumptions are listed on the assumptions page and in `docs/assumptions.md`. Results are forecasts, not guarantees, and not tax or investment advice.
 - The export file is not encrypted. Data lives in the browser's local storage and is lost if the browser data is deleted.
 - German interface only.
 
-[Unreleased]: https://github.com/antoniotroiano/valiva-app/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/antoniotroiano/valiva-app/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/antoniotroiano/valiva-app/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/antoniotroiano/valiva-app/releases/tag/v0.1.0
