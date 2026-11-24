@@ -1,4 +1,8 @@
 export const notices = {
+  beta: {
+    text: 'Beta-Version zum Testen.',
+    hint: 'Sie hat einen eigenen Speicher und sieht deine Daten aus der echten App nicht. Bitte nur erfundene Daten eingeben; Fehler sind möglich.',
+  },
   storageFailed: {
     text: 'Speichern im Browser ist nicht möglich. Deine letzten Änderungen gehen verloren, wenn du die Seite schließt. Exportiere deine Daten.',
     export: 'Zu den Daten',

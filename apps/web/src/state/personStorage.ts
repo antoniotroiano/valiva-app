@@ -1,8 +1,9 @@
 import type { PersonBlock } from '@valiva/core';
+import { STORAGE_PREFIX } from '../app/appConfig';
 
 /** Per-person block storage: `valiva.p.<personId>.<block>.v1`. */
 export function personKey(personId: string, block: PersonBlock): string {
-  return `valiva.p.${personId}.${block}.v1`;
+  return `${STORAGE_PREFIX}p.${personId}.${block}.v1`;
 }
 
 /** Raw stored JSON of a block, or `null` if missing or storage is unavailable. */

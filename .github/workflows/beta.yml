@@ -1,0 +1,71 @@
+name: Publish beta
+
+# Every push to main whose CI run is green is built as the beta channel (own storage prefix, "Beta" notice)
+# and published to the separate repository antoniotroiano/valiva-app-beta, whose GitHub Pages site serves it.
+# The released app (release.yml, pages.yml) is not touched. Needs the secret BETA_DEPLOY_KEY: the private half
+# of a deploy key with write access on the beta repository. See docs/releasing.md.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read # the token only reads this repository; the beta repository is written with the deploy key
+
+concurrency:
+  group: beta
+  cancel-in-progress: true # only the newest main is worth publishing
+
+jobs:
+  beta:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          VALIVA_CHANNEL: beta
+      - name: Publish the build to the beta repository
+        env:
+          BETA_DEPLOY_KEY: ${{ secrets.BETA_DEPLOY_KEY }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "$BETA_DEPLOY_KEY" ]; then
+            echo "Secret BETA_DEPLOY_KEY is missing (see docs/releasing.md)." >&2
+            exit 1
+          fi
+          key="$RUNNER_TEMP/beta_deploy_key"
+          install -m 600 /dev/null "$key"
+          printf '%s\n' "$BETA_DEPLOY_KEY" > "$key"
+          export GIT_SSH_COMMAND="ssh -i $key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+
+          site="$RUNNER_TEMP/beta-site"
+          mkdir "$site"
+          cp -R apps/web/dist/. "$site/"
+          touch "$site/.nojekyll"
+
+          cd "$site"
+          git init -q -b main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Beta build of ${SHA}"
+          git remote add origin git@github.com:antoniotroiano/valiva-app-beta.git
+          # The beta repository only holds the latest build; its history is not kept.
+          git push --force origin HEAD:main
+          echo "Published beta build of ${SHA}."

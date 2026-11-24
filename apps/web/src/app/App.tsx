@@ -21,6 +21,9 @@ import { PersonWorkspace } from './PersonWorkspace';
 import { PageHeadProvider, type PageHeadValue } from '../components/layout/PageHead';
 import { PersonTabs } from '../components/layout/PersonTabs';
 import { applyThemeColor } from '../lib/themeColor';
+import { STORAGE_PREFIX } from './appConfig';
+
+const THEME_KEY = `${STORAGE_PREFIX}theme`;
 
 const HouseholdPage = lazy(() =>
   import('../pages/household/HouseholdPage').then((m) => ({ default: m.HouseholdPage })),
@@ -51,7 +54,7 @@ export function App() {
   const narrow = useNarrowScreen();
   const [theme, setTheme] = useState<Theme>(() => {
     try {
-      return (localStorage.getItem('valiva.theme') as Theme) || 'system';
+      return (localStorage.getItem(THEME_KEY) as Theme) || 'system';
     } catch {
       return 'system';
     }
@@ -144,7 +147,7 @@ export function App() {
     if (theme === 'system') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', theme);
     applyThemeColor(theme);
-    safeSetItem('valiva.theme', theme);
+    safeSetItem(THEME_KEY, theme);
   }, [theme]);
 
   const go = (p: Page) => {

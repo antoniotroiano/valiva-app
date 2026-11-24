@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { de } from '../../i18n/de';
+import { IS_BETA } from '../../app/appConfig';
 import { createStore } from '../../app/createStore';
 import { exportReminder, readSnoozedUntil, snoozeExportReminder } from '../../state/exportReminder';
 import { dismissChangedElsewhere, useStorageStatus } from '../../state/storageStatus';
@@ -26,9 +27,14 @@ export function AppNotices({
       ? undefined
       : exportReminder(createStore().lastExport(), Date.now(), snoozedUntil);
 
-  if (!status.writeFailed && !status.changedElsewhere && !reminder) return null;
+  if (!IS_BETA && !status.writeFailed && !status.changedElsewhere && !reminder) return null;
   return (
     <div className="app-notices">
+      {IS_BETA && (
+        <div className="notice warn" role="note">
+          <b>{t.beta.text}</b> {t.beta.hint}
+        </div>
+      )}
       {status.writeFailed && (
         <div className="notice" role="alert">
           <b>{t.storageFailed.text}</b>{' '}

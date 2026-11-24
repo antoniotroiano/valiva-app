@@ -1,6 +1,8 @@
 /** Storage prefix used before the rename to Valiva (2026-11-22). Only read here, never written. */
+import { STORAGE_PREFIX } from '../app/appConfig';
+
 const OLD_PREFIX = 'pathwise.';
-const NEW_PREFIX = 'valiva.';
+const NEW_PREFIX = STORAGE_PREFIX;
 
 export type PrefixMigrationResult = 'none' | 'migrated' | 'failed';
 

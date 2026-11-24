@@ -37,7 +37,23 @@ Solange die Version unter `1.0.0` liegt, gilt für einen Formatbruch die MINOR-Z
 
 Nur der Job `release` hat Schreibrechte (`contents: write`), alle anderen nur Lesen. Die Actions sind auf Commit-SHAs festgelegt wie im CI. Der Workflow veröffentlicht nie etwas, was das CI nicht bestanden hat.
 
-**Wichtig:** Ein normaler Push auf `main` veröffentlicht die Seite **nicht** mehr. Die öffentliche Seite zeigt immer die letzte freigegebene Version. Eine Korrektur erscheint dort erst mit der nächsten Version (zum Beispiel einer PATCH-Version).
+**Wichtig:** Ein normaler Push auf `main` veröffentlicht die Seite **nicht** mehr. Die öffentliche Seite zeigt immer die letzte freigegebene Version. Eine Korrektur erscheint dort erst mit der nächsten Version (zum Beispiel einer PATCH-Version); bis dahin ist sie auf der Beta-Seite (unten) zu sehen.
+
+## Beta-Seite (jeder Stand von `main`)
+
+Weil ein Push ohne neue Version die öffentliche Seite nicht ändert, gibt es eine **Beta-Seite** zum Ausprobieren: <https://antoniotroiano.github.io/valiva-app-beta/>.
+
+- **Ablauf:** Ist das CI auf `main` grün, baut `beta.yml` die App im Beta-Modus (`VALIVA_CHANNEL=beta`) und schiebt das Ergebnis per Deploy-Key in das Repo `antoniotroiano/valiva-app-beta` (Branch `main`, jedes Mal ein neuer Einzel-Commit, kein Verlauf). Die Pages-Seite dieses Repos zeigt es. Mit einer neuen Version veröffentlicht `main` natürlich auch die Beta.
+- **Eigener Speicher:** Die Beta nutzt den Präfix `valiva-beta.` statt `valiva.`. Beide Seiten liegen unter `antoniotroiano.github.io`, teilen sich also den Browserspeicher, aber nie einen Schlüssel. Die Beta sieht deine echten Daten nicht und überschreibt sie nicht. Sie trägt oben einen Hinweis "Beta-Version zum Testen", den Titel "Valiva Beta", `noindex` und exportiert Dateien als `valiva-beta-….workspace.json` (dasselbe Format, also in die echte App importierbar).
+- **Lokal prüfen:** `VALIVA_CHANNEL=beta npm run build` baut die Beta, `npm run preview -w @valiva/web` zeigt sie.
+- **Einmalige Einrichtung** (macht der Autor, die Session kann Schlüssel und Secrets nicht anlegen):
+  1. Schlüsselpaar erzeugen: `ssh-keygen -t ed25519 -N "" -C "valiva-beta-deploy" -f ~/valiva-beta-key`.
+  2. Beta-Repo, Settings, Deploy keys, "Add deploy key": Inhalt von `~/valiva-beta-key.pub` einfügen, **"Allow write access"** anhaken.
+  3. Haupt-Repo `valiva-app`, Settings, Secrets and variables, Actions, "New repository secret": Name `BETA_DEPLOY_KEY`, Inhalt von `~/valiva-beta-key` (der private Schlüssel).
+  4. Beide Schlüsseldateien löschen: `rm ~/valiva-beta-key ~/valiva-beta-key.pub`.
+  5. Nach dem ersten Lauf von `beta.yml`: Beta-Repo, Settings, Pages, Quelle "Deploy from a branch", Branch `main`, Ordner `/ (root)`.
+- **Fehler:** "Secret BETA_DEPLOY_KEY is missing": Secret fehlt oder falsch benannt. "Permission denied (publickey)" oder "The key you are trying to use does not have write access": Deploy-Key im Beta-Repo ohne Schreibrecht oder falscher Schlüssel. Nach der Korrektur im Lauf "Publish beta" "Re-run all jobs".
+- **Hinweis:** Das Beta-Repo ist öffentlich (GitHub Pages im kostenlosen Konto) und enthält nur den gebauten Stand, keinen Quellcode und keine Daten.
 
 ## Prüfen nach dem Push
 

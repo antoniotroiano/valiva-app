@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { env } from 'node:process';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import type { Plugin } from 'vite';
@@ -29,15 +30,34 @@ const contentSecurityPolicy = (): Plugin => ({
   ],
 });
 
+// Beta build only: title and robots meta, so the beta page is recognisable and not indexed.
+const betaHtml = (): Plugin => ({
+  name: 'beta-html',
+  transformIndexHtml: (html) => ({
+    html: html.replace('<title>Valiva</title>', '<title>Valiva Beta</title>'),
+    tags: [
+      { tag: 'meta', attrs: { name: 'robots', content: 'noindex, nofollow' }, injectTo: 'head' },
+    ],
+  }),
+});
+
 // The version comes from the root package.json (single source, see docs/releasing.md).
 const { version } = JSON.parse(
   readFileSync(new URL('../../package.json', import.meta.url), 'utf8'),
 ) as { version: string };
 
+// Build channel: `VALIVA_CHANNEL=beta npm run build` makes the beta build (own storage prefix, "Beta" in the
+// title, hidden from search engines). Everything else is the release build.
+const beta = env.VALIVA_CHANNEL === 'beta';
+
 // Relative base: works under any sub path (GitHub Pages) because navigation uses the hash.
 export default defineConfig({
   base: './',
-  define: { __APP_VERSION__: JSON.stringify(version) },
-  plugins: [react(), contentSecurityPolicy()],
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+    __IS_BETA__: JSON.stringify(beta),
+    __STORAGE_PREFIX__: JSON.stringify(beta ? 'valiva-beta.' : 'valiva.'),
+  },
+  plugins: [react(), contentSecurityPolicy(), ...(beta ? [betaHtml()] : [])],
   server: { port: 5173 },
 });

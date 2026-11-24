@@ -22,6 +22,7 @@ import { personKey } from './personStorage';
 import { safeRemoveItem, safeSetItem } from './storageStatus';
 import { useDebounced, useFlushOnHide } from './useDebounced';
 import { HOUSEHOLD_KEY } from './workspaceStore';
+import { STORAGE_PREFIX } from '../app/appConfig';
 
 export { HOUSEHOLD_KEY };
 export const CURRENT_YEAR = new Date().getFullYear();
@@ -46,8 +47,8 @@ function read(key: string): string | null {
 function boot(): HouseholdState {
   const stored = parseHouseholdState(read(HOUSEHOLD_KEY), CURRENT_YEAR);
   if (stored) return stored;
-  const legacy: LegacyStorage = { profile: read('valiva.profile.v1') };
-  for (const block of PERSON_BLOCKS) legacy[block] = read(`valiva.${block}.v1`);
+  const legacy: LegacyStorage = { profile: read(`${STORAGE_PREFIX}profile.v1`) };
+  for (const block of PERSON_BLOCKS) legacy[block] = read(`${STORAGE_PREFIX}${block}.v1`);
   if (legacy.profile === null && PERSON_BLOCKS.every((block) => legacy[block] === null)) {
     markNewStart();
   }

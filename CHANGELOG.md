@@ -6,6 +6,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+### Added
+
+- Beta build channel: every green `main` is published to a separate beta site with its own storage prefix (`valiva-beta.`), a beta notice and no search-engine indexing. The released app is unaffected.
+
 ## [0.1.0] - 2026-11-24
 
 First tagged version. Valiva is a retirement and savings planner that runs entirely in the browser (no account, no server, no tracking). The interface is in German and calculations follow German law.

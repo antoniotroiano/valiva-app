@@ -1,4 +1,5 @@
 import { safeSetItem } from './storageStatus';
+import { STORAGE_PREFIX } from '../app/appConfig';
 
 /**
  * Export reminder (review 14, B-10). Safari's tracking prevention deletes script-writable storage (including
@@ -8,7 +9,7 @@ import { safeSetItem } from './storageStatus';
  */
 export const EXPORT_REMINDER_DAYS = 90;
 export const SNOOZE_DAYS = 7;
-export const SNOOZE_KEY = 'valiva.exportReminderUntil';
+export const SNOOZE_KEY = `${STORAGE_PREFIX}exportReminderUntil`;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 

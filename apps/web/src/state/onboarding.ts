@@ -1,10 +1,11 @@
 import { safeSetItem } from './storageStatus';
+import { STORAGE_PREFIX } from '../app/appConfig';
 
 /**
  * First-start state (review 13, U-1). `valiva.onboarding` is `new` from the first visit until the user
  * edits something, loads example data or imports a file; then it is `done`. Existing users have no key.
  */
-export const ONBOARDING_KEY = 'valiva.onboarding';
+export const ONBOARDING_KEY = `${STORAGE_PREFIX}onboarding`;
 
 function read(key: string): string | null {
   try {

@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import { STORAGE_PREFIX } from '../app/appConfig';
 
 /**
  * Central write path to `localStorage` (review 14, B-4/B-5). A failed write (full storage, private mode,
@@ -85,7 +86,9 @@ export function useStorageStatus(): StorageStatus {
 
 /** Keys of the household and of per-person blocks; theme and hints are not shared state. */
 export function isSharedDataKey(key: string | null): boolean {
-  return key === null || key === 'valiva.household.v2' || key.startsWith('valiva.p.');
+  return (
+    key === null || key === `${STORAGE_PREFIX}household.v2` || key.startsWith(`${STORAGE_PREFIX}p.`)
+  );
 }
 
 /** `storage` events fire only in the other tabs, never for this tab's own writes. */

@@ -13,12 +13,16 @@ import type {
   WorkspaceInfo,
 } from '@valiva/core';
 import { personKey } from './personStorage';
+import { STORAGE_PREFIX } from '../app/appConfig';
 
-export const HOUSEHOLD_KEY = 'valiva.household.v2';
-export const LAST_EXPORT_KEY = 'valiva.lastExport';
-const PERSON_KEY_PREFIX = 'valiva.p.';
+export const HOUSEHOLD_KEY = `${STORAGE_PREFIX}household.v2`;
+export const LAST_EXPORT_KEY = `${STORAGE_PREFIX}lastExport`;
+const PERSON_KEY_PREFIX = `${STORAGE_PREFIX}p.`;
 /** Keys of the single-person storage before Phase 4b; `boot` would migrate them again after a reset. */
-const LEGACY_KEYS = ['valiva.profile.v1', ...PERSON_BLOCKS.map((b) => `valiva.${b}.v1`)];
+const LEGACY_KEYS = [
+  `${STORAGE_PREFIX}profile.v1`,
+  ...PERSON_BLOCKS.map((b) => `${STORAGE_PREFIX}${b}.v1`),
+];
 
 export type StoreResult = { ok: true } | { ok: false };
 

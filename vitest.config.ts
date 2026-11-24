@@ -9,7 +9,11 @@ const { version } = JSON.parse(
 };
 
 export default defineConfig({
-  define: { __APP_VERSION__: JSON.stringify(version) },
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+    __IS_BETA__: false,
+    __STORAGE_PREFIX__: JSON.stringify('valiva.'),
+  },
   test: {
     include: [
       'packages/*/test/**/*.test.ts',
