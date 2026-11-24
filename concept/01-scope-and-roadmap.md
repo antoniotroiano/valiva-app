@@ -33,7 +33,7 @@ Rahmen:
 
 Einfache Erweiterbarkeit ist ein Designziel: ein neuer Baustein = ein neues Modul mit gleichem Schnittstellenvertrag (siehe `02-architecture.md` und `06-data-model.md`).
 
-Nicht in V1: Erwerbsminderungs- und Hinterbliebenenrente.
+Nicht in V1: Erwerbsminderungsrente (Hinterbliebenenrente ist seit Review `13` F-5 als Schalter umgesetzt). **Rentner-Modus** (Personen, die ihre Rente schon beziehen, mit Ist-Werten statt Hochrechnung) ist in `16-retired-mode.md` beschrieben und wird in AP-20 gebaut.
 
 ### 2.2 Gesamtsicht Rente
 - Monatliche Netto-Rente **in Kaufkraft von heute** (Inflation einstellbar, Default z. B. 2 %), gesamt und je Baustein
@@ -68,6 +68,7 @@ Nicht in V1: Erwerbsminderungs- und Hinterbliebenenrente.
 | 4b | Mehrere Personen / Haushaltsrente (Partner): Teilphasen 4b-1 Kern, 4b-2 Zustände und Personenverwaltung, 4b-3 Haushaltssicht; siehe `archive/11-phase-4b-household.md` | Gesamtrente je Person und Haushalt |
 | 5 | Speichern (Profil, Bausteine), Export/Import, README/Lizenz, Git/GitHub | Repo teilbar (Phase B) |
 | 6 | Weitere Bausteine. **6b Generischer Baustein "Sonstige Einkünfte im Alter"** (Konzept `15-phase-6-generic-block.md`, AP-14 Konzept und Mockup, AP-15 Kern und Web); danach echte Riester-/Rürup-Modelle, Immobilie, Frühstart-Rente (nur beschrieben, `15` §12). Die frühere Teilphase 6a war die Einkommensteuer im Alter (Review 13) | Erweiterung |
+| 6c | **Rentner-Modus** (Konzept `16-retired-mode.md`, AP-19 Konzept und Mockup, AP-20 Kern und Web): Ist-Rente laut Bescheid, bAV und Depot in Auszahlung, ETF-Bestand mit Entnahme, Mischfall Paar mit Übergangsjahren; Workspace-Version 3, App-Version `0.2.0` | Bestandsrentner abbildbar |
 | 7 | Desktop-Paket + Server/Sync/Login | Phase C |
 
 Nach jeder Phase ist die App lauffähig. Die Fachwerte für Phase 3 sind am 2026-11-11 gegen Primärquellen geprüft (`03-domain-rules.md` Abschnitt 12); verbleibende unsichere Werte bleiben in der Config als `unverified` markiert.

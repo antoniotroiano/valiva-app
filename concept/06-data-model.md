@@ -56,6 +56,8 @@ type Person = {
   id: string;
   name: string;
   birthYear: number;
+  retired?: boolean;                 // Phase 6c (`16`): already draws the pension, actual values instead of projection
+  retirementStartYear?: number;      // Phase 6c: year of the pension start from the pension notice (required if retired)
   targetRetirementAge: number;       // default 67
   desiredMonthlyIncomeToday: number; // in today's purchasing power
   grossAnnualIncome?: number;
@@ -117,6 +119,7 @@ type SavingsGoal = {
 | `realEstate` | mode (ownerOccupied/rental), monthlyRentSaved ODER monthlyRentalIncome, remainingDebt, monthlyDebtService, maintenancePercent |
 | `generic` | assetKind (cash/gold/crypto/other), initialCapital, monthlyContribution, returnPercent, taxMode |
 | `otherIncome` (kein `Product`, eigener Eintragstyp, Liste je Person, `15` §3) | name, kind (`riester`/`basisPension`/`privateAnnuity`/`civilServicePension`/`rent`/`other`), enabled, amountMonthly, amountBasis (`today`/`nominalAtStart`), adjustment (`inflation`/`pension`/`fixed`+percent), start (`retirement`/Alter), end (`lifelong`/Alter), taxMode (`none`/`full`/`percent`/`pensionShare`), taxSharePercent, contributions (`none`/`likeOccupational`), survivorPercent; höchstens 10 je Person |
+| Rentner-Modus (`16` §3, additive optionale Felder der Blöcke) | `statutory`: mode (`projection`/`actual`), actualMonthlyGross, firstFullYearAnnual; `occupational`: retiredForm (`annuity`/`capital`), annuityMonthlyGross, annuityAdjustment, annuityEndAge, capitalToday, capitalEndAge; `retirementDepot`: retiredCapitalToday, retiredEndAge; `etfPayout`: holdingValue, holdingContributions (Pflicht) |
 | `childStart` | childBirthYear, monthlyStateContribution (10), startAge (6), endAge (18), additionalContributionMonthly |
 
 ## 5. Ergebnisse (nicht gespeichert, immer berechnet)
@@ -177,6 +180,7 @@ Neuer Baustein = neuer Projector + Registereintrag + UI-Formular. Die Gesamtsich
 | 4b | `Household` mit `persons[]`, `Person` (vereint Phase-1-`Person` und `Profile`), haushaltsweite und persönliche Annahmen, `HouseholdResult`, Zustand `valiva.household.v2` mit Migration der Alt-Schlüssel (Details `archive/11-phase-4b-household.md`) |
 | 5 | Persistenz, Migrationen, Export/Import, Beispieldateien |
 | 6 | 6b: `OtherIncomeEntry` und Block `otherIncome` (`valiva.p.<id>.otherIncome.v1`, Workspace-Version 1 auf 2 mit leerer Migration, `OverviewProductId` mit `otherIncome:<id>`, `survivorOtherIncome` im Haushaltsergebnis; Details `15-phase-6-generic-block.md`). Später: `legacy`, `realEstate`, `generic`, `childStart` |
+| 6c | Rentner-Modus: `Person.retired`/`retirementStartYear`, optionale Felder in `statutory`, `occupational`, `depot`, `etfPayout`, Workspace-Version 2 auf 3 mit leerer Migration, `HouseholdPathPoint.transition` (Details `16-retired-mode.md`). Planung, Bau in AP-20 |
 | 7 | Server-Persistenz, Nutzerkonto, Sync (UUIDs, `updatedAt` je Entität) |
 
 ## 10. Offen

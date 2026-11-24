@@ -51,6 +51,11 @@
 | 2026-11-23 | Phase 6: Hinterbliebene | `survivorPercent` je Eintrag, wirksam nur bei genau zwei Personen und gesetztem `survivorPension`; Steuer bei der überlebenden Person; zählt als anrechenbares Einkommen (Annahme, ungeprüft) | `15` §4.2 |
 | 2026-11-23 | Phase 6: Grenzen und Vereinfachung | Höchstens 10 Einträge je Person; Sparerpauschbetrag und Werbungskosten nicht berücksichtigt (UI nennt es) | `15` §2, §7 |
 | 2026-11-23 | Phase 6: Format und Darstellung | Neuer Block `otherIncome`, Workspace-Version 1 auf 2 (leere Migration); ein Segment "Sonstige Einkünfte" je Person, neue Farbe `--b-oth` Olivgrün; Mockup `docs/mockups/sonstige-einkuenfte.html` vom Autor mit "Ja, bauen" freigegeben | `15` §7, §8 |
+| 2026-11-24 | Phase 6c: Rentner-Modus, Erkennung | Ausdrücklicher Schalter `retired` am Profil, keine stille Automatik; Rentenbeginn im laufenden Jahr bleibt Planungsmodus; Hinweis ab 12 Monaten vor Rentenbeginn; Fehlermeldung `retirement_in_past` bekommt "Als Rentner führen" | `16` §2 (a) |
+| 2026-11-24 | Phase 6c: Ist-Werte | Gesetzliche Rente laut Bescheid (Bruttorente, Beginnjahr, optional Jahresrente im Folgejahr, sonst Näherung); bAV laufende Rente oder Restkapital mit Auszahlplan; Depot nur Restkapital; ETF-Bestand mit Einzahlungssumme (Pflicht) und Entnahme ab heute; kein Sparplan | `16` §2 (b) bis (d), §5 |
+| 2026-11-24 | Phase 6c: Zeitbezug und Paar | Snapshot und Verlauf ab heute; im Paar Übergangsjahre bis zum Rentenbeginn der zweiten Person ohne Lücke, Snapshot im Jahr der letzten Rente, Kachel "Heute schon in Rente"; **Splitting im Mischfall bleibt wie AP-16** (erst wenn beide in Rente sind, davor Einzelbesteuerung mit Hinweis, Gehaltsfeld Backlog) | `16` §2 (h), §4.2, §6 |
+| 2026-11-24 | Phase 6c: Sozialversicherung, Steuer, Sonderfälle | Zwei KV-Modi wie bisher, kein Modell für freiwillig/privat; Kinderlosenzuschlag entfällt vor Geburtsjahr 1940 (ungeprüft); Besteuerungsanteil nach Beginnjahr mit neuer Config-Tabelle ab 2005; Frührente im Umfang, Erwerbsminderungsrente, Witwenrente, Pension nur über "Sonstige Einkünfte"; Neuer Fehler `life_expectancy_in_past` für alle Personen | `16` §2 (e) bis (k) |
+| 2026-11-24 | Phase 6c: Format | `Workspace.schemaVersion` 2 auf 3 mit leerer Migration (ältere Apps lehnen die Datei ab), App-Version MINOR `0.2.0` (macht der Autor); Mockup `docs/mockups/rentner-modus.html` vom Autor mit "Ja, bauen" freigegeben | `16` §8, `docs/releasing.md` |
 | 2026-11-10 | Phase 2: Solver | Bisektion über ganze Cent statt Toleranz 0,005 €; Ergebnis = kleinster Cent-Betrag, der das Ziel erreicht | `08` §4 |
 
 ## 2. Offene Punkte
@@ -81,3 +86,8 @@
     - **Ertragsanteil und Besteuerungsanteil der Basisrente:** Nutzer trägt den Anteil bei `percent` selbst ein; eine Tabelle mit Vorschlag wäre eine spätere Option.
     - **Formular am Smartphone** (bis zu 12 Felder) und **Farbe `--b-oth`** nach dem Bau erneut bewerten; die Grenze von 10 Einträgen ist eine App-Grenze, keine Rechtsgrenze.
     - **Bewusst später** (`15` §12): echte Riester-, Rürup- und Lebensversicherungsmodelle, Immobilie mit Restschuld, Einmalbeträge.
+15. **Phase 6c, Rentner-Modus (Konzept `16`, offene Punkte dort §15):**
+    - **Normen selbst lesen:** Besteuerungstabelle und Festschreibung des steuerfreien Teils (§ 22 Nr. 1 Satz 3 Buchst. a aa EStG) und Kinderlosenzuschlag (§ 55 Abs. 3 SGB XI) wurden am 2026-11-24 über einen Seitenabruf gelesen und stehen in der Planung als `unverified`; AP-20 liest sie selbst und stuft hoch (Punkt 3).
+    - **Näherung `J_ref`:** steuerfreier Betrag aus der heutigen Rente zurückgerechnet mit pauschaler Anpassung; genauer mit dem optionalen Feld "Jahresrente im Folgejahr". Mit echten Rentenbescheiden vergleichen.
+    - **Splitting im Mischfall** (am 2026-11-24 geklärt): wie AP-16, gemeinsam erst ab beide in Rente; Gehalt der arbeitenden Person nicht modelliert (Backlog). Details `16` §6.
+    - **Bewusst später** (`16` §13): Erwerbsminderungsrente als Typ (Folgerente nach § 22 Satz 8 unklar), freiwillig/privat Versicherte, Altersentlastungsbetrag (§ 24a), Rentenanpassung zum 1. Juli, Rentensplitting.

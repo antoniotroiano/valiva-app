@@ -228,6 +228,22 @@ Konzept und Mockup in AP-14 (Review 14), Kern und Web in AP-15. Voraussetzung f�
 - [x] Zustand `valiva.p.<id>.otherIncome.v1`, Seite `#other`, Seitenleiste und "Eingaben"-Blatt, Rentenplan und Haushalt, Texte in `i18n/de/`, Farbe `--b-oth` mit Kontrasttest (Teil B)
 - [x] E2E-Smoke und axe, README und `docs/assumptions.md` (Teil B)
 - [x] Excel-Stichprobe des Autors (`golden-check.xlsx`, Blätter `oi01`–`oi08`, 2026-11-23: passt)
+
+## Phase 6c – Rentner-Modus (`16-retired-mode.md`)
+Konzept und Mockup in AP-19 (Review 14), Kern und Web in AP-20. Voraussetzung für AP-20: AP-04, AP-05, AP-06, AP-09 erledigt, Mockup freigegeben.
+
+**6c-1 Konzept und Mockup (AP-19)**
+- [x] Fachfragen a bis l beantwortet (2026-11-24, alle wie empfohlen)
+- [x] Konzeptdatei `16-retired-mode.md` (Felder, Validierung, Zeitbezug und Paar, Rechenregeln mit sechs Beispielen, Seitentabelle, Workspace-Version 3, Config, Tests, Golden-Vektoren `r01`–`r08`/`rh01`–`rh02`, Abgrenzung, offene Punkte)
+- [x] Mockup `docs/mockups/rentner-modus.html` vom Autor freigegeben ("Ja, bauen", 2026-11-24)
+- [x] `01`, `06`, `07`, `README.md` ergänzt
+
+**6c-2 Kern und Web (AP-20)**
+- [ ] Config (`taxableShareTable`, Regel, Kinderlosen-Grenze), Normen selbst lesen
+- [ ] Typen, Validierung, Projektoren (Ist-Rente, bAV, Depot, ETF-Bestand), Golden `r01`–`r08`
+- [ ] `overview`/`householdOverview` (Zeitbezug heute, Übergangsjahre), Golden `rh01`, `rh02`, Regressionsvektoren
+- [ ] Workspace-Version 3, Beispieldateien
+- [ ] Web (Profil, vier Bausteinseiten, Rentenplan, Haushalt), E2E, axe, Doku, Excel-Stichprobe des Autors
 - [ ] Phase 7 – Desktop, Server/Sync/Login
 
 ## Notizen und Abweichungen
@@ -335,6 +351,7 @@ Lange Notizen stehen unverändert in `archive/PROGRESS-notes-archive.md` (Nummer
 - 2026-11-23 – AP-17 Nachtrag 2: CI-Fehler war der Höhenwächter der Haushaltsseite am Desktop (`e2e/overview.spec.ts`, CI 1.717 px gegen Grenze 1.700, lokal 1.672 px; Linux-Schriften). Abweichung von "bestehende Tests unverändert": Grenze auf 1.760 px. Der Skip-Link-Test ist in der CI grün, lokal mit Google Chrome weiter rot (Ursache nicht untersucht). Commit beim Autor.
 - 2026-11-23 – AP-17 Nachtrag 3: `CONTRIBUTING.md` nach `docs/archive/`; Excel-Stichprobe vom Autor bestätigt (wichtige Blätter angesehen, ohne Aufstellung je Blatt); Name Valiva vom Autor extern geprüft, keine eigene Domain (GitHub Pages); Rebase auf `origin/main` auf Wunsch des Autors ausgeführt (Abweichung von "kein rebase"). Offen: Abnahme mit eigenen Daten, Rechtswerte, AP-19/20. Commit beim Autor.
 - 2026-11-23 – AP-17 abgeschlossen (erledigt): Abnahme durch den Autor, Excel bestätigt, CI grün, Pages und Dependabot laufen. Rechtswerte erneut geprüft (Basiszins 2026 = 3,20 % durch mehrere Quellen bestätigt, Eintrag war schon `confirmed`); die 11 `unverified`-Werte bleiben bewusst, weil keine Primärquelle erreichbar war, die UI markiert sie weiter. Offen nur: Test mit echten Daten und Testpersonen (Autor), AP-18 bis AP-20 in eigenen Sessions. Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
+- 2026-11-24 – Review 14 AP-19: Konzept `16-retired-mode.md` und Mockup `docs/mockups/rentner-modus.html` (freigegeben, "Ja, bauen"); `01`, `06`, `07`, `README.md` ergänzt, kein Code geändert. Abweichungen vom bisherigen Konzept: (1) Workspace-Version 2 auf 3 mit leerer Migration (wie AP-15, Abweichung von `12` §3), App-Version 0.2.0 durch den Autor; (2) `10` §3: "Rentenbeginn in der Vergangenheit wird nicht unterstützt" gilt nur noch ohne Schalter `retired`; (3) neuer Fehler `life_expectancy_in_past` für alle Personen, löst den Backlogpunkt aus AP-04; (4) `11`/AP-16: Splitting im Mischfall unverändert (erst wenn beide in Rente sind), Übergangsjahre zählen nicht zur Gesamtlücke; (5) neue Config-Tabelle `taxableShareTable` (Besteuerungsanteil 2005 bis 2025) und `careChildlessExemptBeforeBirthYear`, beides `unverified` bis AP-20. Rechtsregeln über einen Seitenabruf gelesen, nicht selbst. Commit beim Autor. Siehe Session-Protokoll in `14-review-report-2026-11-22.md`.
 
 ## Offene Fragen aus dem Bau
 - (leer)

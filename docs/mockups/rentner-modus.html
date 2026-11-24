@@ -1,0 +1,1217 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup AP-19: Rentner-Modus</title>
+    <style>
+      /* Tokens as in apps/web/src/styles/tokens.css (excerpt) plus the proposed new block colour --b-oth. */
+      :root {
+        color-scheme: light dark;
+        --bg: light-dark(#f3f6f6, #0d1413);
+        --surface: light-dark(#ffffff, #151e1d);
+        --surface-2: light-dark(#eaf0ef, #1e2928);
+        --nav-bg: light-dark(#fbfcfc, #111918);
+        --text: light-dark(#15201e, #e5eeec);
+        --muted: light-dark(#54635f, #9db0ac);
+        --line: light-dark(#dde5e3, #28353a);
+        --field-border: light-dark(#76847f, #6d807c);
+        --accent: light-dark(#0f766e, #4fd1c0);
+        --accent-soft: light-dark(#dff1ee, #17332f);
+        --on-accent: light-dark(#ffffff, #052420);
+        --ok-fg: light-dark(#166534, #7fdca0);
+        --ok-bg: light-dark(#e2f4e7, #12301f);
+        --ok-bd: light-dark(#9fd0ae, #245b3a);
+        --hint-fg: light-dark(#3b4a47, #c0cdca);
+        --hint-bg: light-dark(#eaf0ef, #1e2928);
+        --hint-bd: light-dark(#c3d0cd, #3a4a47);
+        --warn-fg: light-dark(#8a4b00, #f0b46a);
+        --warn-bg: light-dark(#fdf1e4, #2e2214);
+        --warn-bd: light-dark(#ecc08a, #6b4a1d);
+        --b-etf: light-dark(#1d4ed8, #7aa2ff);
+        --b-stat: light-dark(#475569, #a9b8b4);
+        --b-dep: light-dark(#a21caf, #f08fd0);
+        --b-bav: light-dark(#b45309, #e0a24a);
+        --b-oth: light-dark(#47750a, #a3d46b);
+        --on-block: light-dark(#ffffff, #0d1413);
+        --wish: light-dark(#b42318, #ff8a80);
+        --scrim: rgb(0 0 0/0.4);
+      }
+      :root[data-theme='light'] {
+        color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px 16px 64px;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
+      h1.top {
+        font-size: 24px;
+        margin: 0 0 4px;
+      }
+      h2.top {
+        font-size: 20px;
+        margin: 40px 0 4px;
+        border-top: 1px solid var(--line);
+        padding-top: 24px;
+      }
+      p.lead {
+        color: var(--muted);
+        margin: 0 0 16px;
+        max-width: 90ch;
+      }
+      .bar0 {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 12px 0;
+      }
+      button.theme,
+      .bar0 a {
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+      }
+      .row {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .cap {
+        margin: 0 0 8px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      /* frames */
+      .desk {
+        width: 1100px;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 252px 1fr;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      .phone {
+        width: 375px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        background: var(--bg);
+        position: relative;
+      }
+      .phone .topbar {
+        padding: 10px 16px;
+        background: var(--nav-bg);
+        border-bottom: 1px solid var(--line);
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+      }
+      .phone .tabbar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--line);
+        background: var(--nav-bg);
+        font-size: 13px;
+        text-align: center;
+        padding: 8px 0;
+        color: var(--muted);
+      }
+      .phone .tabbar b {
+        color: var(--accent);
+      }
+      .phone main {
+        padding: 16px;
+      }
+      .sheet {
+        background: var(--surface);
+        border-top: 1px solid var(--line);
+        border-radius: 18px 18px 0 0;
+        padding: 8px 8px 12px;
+      }
+      .sheet .grab {
+        width: 40px;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--field-border);
+        margin: 4px auto 12px;
+      }
+      /* sidebar */
+      .side {
+        background: var(--nav-bg);
+        border-right: 1px solid var(--line);
+        padding: 16px 8px;
+        font-size: 15px;
+      }
+      .side strong {
+        display: block;
+        padding: 0 8px 12px;
+        font-size: 18px;
+      }
+      .nl {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        color: var(--text);
+        min-height: 40px;
+      }
+      .nl.on {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .nl .lab {
+        flex: 1;
+      }
+      .grp {
+        padding: 12px 10px 4px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .grp.sub2 {
+        padding-left: 18px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex: none;
+      }
+      [data-block='etf'] .dot {
+        background: var(--b-etf);
+      }
+      [data-block='stat'] .dot {
+        background: var(--b-stat);
+      }
+      [data-block='dep'] .dot {
+        background: var(--b-dep);
+      }
+      [data-block='bav'] .dot {
+        background: var(--b-bav);
+      }
+      [data-block='oth'] .dot {
+        background: var(--b-oth);
+      }
+      .st {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        flex: none;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .st.open {
+        color: var(--muted);
+      }
+      .st.done {
+        color: var(--ok-fg);
+      }
+      .st.hint {
+        color: var(--warn-fg);
+      }
+      .newtag {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+        border-radius: 999px;
+        padding: 0 6px;
+      }
+      /* main */
+      main.m {
+        padding: 24px;
+        min-width: 0;
+      }
+      .ph {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        margin-bottom: 16px;
+      }
+      h1.t {
+        font-size: 28px;
+        line-height: 1.2;
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+      .phone h1.t {
+        font-size: 24px;
+      }
+      .sub {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .seg {
+        display: inline-flex;
+        border: 1px solid var(--field-border);
+        border-radius: 999px;
+        padding: 3px;
+        background: var(--surface-2);
+        max-width: 100%;
+        flex-wrap: wrap;
+      }
+      .seg span {
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 14px;
+        white-space: nowrap;
+        min-height: 36px;
+      }
+      .seg .on {
+        background: var(--surface);
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .seg.sm span {
+        padding: 8px 12px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      .phone .card {
+        padding: 16px;
+      }
+      .card.hero {
+        box-shadow:
+          0 1px 2px rgb(16 40 36 / 8%),
+          0 6px 20px rgb(16 40 36 / 7%);
+      }
+      .bp {
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+      h2.bh {
+        font-size: 18px;
+        margin: 0 0 12px;
+      }
+      .eyebrow {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .display {
+        font-size: 48px;
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .phone .display {
+        font-size: 40px;
+      }
+      .unit {
+        font-size: 18px;
+        color: var(--muted);
+        margin-left: 6px;
+        font-weight: 400;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid;
+        font-size: 13px;
+        font-weight: 600;
+        vertical-align: middle;
+      }
+      .chip.ok {
+        color: var(--ok-fg);
+        background: var(--ok-bg);
+        border-color: var(--ok-bd);
+      }
+      .chip.hint {
+        color: var(--hint-fg);
+        background: var(--hint-bg);
+        border-color: var(--hint-bd);
+      }
+      .chip.warn {
+        color: var(--warn-fg);
+        background: var(--warn-bg);
+        border-color: var(--warn-bd);
+      }
+      .kp {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .phone .kp {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .kp div {
+        background: var(--surface-2);
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+      .kp b {
+        display: block;
+        font-size: 20px;
+        white-space: nowrap;
+      }
+      .kp span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th {
+        text-align: left;
+        color: var(--muted);
+        font-weight: 600;
+        background: var(--surface-2);
+        padding: 8px 10px;
+      }
+      td {
+        padding: 8px 10px;
+        border-top: 1px solid var(--line);
+      }
+      th.n,
+      td.n {
+        text-align: right;
+        white-space: nowrap;
+      }
+      tr.sum td {
+        font-weight: 700;
+        border-top: 2px solid var(--field-border);
+      }
+      td code {
+        white-space: nowrap;
+      }
+      .swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        margin-right: 8px;
+        background: var(--b-oth);
+      }
+      /* entries list */
+      .entries {
+        list-style: none;
+        margin: 0 0 12px;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+      }
+      .entry {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        padding: 12px 14px;
+      }
+      .entry.open {
+        border-color: var(--accent);
+        outline: 1px solid var(--accent);
+      }
+      .entry .hd {
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+      .entry .hd strong {
+        font-size: 16px;
+      }
+      .entry .net {
+        margin-left: auto;
+        font-weight: 700;
+      }
+      .entry .meta {
+        margin: 2px 0 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .entry .act {
+        display: flex;
+        gap: 4px;
+        margin-top: 4px;
+      }
+      .tbtn {
+        min-height: 44px;
+        padding: 0 10px;
+        border: 0;
+        background: none;
+        color: var(--accent);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+      }
+      .btn {
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 8px;
+        border: 1px solid var(--field-border);
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .btn.primary {
+        background: var(--accent);
+        color: var(--on-accent);
+        border-color: var(--accent);
+      }
+      .btn.full {
+        width: 100%;
+      }
+      .cnt {
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        margin: 6px 0 0;
+      }
+      /* form */
+      .ff {
+        display: grid;
+        gap: 14px;
+        margin-top: 12px;
+      }
+      .ff.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .f .lb {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .in {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        min-height: 44px;
+        padding: 0 12px;
+        background: var(--surface);
+        font-size: 16px;
+      }
+      .in span {
+        margin-left: auto;
+        color: var(--muted);
+      }
+      .hp {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 6px 0 0;
+      }
+      .more {
+        font-size: 14px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .notice {
+        border: 1px solid var(--hint-bd);
+        background: var(--hint-bg);
+        color: var(--hint-fg);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 14px;
+        margin-top: 12px;
+      }
+      .notice.warn {
+        border-color: var(--warn-bd);
+        background: var(--warn-bg);
+        color: var(--warn-fg);
+      }
+      .dts details {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-bottom-width: 0;
+      }
+      .dts details:first-child {
+        border-radius: 14px 14px 0 0;
+      }
+      .dts details:last-child {
+        border-radius: 0 0 14px 14px;
+        border-bottom-width: 1px;
+      }
+      .dts summary {
+        min-height: 48px;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .dts .meta {
+        margin-left: auto;
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .dts .body {
+        padding: 0 16px 14px;
+        font-size: 14px;
+      }
+      /* stack bars */
+      .stack {
+        display: flex;
+        gap: 2px;
+        height: 44px;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 8px 0;
+      }
+      .stack span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--on-block);
+        font-size: 13px;
+        font-weight: 600;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .s-etf {
+        background: var(--b-etf);
+      }
+      .s-stat {
+        background: var(--b-stat);
+      }
+      .s-dep {
+        background: var(--b-dep);
+      }
+      .s-bav {
+        background: var(--b-bav);
+      }
+      .s-oth {
+        background: var(--b-oth);
+      }
+      .hatch {
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgb(255 255 255 / 0.45) 0 3px,
+          transparent 3px 8px
+        );
+        background-blend-mode: normal;
+      }
+      .legend {
+        display: flex;
+        gap: 6px 16px;
+        flex-wrap: wrap;
+        font-size: 14px;
+        color: var(--muted);
+        margin: 4px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .legend i {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        margin-right: 6px;
+      }
+      .wishline {
+        position: relative;
+      }
+      .wl {
+        position: absolute;
+        top: -4px;
+        bottom: -4px;
+        border-left: 2px dashed var(--wish);
+      }
+      .hb {
+        display: grid;
+        grid-template-columns: 70px 1fr 90px;
+        gap: 10px;
+        align-items: center;
+        margin: 10px 0;
+      }
+      .phone .hb {
+        grid-template-columns: 52px 1fr;
+      }
+      .phone .hb .tot {
+        grid-column: 2;
+        margin-top: -6px;
+      }
+      .hb .stack {
+        margin: 0;
+        height: 36px;
+      }
+      .hb .tot {
+        text-align: right;
+        font-weight: 700;
+      }
+      .phone .hb .tot {
+        text-align: left;
+      }
+      .empty {
+        text-align: center;
+        padding: 28px 16px;
+      }
+      .empty h3 {
+        margin: 8px 0 4px;
+        font-size: 18px;
+      }
+      .empty p {
+        margin: 0 auto 12px;
+        max-width: 46ch;
+        color: var(--muted);
+      }
+      .ex {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 0 0 14px;
+        padding: 0;
+        list-style: none;
+      }
+      .ex li {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 12px;
+        font-size: 14px;
+        color: var(--muted);
+        background: var(--surface-2);
+      }
+      ul.notes {
+        max-width: 90ch;
+        color: var(--muted);
+      }
+      .strip {
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .strip b {
+        font-size: 22px;
+      }
+      .phone .ph {
+        margin-bottom: 12px;
+      }
+      @media (max-width: 1140px) {
+        .desk {
+          grid-template-columns: 1fr;
+        }
+        .desk .side {
+          display: none;
+        }
+        .bp {
+          grid-template-columns: 1fr;
+        }
+      }
+      .hatchbar {
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgb(255 255 255 / 0.45) 0 3px,
+          transparent 3px 8px
+        );
+      }
+      .band {
+        border: 1px dashed var(--field-border);
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: var(--muted);
+        background: var(--surface-2);
+        margin: 8px 0;
+      }
+      .tile {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        border: 1px solid var(--ok-bd);
+        background: var(--ok-bg);
+        color: var(--ok-fg);
+        border-radius: 12px;
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        font-size: 15px;
+      }
+      .tile b {
+        font-size: 18px;
+      }
+      .sw {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 44px;
+      }
+      .sw .tog {
+        width: 48px;
+        height: 28px;
+        border-radius: 999px;
+        background: var(--field-border);
+        position: relative;
+        flex: none;
+      }
+      .sw .tog.on {
+        background: var(--accent);
+      }
+      .sw .tog::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--surface);
+      }
+      .sw .tog.on::after {
+        left: 23px;
+      }
+      .radio {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .radio span {
+        border: 1px solid var(--field-border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .radio .on {
+        border-color: var(--accent);
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+        color: var(--accent);
+        font-weight: 600;
+        background: var(--accent-soft);
+      }
+      .pill {
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        border-radius: 999px;
+        padding: 1px 8px;
+        margin-left: 6px;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="top">Mockup AP-19: Rentner-Modus</h1>
+    <p class="lead">
+      Personen, die schon in Rente sind: Schalter am Profil, Meldung statt des heutigen Fehlers,
+      Rentenplan einer Rentnerin und eines Paares mit einer Person in Rente, Bausteinseiten mit
+      Ist-Werten, Seitenleiste und „Eingaben“-Blatt. Alle Personen und Beträge sind erfunden: Marta
+      (Jahrgang 1955, Frührente seit 2019, 71 Jahre) und Jonas (Jahrgang 1962, Rentenbeginn mit 67
+      im Jahr 2029). Alle Zahlen sind mit den Regeln aus <code>concept/16-retired-mode.md</code> und
+      den Werten aus <code>config/</code> nachgerechnet (Heute 2026, Inflation 2 %, Rentenanpassung
+      2,5 %). Hell/Dunkel mit dem Schalter; Desktop (Ausschnitt) und Smartphone (375 px).
+    </p>
+    <div class="bar0">
+      <button class="theme" type="button" id="themeBtn">Hell/Dunkel umschalten</button>
+      <a href="#s1">1 Meldung</a><a href="#s2">2 Profil</a><a href="#s3">3 Rentenplan Marta</a
+      ><a href="#s4">4 Paar</a><a href="#s5">5 Bausteinseiten</a><a href="#s6">6 Seitenleiste</a>
+    </div>
+
+    <h2 class="top" id="s1">1 Meldung statt des heutigen Fehlers</h2>
+    <p class="lead">
+      Heute steht dort „Der Rentenbeginn liegt in der Vergangenheit. Der Modus für Personen, die
+      schon in Rente sind, folgt.“ Neu bietet die Meldung den Modus an. Der Knopf setzt nur den
+      Schalter und öffnet das Profil, er rechnet nichts um.
+    </p>
+    <div class="row">
+      <div class="desk" style="width: 720px" id="deskMsg"></div>
+      <div class="phone" id="phoneMsg"></div>
+    </div>
+
+    <h2 class="top" id="s2">2 Profil mit Schalter</h2>
+    <p class="lead">
+      Der Schalter „Ich beziehe bereits Rente“ steht ganz oben im Abschnitt „Person“. Mit ihm
+      wechselt das Feld „Wunsch-Rentenalter“ zu „Rentenbeginn (Jahr laut Rentenbescheid)“, Gehalt
+      und Grenzsteuersatz heute (nur für die bAV-Ansparphase) verschwinden. Lebenserwartung, Kinder
+      und Wunscheinkommen bleiben.
+    </p>
+    <div class="row">
+      <div class="desk" style="width: 820px" id="deskProfile"></div>
+      <div class="phone" id="phoneProfile"></div>
+    </div>
+
+    <h2 class="top" id="s3">3 Rentenplan einer Person in Rente</h2>
+    <p class="lead">
+      Die Zahl heißt „Heute“, nicht „ab Rentenbeginn“. Marta: gesetzliche Rente 1.432 € und
+      ETF-Bestand 414 € netto, zusammen 1.847 €, Wunsch 2.200 €, es fehlen 353 €. Die Karte „Lücke
+      schließen“ bietet keine ETF-Sparrate an (kein Sparplan), sondern erklärt es.
+    </p>
+    <div class="row">
+      <div class="desk" style="width: 820px" id="deskPlan"></div>
+      <div class="phone" id="phonePlan"></div>
+    </div>
+
+    <h2 class="top" id="s4">4 Paar: Marta in Rente, Jonas noch nicht</h2>
+    <p class="lead">
+      Die Kachel „Heute schon in Rente“ zeigt Marta. Die Jahre 2026 bis 2028 sind Übergang (blass,
+      gestrichelt): Jonas' Gehalt ist nicht modelliert, deshalb zählen sie nicht zur Lücke. Der
+      Snapshot liegt 2029, im Jahr, in dem Jonas in Rente geht: 1.447 € + 1.350 € = 2.797 €, Wunsch
+      3.000 €, es fehlen 203 €. Splitting (Antwort „Ja“) gilt erst ab 2029.
+    </p>
+    <div class="row">
+      <div class="desk" style="width: 820px" id="deskCouple"></div>
+      <div class="phone" id="phoneCouple"></div>
+    </div>
+
+    <h2 class="top" id="s5">5 Bausteinseiten mit Ist-Werten</h2>
+    <p class="lead">
+      Dieselben Seiten und dieselbe Vorlage (Eingaben links, Ergebnis rechts), aber nur Ist-Felder.
+      Gesetzliche Rente: Bescheid. ETF: Bestand und Entnahme, ohne Sparplan. bAV: zwei Formen.
+      Depot: nur Restkapital.
+    </p>
+    <div class="desk" style="width: 1100px" id="deskStat"></div>
+    <div class="desk" style="width: 1100px; margin-top: 24px" id="deskEtf"></div>
+    <div class="row" style="margin-top: 24px">
+      <div class="phone" id="phoneBav"></div>
+      <div class="phone" id="phoneDepot"></div>
+    </div>
+
+    <h2 class="top" id="s6">6 Seitenleiste und „Eingaben“-Blatt</h2>
+    <p class="lead">
+      Die Person in Rente trägt in der Kopfzeile den Hinweis „in Rente“. Der Status je Seite bleibt
+      wie bisher; der ETF steht auf „noch leer“, solange die Einzahlungssumme fehlt (Pflichtfeld).
+      Das Blatt zeigt dieselben Zeilen wie die Seitenleiste.
+    </p>
+    <div class="row">
+      <div class="desk" style="width: 360px" id="deskSide"></div>
+      <div class="phone" id="phoneSheet"></div>
+    </div>
+
+    <h2 class="top">Offene Punkte zur Freigabe</h2>
+    <ul class="notes">
+      <li>
+        Schalter „Ich beziehe bereits Rente“ im Profil, kein stilles Erkennen (Entscheidung a).
+      </li>
+      <li>
+        Hero „Heute“ und Kachel „Heute schon in Rente“ im Paar, Übergangsjahre blass und ohne Lücke
+        (Entscheidung h). Zwischen Heute und Snapshot ist die Lücke nicht aussagekräftig, weil das
+        Gehalt der arbeitenden Person fehlt.
+      </li>
+      <li>
+        Im Paar gilt Splitting erst ab beiden in Rente (AP-16 unverändert); davor ist Marta einzeln
+        besteuert und die UI sagt es.
+      </li>
+      <li>
+        Bausteinseiten behalten ihre Vorlage, nur die Felder wechseln. Die Zahlen der ETF- und
+        bAV-Seite stehen für sich allein (Beispiele 2 und 4 im Konzept), im Rentenplan von Marta
+        zählen gesetzliche Rente und ETF.
+      </li>
+      <li>
+        Der Hinweis „Jahresrente im Folgejahr geschätzt“ (Näherung des festen steuerfreien Betrags)
+        ist ein neuer Hinweistyp; Text und Gewicht (Info) stehen zur Freigabe.
+      </li>
+      <li>
+        Alle Rechtsregeln des Konzepts sind <code>unverified</code>, bis AP-20 die Normen selbst
+        liest.
+      </li>
+    </ul>
+
+    <script>
+      const root = document.documentElement;
+      document.getElementById('themeBtn').addEventListener('click', () => {
+        const dark =
+          getComputedStyle(root).colorScheme.startsWith('dark') || root.dataset.theme === 'dark';
+        root.dataset.theme = dark ? 'light' : 'dark';
+      });
+      const q = new URLSearchParams(location.search).get('theme');
+      if (q) root.dataset.theme = q;
+
+      const svg = (d, w = 20, sw = 1.8) =>
+        `<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+      const I = {
+        home: '<path d="M3 11l9-7 9 7M5 10v10h14V10" />',
+        user: '<circle cx="12" cy="8" r="3.6" /><path d="M5 20c0-3.6 3-6 7-6s7 2.4 7 6" />',
+        etf: '<path d="M3 17l6-6 4 4 8-8M15 7h6v6" />',
+        stat: '<path d="M4 20h16M6 20V10l6-5 6 5v10M10 20v-5h4v5" />',
+        dep: '<rect x="4" y="5" width="16" height="14" rx="3" /><path d="M8 12h8" />',
+        bav: '<rect x="3" y="8" width="18" height="11" rx="2" /><path d="M9 8V6h6v2" />',
+        oth: '<circle cx="12" cy="12" r="8.5" /><path d="M12 8v8M8 12h8" />',
+        goal: '<circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" />',
+        data: '<path d="M5 6h14M5 12h14M5 18h14" />',
+        done: '<circle cx="12" cy="12" r="8.5" /><path d="M8 12.3l2.8 2.8L16.2 9.5" />',
+        open: '<circle cx="12" cy="12" r="8" stroke-dasharray="3 3" />',
+      };
+      const st = (k, t) =>
+        `<span class="st ${k}">${svg(I[k === 'open' ? 'open' : 'done'], 18, 2)}${t ? `<span>${t}</span>` : ''}</span>`;
+      const nl = (blk, label, icon, status, on) =>
+        `<a class="nl${on ? ' on' : ''}" ${blk ? `data-block="${blk}"` : ''}>${svg(I[icon])}<span class="lab">${label}</span>${blk ? '<span class="dot"></span>' : ''}${status}</a>`;
+
+      const side = (on, etfOpen) => `
+        <nav class="side" aria-label="Seitenleiste">
+          <strong>Valiva</strong>
+          ${nl('', 'Rentenplan', 'home', '', on === 'plan')}
+          <div class="grp">Eingaben</div>
+          ${nl('', 'Profil', 'user', st('done'), on === 'profile')}
+          <div class="grp sub2">Einkommensquellen</div>
+          ${nl('etf', 'ETF-Bestand', 'etf', etfOpen ? st('open') : st('done'), on === 'etf')}
+          ${nl('stat', 'Gesetzliche Rente', 'stat', st('done'), on === 'stat')}
+          ${nl('dep', 'Altersvorsorgedepot', 'dep', st('open'), on === 'dep')}
+          ${nl('bav', 'Betriebliche AV', 'bav', st('open'), on === 'bav')}
+          ${nl('oth', 'Sonstige Einkünfte', 'oth', st('open'), false)}
+          <div class="grp">Sparen</div>
+          ${nl('', 'Sparziele', 'goal', st('open'), false)}
+          <div class="grp">Mehr</div>
+          ${nl('', 'Daten', 'data', '', false)}
+        </nav>`;
+      const tabbar = (b) =>
+        `<div class="tabbar">${['Rentenplan', 'Eingaben', 'Sparen', 'Mehr'].map((t) => (t === b ? `<b>${t}</b>` : `<span>${t}</span>`)).join('')}</div>`;
+      const who = (n, retired, other) =>
+        `<div class="seg sm"><span class="on">${n}${retired ? ' <span class="pill">in Rente</span>' : ''}</span>${other ? `<span>${other}</span>` : ''}</div>`;
+      const field = (lb, val, unit, hp) =>
+        `<div class="f"><span class="lb">${lb}</span><div class="in">${val}${unit ? `<span>${unit}</span>` : ''}</div>${hp ? `<p class="hp">${hp}</p>` : ''}</div>`;
+      const sw = (on, label) =>
+        `<div class="sw"><span class="tog${on ? ' on' : ''}"></span><b>${label}</b></div>`;
+      const kp = (items) =>
+        `<div class="kp">${items.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>`;
+      const desk = (id, main, sideHtml) =>
+        (document.getElementById(id).innerHTML = `${sideHtml}<main class="m">${main}</main>`);
+      const phone = (id, who2, main, tab) =>
+        (document.getElementById(id).innerHTML =
+          `<div class="topbar"><span>Valiva</span><span>${who2}</span></div><main>${main}</main>${tab ? tabbar(tab) : ''}`);
+
+      // 1 Meldung
+      const msg = `
+        <div class="ph"><div><h1 class="t">Rentenplan</h1><p class="sub">Marta · Kaufkraft von heute</p></div>${who('Marta', false)}</div>
+        <section class="card" style="border-color: var(--warn-bd); background: var(--warn-bg)">
+          <h2 class="bh" style="color: var(--warn-fg)">Marta: Der Rentenbeginn liegt in der Vergangenheit</h2>
+          <p style="margin:0 0 12px">Mit Geburtsjahr 1955 und Rentenalter 64 begann die Rente 2019. Beziehst du sie schon? Dann trage deine tatsächliche Rente aus dem Rentenbescheid ein, statt sie hochzurechnen.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="btn primary">Als Rentner führen</span><span class="btn">Rentenalter im Profil ändern</span></div>
+        </section>
+        <p class="hp">Bis dahin zeigt der Rentenplan kein Ergebnis für Marta, statt eine falsche Lücke zu nennen.</p>`;
+      desk('deskMsg', msg, '');
+      document.getElementById('deskMsg').style.gridTemplateColumns = '1fr';
+      phone(
+        'phoneMsg',
+        'Marta',
+        msg.replace('<div class="ph">', '<div class="ph" style="margin-top:0">'),
+        'Rentenplan',
+      );
+
+      // 2 Profil
+      const profile = (ph) => `
+        <div class="ph"><div><h1 class="t">Profil</h1><p class="sub">Marta · gilt für die Berechnung</p></div>${who('Marta', true)}</div>
+        <section class="card"><h2 class="bh">Person</h2>
+          ${sw(true, 'Ich beziehe bereits Rente')}
+          <p class="hp">Dann zählen deine tatsächlichen Werte aus dem Rentenbescheid. Die Prognose bis zum Rentenbeginn entfällt.</p>
+          <div class="ff ${ph ? '' : 'two'}">
+            ${field('Name', 'Marta')}
+            ${field('Geburtsjahr', '1955', '', 'Alter heute: 71')}
+            ${field('Rentenbeginn (Jahr laut Rentenbescheid)', '2019', '', 'Alter beim Beginn: 64. Dein Rentenbescheid nennt das Jahr; es bestimmt den Besteuerungsanteil (78 %).')}
+            ${field('Lebenserwartung', '90', 'Jahre', 'Der Verlauf läuft bis dahin (noch 19 Jahre).')}
+            ${field('Wunscheinkommen netto', '2.200', '€ pro Monat', 'In Kaufkraft von heute.')}
+          </div>
+          <p class="hp"><span class="more">Weniger Felder? Warum fehlen Gehalt und Grenzsteuersatz?</span> Sie wirken nur auf die Sparphase der betrieblichen Altersvorsorge.</p>
+        </section>
+        <section class="card"><h2 class="bh">Kranken- und Pflegeversicherung</h2>
+          <div class="radio"><span class="on">Pflichtversichert (KVdR)</span><span>Freiwillig oder privat (eigener Satz)</span></div>
+          <div class="ff ${ph ? '' : 'two'}" style="margin-top:12px">${field('Zusatzbeitrag der Kasse', '2,9', '%', 'Steht auf deinem Rentenbescheid oder bei deiner Kasse.')}${field('Kinder', '2', '', 'Mit Kindern gilt der Pflegesatz 3,6 %.')}</div>
+        </section>`;
+      desk('deskProfile', profile(false), side('profile'));
+      phone('phoneProfile', 'Marta', profile(true), 'Eingaben');
+
+      // 3 Rentenplan Marta
+      const plan = (ph) => `
+        <div class="ph"><div><h1 class="t">Rentenplan</h1><p class="sub">Marta · Kaufkraft von heute</p></div>${who('Marta', true)}</div>
+        <section class="card hero"><p class="eyebrow">Heute, netto pro Monat</p>
+          <div><span class="display">1.847</span><span class="unit">€</span> <span class="chip warn">Es fehlen 353 €</span></div>
+          <p class="hp">Wunsch: 2.200 € netto. Gedeckt sind 84 %. Die Rente läuft bis zur Lebenserwartung 90.</p>
+          <div class="stack" style="height:44px"><span class="s-stat" style="flex:1432">Gesetzliche Rente 1.432 €</span><span class="s-etf" style="flex:414">ETF 414 €</span></div>
+          <ul class="legend"><li><i class="s-stat"></i>Gesetzliche Rente</li><li><i class="s-etf"></i>ETF-Bestand (Entnahme)</li></ul>
+        </section>
+        <section class="card"><h2 class="bh">Lücke schließen</h2>
+          <p style="margin:0 0 8px">Als Rentnerin hast du keinen ETF-Sparplan. Eine Lücke lässt sich über eine höhere Entnahme, weitere Einkünfte oder ein kleineres Wunscheinkommen verkleinern.</p>
+          <span class="btn">Wunscheinkommen ändern</span></section>
+        <div class="dts"><details open><summary>Zusammensetzung <span class="meta">2 Quellen</span></summary><div class="body" style="overflow-x:auto"><table>
+          <tr><th>Quelle</th><th class="n">Brutto</th><th class="n">Steuer und Abgaben</th><th class="n">Netto</th></tr>
+          <tr><td>Gesetzliche Rente</td><td class="n">1.650,00 €</td><td class="n">217,61 €</td><td class="n">1.432,39 €</td></tr>
+          <tr><td>ETF-Bestand</td><td class="n">421,36 €</td><td class="n">7,19 €</td><td class="n">414,17 €</td></tr>
+          <tr class="sum"><td>Summe</td><td class="n">2.071,36 €</td><td class="n">224,80 €</td><td class="n">1.846,56 €</td></tr></table>
+          <p class="hp">Gesetzliche Rente: Besteuerungsanteil 78 % nach dem Jahr des Rentenbeginns 2019; der steuerfreie Teil (3.756 € im Jahr) ist ein fester Betrag, geschätzt aus der heutigen Rente.</p></div></details>
+          <details><summary>Verlauf bis 90 <span class="meta">eingeklappt</span></summary></details>
+          <details><summary>Hinweise <span class="meta">2</span></summary></details></div>`;
+      desk('deskPlan', plan(false), side('plan'));
+      phone('phonePlan', 'Marta', plan(true), 'Rentenplan');
+
+      // 4 Paar
+      const rowB = (y, parts, hatch, tot, tag) =>
+        `<div class="hb"><b>${y}</b><div class="stack">${parts.map(([c, v, l]) => `<span class="s-${c}${l === 'J' ? ' hatchbar' : ''}" style="flex:${v};${hatch ? 'opacity:.55;outline:2px dashed var(--field-border);outline-offset:-2px' : ''}">${l}</span>`).join('')}<span style="flex:${3200 - parts.reduce((a, p) => a + p[1], 0)};background:transparent"></span></div><span class="tot">${tot}${tag ? ' <span class="chip hint">' + tag + '</span>' : ''}</span></div>`;
+      const couple = (ph) => `
+        <div class="ph"><div><h1 class="t">Rentenplan Haushalt</h1><p class="sub">Marta und Jonas · Kaufkraft von heute</p></div><div class="seg sm"><span class="on">Haushalt</span><span>Marta</span><span>Jonas</span></div></div>
+        <div class="tile"><span>Heute schon in Rente: <b>Marta</b></span><b>1.432 € netto</b></div>
+        <section class="card hero"><p class="eyebrow">Ab 2029, wenn Jonas in Rente ist, netto pro Monat</p>
+          <div><span class="display">2.797</span><span class="unit">€</span> <span class="chip warn">Es fehlen 203 €</span></div>
+          <p class="hp">Wunsch des Haushalts: 3.000 € netto. Bis 2029 ist Jonas' Gehalt nicht modelliert; diese Jahre zählen nicht zur Lücke.</p>
+          <div class="stack"><span class="s-stat" style="flex:1447">Marta 1.447 €</span><span class="s-stat hatchbar" style="flex:1350">Jonas 1.350 €</span></div>
+          <ul class="legend"><li><i class="s-stat"></i>Marta gefüllt, Jonas schraffiert</li></ul>
+        </section>
+        <section class="card"><h2 class="bh">Verlauf je Jahr</h2>
+          ${rowB('2026', [['stat', 1432, 'Marta']], true, '1.432 €', 'Übergang')}
+          ${rowB('2027', [['stat', 1437, 'Marta']], true, '1.437 €', 'Übergang')}
+          ${rowB('2028', [['stat', 1442, 'Marta']], true, '1.442 €', 'Übergang')}
+          ${rowB(
+            '2029',
+            [
+              ['stat', 1447, 'M'],
+              ['stat', 1350, 'J'],
+            ],
+            false,
+            '2.797 €',
+            '',
+          )}
+          ${rowB(
+            '2035',
+            [
+              ['stat', 1477, 'M'],
+              ['stat', 1350, 'J'],
+            ],
+            false,
+            '2.827 €',
+            '',
+          )}
+          <div class="band">2026 bis 2028 (blass, gestrichelt): Übergang. Einkommen aus Arbeit von Jonas ist nicht modelliert, deshalb keine Lücke und kein Vergleich mit dem Wunsch. Die Werte von Jonas (1.350 €) sind erfunden.</div>
+        </section>
+        <div class="notice">Gemeinsame Veranlagung (Splitting): gilt ab 2029, wenn beide in Rente sind. Bis dahin wird Marta einzeln besteuert; Jonas' Gehalt ist nicht modelliert, die Steuer ist eine Näherung.</div>`;
+      desk('deskCouple', couple(false), side('plan'));
+      phone('phoneCouple', 'Haushalt ▾', couple(true), 'Rentenplan');
+
+      // 5 Bausteinseiten
+      const bp = (title, who2, left, right) =>
+        `<div class="ph"><div><h1 class="t">${title}</h1><p class="sub">${who2}</p></div>${who('Marta', true)}</div><div class="bp"><div>${left}</div><div>${right}</div></div>`;
+      const statPage = bp(
+        'Gesetzliche Rente',
+        'Ist-Rente laut Rentenbescheid',
+        `<section class="card"><h2 class="bh">Eingaben</h2><div class="ff">
+          ${field('Rente brutto pro Monat', '1.650', '€', 'Der Betrag aus deinem Rentenbescheid vor Abzug von Kranken- und Pflegeversicherung, gültig heute.')}
+          ${field('Rentenbeginn (aus dem Profil)', '2019', '', 'Ändern im Profil.')}
+          ${field('Jahresrente im Folgejahr des Beginns (optional)', 'nicht angegeben', '€', 'Leer = die App schätzt sie aus deiner heutigen Rente (17.073 €). Genauer, wenn du den Wert aus dem Bescheid für 2020 kennst.')}
+        </div></section>`,
+        `<section class="card hero"><p class="eyebrow">Netto pro Monat, heute</p><div><span class="display">1.432</span><span class="unit">€</span> <span class="chip hint">Steuerfreier Teil geschätzt</span></div>
+          ${kp([
+            ['1.650 €', 'Brutto'],
+            ['14 €', 'Steuer'],
+            ['204 €', 'Kranken- und Pflege'],
+            ['1.432 €', 'Netto'],
+          ])}</section>
+         <div class="dts"><details open><summary>Rechenweg <span class="meta">Ist-Werte</span></summary><div class="body"><table>
+          <tr><td>Besteuerungsanteil (Beginn 2019)</td><td class="n">78,0 %</td></tr>
+          <tr><td>Steuerfreier Teil, fest (22 % von 17.073 €)</td><td class="n">3.756 € pro Jahr</td></tr>
+          <tr><td>Steuerpflichtig 2026</td><td class="n">16.044 € (81,0 %)</td></tr>
+          <tr><td>Zu versteuern nach Abzügen</td><td class="n">13.461 €</td></tr>
+          <tr><td>Einkommensteuer</td><td class="n">166 € pro Jahr</td></tr></table></div></details></div>`,
+      );
+      desk('deskStat', statPage, side('stat'));
+      const etfPage = bp(
+        'ETF-Bestand',
+        'Depot und Entnahme',
+        `<section class="card"><h2 class="bh">Eingaben</h2><div class="ff">
+          ${field('Depotwert heute', '80.000', '€')}
+          ${field('Davon eingezahlt', '50.000', '€', 'Pflichtfeld. Daraus ergibt sich der Gewinnanteil (37,5 %) und damit die Steuer.')}
+          <div class="f"><span class="lb">Entnahme</span><div class="radio"><span class="on">Gleichbleibende Rate</span><span>Prozent vom Depot</span></div><p class="hp">Beginn heute (Alter 71), Ende mit der Lebenserwartung 90.</p></div>
+          <p class="hp"><span class="more">Erweitert: Vorabpauschale, Rendite in der Entnahmephase</span></p></div></section>`,
+        `<section class="card hero"><p class="eyebrow">Netto pro Monat, heute</p><div><span class="display">414</span><span class="unit">€</span></div>
+          ${kp([
+            ['421 €', 'Entnahme'],
+            ['7 €', 'Steuer'],
+            ['0 €', 'Kranken- und Pflege'],
+            ['414 €', 'Netto'],
+          ])}
+          <p class="hp">Gleichbleibende Rate bis 90, danach ist das Depot aufgebraucht. Die Rate verliert real an Kaufkraft.</p></section>
+         <div class="dts"><details open><summary>Rechenweg <span class="meta">Beispiel</span></summary><div class="body"><table>
+          <tr><td>Rate (2 % Rendite, 228 Monate)</td><td class="n">421,36 €</td></tr>
+          <tr><td>Steuerpflichtig im Jahr (37,5 % Gewinn, 30 % frei)</td><td class="n">1.327 €</td></tr>
+          <tr><td>Nach Sparerpauschbetrag 1.000 €</td><td class="n">327 €</td></tr>
+          <tr><td>Steuer (26,375 %)</td><td class="n">86 € pro Jahr</td></tr></table></div></details></div>`,
+      );
+      desk('deskEtf', etfPage, side('etf'));
+      const bavForm = (ph) => `
+        <div class="ph"><div><h1 class="t">Betriebliche AV</h1><p class="sub">In Auszahlung</p></div>${who('Marta', true)}</div>
+        <section class="card hero"><p class="eyebrow">Netto pro Monat, heute (Beispiel allein)</p><div><span class="display">136</span><span class="unit">€</span></div>
+          ${kp([
+            ['136 €', 'Auszahlung'],
+            ['0 €', 'Steuer'],
+            ['0 €', 'Abgaben'],
+            ['136 €', 'Netto'],
+          ])}
+          <p class="hp">Unter dem Freibetrag von 197,75 € fallen keine Beiträge an. Die Steuer folgt aus allen Renten zusammen.</p></section>
+        <section class="card"><h2 class="bh">Eingaben</h2>
+          <div class="f"><span class="lb">Form der Auszahlung</span><div class="radio"><span>Laufende Rente</span><span class="on">Restkapital mit Auszahlplan</span></div></div>
+          <div class="ff">${field('Restkapital heute', '20.000', '€')}${field('Auszahlung bis Alter', '85', 'Jahre', 'Heute 71, also 168 Monate.')}</div>
+          <p class="hp">Bei „Laufende Rente“: Betrag pro Monat, Anpassung (0 % oder wie die Rentenanpassung), lebenslang oder bis Alter. Umwandlung, Zuschuss und Sparphase entfallen.</p></section>`;
+      phone('phoneBav', 'Marta', bavForm(true), 'Eingaben');
+      const depForm = `
+        <div class="ph"><div><h1 class="t">Altersvorsorgedepot</h1><p class="sub">In Auszahlung</p></div>${who('Marta', true)}</div>
+        <div class="notice warn">Das Altersvorsorgedepot gibt es erst ab 2027. Trage hier nur ein Restkapital ein, wenn du einen Vertrag schon gewechselt hast.</div>
+        <section class="card hero"><p class="eyebrow">Netto pro Monat, heute (Beispiel)</p><div><span class="display">158</span><span class="unit">€</span></div>
+          <p class="hp">30.000 € Restkapital, 2 % Rendite, bis 90. Voll steuerpflichtig, keine Einmalauszahlung.</p></section>
+        <section class="card"><h2 class="bh">Eingaben</h2><div class="ff">${field('Restkapital heute', '30.000', '€')}${field('Auszahlung bis Alter', '90', 'Jahre', 'Mindestens 85, laut Gesetz.')}</div>
+        <p class="hp">Beiträge, Zulagen, Variante und Einmalauszahlung entfallen.</p></section>`;
+      phone('phoneDepot', 'Marta', depForm, 'Eingaben');
+
+      // 6 Seitenleiste
+      document.getElementById('deskSide').innerHTML = side('profile', true).replace(
+        '<nav class="side"',
+        '<nav class="side" style="width:360px"',
+      );
+      document.getElementById('deskSide').style.gridTemplateColumns = '1fr';
+      const sheetRow = (blk, label, icon, status) =>
+        `<a class="nl" ${blk ? `data-block="${blk}"` : ''} style="min-height:48px">${svg(I[icon])}<span class="lab">${label}</span>${blk ? '<span class="dot"></span>' : ''}${status}</a>`;
+      document.getElementById('phoneSheet').innerHTML =
+        `<div class="topbar"><span>Valiva</span><span>Marta <span class="pill">in Rente</span></span></div><main style="background:var(--scrim);min-height:560px;display:flex;align-items:flex-end;padding:0"><div class="sheet" style="width:100%"><div class="grab"></div>
+        <div class="grp">Eingaben</div>${sheetRow('', 'Profil', 'user', st('done'))}
+        ${sheetRow('etf', 'ETF-Bestand', 'etf', st('open', 'noch leer'))}${sheetRow('stat', 'Gesetzliche Rente', 'stat', st('done'))}
+        ${sheetRow('dep', 'Altersvorsorgedepot', 'dep', st('open'))}${sheetRow('bav', 'Betriebliche AV', 'bav', st('open'))}${sheetRow('oth', 'Sonstige Einkünfte', 'oth', st('open'))}</div></main>${tabbar('Eingaben')}`;
+    </script>
+  </body>
+</html>
