@@ -1,9 +1,21 @@
 name: Deploy to GitHub Pages
 
+# No push trigger: the site shows released versions only. The release workflow calls this one after it has
+# created a release. To redeploy by hand (for example after a failed deployment), start it from the Actions
+# tab and enter the tag, e.g. v0.1.0. See docs/releasing.md.
 on:
-  push:
-    branches: [main]
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit SHA or tag to build and deploy
+        required: true
+        type: string
   workflow_dispatch:
+    inputs:
+      ref:
+        description: Tag or commit SHA to deploy, e.g. v0.1.0
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -18,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24

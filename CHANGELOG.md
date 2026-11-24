@@ -1,0 +1,35 @@
+# Changelog
+
+All notable changes to Valiva are documented in this file.
+
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Versions below 1.0.0 are still in development: behaviour and the export file format may change. `1.0.0` will follow once the data format is declared stable and the open points listed under "Known limitations" are settled. The app version and the data format version (`schemaVersion` in the export file) are two separate numbers.
+
+## [Unreleased]
+
+## [0.1.0] - 2026-11-24
+
+First tagged version. Valiva is a retirement and savings planner that runs entirely in the browser (no account, no server, no tracking). The interface is in German and calculations follow German law.
+
+### Added
+
+- ETF savings plan with costs, taxes and inflation in three scenarios, withdrawal in retirement, and a reverse calculator for a target amount.
+- Statutory pension estimate from the pension statement, with early or late retirement adjustments, income tax and health and long-term care insurance.
+- Pension depot (Altersvorsorgedepot) with allowances, costs, guarantee and payout, and company pension (bAV) with employer subsidy and social contributions.
+- Other income in retirement (existing Riester or private pensions, Basisrente, civil-service pension, rent).
+- Savings goals for the short term, with interest tax and a calculator for the required monthly amount.
+- Retirement plan overview: net income in retirement against the desired income, gap or surplus, and the extra ETF rate that closes the gap.
+- Household with several persons, survivor pension, and optional joint tax assessment for couples.
+- Data page: export and import as a file, example households with invented data, reset.
+- Assumptions page that shows every legal value with source and status (confirmed or unverified).
+- Light and dark theme, keyboard operation, layout for small screens.
+
+### Known limitations
+
+- There is no retiree mode yet: persons who already draw their pension are not supported. A retirement start in the past shows an error instead of a result.
+- Five legal values are still `unverified` and marked as such everywhere in the app: church tax rates (8 % and 9 %), base interest rate from 2027, age limit of the child allowance in the pension depot, and the simplification that Riester pensions are fully taxable. See `docs/legal-values-review.md`.
+- Taxes and social contributions are simplified. The assumptions are listed on the assumptions page and in `docs/assumptions.md`. Results are forecasts, not guarantees, and not tax or investment advice.
+- The export file is not encrypted. Data lives in the browser's local storage and is lost if the browser data is deleted.
+- German interface only.
+
+[Unreleased]: https://github.com/antoniotroiano/valiva-app/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/antoniotroiano/valiva-app/releases/tag/v0.1.0

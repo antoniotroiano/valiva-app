@@ -4,6 +4,20 @@ import { tmpdir } from 'node:os';
 import { expect, test } from '@playwright/test';
 import { markDocument, waitForReload } from './helpers';
 
+test('the data page shows the app version from package.json and the export carries it', async ({
+  page,
+}) => {
+  const { version } = JSON.parse(readFileSync('package.json', 'utf8')) as { version: string };
+  await page.goto('/#data');
+  await expect(page.getByText(`Valiva, Version ${version}`)).toBeVisible();
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Daten exportieren' }).click();
+  const file = JSON.parse(readFileSync(await (await download).path(), 'utf8')) as {
+    appVersion: string;
+  };
+  expect(file.appVersion).toBe(version);
+});
+
 test('export, reset and import restore the household with the same gap', async ({ page }) => {
   await page.goto('/#profile');
   await page.getByLabel('Geburtsjahr', { exact: true }).fill('1985');

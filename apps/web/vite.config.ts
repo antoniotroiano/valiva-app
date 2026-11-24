@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import type { Plugin } from 'vite';
@@ -28,9 +29,15 @@ const contentSecurityPolicy = (): Plugin => ({
   ],
 });
 
+// The version comes from the root package.json (single source, see docs/releasing.md).
+const { version } = JSON.parse(
+  readFileSync(new URL('../../package.json', import.meta.url), 'utf8'),
+) as { version: string };
+
 // Relative base: works under any sub path (GitHub Pages) because navigation uses the hash.
 export default defineConfig({
   base: './',
+  define: { __APP_VERSION__: JSON.stringify(version) },
   plugins: [react(), contentSecurityPolicy()],
   server: { port: 5173 },
 });

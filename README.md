@@ -44,6 +44,10 @@ Anleitungen für Nutzer:
 - Die Oberfläche gibt es nur auf Deutsch, gerechnet wird nach deutschem Recht.
 - Die Software wird ohne Gewähr bereitgestellt (siehe [Lizenz](LICENSE)).
 
+## Versionen
+
+Valiva nutzt Semantic Versioning, aktuell `0.x` (in Entwicklung, Verhalten und Dateiformat können sich ändern). Die Änderungen je Version stehen in [`CHANGELOG.md`](CHANGELOG.md) (Englisch) und bei den [Releases auf GitHub](https://github.com/antoniotroiano/valiva-app/releases). Die Seite zeigt immer die letzte veröffentlichte Version; ihre Nummer steht unten auf der Seite "Daten". Wie eine Version veröffentlicht wird: [`docs/releasing.md`](docs/releasing.md).
+
 ## Lizenz
 
 MIT, siehe [`LICENSE`](LICENSE). Copyright (c) 2026 antoniotroiano.

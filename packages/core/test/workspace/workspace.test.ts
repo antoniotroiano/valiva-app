@@ -172,6 +172,31 @@ describe('serializeWorkspace / parseWorkspace', () => {
   });
 });
 
+describe('appVersion in the file header', () => {
+  const withVersion = (appVersion: unknown) => mutate((w) => (w.appVersion = appVersion));
+
+  it('is informational: older, newer and unusual app versions import and are kept as written', () => {
+    for (const v of ['0.0.0', '0', '0.1.0', '1.4.2', '99.0.0', '0.1.0-beta.1', 'x'.repeat(50)]) {
+      const r = parse(withVersion(v));
+      expect(r.status).toBe('ok');
+      if (r.status === 'ok') expect(r.workspace.appVersion).toBe(v);
+    }
+  });
+
+  it('does not decide about the file format: only schemaVersion does', () => {
+    expect(parse(withVersion('99.0.0')).status).toBe('ok');
+    expect(errorCodes(mutate((w) => (w.schemaVersion = WORKSPACE_SCHEMA_VERSION + 1)))).toContain(
+      'newer_version',
+    );
+  });
+
+  it('stays a required, bounded text', () => {
+    for (const v of [undefined, '', 1, null, 'x'.repeat(51)]) {
+      expect(errorCodes(withVersion(v))).toContain('invalid_field');
+    }
+  });
+});
+
 describe('parseWorkspace errors', () => {
   it('rejects an empty file', () => {
     expect(errorCodes('')).toEqual(['empty']);

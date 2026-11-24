@@ -19,6 +19,7 @@ Private App zur ETF-Sparplan-Prognose, Rentenplanung (gesetzliche Rente, bAV, ET
 - **Disclaimer:** Die App gibt keine Anlage- oder Steuerberatung; Prognosen sind keine Garantie. Hinweis in der UI und im README
 - **Name:** "Valiva" steht an zentraler Stelle (Config/README), damit Umbenennen billig bleibt
 - **Git** ist lokal eingerichtet (Branch `main`, `origin` mit dem privaten SSH-Alias). **Committen, pushen, taggen, Branches wechseln macht nur der Autor** (GitHub Desktop), nach jeder Session. Sessions führen kein `git commit`, `push`, `tag`, `checkout`/`switch`, `reset`, `stash`, `rebase` aus; lesende Befehle sind erlaubt. Am Ende steht ein englischer Commit-Vorschlag im Session-Protokoll. Die GitHub-Veröffentlichung (CI, Schutz, Hosting) folgt erst in AP-17 (Phase 5) zusammen mit dem Autor
+- **Release:** Version (`version` im Wurzel-`package.json`), `CHANGELOG.md` (Englisch, Keep a Changelog) und Tag `v<version>` hängen zusammen; GitHub erzeugt Tag und Release selbst nach grünem CI (`.github/workflows/release.yml`), die öffentliche Seite wird nur bei einem Release neu veröffentlicht. **Version erhöhen, committen und pushen macht nur der Autor**; Sessions pflegen höchstens den Abschnitt `Unreleased` im Changelog. Ablauf: `docs/releasing.md`
 
 ## Arbeitsweise
 

@@ -2,7 +2,7 @@ import { WORKSPACE_LIMITS, parseWorkspace, serializeWorkspace } from '@valiva/co
 import { suspendPersistence } from '../../state/storageStatus';
 import type { Workspace, WorkspaceWarning } from '@valiva/core';
 import { useCallback, useId, useMemo, useRef, useState } from 'react';
-import { WORKSPACE_FILE_SUFFIX, WORKSPACE_FORMAT } from '../../app/appConfig';
+import { APP_VERSION, WORKSPACE_FILE_SUFFIX, WORKSPACE_FORMAT } from '../../app/appConfig';
 import { ConfirmDialog } from '../../components/layout/ConfirmDialog';
 import { PageShell } from '../../components/layout/PageShell';
 import { exampleIds, loadExample } from '../../lib/examples';
@@ -277,6 +277,8 @@ export function DataPage({ household }: { household: HouseholdApi }) {
           <p className={message.kind === 'error' ? 'notice' : 'notice info'}>{message.text}</p>
         )}
       </div>
+
+      <p className="hint">{t.versionLine(APP_VERSION)}</p>
 
       <ConfirmDialog
         open={dialog === 'replace'}

@@ -5,6 +5,8 @@ npm run typecheck && npm run lint && npm run format:check && npm test   # fast c
 npm run e2e                                                             # Playwright smoke tests
 ```
 
+- **Release check:** `npm run check:release` (also in CI) verifies that the root `package.json` version is a plain `x.y.z`, that `CHANGELOG.md` has an `Unreleased` section and a non-empty section for that version, and that no changelog section is newer than the version. Its unit tests are in `tools/test/`. See `releasing.md`.
+
 ## End-to-end tests (Playwright)
 
 - **Port:** `playwright.config.ts` starts its own server on port **5273** (override with `PW_PORT`). It never reuses a running server and uses `--strictPort`, so a clash with another project's dev server (5173 is the Vite default) fails loudly instead of testing a foreign app.

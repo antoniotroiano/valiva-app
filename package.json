@@ -1,7 +1,7 @@
 {
   "name": "valiva",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Private retirement and savings planner (ETF savings plan, statutory pension, bAV, retirement depot, savings goals, household)",
   "license": "MIT",
   "engines": {
@@ -20,7 +20,8 @@
     "format:check": "prettier --check .",
     "dev": "npm run dev -w @valiva/web",
     "build": "npm run build -w @valiva/web",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "check:release": "node tools/release-check.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

@@ -20,6 +20,7 @@ export const data = {
   fileLabel: 'Datei wählen (.workspace.json)',
   previewTitle: (name: string) => `Vorschau: ${name}`,
   previewExportedAt: 'Exportiert am',
+  versionLine: (version: string) => `Valiva, Version ${version}`,
   previewExportedValue: (when: string, version: string) => `${when} (Version ${version})`,
   previewPersons: 'Personen',
   previewPersonsValue: (n: number, names: string) => `${n}: ${names}`,
