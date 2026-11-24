@@ -43,7 +43,18 @@ export const issues = {
       min !== undefined && min <= PROFILE_LIMITS.retirementAge.max
         ? ` Frühestens mit ${min} Jahren.`
         : ''
-    } Der Modus für Personen, die schon in Rente sind, folgt.`,
+    } Wenn du schon Rente beziehst, führe die Person als Rentner.`,
+  retired_start_in_future: (max?: number) =>
+    max !== undefined
+      ? `Der Rentenbeginn laut Bescheid liegt nach ${max}. Ohne Rentenbezug bitte den Schalter "Ich beziehe bereits Rente" ausschalten.`
+      : 'Der Rentenbeginn laut Bescheid liegt in der Zukunft.',
+  life_expectancy_in_past:
+    'Die Lebenserwartung liegt in der Vergangenheit. Bitte ein höheres Alter eingeben.',
+  end_not_after_today: (min?: number) =>
+    min !== undefined
+      ? `Das Endalter muss nach dem heutigen Alter liegen, mindestens ${min} Jahre.`
+      : 'Das Endalter muss nach dem heutigen Alter liegen.',
+  legal_values_missing: 'Für diese Berechnung fehlen gesetzliche Werte.',
   before_statement_year: (min?: number) =>
     min !== undefined
       ? `Der Rentenbeginn liegt vor dem Jahr der Renteninformation. Frühestens mit ${min} Jahren.`

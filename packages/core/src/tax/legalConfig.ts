@@ -103,9 +103,41 @@ export type SocialKey = (typeof SOCIAL_KEYS)[number];
 export type DepotKey = (typeof DEPOT_KEYS)[number];
 export type IncomeTaxKey = (typeof INCOME_TAX_KEYS)[number];
 
+/** One step of the taxable-share table: the share applies to pensions starting in `fromYear` up to the next step. */
+export type TaxableShareTier = { fromYear: number; percent: number };
+
+/** The taxable-share table of §22 Nr. 1 Satz 3 Buchst. a aa EStG for starts up to 2025 (retiree mode, `16` §10). */
+export type TaxableShareTableConfig = Omit<LegalValue, 'value' | 'unit'> & {
+  unit: string;
+  tiers: TaxableShareTier[];
+};
+
+/**
+ * Values of the retiree mode (`16` §10), kept outside `values` so far. In `pension-de.json`:
+ * `taxableShareTable` and `taxFreeAmountFixedFromYearAfterStart`; in `social-de.json`:
+ * `careChildlessExemptBeforeBirthYear`. Absent in older or hand-built configs.
+ */
+export type RetiredConfig = {
+  description?: string;
+  taxableShareTable?: TaxableShareTableConfig;
+  taxFreeAmountFixedFromYearAfterStart?: LegalValue;
+  careChildlessExemptBeforeBirthYear?: LegalValue;
+};
+
 export type LegalConfig<K extends string> = {
   schemaVersion: number;
   values: Record<K, LegalValue>;
+  retired?: RetiredConfig;
+};
+
+/** Resolved values of the retiree mode valid on one date (`16` §10). */
+export type RetiredLegalParameters = {
+  /** Steps sorted by `fromYear`; the first step also covers every earlier start. */
+  taxableShareTiers: TaxableShareTier[];
+  /** Rule switch (always 1): the tax-free part is fixed from the year after the pension start. */
+  taxFreeAmountFixedFromYearAfterStart: number;
+  /** Members born before this year pay no care insurance surcharge for the childless. */
+  careChildlessExemptBeforeBirthYear: number;
 };
 
 /** Resolved legal values valid on one date. Keys of `unverified` look like `pension.pensionValue`. */
@@ -118,6 +150,8 @@ export type LegalParameters = {
   otherIncome?: Record<OtherIncomeKey, number>;
   /** Splitting values; absent if the caller passed no `joint-assessment-de.json`. */
   jointAssessment?: Record<JointAssessmentKey, number>;
+  /** Retiree-mode values; absent unless the caller asked for them (`includeRetired`). */
+  retired?: RetiredLegalParameters;
   unverified: string[];
 };
 
@@ -145,6 +179,55 @@ function pick<K extends string>(
   return out;
 }
 
+function inForce(v: { validFrom: string; validTo: string | null }, date: string): boolean {
+  return date >= v.validFrom && (v.validTo === null || date <= v.validTo);
+}
+
+const isTier = (t: unknown): t is TaxableShareTier =>
+  typeof t === 'object' &&
+  t !== null &&
+  Number.isInteger((t as TaxableShareTier).fromYear) &&
+  Number.isFinite((t as TaxableShareTier).percent);
+
+/**
+ * Picks the retiree-mode values, asked for with `includeRetired`. A config without the `retired` section, an
+ * incomplete or malformed one, or one not valid on `date` reports its keys as missing, like every other value.
+ */
+function pickRetired(
+  pension: LegalConfig<PensionKey>,
+  social: LegalConfig<SocialKey>,
+  date: string,
+  bad: string[],
+  unverified: string[],
+): RetiredLegalParameters | undefined {
+  if (!pension.retired && !social.retired) {
+    bad.push('pension.taxableShareTable');
+    return undefined;
+  }
+  const table = pension.retired?.taxableShareTable;
+  const rule = pension.retired?.taxFreeAmountFixedFromYearAfterStart;
+  const care = social.retired?.careChildlessExemptBeforeBirthYear;
+  const tiers =
+    table && inForce(table, date) && Array.isArray(table.tiers) && table.tiers.every(isTier)
+      ? [...table.tiers].sort((a, b) => a.fromYear - b.fromYear)
+      : [];
+  if (tiers.length === 0) bad.push('pension.taxableShareTable');
+  else if (table?.status === 'unverified') unverified.push('pension.taxableShareTable');
+  if (!rule || !inForce(rule, date)) bad.push('pension.taxFreeAmountFixedFromYearAfterStart');
+  else if (rule.status === 'unverified') {
+    unverified.push('pension.taxFreeAmountFixedFromYearAfterStart');
+  }
+  if (!care || !inForce(care, date)) bad.push('social.careChildlessExemptBeforeBirthYear');
+  else if (care.status === 'unverified') {
+    unverified.push('social.careChildlessExemptBeforeBirthYear');
+  }
+  return {
+    taxableShareTiers: tiers,
+    taxFreeAmountFixedFromYearAfterStart: rule?.value ?? 0,
+    careChildlessExemptBeforeBirthYear: care?.value ?? 0,
+  };
+}
+
 /**
  * Picks the values valid on `date` (ISO yyyy-mm-dd). The core never reads files; the app passes the parsed
  * config. `otherIncome` is optional so callers that do not use the other-income block stay unchanged.
@@ -157,6 +240,7 @@ export function resolveLegalParameters(
   date: string,
   otherIncome?: LegalConfig<OtherIncomeKey>,
   jointAssessment?: LegalConfig<JointAssessmentKey>,
+  includeRetired = false,
 ): LegalResolution {
   const bad: string[] = [];
   const unverified: string[] = [];
@@ -170,6 +254,7 @@ export function resolveLegalParameters(
   const j = jointAssessment
     ? pick(jointAssessment, JOINT_ASSESSMENT_KEYS, 'jointAssessment', date, bad, unverified)
     : undefined;
+  const r = includeRetired ? pickRetired(pension, social, date, bad, unverified) : undefined;
   return bad.length > 0
     ? { ok: false, missingOrExpired: bad }
     : {
@@ -181,6 +266,7 @@ export function resolveLegalParameters(
           incomeTax: t,
           ...(o ? { otherIncome: o } : {}),
           ...(j ? { jointAssessment: j } : {}),
+          ...(r ? { retired: r } : {}),
           unverified,
         },
       };

@@ -46,5 +46,6 @@ export function currentLegal(): LegalResolution {
     todayLocal(),
     otherIncomeConfig,
     jointAssessmentConfig,
+    true,
   );
 }

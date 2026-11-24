@@ -21,7 +21,9 @@ export function useStatutory(personId: string) {
     if (
       !Number.isFinite(committed.projectedMonthlyPensionToday) ||
       !Number.isFinite(committed.statementYear) ||
-      Number.isNaN(committed.projectedMonthlyPensionAtRetirementAgeToday)
+      Number.isNaN(committed.projectedMonthlyPensionAtRetirementAgeToday) ||
+      Number.isNaN(committed.actualMonthlyGross) ||
+      Number.isNaN(committed.firstFullYearAnnual)
     ) {
       return;
     }

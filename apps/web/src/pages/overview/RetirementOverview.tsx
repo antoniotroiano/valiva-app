@@ -71,9 +71,17 @@ export function RetirementAlerts({
     );
   }
   if (!outcome.ok) {
+    const inPast = outcome.issues.some((i: ValidationIssue) => i.code === 'retirement_in_past');
     return (
       <TopNotice kind="bad">
         {t.profileInvalid} {outcome.issues.map((i: ValidationIssue) => issueMessage(i)).join(' ')}{' '}
+        {inPast && (
+          <>
+            <button type="button" className="btn" onClick={api.startRetiredMode}>
+              {de.retired.profile.asRetired.button}
+            </button>{' '}
+          </>
+        )}
         {toProfile}
       </TopNotice>
     );
@@ -93,6 +101,14 @@ export function RetirementAlerts({
           </TopNotice>
         );
       })}
+      {api.noticeMayBeThere && (
+        <div className="notice info" role="status" id="notice-there">
+          <b>{de.retired.overview.noticeThere.title}</b> {de.retired.overview.noticeThere.text}{' '}
+          <button type="button" className="link" onClick={() => goTo('profile')}>
+            {de.retired.overview.noticeThere.button}
+          </button>
+        </div>
+      )}
       <ImportantNotes codes={splitWarnings(warningsOf(outcome.result)).important} />
     </>
   );
@@ -204,6 +220,9 @@ function Result({
       {t.hero.chipCovered}
     </StatusChip>
   );
+  const snapshotCaption = api.retired
+    ? de.retired.overview.snapshotCaption
+    : t.snapshotCaption(result.targetRetirementAge);
   const gapOpen = () => {
     const d = document.getElementById('close-gap');
     if (d instanceof HTMLDetailsElement) {
@@ -217,7 +236,9 @@ function Result({
       <section className="hero-grid" aria-label={t.title}>
         <article className="card kpi kpi-hero hero">
           <span className="kpi-label">
-            {t.charts.headline(result.targetRetirementAge, t.scenarios[scenario])}
+            {api.retired
+              ? de.retired.overview.headline(t.scenarios[scenario])
+              : t.charts.headline(result.targetRetirementAge, t.scenarios[scenario])}
           </span>
           <div className="hero-num">
             <b className="kpi-value">
@@ -233,7 +254,7 @@ function Result({
             {desired !== undefined && `. ${t.charts.wish(formatEur(desired))}`}
           </span>
           {desired !== undefined && <GapBar net={chosen.netMonthlyPensionReal} desired={desired} />}
-          {hasWish && api.gap && (
+          {hasWish && (api.gap || api.retired) && (
             <p>
               <button type="button" className="link" onClick={gapOpen}>
                 {t.hero.closeGapLink}
@@ -285,6 +306,16 @@ function Result({
           <PathChart result={result} scenario={scenario} />
           {result.firstPayoutEndAge !== undefined && <p>{t.firstEnd(result.firstPayoutEndAge)}</p>}
         </Disclosure>
+        {hasWish && api.retired && (
+          <Disclosure id="close-gap" title={t.closeGap.title}>
+            <p>{de.retired.overview.closeGapRetired}</p>
+            <p>
+              <a className="link" href="#goals">
+                {de.retired.overview.toSavingsGoals}
+              </a>
+            </p>
+          </Disclosure>
+        )}
         {hasWish && api.gap && (
           <Disclosure id="close-gap" title={t.closeGap.title} meta={gapMeta(api.gap)}>
             <GapTile
@@ -295,11 +326,11 @@ function Result({
             />
           </Disclosure>
         )}
-        <WhatIfCard api={api} />
+        {!api.retired && <WhatIfCard api={api} />}
         <Disclosure title={t.sections.details} meta={t.sections.detailsMeta}>
-          <ScrollTable label={t.snapshotCaption(result.targetRetirementAge)}>
+          <ScrollTable label={snapshotCaption}>
             <table>
-              <caption>{t.snapshotCaption(result.targetRetirementAge)}</caption>
+              <caption>{snapshotCaption}</caption>
               <thead>
                 <tr>
                   <th scope="col">{t.row}</th>

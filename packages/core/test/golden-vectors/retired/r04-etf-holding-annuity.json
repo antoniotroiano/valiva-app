@@ -1,0 +1,51 @@
+{
+  "name": "r04-etf-holding-annuity",
+  "description": "ETF holding 80,000 EUR, paid in 50,000 EUR, age 71 to 90, annuity (example 2)",
+  "synthetic": true,
+  "kind": "etfHolding",
+  "currentYear": 2026,
+  "cases": [
+    {
+      "label": "annuity",
+      "input": {
+        "holdingValue": 80000,
+        "holdingContributions": 50000,
+        "payoutEndAge": 90
+      },
+      "profile": {
+        "birthYear": 1955,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2019
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "gainShare": 0.375,
+        "monthly": 421.36309051485216,
+        "taxMonthly": 7.19364355319755,
+        "net": 414.1694469616546,
+        "depletionAge": null,
+        "remainingAtEnd": 0.0,
+        "planMonths": 228
+      }
+    }
+  ]
+}

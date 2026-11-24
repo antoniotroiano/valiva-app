@@ -16,6 +16,14 @@ import type {
   OtherIncomeStart,
   OtherIncomeState,
 } from '../pension/otherIncome';
+import { ANNUITY_END_LIFELONG, RETIRED_LIMITS } from '../pension/retired';
+import type {
+  AnnuityAdjustment,
+  DepotRetiredFields,
+  EtfHoldingFields,
+  OccupationalRetiredFields,
+  StatutoryActualFields,
+} from '../pension/retired';
 import type { PersonBlock } from '../household/householdMigration';
 import type { SavingsGoal, TargetBasis } from '../goals/goalTypes';
 import { validateSavingsGoal } from '../goals/goalValidation';
@@ -46,14 +54,15 @@ export function withdrawalOf(state: WithdrawalFields): WithdrawalSettings {
     : { strategy: 'annuity' };
 }
 
-export type EtfPayoutState = WithdrawalFields & {
-  schemaVersion: 1;
-  /** True: return scenarios and inflation come from the global assumptions. */
-  useGlobalAssumptions: boolean;
-  /** Overrides; `undefined` = target retirement age and life expectancy from the profile. */
-  payoutStartAge?: number;
-  payoutEndAge?: number;
-};
+export type EtfPayoutState = WithdrawalFields &
+  EtfHoldingFields & {
+    schemaVersion: 1;
+    /** True: return scenarios and inflation come from the global assumptions. */
+    useGlobalAssumptions: boolean;
+    /** Overrides; `undefined` = target retirement age and life expectancy from the profile. */
+    payoutStartAge?: number;
+    payoutEndAge?: number;
+  };
 
 export type EtfTargetState = { targetValue: number; basis: TargetBasis };
 
@@ -65,7 +74,7 @@ export type GoalsState = {
   goals: SavingsGoal[];
 };
 
-export type StatutoryState = {
+export type StatutoryState = StatutoryActualFields & {
   schemaVersion: 1;
   /** 0 = nothing entered yet. */
   projectedMonthlyPensionToday: number;
@@ -77,24 +86,25 @@ export type StatutoryState = {
   regularRetirementAge?: number;
 };
 
-export type DepotState = WithdrawalFields & {
-  schemaVersion: 1;
-  /** 0 = nothing entered yet. */
-  ownContributionMonthly: number;
-  startMonth: string;
-  variant: DepotVariant;
-  costPercentPerYear: number;
-  /** Yearly rise of the contribution in percent, every January after the start; `undefined` = constant. */
-  annualContributionIncreasePercent?: number;
-  /** Overrides; `undefined` = use the profile (payout start) or the default. */
-  payoutStartAge?: number;
-  payoutEndAge: number;
-  lumpSumSharePercent: number;
-  /** `undefined` = not set. Only used by guarantee variants. */
-  returnOverridePercent?: number;
-};
+export type DepotState = WithdrawalFields &
+  DepotRetiredFields & {
+    schemaVersion: 1;
+    /** 0 = nothing entered yet. */
+    ownContributionMonthly: number;
+    startMonth: string;
+    variant: DepotVariant;
+    costPercentPerYear: number;
+    /** Yearly rise of the contribution in percent, every January after the start; `undefined` = constant. */
+    annualContributionIncreasePercent?: number;
+    /** Overrides; `undefined` = use the profile (payout start) or the default. */
+    payoutStartAge?: number;
+    payoutEndAge: number;
+    lumpSumSharePercent: number;
+    /** `undefined` = not set. Only used by guarantee variants. */
+    returnOverridePercent?: number;
+  };
 
-export type OccupationalState = {
+export type OccupationalState = OccupationalRetiredFields & {
   schemaVersion: 1;
   /** 0 = nothing entered yet. */
   employeeContributionMonthlyGross: number;
@@ -218,6 +228,95 @@ function readWithdrawal(r: Reader): WithdrawalFields {
   };
 }
 
+/** Optional fields of the retiree mode are added only when present, so that older data stays byte-identical. */
+const present = <T extends object>(o: T): Partial<T> =>
+  Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined)) as Partial<T>;
+
+function readHolding(r: Reader): EtfHoldingFields {
+  return present({
+    holdingValue: r.ranged('holdingValue', 0, RETIRED_LIMITS.holdingValue.max),
+    holdingContributions: r.ranged(
+      'holdingContributions',
+      0,
+      RETIRED_LIMITS.holdingContributions.max,
+    ),
+  });
+}
+
+function readStatutoryActual(r: Reader): StatutoryActualFields {
+  const mode = r.oneOf<'projection' | 'actual' | ''>('mode', ['projection', 'actual', ''], '');
+  return present({
+    mode: mode === '' ? undefined : mode,
+    actualMonthlyGross: r.ranged(
+      'actualMonthlyGross',
+      RETIRED_LIMITS.actualMonthlyGross.min,
+      RETIRED_LIMITS.actualMonthlyGross.max,
+    ),
+    firstFullYearAnnual: r.ranged(
+      'firstFullYearAnnual',
+      RETIRED_LIMITS.firstFullYearAnnual.min,
+      RETIRED_LIMITS.firstFullYearAnnual.max,
+    ),
+  });
+}
+
+function readDepotRetired(r: Reader): DepotRetiredFields {
+  return present({
+    retiredCapitalToday: r.ranged(
+      'retiredCapitalToday',
+      RETIRED_LIMITS.capital.min,
+      RETIRED_LIMITS.capital.max,
+    ),
+    retiredEndAge: r.ranged('retiredEndAge', 1, RETIRED_LIMITS.endAgeMax, true),
+  });
+}
+
+/** Reads the nested adjustment field by field (unknown fields dropped); a wrong value is a problem. */
+function readAdjustment(r: Reader): AnnuityAdjustment | undefined {
+  const raw = r.src.annuityAdjustment;
+  if (raw === undefined || raw === null) return undefined;
+  if (!isObject(raw)) {
+    r.problems.push('annuityAdjustment');
+    return undefined;
+  }
+  if (raw.mode === 'pension') return { mode: 'pension' };
+  if (raw.mode === 'fixed') {
+    const sub = new Reader(raw, 'annuityAdjustment.');
+    const percent = sub.ranged(
+      'percent',
+      RETIRED_LIMITS.annuityPercent.min,
+      RETIRED_LIMITS.annuityPercent.max,
+    );
+    r.problems.push(...sub.problems);
+    if (percent === undefined) {
+      if (sub.problems.length === 0) r.problems.push('annuityAdjustment.percent');
+      return undefined;
+    }
+    return { mode: 'fixed', percent };
+  }
+  r.problems.push('annuityAdjustment.mode');
+  return undefined;
+}
+
+function readOccupationalRetired(r: Reader): OccupationalRetiredFields {
+  const form = r.oneOf<'annuity' | 'capital' | ''>('retiredForm', ['annuity', 'capital', ''], '');
+  let end: number | 'lifelong' | undefined;
+  if (r.src.annuityEndAge === ANNUITY_END_LIFELONG) end = ANNUITY_END_LIFELONG;
+  else end = r.ranged('annuityEndAge', 1, RETIRED_LIMITS.endAgeMax, true);
+  return present({
+    retiredForm: form === '' ? undefined : form,
+    annuityMonthlyGross: r.ranged(
+      'annuityMonthlyGross',
+      RETIRED_LIMITS.annuityMonthlyGross.min,
+      RETIRED_LIMITS.annuityMonthlyGross.max,
+    ),
+    annuityAdjustment: readAdjustment(r),
+    annuityEndAge: end,
+    capitalToday: r.ranged('capitalToday', RETIRED_LIMITS.capital.min, RETIRED_LIMITS.capital.max),
+    capitalEndAge: r.ranged('capitalEndAge', 1, RETIRED_LIMITS.endAgeMax, true),
+  });
+}
+
 /** Reads fields of untrusted data; unusable values fall back to a default and are recorded. */
 class Reader {
   readonly problems: string[] = [];
@@ -250,6 +349,22 @@ class Reader {
     if (typeof this.src[key] === 'boolean') return this.src[key] as boolean;
     this.bad(key);
     return fallback;
+  }
+  /** A finite number in the range (and an integer if asked); anything else is a problem and gives `undefined`. */
+  ranged(key: string, min: number, max: number, integer = false): number | undefined {
+    if (this.missing(key)) return undefined;
+    const v = this.src[key];
+    if (
+      typeof v === 'number' &&
+      Number.isFinite(v) &&
+      v >= min &&
+      v <= max &&
+      (!integer || Number.isInteger(v))
+    ) {
+      return v;
+    }
+    this.bad(key);
+    return undefined;
   }
   month(key: string, fallback: string): string {
     if (this.missing(key)) return fallback;
@@ -341,6 +456,7 @@ function parseEtfPayout(raw: Record<string, unknown>): BlockParseResult<'etfPayo
       payoutStartAge: r.optNum('payoutStartAge'),
       payoutEndAge: r.optNum('payoutEndAge'),
       ...readWithdrawal(r),
+      ...readHolding(r),
     },
     problems: r.problems,
   };
@@ -439,6 +555,7 @@ function parseStatutory(
       statementYear: r.num('statementYear', currentYear),
       retirementAge: r.optNum('retirementAge'),
       regularRetirementAge: r.optNum('regularRetirementAge'),
+      ...readStatutoryActual(r),
     },
     problems: r.problems,
   };
@@ -462,6 +579,7 @@ function parseDepot(raw: Record<string, unknown>, currentYear: number): BlockPar
       lumpSumSharePercent: r.num('lumpSumSharePercent', 0),
       returnOverridePercent: r.optNum('returnOverridePercent'),
       ...readWithdrawal(r),
+      ...readDepotRetired(r),
     },
     problems: r.problems,
   };
@@ -488,6 +606,7 @@ function parseOccupational(
       payoutStartAge: r.optNum('payoutStartAge'),
       payoutEndAge: r.optNum('payoutEndAge'),
       guaranteedRatePercent: r.optNum('guaranteedRatePercent'),
+      ...readOccupationalRetired(r),
     },
     problems: r.problems,
   };

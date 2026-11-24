@@ -37,6 +37,12 @@ export type ProjectionResult = {
    * `monthlyPensionReal - taxableMonthlyReal`.
    */
   fixedTaxFreeMonthlyReal?: number;
+  /**
+   * With `fixedTaxFreeMonthlyReal` of the statutory pension: the fixed amount applies from the year after the
+   * payout start; the start year itself uses the taxable share (`taxableMonthlyReal`). Set when the pension
+   * starts in the current year (`16` §5.2); absent: the amount applies from the payout start on.
+   */
+  fixedTaxFreeFromNextYear?: boolean;
   /** Age at which the capital is used up before the planned end age; absent if it lasts. */
   payoutEndAge?: number;
   /** Codes such as `unverified:pension.pensionValue`; the UI maps them to texts. */

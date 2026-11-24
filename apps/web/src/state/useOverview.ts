@@ -21,7 +21,8 @@ import type {
   OtherIncome,
   ScenarioName,
 } from '@valiva/core';
-import { CURRENT_YEAR } from './useProfile';
+import { CURRENT_MONTH, CURRENT_YEAR } from './useHousehold';
+import { defaultRetirementStartYear, noticeMayBeThere } from '../lib/retired';
 import { jointInput } from '../lib/legalConfig';
 import { buildEtfProduct, buildPersonProducts, loadPersonBlocks } from '../lib/personProducts';
 import type { HouseholdApi } from './useHousehold';
@@ -86,7 +87,7 @@ export function useOverview(
   const computed:
     | {
         outcome: OverviewOutcome;
-        gap: GapSolveResult;
+        gap: GapSolveResult | undefined;
         otherIncome: Partial<Record<OverviewProductId, Record<ScenarioName, OtherIncome>>>;
       }
     | undefined = useMemo(() => {
@@ -115,16 +116,20 @@ export function useOverview(
       joint,
     );
     const buildEtf = (monthly: number) => buildEtfProduct(blocks, ctxPerson, legal, monthly, true);
-    const gap = solveGapContribution(
-      products.slice(1),
-      buildEtf,
-      etf.own.monthlyContribution,
-      pr,
-      ctxPerson.assumptions,
-      CURRENT_YEAR,
-      tax,
-      joint,
-    );
+    // A person who already draws the pension has no savings plan: nothing to solve for (`16` §7).
+    const gap =
+      pr.retired === true
+        ? undefined
+        : solveGapContribution(
+            products.slice(1),
+            buildEtf,
+            etf.own.monthlyContribution,
+            pr,
+            ctxPerson.assumptions,
+            CURRENT_YEAR,
+            tax,
+            joint,
+          );
     // Income of the other products when each pension block pays out, so its page taxes the sum.
     const otherIncome: Partial<Record<OverviewProductId, Record<ScenarioName, OtherIncome>>> = {};
     for (const p of products) {
@@ -153,7 +158,9 @@ export function useOverview(
 
   /** Recomputes the overview with shifted returns and ETF rate; nothing is saved. */
   const whatIf = useMemo(() => {
-    if (!legal.ok || !profile.committedValid) return undefined;
+    if (!legal.ok || !profile.committedValid || profile.committed.profile.retired === true) {
+      return undefined;
+    }
     return (returnDelta: number, monthlyDelta: number): OverviewOutcome => {
       const pr = profile.committed.profile;
       const shift = (s: { pessimistic: number; neutral: number; optimistic: number }) => ({
@@ -203,9 +210,25 @@ export function useOverview(
     jointOf,
   ]);
 
+  const retired = profile.committed.profile.retired === true;
+  /** Switches the person to the retiree mode, with the planned start year as a first guess (never calculates). */
+  const startRetiredMode = useCallback(() => {
+    profile.setProfile({
+      retired: true,
+      retirementStartYear: defaultRetirementStartYear(profile.state.profile, CURRENT_YEAR),
+    });
+  }, [profile]);
+
   return {
     state,
     setEnabled,
+    /** True for a person who already draws the pension: the view counts from today. */
+    retired,
+    startRetiredMode,
+    /** Planning mode, retirement within a year: the pension notice may be there (`RETIREMENT_NOTICE_LEAD_MONTHS`). */
+    noticeMayBeThere:
+      profile.committedValid &&
+      noticeMayBeThere(profile.committed.profile, CURRENT_YEAR, CURRENT_MONTH),
     whatIf,
     outcome: computed?.outcome,
     gap: computed?.gap,

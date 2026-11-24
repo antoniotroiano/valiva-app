@@ -101,5 +101,17 @@
       "sourceDe": "Pflichtzuschuss des Arbeitgebers bei Entgeltumwandlung, § 1a BetrAVG; Stichtage in § 26a nicht geprüft",
       "status": "confirmed"
     }
+  },
+  "retired": {
+    "description": "Values for people who already draw a pension (retiree mode, concept 16). Kept outside `values` so far; the assumptions page shows them from part B of AP-20 on.",
+    "careChildlessExemptBeforeBirthYear": {
+      "value": 1940,
+      "unit": "year",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "No care insurance surcharge for childless members born before 1 January 1940: §55 Abs. 3 Satz 2 SGB XI, gesetze-im-internet.de, read 2026-11-24 (no version date on the page). The rate itself is not part of this value.",
+      "sourceDe": "Kein Pflegeversicherungszuschlag für Kinderlose, die vor dem 1. Januar 1940 geboren wurden: § 55 Abs. 3 Satz 2 SGB XI, geprüft am 24.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed"
+    }
   }
 }

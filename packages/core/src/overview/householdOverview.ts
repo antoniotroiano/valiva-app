@@ -7,7 +7,7 @@ import type { Person } from '../household/household';
 import type { GlobalAssumptions } from '../shared/profile';
 import type { ProjectionResult } from '../pension/projection';
 import type { PensionKey } from '../tax/legalConfig';
-import { validateRetirementTiming } from '../shared/profile';
+import { isRetired, payoutStartYearOf, validateRetirementTiming } from '../shared/profile';
 import type { Household } from '../household/household';
 import { activityFactor, overview } from './overview';
 import type { OverviewProductId, OverviewProductInput, OverviewResult } from './overview';
@@ -36,8 +36,22 @@ export type HouseholdPathPoint = {
    * already part of `byPerson` and `total` (and of `byPersonProduct` under `otherIncome:survivor:...`).
    */
   survivorOtherIncome?: Record<string, number>;
+  /**
+   * True for the years before the last person starts to draw the pension, in a household in which at least one
+   * person already draws it (`16` §4.2): the salary of the working person is not modelled, so these years carry
+   * no gap and do not count in `totalGapReal` (the wish may still be shown).
+   */
+  transition?: boolean;
   /** Only while at least one person lives and a wish is set. */
   gap?: number;
+};
+
+/** What a person who already draws the pension receives today (`16` §4.2), independent of the snapshot year. */
+export type HouseholdRetiredToday = {
+  personId: string;
+  name: string;
+  /** Net monthly income today, in today's purchasing power. */
+  netMonthlyReal: number;
 };
 
 /** Legal values of the survivor's pension (`pension-de.json`). */
@@ -72,6 +86,8 @@ export type HouseholdSnapshot = {
 export type HouseholdScenario = {
   snapshot: HouseholdSnapshot;
   path: HouseholdPathPoint[];
+  /** Only if at least one person is in the retiree mode: their net income today ("already retired" tile). */
+  retiredToday?: HouseholdRetiredToday[];
   /** Sum of `12 x gap` over the years from the first year up to, excluding, the last year. */
   totalGapReal?: number;
 };
@@ -268,7 +284,9 @@ export function householdOverview(
     persons.push({ personId: person.id, name: person.name, overview: out.result });
   }
 
-  const startYear = (p: Household['persons'][number]) => p.birthYear + p.targetRetirementAge;
+  // A person in the retiree mode starts to count today (`16` §4.2).
+  const startYear = (p: Household['persons'][number]) => payoutStartYearOf(p, currentYear);
+  const anyRetired = household.persons.some(isRetired);
   const firstYear = Math.min(...household.persons.map(startYear));
   const snapshotYear = Math.max(...household.persons.map(startYear));
   const lastYear = Math.max(...household.persons.map(endYear));
@@ -341,7 +359,11 @@ export function householdOverview(
       }
       const wish = desiredIn(year);
       if (wish !== undefined) point.desired = wish;
-      if (wish !== undefined && year <= lastYear) point.gap = Math.max(0, wish - point.total);
+      if (anyRetired && year < snapshotYear) {
+        point.transition = true;
+      } else if (wish !== undefined && year <= lastYear) {
+        point.gap = Math.max(0, wish - point.total);
+      }
       return point;
     };
 
@@ -368,6 +390,15 @@ export function householdOverview(
       },
       path,
       totalGapReal: desired === undefined ? undefined : totalGap,
+      ...(anyRetired
+        ? {
+            retiredToday: household.persons.filter(isRetired).map((p) => ({
+              personId: p.id,
+              name: p.name,
+              netMonthlyReal: ownPoint(currentYear).byPerson[p.id] ?? 0,
+            })),
+          }
+        : {}),
     };
   }
 

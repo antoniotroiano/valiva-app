@@ -36,7 +36,10 @@ export async function waitForReload(page: Page) {
 }
 
 /** Replaces the workspace with an example on the data page and waits until the page has reloaded. */
-export async function loadExample(page: Page, example: 'Paar' | 'Einzelperson' = 'Paar') {
+export async function loadExample(
+  page: Page,
+  example: 'Paar' | 'Einzelperson' | 'Rentnerin' | 'Paar, eine Person in Rente' = 'Paar',
+) {
   await page.goto('/#data');
   await page.getByRole('button', { name: example, exact: true }).click();
   await page.getByRole('button', { name: 'Daten ersetzen …' }).click();

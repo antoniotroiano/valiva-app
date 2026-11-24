@@ -27,6 +27,8 @@ export function useDepot(personId: string) {
     if (!required.every(Number.isFinite)) return;
     if (Number.isNaN(committed.annualContributionIncreasePercent)) return;
     if (Number.isNaN(committed.withdrawalPercent)) return;
+    if (Number.isNaN(committed.retiredCapitalToday) || Number.isNaN(committed.retiredEndAge))
+      return;
     safeSetItem(personKey(personId, 'depot'), JSON.stringify(committed));
   });
 

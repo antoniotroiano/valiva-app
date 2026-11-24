@@ -46,6 +46,8 @@ export const assumptions = {
   } as Record<string, string>,
   baseInterestName: (year: number) => `Basiszins ${year}`,
   pensionNames: {
+    taxableShareTable: 'Besteuerungsanteil nach Rentenbeginn bis 2025 (Tabelle)',
+    taxFreeAmountFixedFromYearAfterStart: 'Steuerfreier Teil der Rente ab dem Folgejahr fest',
     pensionValue: 'Aktueller Rentenwert je Entgeltpunkt',
     averageEarningsYearly: 'Vorläufiges Durchschnittsentgelt pro Jahr',
     regularRetirementAge: 'Regelaltersgrenze (Jahrgang ab 1964)',
@@ -121,6 +123,7 @@ export const assumptions = {
     specialExpensesLumpSumYearly: 'Sonderausgaben-Pauschbetrag pro Jahr',
   },
   socialNames: {
+    careChildlessExemptBeforeBirthYear: 'Kein Pflegezuschlag für Kinderlose, geboren vor',
     healthGeneralRatePercent: 'Krankenversicherung allgemeiner Satz',
     healthAdditionalRatePercent: 'Zusatzbeitrag Krankenversicherung (Durchschnitt)',
     careRatePercent: 'Pflegeversicherung',
@@ -172,6 +175,17 @@ export const assumptions = {
     'Steuer = Besteuerungsanteil im Jahr des Rentenbeginns × pauschaler Steuersatz im Alter. Der Besteuerungsanteil steigt von 84 % (2026) um 0,5 Prozentpunkte pro Jahr bis 100 %.',
     'Krankenversicherung als Pflichtversicherter: halber allgemeiner Satz plus halber Zusatzbeitrag. Pflege: voller Satz, für Kinderlose höher. Bei „Andere“ gilt dein eigener Gesamtsatz.',
     'Nicht berücksichtigt: Änderung der Entgeltpunkte bei früherem oder späterem Beginn, Freibeträge, Kirchensteuer, Erwerbsminderung und Hinterbliebenenrente.',
+  ],
+  retiredRulesTitle: 'Personen in Rente',
+  retiredRules: [
+    'Wer schon Rente bezieht, trägt die Werte aus dem Rentenbescheid ein. Die Rechnung läuft ab heute: Kaufkraft von heute, Verlauf vom heutigen Alter bis zur Lebenserwartung.',
+    'Gesetzliche Rente: Der Besteuerungsanteil richtet sich nach dem Jahr des Rentenbeginns (Tabelle bis 2025, ab 2026 wie oben). Im Beginnjahr gilt der Anteil, ab dem Folgejahr ist der steuerfreie Teil ein fester Euro-Betrag: Jahresrente des ersten vollen Jahres × (1 − Anteil). Spätere Rentenanpassungen sind voll steuerpflichtig. Die Jahresrente des Folgejahres schätzt die App, wenn du sie nicht einträgst; der Gesetzestext nennt dafür kein Bezugsjahr.',
+    'Betriebliche Altersversorgung: laufende Rente (Anpassung fest oder wie die gesetzliche Rente, lebenslang oder bis zu einem Alter) oder Restkapital mit Auszahlplan. Voll steuerpflichtig, Freibetrag Krankenversicherung und Freigrenze Pflege wie bei der Betriebsrente.',
+    'Altersvorsorgedepot: nur Restkapital mit Auszahlplan, voll steuerpflichtig, ohne Einmalauszahlung und ohne Zulagen. Verträge sind erst ab 2027 möglich.',
+    'ETF: Bestand heute mit Entnahme bis zum Endalter. Der Gewinnanteil (Depotwert minus Einzahlungen, geteilt durch den Depotwert) wird über die Entnahme als konstant angenommen; die Steuer rechnet wie beim Sparplan.',
+    'Pflegeversicherung: Der Zuschlag für Kinderlose entfällt bei Geburt vor dem 1. Januar 1940.',
+    'Paar mit einer Person in Rente: Die Jahre bis zum Rentenbeginn der zweiten Person sind ein Übergang und zählen nicht zur Lücke, weil das Gehalt nicht modelliert ist. Die gemeinsame Veranlagung gilt erst ab dem Jahr, in dem beide eine Rente beziehen; davor wird die Person in Rente einzeln besteuert.',
+    'Nicht berücksichtigt: Erwerbsminderungsrente, bezogene Witwenrente (als „Sonstige Einkünfte“ erfassbar), Altersentlastungsbetrag, freiwillig gesetzlich oder privat Versicherte mit eigenem Beitragsmodell, Rentenanpassung zum 1. Juli.',
   ],
   depotRulesTitle: 'Altersvorsorgedepot',
   depotRules: [

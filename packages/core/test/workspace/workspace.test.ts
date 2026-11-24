@@ -422,6 +422,7 @@ describe('migration chain', () => {
     expect(errorCodes(JSON.stringify(old))).toEqual(['invalid_version']);
     // Artificial "version 2" app: version 1 files need the migration to parse.
     const v1 = JSON.parse(serializeWorkspace(sample())) as Record<string, unknown>;
+    v1.schemaVersion = 1;
     const r = parseWorkspace(JSON.stringify(v1), YEAR, FORMAT, { 1: (w) => w }, 2);
     expect(r.status).toBe('ok');
     expect(r.status === 'ok' && r.workspace.schemaVersion).toBe(WORKSPACE_SCHEMA_VERSION);

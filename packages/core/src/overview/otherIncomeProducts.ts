@@ -7,6 +7,7 @@ import {
 } from '../pension/otherIncome';
 import type { OtherIncomeEntry } from '../pension/otherIncome';
 import type { ProjectionContext, ProjectionResult } from '../pension/projection';
+import { pensionStartAgeOf } from '../shared/profile';
 import { SCENARIO_NAMES } from '../shared/types';
 import type { ScenarioName, ValidationIssue } from '../shared/types';
 import type { OverviewProductInput } from './overview';
@@ -35,7 +36,7 @@ export function buildOtherIncomeProducts(
         max: OTHER_INCOME_LIMITS.maxEntries,
       });
     }
-    const startAge = otherIncomeStartAge(entry, ctx.profile.targetRetirementAge);
+    const startAge = otherIncomeStartAge(entry, pensionStartAgeOf(ctx.profile));
     const base = {
       productId: otherIncomeProductId(String(entry.id)),
       enabled: entry.enabled === true,
@@ -53,6 +54,12 @@ export function buildOtherIncomeProducts(
             careRateChildlessPercent: social.careRateChildlessPercent,
             occupationalHealthAllowanceMonthly: social.occupationalHealthAllowanceMonthly,
             occupationalCareThresholdMonthly: social.occupationalCareThresholdMonthly,
+            ...(ctx.legal.retired
+              ? {
+                  careChildlessExemptBeforeBirthYear:
+                    ctx.legal.retired.careChildlessExemptBeforeBirthYear,
+                }
+              : {}),
           }
         : undefined;
     const results = {} as Record<ScenarioName, ProjectionResult>;

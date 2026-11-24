@@ -120,7 +120,11 @@ export type ValidationIssue = {
     | 'name_invalid'
     | 'end_not_after_start'
     | 'nominal_start_in_past'
-    | 'too_many_entries';
+    | 'too_many_entries'
+    | 'retired_start_in_future'
+    | 'life_expectancy_in_past'
+    | 'end_not_after_today'
+    | 'legal_values_missing';
   /** Allowed range or limit, for message formatting in the UI. */
   min?: number;
   max?: number;

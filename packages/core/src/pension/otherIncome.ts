@@ -8,6 +8,7 @@ import type {
   ProjectionResult,
 } from './projection';
 import { otherIncomeOf } from './projection';
+import { pensionStartAgeOf } from '../shared/profile';
 import type { GlobalAssumptions } from '../shared/profile';
 import { retirementIncomeTax } from '../tax/retirementTax';
 import type { ScenarioName, ValidationIssue } from '../shared/types';
@@ -149,7 +150,7 @@ export function validateOtherIncomeEntry(
     c.integer('start.age', start.age as number, L.startAge);
     if (Number.isInteger(start.age)) startAge = start.age;
   } else if (start?.mode === 'retirement') {
-    startAge = ctx.profile.targetRetirementAge;
+    startAge = pensionStartAgeOf(ctx.profile);
   } else {
     c.issues.push({ field: 'start.mode', code: 'required' });
   }
@@ -294,7 +295,7 @@ export function projectOtherIncome(
   const { profile, assumptions, legal } = ctx;
   const inflation = 1 + assumptions.inflationPercent / 100;
   const g = otherIncomeAdjustmentPercent(entry.adjustment, assumptions);
-  const startAge = otherIncomeStartAge(entry, profile.targetRetirementAge);
+  const startAge = otherIncomeStartAge(entry, pensionStartAgeOf(profile));
   const startYear = profile.birthYear + startAge;
   const n = startYear - ctx.currentYear;
 
@@ -333,7 +334,14 @@ export function projectOtherIncome(
   const contributions =
     entry.contributions === 'likeOccupational'
       ? (({ health, care }) => health + care)(
-          occupationalContributions(real, 1, assumptions, legal.social),
+          occupationalContributions(
+            real,
+            1,
+            assumptions,
+            legal.social,
+            profile.birthYear,
+            legal.retired?.careChildlessExemptBeforeBirthYear,
+          ),
         )
       : 0;
 
@@ -403,9 +411,10 @@ export function sharedOccupationalContributions(
   gross: { id: string; amount: number }[],
   social: SharedThresholdParameters,
   assumptions: GlobalAssumptions,
+  birthYear?: number,
 ): Record<string, number> {
   const sum = gross.reduce((s, m) => s + Math.max(0, m.amount), 0);
-  const { health, care } = occupationalContributions(sum, 1, assumptions, social);
+  const { health, care } = occupationalContributions(sum, 1, assumptions, social, birthYear);
   const total = health + care;
   const byId: Record<string, number> = {};
   for (const m of gross) byId[m.id] = sum > 0 ? (total * Math.max(0, m.amount)) / sum : 0;

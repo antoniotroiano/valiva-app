@@ -18,6 +18,7 @@ import { StatusChip } from '../../components/cards/StatusChip';
 import { Icon } from '../../components/layout/Icon';
 import { NumberField } from '../../components/forms/NumberField';
 import { gapMeta } from '../overview/RetirementGap';
+import { CURRENT_YEAR } from '../../state/useHousehold';
 import { ImportantNotes, InfoNotes, TopNotice, splitWarnings } from '../overview/OverviewNotes';
 
 export function HouseholdOverview({
@@ -179,7 +180,26 @@ function Result({
   r: typeof de.overview.retirement;
 }) {
   const t = de.householdView;
+  const rh = de.retired.household;
   const wishPercent = household.state.household.survivorWishPercent;
+  const { persons: members, jointAssessment } = household.state.household;
+  const retiredIds = members.filter((p) => p.retired === true).map((p) => p.id);
+  const retiredToday = result.scenarios[scenario].retiredToday ?? [];
+  const transitionYears = result.scenarios[scenario].path.filter((p) => p.transition === true);
+  // The person who is not retired yet and starts to draw a pension later (the one whose salary is not modelled).
+  const workingNames = members
+    .filter((p) => p.retired !== true && p.birthYear + p.targetRetirementAge > CURRENT_YEAR)
+    .map((p) => p.name.trim() || p.id)
+    .join(', ');
+  const retiredNames = members
+    .filter((p) => p.retired === true)
+    .map((p) => p.name.trim() || p.id)
+    .join(', ');
+  const jointTransition =
+    jointAssessment === true &&
+    transitionYears.length > 0 &&
+    workingNames !== '' &&
+    retiredNames !== '';
   const chosen = result.scenarios[scenario].snapshot;
   const desired = result.desiredMonthlyIncomeToday;
   const hasWish = desired !== undefined;
@@ -261,6 +281,34 @@ function Result({
         </aside>
       </section>
 
+      {retiredToday.length > 0 && (
+        <section className="card retired-today" aria-label={rh.todayTitle}>
+          <h2>{rh.todayTitle}</h2>
+          <ul className="person-list">
+            {retiredToday.map((x) => (
+              <li key={x.personId}>
+                <strong>{rh.todayLine(x.name, formatEur(x.netMonthlyReal))}</strong>
+              </li>
+            ))}
+          </ul>
+          <p className="hint">{rh.todayNote}</p>
+        </section>
+      )}
+      {transitionYears.length > 0 && (
+        <p className="notice info" role="note">
+          {rh.transitionBand(
+            transitionYears[0]!.year,
+            transitionYears[transitionYears.length - 1]!.year,
+            workingNames,
+          )}
+        </p>
+      )}
+      {jointTransition && (
+        <p className="notice info" role="note">
+          {rh.jointTransition(retiredNames, workingNames)}
+        </p>
+      )}
+
       <ScenarioSwitch value={scenario} onChange={setScenario} />
 
       <h2 className="block-h">{t.compositionTitle}</h2>
@@ -281,8 +329,19 @@ function Result({
               gapPersonId={data.gapPersonId}
               setGapPersonId={data.setGapPersonId}
               result={result}
+              retiredIds={retiredIds}
               budget={data.blocks?.[data.gapPersonId]?.goals}
             />
+          </Disclosure>
+        )}
+        {hasWish && !data.gap && retiredIds.length > 0 && (
+          <Disclosure id="close-gap" title={r.closeGap.title}>
+            <p>{de.retired.overview.closeGapRetired}</p>
+            <p>
+              <a className="link" href="#goals">
+                {de.retired.overview.toSavingsGoals}
+              </a>
+            </p>
           </Disclosure>
         )}
         <Disclosure title={t.sections.details} meta={t.sections.detailsMeta}>
@@ -334,6 +393,12 @@ function Result({
                       r.charts.perMonth(formatEur(chosen.byPerson[p.personId] ?? 0)),
                     )}
                   </strong>
+                  {members.find((x) => x.id === p.personId)?.retired === true && (
+                    <>
+                      {' '}
+                      <span className="badge">{rh.inRetirementBadge}</span>
+                    </>
+                  )}
                   {emptyPerson(p.personId) && <p className="hint">{t.personEmpty}</p>}
                 </div>
                 <button type="button" className="btn" onClick={() => openPerson(p.personId)}>
@@ -358,7 +423,9 @@ function GapTile({
   setGapPersonId,
   result,
   budget,
+  retiredIds,
 }: {
+  retiredIds: string[];
   gap: GapSolveResult | undefined;
   gapPersonId: string;
   setGapPersonId: (id: string) => void;
@@ -391,11 +458,13 @@ function GapTile({
           value={gapPersonId}
           onChange={(e) => setGapPersonId(e.target.value)}
         >
-          {result.persons.map((p) => (
-            <option key={p.personId} value={p.personId}>
-              {p.name}
-            </option>
-          ))}
+          {result.persons
+            .filter((p) => !retiredIds.includes(p.personId))
+            .map((p) => (
+              <option key={p.personId} value={p.personId}>
+                {p.name}
+              </option>
+            ))}
         </select>
       </div>
       {!gap.ok && <p>{gap.issues.map((i: ValidationIssue) => issueMessage(i)).join(' ')}</p>}

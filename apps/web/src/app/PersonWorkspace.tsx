@@ -37,6 +37,22 @@ const OccupationalPage = lazy(() =>
   import('../pages/occupational/OccupationalPage').then((m) => ({ default: m.OccupationalPage })),
 );
 const EtfPage = lazy(() => import('../pages/etf/EtfPage').then((m) => ({ default: m.EtfPage })));
+const EtfRetiredPage = lazy(() =>
+  import('../pages/retired/EtfRetiredPage').then((m) => ({ default: m.EtfRetiredPage })),
+);
+const StatutoryRetiredPage = lazy(() =>
+  import('../pages/retired/StatutoryRetiredPage').then((m) => ({
+    default: m.StatutoryRetiredPage,
+  })),
+);
+const OccupationalRetiredPage = lazy(() =>
+  import('../pages/retired/OccupationalRetiredPage').then((m) => ({
+    default: m.OccupationalRetiredPage,
+  })),
+);
+const DepotRetiredPage = lazy(() =>
+  import('../pages/retired/DepotRetiredPage').then((m) => ({ default: m.DepotRetiredPage })),
+);
 const OverviewPage = lazy(() =>
   import('../pages/overview/OverviewPage').then((m) => ({ default: m.OverviewPage })),
 );
@@ -78,6 +94,8 @@ export function PersonWorkspace({
     household,
   );
 
+  // A person who already draws the pension sees the pages with actual values (`16` §7).
+  const retiredMode = profile.state.profile.retired === true;
   const multi = household.state.household.persons.length > 1;
   const shared = multi && (page === 'profile' || page === 'assumptions');
   const head = usePageHead();
@@ -106,7 +124,17 @@ export function PersonWorkspace({
           guide={guide}
         />
       )}
-      {page === 'etf' && (
+      {page === 'etf' && retiredMode && (
+        <EtfRetiredPage
+          plan={plan}
+          profile={profile}
+          legal={legal}
+          goToProfile={() => go('profile')}
+          nextStep={nextStep}
+          otherIncome={retirement.otherIncome?.etf}
+        />
+      )}
+      {page === 'etf' && !retiredMode && (
         <EtfPage
           {...plan}
           assumptions={profile.committed.assumptions}
@@ -121,7 +149,17 @@ export function PersonWorkspace({
           goToAssumptions={() => go('assumptions')}
         />
       )}
-      {page === 'statutory' && (
+      {page === 'statutory' && retiredMode && (
+        <StatutoryRetiredPage
+          api={statutory}
+          profile={profile}
+          legal={legal}
+          goToProfile={() => go('profile')}
+          nextStep={nextStep}
+          otherIncome={retirement.otherIncome?.statutory}
+        />
+      )}
+      {page === 'statutory' && !retiredMode && (
         <StatutoryPage
           api={statutory}
           profile={profile}
@@ -132,7 +170,17 @@ export function PersonWorkspace({
           otherIncome={retirement.otherIncome?.statutory}
         />
       )}
-      {page === 'depot' && (
+      {page === 'depot' && retiredMode && (
+        <DepotRetiredPage
+          api={depot}
+          profile={profile}
+          legal={legal}
+          goToProfile={() => go('profile')}
+          nextStep={nextStep}
+          otherIncome={retirement.otherIncome?.retirementDepot}
+        />
+      )}
+      {page === 'depot' && !retiredMode && (
         <DepotPage
           api={depot}
           profile={profile}
@@ -143,7 +191,17 @@ export function PersonWorkspace({
           otherIncome={retirement.otherIncome?.retirementDepot}
         />
       )}
-      {page === 'occupational' && (
+      {page === 'occupational' && retiredMode && (
+        <OccupationalRetiredPage
+          api={occupational}
+          profile={profile}
+          legal={legal}
+          goToProfile={() => go('profile')}
+          nextStep={nextStep}
+          otherIncome={retirement.otherIncome?.occupational}
+        />
+      )}
+      {page === 'occupational' && !retiredMode && (
         <OccupationalPage
           api={occupational}
           profile={profile}

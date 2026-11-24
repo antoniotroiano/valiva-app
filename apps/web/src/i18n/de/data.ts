@@ -47,6 +47,8 @@ export const data = {
     single: 'Einzelperson',
     couple: 'Paar',
     'couple-gap': 'Paar mit Rentenlücke',
+    retired: 'Rentnerin',
+    'couple-retired': 'Paar, eine Person in Rente',
   } as Record<string, string>,
   resetTitle: 'Alle Daten löschen',
   resetText:

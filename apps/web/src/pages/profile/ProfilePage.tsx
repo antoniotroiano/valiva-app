@@ -1,4 +1,9 @@
-import { capitalGainsRateWithChurchTax, regularRetirementAgeFor, taxableShare } from '@valiva/core';
+import {
+  capitalGainsRateWithChurchTax,
+  regularRetirementAgeFor,
+  taxableShare,
+  taxableShareForStartYear,
+} from '@valiva/core';
 import { type ChurchTaxChoice, type GlobalAssumptions, type LegalResolution } from '@valiva/core';
 import { useId, useState } from 'react';
 import { FieldGroup } from '../../components/forms/FieldGroup';
@@ -8,6 +13,7 @@ import { PageShell } from '../../components/layout/PageShell';
 import { formatAge, formatNumber } from '../../lib/format';
 import { de, issueMessage } from '../../i18n/de';
 import { churchTaxParameters } from '../../lib/taxConfig';
+import { defaultRetirementStartYear } from '../../lib/retired';
 import { CURRENT_YEAR } from '../../state/useProfile';
 import { type ProfileApi } from '../../state/useProfile';
 import { ChildrenField } from './ProfileChildren';
@@ -38,6 +44,7 @@ export function ProfilePage({ api, legal, goToAssumptions, hideWish }: Props) {
   const radioName = useId();
   const churchRadioName = useId();
   const childlessId = useId();
+  const retiredId = useId();
   const [resetKey, setResetKey] = useState(0);
 
   const setA = (patch: Partial<GlobalAssumptions>) =>
@@ -71,8 +78,27 @@ export function ProfilePage({ api, legal, goToAssumptions, hideWish }: Props) {
   ];
   const churchSummary = churchChoices.find((c) => c.value === a.churchTax)!.label;
 
-  const retirementYear = profile.birthYear + profile.targetRetirementAge;
-  const share = legal.ok ? taxableShare(retirementYear, legal.legal) : undefined;
+  const retired = profile.retired === true;
+  const rt = de.retired.profile;
+  const retirementYear = retired
+    ? (profile.retirementStartYear ?? Number.NaN)
+    : profile.birthYear + profile.targetRetirementAge;
+  const retiredShare =
+    retired && legal.ok && Number.isFinite(retirementYear)
+      ? taxableShareForStartYear(retirementYear, legal.legal)
+      : undefined;
+  const share = legal.ok && !retired ? taxableShare(retirementYear, legal.legal) : undefined;
+  const inPast = !retired && issues.some((i) => i.code === 'retirement_in_past');
+  const setRetired = (on: boolean) =>
+    api.setProfile(
+      on
+        ? {
+            retired: true,
+            retirementStartYear:
+              profile.retirementStartYear ?? defaultRetirementStartYear(profile, CURRENT_YEAR),
+          }
+        : { retired: false },
+    );
   const regular = legal.ok
     ? t.consequences.regularAgeValue(
         formatAge(regularRetirementAgeFor(profile.birthYear, legal.legal.pension)),
@@ -86,6 +112,7 @@ export function ProfilePage({ api, legal, goToAssumptions, hideWish }: Props) {
         : t.consequences.healthCompulsoryChildren;
   const calcOk = api.issues.profile.length === 0;
   const outside =
+    !retired &&
     Number.isFinite(profile.targetRetirementAge) &&
     (profile.targetRetirementAge < 63 || profile.targetRetirementAge > 70);
 
@@ -101,14 +128,43 @@ export function ProfilePage({ api, legal, goToAssumptions, hideWish }: Props) {
               onChange={(v) => api.setProfile({ birthYear: v })}
               error={err('birthYear')}
             />
-            <NumberField
-              label={t.fields.targetRetirementAge.label}
-              hint={t.fields.targetRetirementAge.hint}
-              unit={t.units.years}
-              value={profile.targetRetirementAge}
-              onChange={(v) => api.setProfile({ targetRetirementAge: v })}
-              error={err('targetRetirementAge')}
-            />
+            <div className="check">
+              <input
+                id={retiredId}
+                type="checkbox"
+                checked={retired}
+                onChange={(e) => setRetired(e.target.checked)}
+              />
+              <label htmlFor={retiredId}>{rt.switchLabel}</label>
+            </div>
+            <p className="hint">{rt.switchHint}</p>
+            {retired ? (
+              <NumberField
+                plain
+                label={rt.startYear.label}
+                hint={rt.startYear.hint}
+                value={profile.retirementStartYear}
+                onChange={(v) => api.setProfile({ retirementStartYear: v })}
+                error={err('retirementStartYear')}
+              />
+            ) : (
+              <NumberField
+                label={t.fields.targetRetirementAge.label}
+                hint={t.fields.targetRetirementAge.hint}
+                unit={t.units.years}
+                value={profile.targetRetirementAge}
+                onChange={(v) => api.setProfile({ targetRetirementAge: v })}
+                error={err('targetRetirementAge')}
+              />
+            )}
+            {inPast && (
+              <div className="notice" role="status" id="as-retired">
+                {rt.asRetired.text}{' '}
+                <button type="button" className="btn" onClick={() => setRetired(true)}>
+                  {rt.asRetired.button}
+                </button>
+              </div>
+            )}
             <NumberField
               label={t.fields.lifeExpectancyAge.label}
               hint={t.fields.lifeExpectancyAge.hint}
@@ -170,17 +226,25 @@ export function ProfilePage({ api, legal, goToAssumptions, hideWish }: Props) {
 
           <FieldGroup
             title={t.groups.tax}
-            summary={t.advancedSummary(
-              t.summaries.tax(
-                formatNumber(a.marginalTaxRateTodayPercent),
-                formatNumber(a.employeeSocialInsuranceRatePercent),
-              ),
-            )}
+            summary={
+              retired
+                ? rt.taxHiddenSummary
+                : t.advancedSummary(
+                    t.summaries.tax(
+                      formatNumber(a.marginalTaxRateTodayPercent),
+                      formatNumber(a.employeeSocialInsuranceRatePercent),
+                    ),
+                  )
+            }
             hasError={issues.some((i) => startsWithAny(i.field, ['marginalTax', 'employeeSocial']))}
           >
             <p className="hint">{t.taxNote}</p>
-            {pct('marginalTaxRateTodayPercent', t.fields.marginalTaxRateTodayPercent)}
-            {pct('employeeSocialInsuranceRatePercent', t.fields.employeeSocialInsuranceRatePercent)}
+            {!retired && pct('marginalTaxRateTodayPercent', t.fields.marginalTaxRateTodayPercent)}
+            {!retired &&
+              pct(
+                'employeeSocialInsuranceRatePercent',
+                t.fields.employeeSocialInsuranceRatePercent,
+              )}
           </FieldGroup>
 
           <FieldGroup
@@ -293,22 +357,37 @@ export function ProfilePage({ api, legal, goToAssumptions, hideWish }: Props) {
             <div className="card">
               <h2>{t.consequences.title}</h2>
               {calcOk ? (
-                <dl className="facts">
-                  <dt>{t.consequences.retirementYear}</dt>
-                  <dd>{retirementYear}</dd>
-                  <dt>{t.consequences.yearsToRetirement(CURRENT_YEAR)}</dt>
-                  <dd>{retirementYear - CURRENT_YEAR}</dd>
-                  <dt>{t.consequences.regularAge(profile.birthYear)}</dt>
-                  <dd>{regular}</dd>
-                  <dt>{t.consequences.taxableShare(retirementYear)}</dt>
-                  <dd>{share ? `${formatNumber(share.percent)} %` : ''}</dd>
-                  <dt>{t.consequences.health}</dt>
-                  <dd>{withTerms(healthText)}</dd>
-                </dl>
+                retired ? (
+                  <dl className="facts">
+                    <dt>{rt.consequences.startYear}</dt>
+                    <dd>{retirementYear}</dd>
+                    <dt>{rt.consequences.sinceYears}</dt>
+                    <dd>{CURRENT_YEAR - retirementYear}</dd>
+                    <dt>{rt.consequences.ageToday}</dt>
+                    <dd>{CURRENT_YEAR - profile.birthYear}</dd>
+                    <dt>{rt.consequences.taxableShare(retirementYear)}</dt>
+                    <dd>{retiredShare === undefined ? '' : `${formatNumber(retiredShare)} %`}</dd>
+                    <dt>{t.consequences.health}</dt>
+                    <dd>{withTerms(healthText)}</dd>
+                  </dl>
+                ) : (
+                  <dl className="facts">
+                    <dt>{t.consequences.retirementYear}</dt>
+                    <dd>{retirementYear}</dd>
+                    <dt>{t.consequences.yearsToRetirement(CURRENT_YEAR)}</dt>
+                    <dd>{retirementYear - CURRENT_YEAR}</dd>
+                    <dt>{t.consequences.regularAge(profile.birthYear)}</dt>
+                    <dd>{regular}</dd>
+                    <dt>{t.consequences.taxableShare(retirementYear)}</dt>
+                    <dd>{share ? `${formatNumber(share.percent)} %` : ''}</dd>
+                    <dt>{t.consequences.health}</dt>
+                    <dd>{withTerms(healthText)}</dd>
+                  </dl>
+                )
               ) : (
                 <p className="hint">{de.statutory.profileInvalid}</p>
               )}
-              <p className="hint">{t.consequences.note}</p>
+              <p className="hint">{retired ? rt.consequences.note : t.consequences.note}</p>
             </div>
           )}
           {outside && calcOk && (

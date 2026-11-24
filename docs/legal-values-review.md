@@ -26,6 +26,18 @@ Ausstehend für ein späteres Hochstufen: Kirchensteuerbeschlüsse der Landeskir
 
 **Gültigkeit:** Die Werte in `altersvorsorge-de.json` haben `validFrom` 2026-05-29 (Verkündung); die Zulagenregeln gelten ab 2027-01-01 (Art. 14 Abs. 2). Der Code wählt Werte nach `validFrom`, deshalb ist das noch nicht angepasst (siehe Backlog in Bericht 14, Abschnitt 8).
 
+## Prüfstand AP-20 Teil A (2026-11-24, Rentner-Modus)
+
+Die Primärtexte wurden im eingebauten Browser auf `gesetze-im-internet.de` gelesen (die Seiten nennen kein Fassungsdatum). Die drei Werte stehen in den Abschnitten `retired` von `pension-de.json` und `social-de.json` (außerhalb von `values`, bis die Annahmen-Seite sie in Teil B zeigt).
+
+| Wert (Datei, Schlüssel)                                             | Ergebnis                     | Fundstelle und Kern                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pension-de.json`, `retired.taxableShareTable` (2005 bis 2025)      | bestätigt                    | § 22 Nr. 1 Satz 3 Buchst. a aa Satz 3 EStG: Tabelle vollständig gelesen (bis 2005 50 %, ab 2006 52 % und +2 Punkte bis 2020, dann 81 / 82 / 82,5 / 83 / 83,5 %, 2026 84 % bis 2058 100 %); ab 2026 gelten die Basiswerte in `values`                                                                                         |
+| `pension-de.json`, `retired.taxFreeAmountFixedFromYearAfterStart`   | bestätigt, mit Einschränkung | Satz 4, 5 und 7: steuerfreier Teil = Jahresrente minus Besteuerungsanteil, gilt ab dem Folgejahr für die gesamte Laufzeit, regelmäßige Anpassungen ändern ihn nicht. Der Text nennt kein Bezugsjahr für den Jahresbetrag; das erste volle Jahr ist die Annahme der App. Satz 6 (Veränderung) und Satz 8 (Folgerenten) fehlen |
+| `social-de.json`, `retired.careChildlessExemptBeforeBirthYear` 1940 | bestätigt                    | § 55 Abs. 3 Satz 2 SGB XI: der Zuschlag für Kinderlose (Satz 1, 0,6 Beitragssatzpunkte) gilt nicht für Mitglieder, die vor dem 1. Januar 1940 geboren wurden                                                                                                                                                                 |
+
+Weitere Beobachtungen, nicht umgesetzt: § 55 Abs. 1 SGB XI nennt im gelesenen Text 3,4 % als Beitragssatz, die Config führt 3,6 % (laut Quelle DRV/BMG, per Verordnung nach Abs. 1a); die Verordnung wurde nicht gelesen. § 55 Abs. 3 Satz 4 kennt einen Abschlag für Eltern ab dem zweiten Kind (0,25 Punkte je Kind bis 25 Jahre), den die App nicht abbildet. § 24a EStG (Altersentlastungsbetrag, 2026: 12,8 % mit Höchstbetrag 608 €) schließt Leibrenten nach § 22 Nr. 1 Satz 3 Buchst. a aus (Satz 2 Nr. 2); er betrifft nur Mieten und Nebeneinkünfte und bleibt Backlog ohne Config-Wert.
+
 ## Merkzettel: jährlich im Januar prüfen
 
 `validTo` ist bei diesen Werten bewusst nicht gesetzt: Ein Ablaufdatum ohne Folgewert würde die App ab dem 01.01. ohne gültige Werte lassen. Stattdessen gilt dieser Termin. Nach dem Prüfen `validFrom` und Quelle des neuen Jahres eintragen (oder eine neue Zeile wie bei `baseInterest`).

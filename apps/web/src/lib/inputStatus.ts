@@ -69,6 +69,8 @@ function profileStatus(person: Person, ctx: PersonContext, currentYear: number):
     targetRetirementAge: p.targetRetirementAge,
     lifeExpectancyAge: p.lifeExpectancyAge,
     childrenBirthYears: p.childrenBirthYears,
+    retired: p.retired,
+    retirementStartYear: p.retirementStartYear,
     personalAssumptions: p.personalAssumptions,
   });
   return sameData(own(person), own(d)) ? 'empty' : 'done';
@@ -81,8 +83,19 @@ function otherStatus(products: OverviewProductInput[]): InputStatus {
   return own.some((p) => actionable(p)) ? 'hint' : 'done';
 }
 
-function entered(blocks: PersonBlocks) {
+function entered(blocks: PersonBlocks, retired: boolean) {
   const s = blocks.statutory;
+  if (retired) {
+    // Actual values (`16` §7): the ETF counts as entered only with both amounts, the sum paid in is required.
+    const o = blocks.occupational;
+    const e = blocks.etfPayout;
+    return {
+      etf: e.holdingValue !== undefined && e.holdingContributions !== undefined,
+      statutory: (s.actualMonthlyGross ?? 0) > 0,
+      depot: (blocks.depot.retiredCapitalToday ?? 0) > 0,
+      occupational: (o.annuityMonthlyGross ?? 0) > 0 || (o.capitalToday ?? 0) > 0,
+    };
+  }
   return {
     etf:
       !sameData(blocks.etfPlan, DEFAULT_ETF_PLAN) ||
@@ -107,7 +120,7 @@ export function personStatus(
 ): PersonStatus {
   const ctx = personContext(household, person);
   const profile = profileStatus(person, ctx, currentYear);
-  const e = entered(blocks);
+  const e = entered(blocks, person.retired === true);
   const usable = legal.ok && profile !== 'hint';
   const products = usable ? buildPersonProducts(blocks, ctx, legal) : [];
   const byId = (id: OverviewProductInput['productId']) => products.find((p) => p.productId === id);

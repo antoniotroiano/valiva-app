@@ -1,0 +1,52 @@
+{
+  "name": "r05-etf-holding-percent-depletion",
+  "description": "ETF holding 150,000 EUR (paid in 60,000), 6 % of the capital per year, rising with the inflation: tax above the allowance, capital is used up",
+  "synthetic": true,
+  "kind": "etfHolding",
+  "currentYear": 2026,
+  "cases": [
+    {
+      "label": "percent",
+      "input": {
+        "holdingValue": 150000,
+        "holdingContributions": 60000,
+        "payoutEndAge": 90,
+        "withdrawalPercent": 6
+      },
+      "profile": {
+        "birthYear": 1955,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2019
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "gainShare": 0.6,
+        "monthly": 750.0,
+        "taxMonthly": 61.102083333333326,
+        "net": 688.8979166666667,
+        "depletionAge": 87.91666666666667,
+        "remainingAtEnd": 0.0,
+        "planMonths": 228
+      }
+    }
+  ]
+}

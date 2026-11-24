@@ -36,3 +36,8 @@ export * from './workspace/workspace';
 export * from './tax/retirementTax';
 export * from './tax/jointTax';
 export * from './overview/jointAssessment';
+export * from './pension/retired';
+export * from './pension/statutoryActual';
+export * from './pension/retiredPayout';
+export * from './pension/etfHolding';
+export * from './overview/retiredProducts';

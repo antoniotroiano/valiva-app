@@ -3,7 +3,12 @@ import type { IncomeTaxParameters } from '../tax/incomeTax';
 import { jointLumpSumTax, jointRetirementIncomeTax } from '../tax/jointTax';
 import type { JointAssessmentParameters } from '../tax/jointTax';
 import type { OtherIncome, RetirementTax, TaxableIncome } from '../tax/retirementTax';
-import { validateAssumptions, validateProfile, validateRetirementTiming } from '../shared/profile';
+import {
+  payoutStartAgeOf,
+  validateAssumptions,
+  validateProfile,
+  validateRetirementTiming,
+} from '../shared/profile';
 import type { GlobalAssumptions, Profile } from '../shared/profile';
 import type { ProjectionResult } from '../pension/projection';
 import {
@@ -107,6 +112,10 @@ export type ScenarioOverview = {
 
 export type OverviewResult = {
   personId: string;
+  /**
+   * Age from which the products pay: the target retirement age, or today's age for a person in the retiree mode
+   * (`16` §4.1; the whole view then starts today).
+   */
   targetRetirementAge: number;
   lifeExpectancyAge: number;
   desiredMonthlyIncomeToday?: number;
@@ -164,7 +173,9 @@ function paysNothing(p: OverviewProductInput): boolean {
  * entry with `pensionShare`) state it in `fixedTaxFreeMonthlyReal`. Absent: the taxable share stays constant.
  */
 function fixedTaxFreeAmount(p: OverviewProductInput, r: ProjectionResult): number | undefined {
-  if (p.productId === 'statutory') return r.monthlyPensionReal - r.taxableMonthlyReal;
+  if (p.productId === 'statutory') {
+    return r.fixedTaxFreeMonthlyReal ?? r.monthlyPensionReal - r.taxableMonthlyReal;
+  }
   return r.fixedTaxFreeMonthlyReal;
 }
 
@@ -186,7 +197,9 @@ function incomeAt(
   const f = activityFactor(p, r, age, assumptions);
   let taxable = r.taxableMonthlyReal * f;
   const taxFree = fixedTaxFreeAmount(p, r);
-  if (taxFree !== undefined && f > 0) {
+  // A pension that starts this year is taxed with its share in the start year; the fixed amount follows.
+  const startYearShare = r.fixedTaxFreeFromNextYear === true && age === p.payoutStartAge;
+  if (taxFree !== undefined && f > 0 && !startYearShare) {
     const inflation = 1 + assumptions.inflationPercent / 100;
     taxable = Math.max(
       0,
@@ -209,6 +222,7 @@ function sharedContributionsAt(
   scenario: ScenarioName,
   age: number,
   assumptions: GlobalAssumptions,
+  birthYear?: number,
 ): Record<string, number> | undefined {
   const social = counted.find(
     (p) => p.sharedThreshold !== undefined && !paysNothing(p),
@@ -223,7 +237,7 @@ function sharedContributionsAt(
         amount: r.monthlyPensionReal * activityFactor(p, r, age, assumptions),
       };
     });
-  return sharedOccupationalContributions(members, social, assumptions);
+  return sharedOccupationalContributions(members, social, assumptions, birthYear);
 }
 
 /**
@@ -235,9 +249,10 @@ export function taxableIncomesAt(
   scenario: ScenarioName,
   age: number,
   assumptions: GlobalAssumptions,
+  birthYear?: number,
 ): TaxableIncome[] {
   const counted = products.filter((p) => p.enabled && p.outcome.ok);
-  const shared = sharedContributionsAt(counted, scenario, age, assumptions);
+  const shared = sharedContributionsAt(counted, scenario, age, assumptions, birthYear);
   return counted.map((p) => incomeAt(p, scenario, age, assumptions, shared?.[p.productId]));
 }
 
@@ -301,7 +316,7 @@ export function overview(
   ];
   if (issues.length > 0) return { ok: false, issues };
 
-  const target = profile.targetRetirementAge;
+  const target = payoutStartAgeOf(profile, currentYear);
   const life = profile.lifeExpectancyAge;
   const desired = profile.desiredMonthlyIncomeToday;
 
@@ -343,7 +358,7 @@ export function overview(
     const results = counted.map((p) => ({ p, r: resultsOf(p, scenario) }));
     /** Tax on the sum of all products at `age`; the net of a product is its gross minus its own deductions and its share. */
     const incomesAt = (age: number) => {
-      const shared = sharedContributionsAt(counted, scenario, age, assumptions);
+      const shared = sharedContributionsAt(counted, scenario, age, assumptions, profile.birthYear);
       return counted.map((p) => incomeAt(p, scenario, age, assumptions, shared?.[p.productId]));
     };
     const partnerAt = (age: number) => joint?.partnerIncomesIn(profile.birthYear + age, scenario);
@@ -374,7 +389,13 @@ export function overview(
       const f = activityFactor(p, r, age, assumptions);
       const share = tax.byId[p.productId] ?? 0;
       const grossReal = r.monthlyPensionReal * f;
-      const shared = sharedContributionsAt(counted, scenario, age, assumptions)?.[p.productId];
+      const shared = sharedContributionsAt(
+        counted,
+        scenario,
+        age,
+        assumptions,
+        profile.birthYear,
+      )?.[p.productId];
       // Without a shared group the original expression stays, so existing results do not change by a bit.
       const deductions =
         shared === undefined
@@ -417,7 +438,9 @@ export function overview(
       for (const w of r.warnings) if (!warnings.includes(w)) warnings.push(w);
     }
 
-    if (sharedContributionsAt(counted, scenario, target, assumptions) !== undefined) {
+    if (
+      sharedContributionsAt(counted, scenario, target, assumptions, profile.birthYear) !== undefined
+    ) {
       warnings.push('shared_occupational_threshold');
     }
     if (joint !== undefined && partnerAt(target) !== undefined) {

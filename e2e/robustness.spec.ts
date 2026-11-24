@@ -17,7 +17,9 @@ test('a person who retires in the past gets an error, not a household gap (B-3)'
   await page.getByLabel('Geburtsjahr', { exact: true }).fill('1950');
   const message = page.getByText(/Der Rentenbeginn liegt in der Vergangenheit\./);
   await expect(message).toBeVisible();
-  await expect(message).toContainText('Der Modus für Personen, die schon in Rente sind, folgt.');
+  // The message offers the retiree mode instead of announcing it (AP-20).
+  await expect(message).toContainText('führe die Person als Rentner');
+  await expect(page.getByRole('button', { name: 'Als Rentner führen' })).toBeVisible();
 
   await page.goto('/#overview');
   await page.getByRole('radio', { name: 'Haushalt' }).click();

@@ -1,0 +1,123 @@
+{
+  "name": "r06-occupational-annuity",
+  "description": "Running company pension: 250 EUR (above the threshold) and 180 EUR (below), example 3, and 2,000 EUR with income tax",
+  "synthetic": true,
+  "kind": "occupationalAnnuity",
+  "currentYear": 2026,
+  "cases": [
+    {
+      "label": "250",
+      "input": {
+        "annuityMonthlyGross": 250
+      },
+      "profile": {
+        "birthYear": 1955,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2019
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "gross": 250,
+        "health": 9.14375,
+        "care": 9.0,
+        "tax": 0.0,
+        "net": 231.85625
+      }
+    },
+    {
+      "label": "180",
+      "input": {
+        "annuityMonthlyGross": 180
+      },
+      "profile": {
+        "birthYear": 1955,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2019
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "gross": 180,
+        "health": 0.0,
+        "care": 0.0,
+        "tax": 0.0,
+        "net": 180.0
+      }
+    },
+    {
+      "label": "2000",
+      "input": {
+        "annuityMonthlyGross": 2000
+      },
+      "profile": {
+        "birthYear": 1955,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2019
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "gross": 2000,
+        "health": 315.39375,
+        "care": 72.0,
+        "tax": 114.75,
+        "net": 1497.85625
+      }
+    }
+  ]
+}

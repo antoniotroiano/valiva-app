@@ -32,8 +32,16 @@ function rawValues(): Record<string, RawValue[]> {
       ...advance.baseInterest,
       advance.baseInterestAssumed,
     ],
-    pension: Object.values<RawValue>(readJson('pension-de.json').values),
-    social: Object.values<RawValue>(readJson('social-de.json').values),
+    // The retiree-mode values sit in the section `retired` of the two files (AP-20) and are listed in their groups.
+    pension: [
+      ...Object.values<RawValue>(readJson('pension-de.json').values),
+      readJson('pension-de.json').retired.taxableShareTable as RawValue,
+      readJson('pension-de.json').retired.taxFreeAmountFixedFromYearAfterStart as RawValue,
+    ],
+    social: [
+      ...Object.values<RawValue>(readJson('social-de.json').values),
+      readJson('social-de.json').retired.careChildlessExemptBeforeBirthYear as RawValue,
+    ],
     depot: Object.values<RawValue>(readJson('altersvorsorge-de.json').values),
     incomeTax: Object.values<RawValue>(readJson('income-tax-de.json').values),
     otherIncome: Object.values<RawValue>(readJson('other-income-de.json').values),
@@ -56,7 +64,7 @@ describe('legal groups', () => {
       'jointAssessment',
     ]);
     for (const g of groups) expect(groupItems(g)).toHaveLength(raw[g.id]!.length);
-    expect(groups.reduce((n, g) => n + groupItems(g).length, 0)).toBe(91);
+    expect(groups.reduce((n, g) => n + groupItems(g).length, 0)).toBe(94);
   });
 
   it('counts the unverified values per area as the config says', () => {
@@ -114,8 +122,8 @@ describe('legal values markup', () => {
   });
 
   it('renders one row with a source per value', () => {
-    expect((html.match(/<li class="val/g) ?? []).length).toBe(91);
-    expect((html.match(/<details class="src"/g) ?? []).length).toBe(91);
+    expect((html.match(/<li class="val/g) ?? []).length).toBe(94);
+    expect((html.match(/<details class="src"/g) ?? []).length).toBe(94);
   });
 
   it('shows the overall unverified count above the areas', () => {

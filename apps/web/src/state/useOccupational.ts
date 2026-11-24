@@ -26,6 +26,14 @@ export function useOccupational(personId: string) {
     ];
     if (!required.every(Number.isFinite)) return;
     if (Number.isNaN(committed.annualContributionIncreasePercent)) return;
+    const retiredFields = [
+      committed.annuityMonthlyGross,
+      committed.capitalToday,
+      committed.capitalEndAge,
+      committed.annuityEndAge,
+      committed.annuityAdjustment?.mode === 'fixed' ? committed.annuityAdjustment.percent : 0,
+    ];
+    if (retiredFields.some((v) => typeof v === 'number' && Number.isNaN(v))) return;
     safeSetItem(personKey(personId, 'occupational'), JSON.stringify(committed));
   });
 

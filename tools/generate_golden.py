@@ -986,11 +986,12 @@ def ov_incomes(counted, sc, age, a):
         f = ov_factor(p, age, a); r = p["results"][sc]
         taxable = r["taxableMonthlyReal"] * f
         tax_free = None
-        if p["productId"] == "statutory":
-            tax_free = r["monthlyPensionReal"] - r["taxableMonthlyReal"]
-        elif p.get("fixedTaxFree") is not None:
+        if p.get("fixedTaxFree") is not None:
             tax_free = p["fixedTaxFree"]
-        if tax_free is not None and f > 0:
+        elif p["productId"] == "statutory":
+            tax_free = r["monthlyPensionReal"] - r["taxableMonthlyReal"]
+        # a pension that starts this year is taxed with its share in the start year (AP-20)
+        if tax_free is not None and f > 0 and not (p.get("fixedTaxFreeFromNextYear") and age == p["payoutStartAge"]):
             # the tax-free part is a fixed euro amount; later increases are fully taxable
             taxable = max(0.0, r["monthlyPensionReal"] * f - tax_free * (1 + a["inflationPercent"] / 100) ** -(age - p["payoutStartAge"]))
         contrib = r["contributionsMonthlyReal"] * f
@@ -2621,6 +2622,454 @@ def jh_snapshot_excel_sheet(wb, name, persons, products, exp):
 
 
 
+
+# ---- AP-20 part A: retiree mode (concept 16) ------------------------------------------------------------
+# Own copy of the values (not read from config/). The taxable-share table is the table of paragraph 22 no. 1 sentence 3
+# letter a aa EStG up to 2025 (read 2026-11-24); from 2026 the base values of STAT_LEGAL apply.
+RT_OUT = OUT / "retired"
+RT_TABLE = {2005: 50.0, **{y: 52.0 + 2 * (y - 2006) for y in range(2006, 2021)}, 2021: 81.0, 2022: 82.0, 2023: 82.5,
+            2024: 83.0, 2025: 83.5}
+RT_CARE_EXEMPT_BEFORE = 1940
+RT_PROFILE = dict(birthYear=1955, targetRetirementAge=67, lifeExpectancyAge=90, childrenBirthYears=[1985],
+                  retired=True, retirementStartYear=2019)
+RT_CY = 2026
+
+
+def rt_share(year):
+    """Taxable share in percent of a pension that started in `year`."""
+    p = STAT_LEGAL["pension"]
+    if year >= p["taxableShareBaseYear"]:
+        return min(p["taxableShareMaxPercent"], max(p["taxableShareBasePercent"],
+                   p["taxableShareBasePercent"] + p["taxableShareIncreasePerYear"] * (year - p["taxableShareBaseYear"])))
+    return RT_TABLE[max(year, 2005)]
+
+
+def rt_care_rate(childless, birth):
+    soc = STAT_LEGAL["social"]
+    return soc["careRateChildlessPercent"] if (childless and birth >= RT_CARE_EXEMPT_BEFORE) else soc["careRatePercent"]
+
+
+def rt_stat(inp, prof, a, cy=RT_CY):
+    """Statutory pension of a person who already draws it, values of today (n = 0), paragraph 22 EStG rules."""
+    soc = STAT_LEGAL["social"]
+    R, S, g, infl = inp["actualMonthlyGross"], prof["retirementStartYear"], a["pensionAdjustmentPercent"] / 100, a["inflationPercent"] / 100
+    p = rt_share(S)
+    est = "firstFullYearAnnual" not in inp
+    jref = inp["firstFullYearAnnual"] if not est else 12 * R * (1 + g) ** (S + 1 - cy)
+    F = (1 - p / 100) * jref
+    this_year = S == cy
+
+    def net_at(t):
+        """Net per month t years from today in today's purchasing power (gross grows with g, F stays nominal)."""
+        gross_nom = R * (1 + g) ** t
+        taxable_nom = p / 100 * gross_nom if (this_year and t == 0) else max(0.0, gross_nom - F / 12)
+        h = a["health"]
+        if h["mode"] == "statutoryCompulsory":
+            health = gross_nom * (soc["healthGeneralRatePercent"] / 2 + h["additionalRatePercent"] / 2) / 100
+            care = gross_nom * rt_care_rate(h["childless"], prof["birthYear"]) / 100
+        else:
+            health, care = gross_nom * h["otherRatePercent"] / 100, 0.0
+        d = (1 + infl) ** t
+        tax = pension_tax_monthly(taxable_nom / d, (health + care) / d)
+        gross_real = gross_nom / d
+        return dict(grossReal=gross_real, taxableReal=taxable_nom / d, healthReal=health / d, careReal=care / d,
+                    taxReal=tax, netReal=gross_real - health / d - care / d - tax)
+
+    now = net_at(0)
+    return dict(taxableSharePercent=p, referenceAnnual=jref, referenceEstimated=est, taxFreeYearly=F,
+                taxableMonthly=now["taxableReal"], health=now["healthReal"], care=now["careReal"], tax=now["taxReal"],
+                net=now["netReal"], path=[dict(t=t, **net_at(t)) for t in range(0, 4)])
+
+
+def rt_pay_net_occupational(R, prof, a):
+    """Running company pension today: allowance and threshold of today (n = 0), full tax."""
+    soc, h = STAT_LEGAL["social"], a["health"]
+    if h["mode"] == "other":
+        health, care = R * h.get("otherRatePercent", 0) / 100, 0.0
+    else:
+        health = max(0.0, R - soc["occupationalHealthAllowanceMonthly"]) * (soc["healthGeneralRatePercent"] + h["additionalRatePercent"]) / 100
+        care = R * rt_care_rate(h["childless"], prof["birthYear"]) / 100 if R > soc["occupationalCareThresholdMonthly"] else 0.0
+    tax = pension_tax_monthly(R, health + care)
+    return dict(gross=R, health=health, care=care, tax=tax, net=R - health - care - tax)
+
+
+def rt_plan_rate(capital, n_months, ret_percent):
+    i = (1 + ret_percent / 100) ** (1 / 12) - 1
+    return capital / n_months if i == 0 else capital * i / (1 - (1 + i) ** -n_months)
+
+
+def rt_etf(inp, a, cy=RT_CY, birth=1955):
+    K, E, age_end = inp["holdingValue"], inp["holdingContributions"], inp["payoutEndAge"]
+    age = cy - birth
+    n = (age_end - age) * 12
+    r = (1 + a["payoutPhaseReturnPercent"] / 100) ** (1 / 12) - 1
+    pct = inp.get("withdrawalPercent")
+    if pct is None:
+        w = rt_plan_rate(K, n, a["payoutPhaseReturnPercent"]); pays = [w] * n; dep = None
+        rest = 0.0
+    else:
+        w, pays, dep, rest = withdrawal_sim(K, n, r, pct, a["inflationPercent"])
+    g = max(0.0, K - E) / K if K > 0 else 0.0
+    first = sum(pays[:12]) if pct is not None else 12 * w
+    months_first = min(12, n)
+    taxable = first * g * (1 - TAX["partialExemptionRate"] / 100)
+    tax_m = max(0.0, taxable - TAX["taxFreeAllowance"]) * TAX["capitalGainsTaxRate"] / 100 / months_first
+    return dict(gainShare=g, monthly=w, taxMonthly=tax_m, net=w - tax_m, depletionAge=None if dep is None else age + dep / 12,
+                remainingAtEnd=rest, planMonths=n)
+
+
+RT_STAT_INPUT = dict(actualMonthlyGross=1650)
+RT_ASSUMPTIONS = dict(STAT_ASSUMPTIONS)
+RT_CASES = [
+    ("r01-statutory-2019-estimated", "Marta: pension 1,650 EUR from 2019 (share 78 %), approximated annual pension of 2020 (example 1)",
+     "statutory", [dict(label="base", input=dict(actualMonthlyGross=1650))], {}),
+    ("r02-statutory-2019-entered", "As r01 with the annual pension of 2020 entered (17,000 EUR)", "statutory",
+     [dict(label="entered", input=dict(actualMonthlyGross=1650, firstFullYearAnnual=17000))], {}),
+    ("r03-statutory-starts-this-year", "Pension starts in 2026 (1,800 EUR): share 84 % this year, fixed euro amount from 2027 (example 6)",
+     "statutory", [dict(label="this-year", input=dict(actualMonthlyGross=1800))], dict(profile=dict(birthYear=1959, retirementStartYear=2026))),
+    ("r04-etf-holding-annuity", "ETF holding 80,000 EUR, paid in 50,000 EUR, age 71 to 90, annuity (example 2)", "etfHolding",
+     [dict(label="annuity", input=dict(holdingValue=80000, holdingContributions=50000, payoutEndAge=90))], {}),
+    ("r05-etf-holding-percent-depletion", "ETF holding 150,000 EUR (paid in 60,000), 6 % of the capital per year, rising with the inflation: tax above the allowance, capital is used up",
+     "etfHolding", [dict(label="percent", input=dict(holdingValue=150000, holdingContributions=60000, payoutEndAge=90, withdrawalPercent=6))], {}),
+    ("r06-occupational-annuity", "Running company pension: 250 EUR (above the threshold) and 180 EUR (below), example 3, and 2,000 EUR with income tax", "occupationalAnnuity",
+     [dict(label="250", input=dict(annuityMonthlyGross=250)), dict(label="180", input=dict(annuityMonthlyGross=180)),
+      dict(label="2000", input=dict(annuityMonthlyGross=2000))], {}),
+    ("r07-rest-capital", "Rest capital as payout plan: company pension 20,000 EUR to 85 (example 4) and retirement depot 30,000 EUR to 90",
+     "restCapital", [dict(label="occupational", input=dict(capitalToday=20000, capitalEndAge=85, product="occupational")),
+                     dict(label="depot", input=dict(capitalToday=30000, capitalEndAge=90, product="retirementDepot"))], {}),
+    ("r08-care-surcharge-1940", "Childless people born 1939 and 1940: no care surcharge before 1 January 1940",
+     "statutory", [dict(label="born-1939-childless", input=dict(actualMonthlyGross=1500), profile=dict(birthYear=1939, retirementStartYear=2005),
+                        assumptions=dict(health=dict(mode="statutoryCompulsory", additionalRatePercent=2.9, childless=True))),
+                   dict(label="born-1940-childless", input=dict(actualMonthlyGross=1500), profile=dict(birthYear=1940, retirementStartYear=2006),
+                        assumptions=dict(health=dict(mode="statutoryCompulsory", additionalRatePercent=2.9, childless=True))),
+                   dict(label="born-1939-parent", input=dict(actualMonthlyGross=1500), profile=dict(birthYear=1939, retirementStartYear=2005),
+                        assumptions=dict(health=dict(mode="statutoryCompulsory", additionalRatePercent=2.9, childless=False)))], {}),
+]
+
+
+def rt_expected(kind, case, prof, a):
+    inp = case["input"]
+    if kind == "statutory":
+        return rt_stat(inp, prof, a)
+    if kind == "etfHolding":
+        return rt_etf(inp, a, birth=prof["birthYear"])
+    if kind == "occupationalAnnuity":
+        return rt_pay_net_occupational(inp["annuityMonthlyGross"], prof, a)
+    # rest capital
+    age = RT_CY - prof["birthYear"]
+    n = (inp["capitalEndAge"] - age) * 12
+    w = rt_plan_rate(inp["capitalToday"], n, a["payoutPhaseReturnPercent"])
+    if inp["product"] == "occupational":
+        out = rt_pay_net_occupational(w, prof, a)
+        return dict(monthly=w, planMonths=n, **out)
+    h = a["health"]
+    health = w * h.get("otherRatePercent", 0) / 100 if h["mode"] == "other" else 0.0
+    tax = pension_tax_monthly(w, health)
+    return dict(monthly=w, planMonths=n, gross=w, health=health, care=0.0, tax=tax, net=w - health - tax)
+
+
+def rt_sheet_tariff_block(ws, row, taxable_cell, contrib_cell):
+    """Writes the taxable income (INT) and the tariff for a monthly taxable pension and contributions; returns the tax cell."""
+    ws.cell(row, 1, "taxable income per year (after 102, contributions, 36)")
+    ws.cell(row, 3, f"=INT(MAX(0,12*{taxable_cell}-MIN(102,12*{taxable_cell})-12*{contrib_cell}-36))")
+    ws.cell(row + 1, 1, "tax per month")
+    ws.cell(row + 1, 3, f"={excel_tariff('C' + str(row))}/12")
+    return f"C{row + 1}"
+
+
+def rt_stat_sheet(wb, name, label, inp, prof, a, exp, idx=0):
+    ws = wb.create_sheet((name[:24] + ("" if idx == 0 else f"-{idx}"))[:31])
+    soc, h = STAT_LEGAL["social"], a["health"]
+    rows = [("gross pension per month today (R)", inp["actualMonthlyGross"]), ("start year (S)", prof["retirementStartYear"]),
+            ("current year", RT_CY), ("pension adjustment %", a["pensionAdjustmentPercent"]), ("inflation %", a["inflationPercent"]),
+            ("annual pension of the year after the start (0 = not entered)", inp.get("firstFullYearAnnual", 0)),
+            ("birth year", prof["birthYear"]), ("additional health rate %", h["additionalRatePercent"]),
+            ("childless (1/0)", 1 if h["childless"] else 0), ("care surcharge exempt before birth year", RT_CARE_EXEMPT_BEFORE),
+            ("health general rate %", soc["healthGeneralRatePercent"]), ("care rate %", soc["careRatePercent"]),
+            ("care rate childless %", soc["careRateChildlessPercent"])]
+    ws["A1"] = f"case: {label}; inputs in column B (rows 2-14); table of the law in columns G-H"
+    for n, (t, v) in enumerate(rows):
+        ws.cell(n + 2, 1, t); ws.cell(n + 2, 2, v)
+    # B2 R, B3 S, B4 cy, B5 g, B6 infl, B7 firstFull, B8 birth, B9 addl, B10 childless, B11 exempt, B12 general, B13 care, B14 childless care
+    ws["G1"], ws["H1"] = "start year (from)", "taxable share %"
+    for n, (y, v) in enumerate(sorted(RT_TABLE.items())):
+        ws.cell(n + 2, 7, y); ws.cell(n + 2, 8, v)
+    last = 1 + len(RT_TABLE)
+    ws["A16"], ws["C16"], ws["D16"], ws["E16"] = "result", "Excel", "Python", "difference"
+    items = [
+        ("taxableSharePercent", f"=IF(B3>=2026,MIN(100,84+0.5*(B3-2026)),LOOKUP(MAX(B3,2005),G2:G{last},H2:H{last}))", exp["taxableSharePercent"]),
+        ("referenceAnnual", "=IF(B7>0,B7,12*B2*(1+B5/100)^(B3+1-B4))", exp["referenceAnnual"]),
+        ("taxFreeYearly", "=(1-C17/100)*C18", exp["taxFreeYearly"]),
+        ("taxableMonthly today", "=IF(B3=B4,C17/100*B2,MAX(0,B2-C19/12))", exp["taxableMonthly"]),
+        ("health", f"=B2*(B12+B9)/200", exp["health"]),
+        ("care", "=B2*IF(AND(B10=1,B8>=B11),B14,B13)/100", exp["care"]),
+    ]
+    for n, (t, f, py) in enumerate(items):
+        r = 17 + n
+        ws.cell(r, 1, t); ws.cell(r, 3, f); ws.cell(r, 4, py); ws.cell(r, 5, f"=C{r}-D{r}")
+    tax_cell = rt_sheet_tariff_block(ws, 24, "C20", "(C21+C22)")
+    ws["C26"], ws["D26"], ws["E26"] = "=B2-C21-C22-" + tax_cell, exp["net"], "=C26-D26"
+    ws["A26"] = "net per month today"
+    ws["C25"].number_format = "0.00"
+    ws["D25"], ws["E25"] = exp["tax"], f"={tax_cell}-D25"
+    # years 1 to 3: gross grows with g, F stays nominal, everything deflated with the inflation
+    ws["A28"] = "years from today"; ws["B28"], ws["C28"], ws["D28"], ws["E28"], ws["F28"] = "", "taxable real", "tax real", "net real Excel", "net real Python"
+    for t in range(1, 4):
+        r = 28 + t
+        gross_nom = f"(B2*(1+B5/100)^{t})"
+        d = f"(1+B6/100)^{t}"
+        ws.cell(r, 1, t)
+        ws.cell(r, 2, f"=MAX(0,{gross_nom}-C19/12)/{d}")
+        contrib = f"({gross_nom}*((B12+B9)/200+IF(AND(B10=1,B8>=B11),B14,B13)/100)/{d})"
+        ws.cell(r, 3, f"=INT(MAX(0,12*B{r}-MIN(102,12*B{r})-12*{contrib}-36))")
+        ws.cell(r, 4, f"={excel_tariff('C' + str(r))}/12")
+        ws.cell(r, 5, f"={gross_nom}/{d}-{contrib}-D{r}")
+        ws.cell(r, 6, exp["path"][t]["netReal"])
+    ws.column_dimensions["A"].width = 52
+
+
+def rt_etf_sheet(wb, name, label, inp, a, exp, birth):
+    ws = wb.create_sheet(name[:31])
+    rows = [("depot value K", inp["holdingValue"]), ("paid in E", inp["holdingContributions"]), ("age today", RT_CY - birth),
+            ("end age", inp["payoutEndAge"]), ("payout phase return %", a["payoutPhaseReturnPercent"]),
+            ("percent of the capital per year (0 = annuity)", inp.get("withdrawalPercent", 0)), ("inflation %", a["inflationPercent"]),
+            ("tax rate %", TAX["capitalGainsTaxRate"]), ("partial exemption %", TAX["partialExemptionRate"]),
+            ("allowance EUR", TAX["taxFreeAllowance"])]
+    ws["A1"] = f"case: {label}"
+    for n, (t, v) in enumerate(rows):
+        ws.cell(n + 2, 1, t); ws.cell(n + 2, 2, v)
+    # B2 K, B3 E, B4 age, B5 end, B6 r%, B7 percent, B8 infl, B9 rate, B10 exempt, B11 allowance
+    ws["A13"], ws["B13"] = "months n", "=(B5-B4)*12"
+    ws["A14"], ws["B14"] = "monthly return i", "=(1+B6/100)^(1/12)-1"
+    ws["A15"], ws["B15"] = "gain share", "=MAX(0,B2-B3)/B2"
+    ws["A17"], ws["C17"], ws["D17"], ws["E17"] = "result", "Excel", "Python", "difference"
+    # month table from row 30: month, scheduled, due, pay, balance
+    ws["A29"], ws["B29"], ws["C29"], ws["D29"], ws["E29"] = "month", "scheduled", "due", "payment", "balance"
+    n = exp["planMonths"]
+    ws.cell(30, 1, 0); ws.cell(30, 5, "=B2")
+    for m in range(1, n + 1):
+        r = 30 + m
+        ws.cell(r, 1, m)
+        ws.cell(r, 2, "=IF($B$7=0,\"\",$B$2*$B$7/100/12*(1+$B$8/100)^INT((A%d-1)/12))" % r)
+        ws.cell(r, 3, f"=E{r - 1}*(1+$B$14)")
+        pay_annuity = "($B$2*$B$14/(1-(1+$B$14)^(-$B$13)))"
+        ws.cell(r, 4, f"=IF($B$7=0,IF($B$14=0,$B$2/$B$13,{pay_annuity}),MIN(B{r},C{r}))")
+        ws.cell(r, 5, f"=IF(C{r}-D{r}<0.000001,0,C{r}-D{r})")
+    first = f"D31:D{30 + min(12, n)}"
+    items = [("gainShare", "=B15", exp["gainShare"]),
+             ("monthly (first payment)", "=D31", exp["monthly"]),
+             ("tax per month (first year)", f"=MAX(0,SUM({first})*B15*(1-B10/100)-B11)*B9/100/{min(12, n)}", exp["taxMonthly"]),
+             ("net per month", "=C19-C20", exp["net"]),
+             ("remaining at the end", f"=E{30 + n}", exp["remainingAtEnd"])]
+    for k, (t, f, py) in enumerate(items):
+        r = 18 + k
+        ws.cell(r, 1, t); ws.cell(r, 3, f); ws.cell(r, 4, py); ws.cell(r, 5, f"=C{r}-D{r}")
+    ws.column_dimensions["A"].width = 44
+
+
+def rt_occ_sheet(wb, name, label, inp, prof, a, exp, kind, idx=0):
+    ws = wb.create_sheet((name[:26] + ("" if idx == 0 else f"-{idx}"))[:31])
+    soc, h = STAT_LEGAL["social"], a["health"]
+    is_cap = kind == "restCapital"
+    depot = is_cap and inp["product"] == "retirementDepot"
+    rows = [("gross pension per month (annuity)", 0 if is_cap else inp["annuityMonthlyGross"]),
+            ("capital today (rest capital)", inp["capitalToday"] if is_cap else 0),
+            ("age today", RT_CY - prof["birthYear"]), ("end age", inp.get("capitalEndAge", 0)),
+            ("payout phase return %", a["payoutPhaseReturnPercent"]), ("health general rate %", soc["healthGeneralRatePercent"]),
+            ("additional health rate %", h["additionalRatePercent"]), ("care rate %", soc["careRatePercent"]),
+            ("care rate childless %", soc["careRateChildlessPercent"]), ("childless (1/0)", 1 if h["childless"] else 0),
+            ("birth year", prof["birthYear"]), ("care surcharge exempt before birth year", RT_CARE_EXEMPT_BEFORE),
+            ("allowance health (company pension)", soc["occupationalHealthAllowanceMonthly"]),
+            ("threshold care (company pension)", soc["occupationalCareThresholdMonthly"]),
+            ("depot (1) or company pension (0)", 1 if depot else 0)]
+    ws["A1"] = f"case: {label}"
+    for n, (t, v) in enumerate(rows):
+        ws.cell(n + 2, 1, t); ws.cell(n + 2, 2, v)
+    # B2 R, B3 K, B4 age, B5 end, B6 r, B7 general, B8 addl, B9 care, B10 careChildless, B11 childless, B12 birth, B13 exempt, B14 allowance, B15 threshold, B16 depot
+    ws["A18"], ws["C18"], ws["D18"], ws["E18"] = "result", "Excel", "Python", "difference"
+    gross = "IF(B3>0,IF(B6=0,B3/((B5-B4)*12),B3*((1+B6/100)^(1/12)-1)/(1-(1+B6/100)^(-(B5-B4)/1))),B2)"
+    # (1+r)^(1/12)-1 = i and (1+i)^-n = (1+r)^-(n/12) with n/12 = end-age years
+    ws["A19"], ws["C19"], ws["D19"] = "gross per month", "=" + gross, exp["gross"] if "gross" in exp else exp["monthly"]
+    health = "IF(B16=1,0,MAX(0,C19-B14)*(B7+B8)/100)"
+    care = "IF(B16=1,0,IF(C19>B15,C19*IF(AND(B11=1,B12>=B13),B10,B9)/100,0))"
+    ws["A20"], ws["C20"], ws["D20"] = "health per month", "=" + health, exp["health"]
+    ws["A21"], ws["C21"], ws["D21"] = "care per month", "=" + care, exp["care"]
+    tax_cell = rt_sheet_tariff_block(ws, 22, "C19", "(C20+C21)")
+    ws["A24"], ws["C24"], ws["D24"] = "net per month", f"=C19-C20-C21-{tax_cell}", exp["net"]
+    ws["D23"] = exp["tax"]
+    for r in (19, 20, 21, 23, 24):
+        ws.cell(r, 5, f"=C{r}-D{r}" if r != 23 else f"={tax_cell}-D23")
+    ws.column_dimensions["A"].width = 44
+
+
+
+# ---- AP-20 part A: household with a person who already draws the pension (rh01, rh02) -------------------
+RH_OUT = OUT / "retired-household"
+RH_DESIRED = 3000
+
+
+def rh_person(pid, name, birth, retire, life, retired_start=None):
+    d = hh_person(pid, birth, retire, life)
+    d["name"] = name
+    if retired_start is not None:
+        d.update(retired=True, retirementStartYear=retired_start)
+    return d
+
+
+def rh_marta_product(a):
+    """Marta's statutory pension from the notice (example 1), as the overview takes it: the values come from rt_stat."""
+    prof = dict(RT_PROFILE)
+    st = rt_stat(dict(actualMonthlyGross=1650), prof, a)
+    p = ov_product("statutory", RT_CY - prof["birthYear"], 1650, st["taxableMonthly"], st["health"] + st["care"])
+    p["fixedTaxFree"] = st["taxFreeYearly"] / 12
+    return p
+
+
+RH_PERSONS = [rh_person("marta", "Marta", 1955, 67, 90, retired_start=2019), rh_person("jonas", "Jonas", 1962, 67, 90)]
+
+
+def rh_products(a):
+    return {"marta": [rh_marta_product(a)], "jonas": [ov_product("statutory", 67, 1554, 1320, 190)]}
+
+
+def project_household_retired(persons, a, products, desired, extra, joint_on):
+    """Household with persons who already draw the pension: payout of such a person starts today, years before the
+    last start are transition years (no gap), splitting from the year both pensions run (the pension start of the
+    notice counts), survivor's pension as in project_household. Independent of the TypeScript implementation."""
+    cy = RT_CY
+    for pr in persons:
+        pr["payoutStart"] = cy if pr.get("retired") else pr["birthYear"] + pr["targetRetirementAge"]
+        pr["payoutStartAge"] = pr["payoutStart"] - pr["birthYear"]
+        pr["pensionStart"] = pr["retirementStartYear"] if pr.get("retired") else pr["payoutStart"]
+        pr["end"] = pr["birthYear"] + pr["lifeExpectancyAge"]
+    first, snap, last = min(p["payoutStart"] for p in persons), max(p["payoutStart"] for p in persons), max(p["end"] for p in persons)
+    any_retired = any(p.get("retired") for p in persons)
+    by_id = {pr["id"]: pr for pr in persons}
+    counted = {pid: [p for p in lst if p["enabled"] and p["valid"]] for pid, lst in products.items()}
+    two = len(persons) == 2
+    first_death = min(p["end"] for p in persons)
+    dead, left = (sorted(persons, key=lambda p: p["end"]) + [None])[:2] if two else (None, None)
+    survivor_on = bool(two and extra.get("survivorPension") and dead["end"] < left["end"])
+    L = SURVIVOR_LEGAL
+    out = dict(firstYear=first, snapshotYear=snap, lastYear=last, scenarios={})
+    if survivor_on:
+        out["survivor"] = dict(deceasedId=dead["id"], survivorId=left["id"], deathYear=dead["end"])
+
+    def state(me, other, y):
+        if not joint_on or not two:
+            return None
+        lo, hi = max(me["pensionStart"], other["pensionStart"]), min(me["end"], other["end"]) + 1
+        if y < lo or y > hi:
+            return None
+        return "widow" if y > other["end"] else "both"
+
+    def incomes(pid, sc, y):
+        return list(ov_incomes(counted[pid], sc, y - by_id[pid]["birthYear"], a))
+
+    def own_by_product(pr, sc, y):
+        age = y - pr["birthYear"]
+        if not (pr["payoutStartAge"] <= age <= pr["lifeExpectancyAge"]):
+            return {}
+        other = next(p for p in persons if p["id"] != pr["id"]) if two else None
+        st = state(pr, other, y) if other else None
+        joint = None
+        if st:
+            mine = incomes(pr["id"], sc, y)
+            theirs = incomes(other["id"], sc, y) if st == "both" else None
+            z = jt_zve(mine, theirs)
+            joint = (jt_tax(z) / 12, sum(t for t, c in mine) + sum(t for t, c in (theirs or [])))
+        return {x["productId"]: x["netReal"] for x in ov_net_by_product(counted[pr["id"]], sc, age, a, joint)}
+
+    for sc in SCEN:
+        path, total_gap = [], 0.0
+        for y in range(first, last + 1):
+            by = {pr["id"]: sum(own_by_product(pr, sc, y).values()) for pr in persons}
+            survivor_amount = 0.0
+            if survivor_on and dead["end"] < y <= left["end"]:
+                base = own_by_product(dead, sc, dead["end"]).get("statutory", 0.0)
+                rate = L["rateOld"] if extra["survivorPension"] == "old" else L["rateNew"]
+                mine = own_by_product(left, sc, y)
+                income = sum(mine.get(k, 0.0) for k in ("statutory", "occupational", "retirementDepot"))
+                credited = L["creditedPercent"] / 100 * max(0.0, income - L["freeFactor"] * L["pensionValue"])
+                survivor_amount = max(0.0, rate / 100 * base - credited)
+                by[left["id"]] += survivor_amount
+            tot = sum(by.values())
+            pt = dict(year=y, total=tot, byPerson=by)
+            if survivor_amount > 0:
+                pt["survivor"] = {left["id"]: survivor_amount}
+            wish = desired
+            if desired is not None and extra.get("survivorWishPercent") is not None and two and y > first_death:
+                wish = desired * extra["survivorWishPercent"] / 100
+            if wish is not None:
+                pt["desired"] = wish
+            if any_retired and y < snap:
+                pt["transition"] = True
+            elif wish is not None:
+                pt["gap"] = max(0.0, wish - tot)
+                if y < last:
+                    total_gap += 12 * pt["gap"]
+            path.append(pt)
+        at = next(pt for pt in path if pt["year"] == snap)
+        out["scenarios"][sc] = dict(
+            net=at["total"], byPerson=at["byPerson"],
+            gap=None if desired is None else max(0.0, at["desired"] - at["total"]),
+            surplus=None if desired is None else max(0.0, at["total"] - at["desired"]),
+            totalGapReal=None if desired is None else total_gap,
+            retiredToday={pr["id"]: sum(own_by_product(pr, sc, cy).values()) for pr in persons if pr.get("retired")},
+            path=path)
+    return out
+
+
+# (name, description, joint, extra)
+RH_CASES = [
+    ("rh01-couple-one-retired", "Marta (retired since 2019, example 1) and Jonas (retires 2029): transition years 2026 to 2028, snapshot 2029, tile 'already retired'",
+     False, {}),
+    ("rh02-couple-joint-and-survivor", "As rh01 with joint assessment 'yes' (splitting from 2029, the year both pensions run) and the survivor's pension after Marta's death in 2045",
+     True, dict(survivorPension="new")),
+]
+
+
+def rh_snapshot_excel_sheet(wb, name, persons, a, products, exp, joint):
+    """Snapshot year 2029 of the couple: Marta's real values of the year 2029 from her notice (fixed tax-free amount nominal),
+    Jonas as in the overview vectors; single tax on each person or the splitting tax on the sum."""
+    ws = wb.create_sheet(name[:31])
+    st = rt_stat(dict(actualMonthlyGross=1650), RT_PROFILE, a)
+    soc = STAT_LEGAL["social"]
+    snap = 2029
+    ws["A1"] = "Snapshot 2029: monthly amounts in today's purchasing power, neutral scenario; inputs in column B"
+    rows = [("Marta gross today (R)", 1650), ("Marta tax-free amount per year F (nominal, fixed)", st["taxFreeYearly"]),
+            ("pension adjustment %", a["pensionAdjustmentPercent"]), ("inflation %", a["inflationPercent"]),
+            ("years from today to the snapshot", snap - RT_CY), ("health rate on gross (half general + half additional)", (soc["healthGeneralRatePercent"] + a["health"]["additionalRatePercent"]) / 2),
+            ("care rate %", soc["careRatePercent"]), ("Jonas gross", 1554), ("Jonas taxable", 1320), ("Jonas contributions", 190),
+            ("pension lump sum 102", LUMP_DEDUCTION), ("special expenses single 36", SPECIAL_EXPENSES), ("special expenses joint 72", JOINT_SPECIAL)]
+    for n, (t, v) in enumerate(rows):
+        ws.cell(n + 2, 1, t); ws.cell(n + 2, 2, v)
+    # B2 R, B3 F, B4 g, B5 infl, B6 t, B7 health %, B8 care %, B9 J gross, B10 J taxable, B11 J contrib, B12 102, B13 36, B14 72
+    d = "(1+B5/100)^B6"
+    ws["A17"], ws["C17"] = "Marta gross real", f"=B2*(1+B4/100)^B6/{d}"
+    ws["A18"], ws["C18"] = "Marta taxable real", f"=MAX(0,B2*(1+B4/100)^B6-B3/12)/{d}"
+    ws["A19"], ws["C19"] = "Marta contributions real", f"=C17*(B7+B8)/100"
+    ws["A20"], ws["C20"] = "Marta taxable income per year (single)", "=INT(MAX(0,12*C18-MIN(B12,12*C18)-12*C19-B13))"
+    ws["A21"], ws["C21"] = "Marta tax per month (single)", f"={excel_tariff('C20')}/12"
+    ws["A22"], ws["C22"] = "Jonas taxable income per year (single)", "=INT(MAX(0,12*B10-MIN(B12,12*B10)-12*B11-B13))"
+    ws["A23"], ws["C23"] = "Jonas tax per month (single)", f"={excel_tariff('C22')}/12"
+    ws["A24"], ws["C24"] = "joint taxable income per year", "=INT(MAX(0,12*C18-MIN(B12,12*C18)+12*B10-MIN(B12,12*B10)-12*(C19+B11)-B14))"
+    ws["A25"], ws["C25"] = "joint tax per year (splitting)", "=2*" + excel_tariff("INT(C24/2)")
+    if joint:
+        ws["A26"], ws["C26"] = "Marta net", "=C17-C19-C25/12*C18/(C18+B10)"
+        ws["A27"], ws["C27"] = "Jonas net", "=B9-B11-C25/12*B10/(C18+B10)"
+    else:
+        ws["A26"], ws["C26"] = "Marta net", "=C17-C19-C21"
+        ws["A27"], ws["C27"] = "Jonas net", "=B9-B11-C23"
+    ws["A28"], ws["C28"] = "net of the couple Excel", "=C26+C27"
+    ws["A29"], ws["C29"] = "net of the couple Python", exp["scenarios"]["neutral"]["net"]
+    ws["A30"], ws["C30"] = "difference", "=C28-C29"
+    ws["A32"], ws["C32"] = "Marta today (2026) net per month, single tax of the year 2026 (tile)", None
+    ws["C32"] = ("=" + "B2-B2*(B7+B8)/100-" + excel_tariff("INT(MAX(0,12*MAX(0,B2-B3/12)-MIN(B12,12*MAX(0,B2-B3/12))-12*B2*(B7+B8)/100-B13))") + "/12") if not joint else None
+    ws["D32"] = exp["scenarios"]["neutral"]["retiredToday"]["marta"] if not joint else None
+    ws.column_dimensions["A"].width = 62
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     ADV_OUT.mkdir(parents=True, exist_ok=True)
@@ -2807,6 +3256,33 @@ def main():
              "expected": exp_joint, "expectedSeparate": exp_separate}, indent=2) + "\n")
         if name.startswith("jh01"):
             jh_snapshot_excel_sheet(wb, name, [dict(p) for p in persons], products, exp_joint)
+    RT_OUT.mkdir(parents=True, exist_ok=True)
+    for name, desc, kind, cases, over in RT_CASES:
+        prof = {**RT_PROFILE, **over.get("profile", {})}; a = {**RT_ASSUMPTIONS, **over.get("assumptions", {})}
+        out_cases = []
+        for k, c in enumerate(cases):
+            cprof = {**prof, **c.get("profile", {})}; ca = {**a, **c.get("assumptions", {})}
+            exp = rt_expected(kind, c, cprof, ca)
+            out_cases.append(dict(label=c["label"], input=c["input"], profile=cprof, assumptions=ca, expected=exp))
+            if kind == "statutory":
+                rt_stat_sheet(wb, name, c["label"], c["input"], cprof, ca, exp, k)
+            elif kind == "etfHolding":
+                rt_etf_sheet(wb, name, c["label"], c["input"], ca, exp, cprof["birthYear"])
+            else:
+                rt_occ_sheet(wb, name, c["label"], c["input"], cprof, ca, exp, kind, k)
+        (RT_OUT / f"{name}.json").write_text(json.dumps(
+            {"name": name, "description": desc, "synthetic": True, "kind": kind, "currentYear": RT_CY,
+             "cases": out_cases}, indent=2) + "\n")
+    RH_OUT.mkdir(parents=True, exist_ok=True)
+    for name, desc, joint, extra in RH_CASES:
+        a_rh = dict(STAT_ASSUMPTIONS)
+        prods = rh_products(a_rh)
+        exp = project_household_retired([dict(p) for p in RH_PERSONS], a_rh, prods, RH_DESIRED, extra, joint)
+        (RH_OUT / f"{name}.json").write_text(json.dumps(
+            {"name": name, "description": desc, "synthetic": True, "persons": RH_PERSONS, "assumptions": a_rh,
+             "desiredMonthlyIncomeToday": RH_DESIRED, "currentYear": RT_CY, "jointAssessment": joint,
+             **extra, "products": prods, "expected": exp}, indent=2) + "\n")
+        rh_snapshot_excel_sheet(wb, name, RH_PERSONS, a_rh, prods, exp, joint)
     wb.save(ROOT / "tools/golden-check.xlsx")
     print(f"wrote {len(CASES)} ETF, {len(GOAL_CASES)} goal and {len(TARGET_CASES)} ETF target and {len(STAT_CASES)} statutory and {len(DEPOT_CASES)} depot and {len(BAV_CASES)} occupational and {len(OV_CASES)} overview and {len(OI_CASES) + 1} other income and {len(ETFP_CASES)} ETF payout and {len(HH_CASES)} household and {len(JT_CASES)} joint tax and {len(JH_CASES)} joint household and {len(ADV_CASES)} advance and {len(ADVP_CASES)} advance payout vectors")
 

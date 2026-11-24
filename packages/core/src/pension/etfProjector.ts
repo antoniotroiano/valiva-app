@@ -146,7 +146,7 @@ export function validateEtfProjector(
 }
 
 /** Payments of the months `from` (excluded) to `to` (included); the annuity keeps its exact product. */
-function paidBetween(plan: WithdrawalPlan, from: number, to: number): number {
+export function paidBetween(plan: WithdrawalPlan, from: number, to: number): number {
   if (plan.strategy === 'annuity') return plan.monthly * (to - from);
   let sum = 0;
   for (let m = from; m < to; m++) sum += plan.payments[m] ?? 0;
@@ -160,7 +160,7 @@ function paidBetween(plan: WithdrawalPlan, from: number, to: number): number {
  * It is taxed in the year it arises, together with the realised gain, under one allowance per year; the
  * lump sums paid so far (`credit`, also those of the savings phase) reduce the realised gains.
  */
-function payoutTaxWithAdvance(
+export function payoutTaxWithAdvance(
   plan: WithdrawalPlan,
   payoutReturnPercent: number,
   gainShare: number,

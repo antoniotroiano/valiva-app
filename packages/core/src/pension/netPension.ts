@@ -19,7 +19,28 @@ export type SharedThresholdParameters = Pick<
   | 'careRateChildlessPercent'
   | 'occupationalHealthAllowanceMonthly'
   | 'occupationalCareThresholdMonthly'
->;
+> & {
+  /** Members born before this year pay no surcharge for the childless (`16` §5.6); absent = not applied. */
+  careChildlessExemptBeforeBirthYear?: number;
+};
+
+/**
+ * Care insurance rate in percent: the childless rate only for a childless member who is not exempt. Members born
+ * before `exemptBeforeBirthYear` (§55 Abs. 3 Satz 2 SGB XI, 1940) pay the normal rate. Without a birth year or
+ * an exemption year the childless rate applies, as before.
+ */
+export function careRatePercentFor(
+  childless: boolean,
+  social: Pick<SharedThresholdParameters, 'careRatePercent' | 'careRateChildlessPercent'>,
+  birthYear?: number,
+  exemptBeforeBirthYear?: number,
+): number {
+  const exempt =
+    birthYear !== undefined &&
+    exemptBeforeBirthYear !== undefined &&
+    birthYear < exemptBeforeBirthYear;
+  return childless && !exempt ? social.careRateChildlessPercent : social.careRatePercent;
+}
 
 export type NetPension = {
   gross: number;
@@ -54,6 +75,26 @@ export function taxableShare(
   };
 }
 
+/**
+ * Taxable share (percent) of a statutory pension that started in `startYear`, for people who already draw it
+ * (`16` §5.2): the table of §22 Nr. 1 Satz 3 Buchst. a aa EStG up to 2025 (`legal.retired`), from the base year on
+ * the formula of `taxableShare`. Never below 50 % (the first step covers every earlier start) and never above the
+ * maximum. Undefined if the legal values carry no table.
+ */
+export function taxableShareForStartYear(
+  startYear: number,
+  legal: LegalParameters,
+): number | undefined {
+  const tiers = legal.retired?.taxableShareTiers;
+  const first = tiers?.[0];
+  if (!tiers || !first) return undefined;
+  const p = legal.pension;
+  if (startYear >= p.taxableShareBaseYear) return taxableShare(startYear, legal).percent;
+  let percent = first.percent;
+  for (const t of tiers) if (t.fromYear <= startYear) percent = t.percent;
+  return percent;
+}
+
 export type NetPensionContext = {
   retirementYear: number;
   /** Nominal amounts are divided by this factor (inflation since today) to apply today's tariff. */
@@ -62,6 +103,15 @@ export type NetPensionContext = {
   thresholdScale?: number;
   /** Other taxable income in the same year (today's purchasing power); absent = taxed alone. */
   other?: OtherIncome;
+  /** Birth year of the person; with `legal.retired` it switches off the care surcharge for those born before 1940. */
+  birthYear?: number;
+  /**
+   * Statutory pension of a person who already draws it (`16` §5.2): the tax-free part is this fixed monthly
+   * amount (nominal), so the taxable part is `gross - taxFreeMonthly`. Takes precedence over the share.
+   */
+  taxFreeMonthly?: number;
+  /** Statutory pension: this share (percent) instead of the planning formula, e.g. for the start year itself. */
+  taxableSharePercentOverride?: number;
 };
 
 /**
@@ -86,17 +136,26 @@ export function netPension(
   let care = 0;
   const h = assumptions.health;
 
+  const exemptYear = legal.retired?.careChildlessExemptBeforeBirthYear;
   if (kind === 'statutory') {
-    const share = taxableShare(context.retirementYear, legal);
-    if (share.beforeBaseYear) warnings.push('taxable_share_before_base_year');
-    taxable = (grossMonthly * share.percent) / 100;
-    taxableSharePercent = share.percent;
+    if (context.taxFreeMonthly !== undefined) {
+      taxable = Math.max(0, grossMonthly - context.taxFreeMonthly);
+      taxableSharePercent = grossMonthly > 0 ? (taxable / grossMonthly) * 100 : 0;
+    } else if (context.taxableSharePercentOverride !== undefined) {
+      taxableSharePercent = context.taxableSharePercentOverride;
+      taxable = (grossMonthly * taxableSharePercent) / 100;
+    } else {
+      const share = taxableShare(context.retirementYear, legal);
+      if (share.beforeBaseYear) warnings.push('taxable_share_before_base_year');
+      taxable = (grossMonthly * share.percent) / 100;
+      taxableSharePercent = share.percent;
+    }
     if (h.mode === 'statutoryCompulsory') {
       health =
         (grossMonthly * (legal.social.healthGeneralRatePercent + h.additionalRatePercent)) / 200;
       care =
         (grossMonthly *
-          (h.childless ? legal.social.careRateChildlessPercent : legal.social.careRatePercent)) /
+          careRatePercentFor(h.childless, legal.social, context.birthYear, exemptYear)) /
         100;
     } else {
       health = (grossMonthly * (h.otherRatePercent ?? 0)) / 100;
@@ -109,6 +168,8 @@ export function netPension(
       context.thresholdScale ?? 1,
       assumptions,
       legal.social,
+      context.birthYear,
+      exemptYear,
     ));
   }
 
@@ -150,6 +211,8 @@ export function occupationalContributions(
   thresholdScale: number,
   assumptions: GlobalAssumptions,
   social: SharedThresholdParameters,
+  birthYear?: number,
+  exemptBeforeBirthYear?: number,
 ): { health: number; care: number } {
   const h = assumptions.health;
   if (h.mode !== 'statutoryCompulsory') {
@@ -162,7 +225,14 @@ export function occupationalContributions(
     100;
   const care =
     gross > threshold
-      ? (gross * (h.childless ? social.careRateChildlessPercent : social.careRatePercent)) / 100
+      ? (gross *
+          careRatePercentFor(
+            h.childless,
+            social,
+            birthYear,
+            exemptBeforeBirthYear ?? social.careChildlessExemptBeforeBirthYear,
+          )) /
+        100
       : 0;
   return { health, care };
 }

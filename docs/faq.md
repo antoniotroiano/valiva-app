@@ -40,9 +40,13 @@ Ein Wert, den die App aus einem Gesetz oder einer Vorschrift übernimmt, ist ers
 
 Nein, nicht als alleinige Grundlage. Das Ergebnis ist eine Prognose auf Basis deiner Eingaben und Annahmen. Renditen, Inflation und Gesetze ändern sich, und die App rechnet vereinfacht. Sie ersetzt weder eine Beratung noch die Rentenauskunft der Rentenversicherung. Vergleiche die Zahlen der gesetzlichen Rente mit deiner Renteninformation.
 
+## Ich beziehe schon Rente. Geht das?
+
+Ja. Schalte im **Profil** „Ich beziehe bereits Rente“ ein und trage das Jahr des Rentenbeginns laut Rentenbescheid ein. Dann fragen die Seiten nach den tatsächlichen Werten: die Bruttorente aus dem Bescheid, die Betriebsrente oder ihr Restkapital, das Restkapital eines Altersvorsorgedepots und den Depotwert mit der Summe aller Einzahlungen beim ETF. Die App rechnet ab heute. Ein Sparplan wird für Personen in Rente nicht gerechnet. Wer weiter spart, nutzt die Sparziele.
+
 ## Was kann die App noch nicht?
 
-- **Rentner-Modus:** Personen, die ihre Rente schon beziehen, sind nicht vorgesehen. Ein Rentenbeginn in der Vergangenheit führt zu einer Fehlermeldung statt zu einem Ergebnis.
+- **Rentner-Modus, nicht abgebildet:** Erwerbsminderungsrente als eigener Typ, eine schon bezogene Witwenrente (als „Sonstige Einkünfte“ erfassbar), der Altersentlastungsbetrag, freiwillig gesetzlich oder privat Versicherte mit eigenem Beitragsmodell und die Rentenanpassung zum 1. Juli. Das Gehalt der noch arbeitenden Person in einem Paar ist nicht modelliert; die Jahre bis zu ihrem Rentenbeginn zählen deshalb nicht zur Lücke.
 - Die App gibt es nur auf Deutsch und rechnet nach deutschem Recht.
 - Bekannte Vereinfachungen stehen auf der Seite **Annahmen** und in [`assumptions.md`](assumptions.md).
 

@@ -13,6 +13,7 @@ Die App läuft komplett in deinem Browser. Sie hat kein Konto und keinen Server,
 - **ETF-Sparplan:** Prognose mit Kosten, Steuern und Inflation in drei Szenarien (pessimistisch, neutral, optimistisch), dazu die Entnahme im Ruhestand und die Frage "Welche Sparrate brauche ich für mein Zielvermögen?"
 - **Gesetzliche Rente:** Schätzung aus der Renteninformation, mit Abschlag oder Zuschlag bei früherem oder späterem Rentenbeginn, Steuer sowie Kranken- und Pflegeversicherung
 - **Altersvorsorgedepot und Betriebsrente (bAV):** Zulagen, Kosten, Garantien und Auszahlung
+- **Rentner-Modus:** Wer schon Rente bezieht, trägt die Werte aus dem Rentenbescheid ein (Rente, Betriebsrente, Restkapital, ETF-Bestand); die App rechnet ab heute. Bei Paaren mit einer Person in Rente zeigt der Rentenplan, was heute schon ankommt
 - **Sonstige Einkünfte im Alter:** zum Beispiel bestehende Riester- oder private Renten, Basisrente, Pension, Mieteinnahmen
 - **Sparziele:** wie lange ein kurzfristiges Ziel dauert und wie viel du dafür monatlich zurücklegen musst, mit Zinssteuer
 - **Rentenplan (Gesamtsicht):** Netto-Einkommen im Ruhestand gegen das Wunscheinkommen, Lücke oder Überschuss und die zusätzliche ETF-Rate, die die Lücke schließt
@@ -40,7 +41,7 @@ Anleitungen für Nutzer:
 - **Keine Beratung.** Valiva gibt keine Anlage- und keine Steuerberatung und ersetzt weder eine Beratung noch die Rentenauskunft der Rentenversicherung.
 - **Prognose, keine Garantie.** Die Ergebnisse folgen deinen Eingaben und Annahmen (Rendite, Inflation, Rentenanpassung, Steuer). Die Steuern sind vereinfacht gerechnet. Wie die Zukunft verläuft, weiß niemand.
 - **Fünf gesetzliche Werte sind noch ungeprüft** und in der App überall sichtbar als "ungeprüft" markiert: die Kirchensteuersätze (8 % und 9 %), der Basiszins ab 2027, die Altersgrenze der Kinderzulage beim Altersvorsorgedepot und die Vereinfachung, dass Riester-Renten voll steuerpflichtig sind. Die Prüfung gegen die Gesetzestexte steht in [`docs/legal-values-review.md`](docs/legal-values-review.md). Prüfe Werte, auf die es dir ankommt, selbst nach.
-- **Der Rentner-Modus fehlt noch.** Personen, die ihre Rente schon beziehen, sind nicht vorgesehen. Gibst du einen Rentenbeginn in der Vergangenheit ein, zeigt die App eine Fehlermeldung statt eines Ergebnisses.
+- **Rentner-Modus mit Grenzen.** Nicht abgebildet sind Erwerbsminderungsrente, eine schon bezogene Witwenrente (trage sie als „Sonstige Einkünfte“ ein), der Altersentlastungsbetrag und Versicherte mit eigenem Beitragsmodell (freiwillig gesetzlich oder privat). Die Jahresrente des Jahres nach dem Rentenbeginn, die den steuerfreien Betrag bestimmt, schätzt die App, wenn du sie nicht einträgst.
 - Die Oberfläche gibt es nur auf Deutsch, gerechnet wird nach deutschem Recht.
 - Die Software wird ohne Gewähr bereitgestellt (siehe [Lizenz](LICENSE)).
 

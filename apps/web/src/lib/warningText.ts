@@ -36,6 +36,8 @@ export function warningText(code: string): string {
     rent_allowance_not_applicable: de.otherIncome.warnings.rent_allowance_not_applicable,
     shared_occupational_threshold: de.otherIncome.warnings.shared_occupational_threshold,
     survivor_needs_pair: de.otherIncome.warnings.survivor_needs_pair,
+    first_full_year_estimated: de.retired.warnings.first_full_year_estimated,
+    depot_before_first_contribution_year: de.retired.warnings.depot_before_first_contribution_year,
   };
   if (direct[code]) return direct[code];
 
@@ -127,6 +129,9 @@ const INFO_CODES = new Set([
   'thresholds_indexed',
   'shared_occupational_threshold',
   'rent_allowance_not_applicable',
+  'first_full_year_estimated',
+  // The depot page says it in its own text; the hint stays in the background list.
+  'depot_before_first_contribution_year',
 ]);
 
 /** Notes that change the result or rest on unchecked values are "important"; the rest is background. */

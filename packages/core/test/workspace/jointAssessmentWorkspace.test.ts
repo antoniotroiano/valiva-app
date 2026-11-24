@@ -35,8 +35,8 @@ const errors = (raw: string) => {
 };
 
 describe('household field jointAssessment in the workspace file', () => {
-  it('stays on format version 2 (no new version for an optional field)', () => {
-    expect(WORKSPACE_SCHEMA_VERSION).toBe(2);
+  it('needed no new version for itself (the version is 3 since the retiree mode, AP-20)', () => {
+    expect(WORKSPACE_SCHEMA_VERSION).toBe(3);
   });
 
   it.each([true, false])('round-trips %s and stays byte-stable', (value) => {

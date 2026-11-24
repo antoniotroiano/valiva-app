@@ -1,0 +1,249 @@
+{
+  "name": "r08-care-surcharge-1940",
+  "description": "Childless people born 1939 and 1940: no care surcharge before 1 January 1940",
+  "synthetic": true,
+  "kind": "statutory",
+  "currentYear": 2026,
+  "cases": [
+    {
+      "label": "born-1939-childless",
+      "input": {
+        "actualMonthlyGross": 1500
+      },
+      "profile": {
+        "birthYear": 1939,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2005
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": true
+        }
+      },
+      "expected": {
+        "taxableSharePercent": 50.0,
+        "referenceAnnual": 10984.876971458954,
+        "referenceEstimated": true,
+        "taxFreeYearly": 5492.438485729477,
+        "taxableMonthly": 1042.296792855877,
+        "health": 131.25,
+        "care": 54.0,
+        "tax": 0.0,
+        "net": 1314.75,
+        "path": [
+          {
+            "t": 0,
+            "grossReal": 1500.0,
+            "taxableReal": 1042.296792855877,
+            "healthReal": 131.25,
+            "careReal": 54.0,
+            "taxReal": 0.0,
+            "netReal": 1314.75
+          },
+          {
+            "t": 1,
+            "grossReal": 1507.3529411764703,
+            "taxableReal": 1058.6243067214477,
+            "healthReal": 131.89338235294116,
+            "careReal": 54.264705882352935,
+            "taxReal": 0.0,
+            "netReal": 1321.1948529411761
+          },
+          {
+            "t": 2,
+            "grossReal": 1514.7419261822374,
+            "taxableReal": 1074.8118924028033,
+            "healthReal": 132.53991854094576,
+            "careReal": 54.53070934256055,
+            "taxReal": 0.0,
+            "netReal": 1327.671298298731
+          },
+          {
+            "t": 3,
+            "grossReal": 1522.167131702738,
+            "taxableReal": 1090.8631770170186,
+            "healthReal": 133.1896240239896,
+            "careReal": 54.798016741298575,
+            "taxReal": 0.0,
+            "netReal": 1334.1794909374498
+          }
+        ]
+      }
+    },
+    {
+      "label": "born-1940-childless",
+      "input": {
+        "actualMonthlyGross": 1500
+      },
+      "profile": {
+        "birthYear": 1940,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2006
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": true
+        }
+      },
+      "expected": {
+        "taxableSharePercent": 52.0,
+        "referenceAnnual": 11259.498895745428,
+        "referenceEstimated": true,
+        "taxFreeYearly": 5404.559469957805,
+        "taxableMonthly": 1049.6200441701828,
+        "health": 131.25,
+        "care": 63.0,
+        "tax": 0.0,
+        "net": 1305.75,
+        "path": [
+          {
+            "t": 0,
+            "grossReal": 1500.0,
+            "taxableReal": 1049.6200441701828,
+            "healthReal": 131.25,
+            "careReal": 63.0,
+            "taxReal": 0.0,
+            "netReal": 1305.75
+          },
+          {
+            "t": 1,
+            "grossReal": 1507.3529411764703,
+            "taxableReal": 1065.803964872728,
+            "healthReal": 131.89338235294116,
+            "careReal": 63.308823529411754,
+            "taxReal": 0.0,
+            "netReal": 1312.1507352941173
+          },
+          {
+            "t": 2,
+            "grossReal": 1514.7419261822374,
+            "taxableReal": 1081.8507729432743,
+            "healthReal": 132.53991854094576,
+            "careReal": 63.61916089965396,
+            "taxReal": 0.0,
+            "netReal": 1318.5828467416377
+          },
+          {
+            "t": 3,
+            "grossReal": 1522.167131702738,
+            "taxableReal": 1097.76404029199,
+            "healthReal": 133.1896240239896,
+            "careReal": 63.93101953151499,
+            "taxReal": 0.0,
+            "netReal": 1325.0464881472335
+          }
+        ]
+      }
+    },
+    {
+      "label": "born-1939-parent",
+      "input": {
+        "actualMonthlyGross": 1500
+      },
+      "profile": {
+        "birthYear": 1939,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2005
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "taxableSharePercent": 50.0,
+        "referenceAnnual": 10984.876971458954,
+        "referenceEstimated": true,
+        "taxFreeYearly": 5492.438485729477,
+        "taxableMonthly": 1042.296792855877,
+        "health": 131.25,
+        "care": 54.0,
+        "tax": 0.0,
+        "net": 1314.75,
+        "path": [
+          {
+            "t": 0,
+            "grossReal": 1500.0,
+            "taxableReal": 1042.296792855877,
+            "healthReal": 131.25,
+            "careReal": 54.0,
+            "taxReal": 0.0,
+            "netReal": 1314.75
+          },
+          {
+            "t": 1,
+            "grossReal": 1507.3529411764703,
+            "taxableReal": 1058.6243067214477,
+            "healthReal": 131.89338235294116,
+            "careReal": 54.264705882352935,
+            "taxReal": 0.0,
+            "netReal": 1321.1948529411761
+          },
+          {
+            "t": 2,
+            "grossReal": 1514.7419261822374,
+            "taxableReal": 1074.8118924028033,
+            "healthReal": 132.53991854094576,
+            "careReal": 54.53070934256055,
+            "taxReal": 0.0,
+            "netReal": 1327.671298298731
+          },
+          {
+            "t": 3,
+            "grossReal": 1522.167131702738,
+            "taxableReal": 1090.8631770170186,
+            "healthReal": 133.1896240239896,
+            "careReal": 54.798016741298575,
+            "taxReal": 0.0,
+            "netReal": 1334.1794909374498
+          }
+        ]
+      }
+    }
+  ]
+}

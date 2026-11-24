@@ -6,6 +6,7 @@ import {
   CartesianGrid,
   ComposedChart,
   Line,
+  ReferenceArea,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -30,10 +31,12 @@ function Legend({
   result,
   withWish,
   withSurvivor = false,
+  withTransition = false,
 }: {
   result: HouseholdResult;
   withWish: boolean;
   withSurvivor?: boolean;
+  withTransition?: boolean;
 }) {
   return (
     <ul className="legend">
@@ -47,6 +50,12 @@ function Legend({
         <li>
           <span className="swatch hatched" aria-hidden="true" />
           {de.householdView.survivorLegend(nameOf(result, result.survivor.survivorId))}
+        </li>
+      )}
+      {withTransition && (
+        <li>
+          <span className="swatch dashed" aria-hidden="true" />
+          {de.retired.household.transitionLegend}
         </li>
       )}
       {withWish && (
@@ -134,6 +143,10 @@ export function HouseholdPathChart({
     };
   });
   const maxDesired = Math.max(desired ?? 0, ...data.map((d) => d.desired ?? 0));
+  // Years before the last person starts to draw a pension, with a retired person in the household (`16` §4.2).
+  const transition = result.scenarios[scenario].path.filter((p) => p.transition === true);
+  const transitionFrom = transition[0]?.year;
+  const transitionTo = transition[transition.length - 1]?.year;
   return (
     <div>
       <div
@@ -157,6 +170,16 @@ export function HouseholdPathChart({
               width={90}
               domain={[0, (max: number) => Math.max(max, maxDesired) * 1.05]}
             />
+            {transitionFrom !== undefined && transitionTo !== undefined && (
+              <ReferenceArea
+                x1={transitionFrom}
+                x2={transitionTo}
+                fill="var(--line)"
+                fillOpacity={0.35}
+                stroke="var(--muted)"
+                strokeDasharray="4 3"
+              />
+            )}
             <Tooltip
               formatter={(v, n) => [
                 formatEur(Number(v)),
@@ -206,7 +229,12 @@ export function HouseholdPathChart({
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-      <Legend result={result} withWish={desired !== undefined} withSurvivor />
+      <Legend
+        result={result}
+        withWish={desired !== undefined}
+        withSurvivor
+        withTransition={transitionFrom !== undefined}
+      />
     </div>
   );
 }

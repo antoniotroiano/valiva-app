@@ -89,8 +89,9 @@ test('every value stays reachable with its validity and its source', async ({ pa
   await page.goto('/#assumptions');
   const expected = {
     tax: 18,
-    pension: 20,
-    social: 11,
+    // The retiree-mode values (AP-20): table and rule in the pension group, the 1940 limit in the social group.
+    pension: 22,
+    social: 12,
     depot: 20,
     incomeTax: 15,
     otherIncome: 5,
@@ -134,7 +135,7 @@ test('no config path and no review log in the interface', async ({ page }) => {
 test('calculation rules sit in one collapsed row per building block', async ({ page }) => {
   await page.goto('/#assumptions');
   const rows = page.locator('#calc-rules ~ .dts > details.dt');
-  await expect(rows).toHaveCount(8);
+  await expect(rows).toHaveCount(9); // the row "Personen in Rente" is new (AP-20)
   await expect(page.locator('#rules-depot')).not.toHaveAttribute('open', /.*/);
   await page.locator('#rules-depot > summary').click();
   await expect(page.locator('#rules-depot')).toContainText('Zulagen je Kalenderjahr');

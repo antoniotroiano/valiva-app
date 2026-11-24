@@ -182,5 +182,111 @@
       "sourceDe": "Anteil des übersteigenden Einkommens, der auf die Hinterbliebenenrente angerechnet wird (§97 Abs. 2 Satz 3 SGB VI, geprüft am 20.11.2026)",
       "status": "confirmed"
     }
+  },
+  "retired": {
+    "description": "Values for people who already draw a pension (retiree mode, concept 16). Kept outside `values` so far; the assumptions page shows them from part B of AP-20 on.",
+    "taxableShareTable": {
+      "unit": "rule",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "Taxable share of a pension by year of the pension start up to 2025: §22 Nr. 1 Satz 3 Buchst. a aa EStG, gesetze-im-internet.de, table read in full on 2026-11-24 (no version date on the page). `fromYear` 2005 also covers every earlier start (50 %). From 2026 on the base values `taxableShareBasePercent` and following apply.",
+      "sourceDe": "Besteuerungsanteil nach dem Jahr des Rentenbeginns bis 2025: § 22 Nr. 1 Satz 3 Buchst. a aa EStG, Tabelle vollständig gelesen. Der Eintrag 2005 gilt auch für jeden früheren Beginn (50 %); ab 2026 gelten die Basiswerte dieser Gruppe, geprüft am 24.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed",
+      "tiers": [
+        {
+          "fromYear": 2005,
+          "percent": 50.0
+        },
+        {
+          "fromYear": 2006,
+          "percent": 52.0
+        },
+        {
+          "fromYear": 2007,
+          "percent": 54.0
+        },
+        {
+          "fromYear": 2008,
+          "percent": 56.0
+        },
+        {
+          "fromYear": 2009,
+          "percent": 58.0
+        },
+        {
+          "fromYear": 2010,
+          "percent": 60.0
+        },
+        {
+          "fromYear": 2011,
+          "percent": 62.0
+        },
+        {
+          "fromYear": 2012,
+          "percent": 64.0
+        },
+        {
+          "fromYear": 2013,
+          "percent": 66.0
+        },
+        {
+          "fromYear": 2014,
+          "percent": 68.0
+        },
+        {
+          "fromYear": 2015,
+          "percent": 70.0
+        },
+        {
+          "fromYear": 2016,
+          "percent": 72.0
+        },
+        {
+          "fromYear": 2017,
+          "percent": 74.0
+        },
+        {
+          "fromYear": 2018,
+          "percent": 76.0
+        },
+        {
+          "fromYear": 2019,
+          "percent": 78.0
+        },
+        {
+          "fromYear": 2020,
+          "percent": 80.0
+        },
+        {
+          "fromYear": 2021,
+          "percent": 81.0
+        },
+        {
+          "fromYear": 2022,
+          "percent": 82.0
+        },
+        {
+          "fromYear": 2023,
+          "percent": 82.5
+        },
+        {
+          "fromYear": 2024,
+          "percent": 83.0
+        },
+        {
+          "fromYear": 2025,
+          "percent": 83.5
+        }
+      ]
+    },
+    "taxFreeAmountFixedFromYearAfterStart": {
+      "value": 1,
+      "unit": "rule",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "§22 Nr. 1 Satz 3 Buchst. a aa Satz 4, 5 and 7 EStG, read 2026-11-24 (no version date on the page): the tax-free part is the difference between the annual pension and the taxable share, applies from the year after the pension start for the whole term, regular adjustments do not change it. Limit: the text names no reference year for the annual amount; the app takes the annual pension of the first full year (the year after the start) as its own assumption. Satz 6 (change of the annual amount) and Satz 8 (successive pensions) are not modelled.",
+      "sourceDe": "Steuerfreier Teil der Rente: § 22 Nr. 1 Satz 3 Buchst. a aa Sätze 4, 5 und 7 EStG. Er ist die Jahresrente minus Besteuerungsanteil, gilt ab dem Jahr nach dem Rentenbeginn für die gesamte Laufzeit, regelmäßige Anpassungen ändern ihn nicht. Grenze: Der Text nennt kein Bezugsjahr für den Jahresbetrag; die App nimmt die Jahresrente des ersten vollen Jahres als eigene Annahme. Satz 6 (Veränderung des Jahresbetrags) und Satz 8 (Folgerenten) sind nicht modelliert, geprüft am 24.11.2026 auf gesetze-im-internet.de",
+      "status": "confirmed"
+    }
   }
 }

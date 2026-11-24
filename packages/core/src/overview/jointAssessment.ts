@@ -1,5 +1,6 @@
 import type { Household } from '../household/household';
 import { personContext } from '../household/household';
+import { pensionStartYearOf } from '../shared/profile';
 import type { TaxableIncome } from '../tax/retirementTax';
 import type { JointAssessmentInput } from '../tax/jointTax';
 import { taxableIncomesAt } from './overview';
@@ -28,8 +29,9 @@ export function jointContextFor(
   const me = household.persons.find((p) => p.id === personId);
   const partner = household.persons.find((p) => p.id !== personId);
   if (me === undefined || partner === undefined) return undefined;
-  const start = (p: { birthYear: number; targetRetirementAge: number }) =>
-    p.birthYear + p.targetRetirementAge;
+  // The pension start itself: for a person in the retiree mode the year of the notice, so the joint assessment
+  // starts in the year the later of the two starts (`16` §5.5).
+  const start = pensionStartYearOf;
   const end = (p: { birthYear: number; lifeExpectancyAge: number }) =>
     p.birthYear + p.lifeExpectancyAge;
   const firstYear = Math.max(start(me), start(partner));

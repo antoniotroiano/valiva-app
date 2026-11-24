@@ -1,0 +1,93 @@
+{
+  "name": "r07-rest-capital",
+  "description": "Rest capital as payout plan: company pension 20,000 EUR to 85 (example 4) and retirement depot 30,000 EUR to 90",
+  "synthetic": true,
+  "kind": "restCapital",
+  "currentYear": 2026,
+  "cases": [
+    {
+      "label": "occupational",
+      "input": {
+        "capitalToday": 20000,
+        "capitalEndAge": 85,
+        "product": "occupational"
+      },
+      "profile": {
+        "birthYear": 1955,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2019
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "monthly": 136.42386945930082,
+        "planMonths": 168,
+        "gross": 136.42386945930082,
+        "health": 0.0,
+        "care": 0.0,
+        "tax": 0.0,
+        "net": 136.42386945930082
+      }
+    },
+    {
+      "label": "depot",
+      "input": {
+        "capitalToday": 30000,
+        "capitalEndAge": 90,
+        "product": "retirementDepot"
+      },
+      "profile": {
+        "birthYear": 1955,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2019
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "monthly": 158.01115894306955,
+        "planMonths": 228,
+        "gross": 158.01115894306955,
+        "health": 0.0,
+        "care": 0.0,
+        "tax": 0.0,
+        "net": 158.01115894306955
+      }
+    }
+  ]
+}

@@ -8,9 +8,11 @@ import type { HealthInsurance } from '../shared/profile';
 
 /**
  * Current file format version. A change to any block raises it and adds a migration. Version 2 adds the
- * optional block `otherIncome` (`15` §7): an older app must refuse such a file instead of losing the entries.
+ * optional block `otherIncome` (`15` §7), version 3 the optional retiree-mode fields of the person and of four
+ * blocks (`16` §8): an older app must refuse such a file instead of losing the fields and calculating a retired
+ * person as an error case.
  */
-export const WORKSPACE_SCHEMA_VERSION = 2;
+export const WORKSPACE_SCHEMA_VERSION = 3;
 
 export const WORKSPACE_LIMITS = {
   /** Characters of the file content (an upper bound of 2 MB for typical files). */
@@ -82,10 +84,11 @@ const isObject = (v: unknown): v is Record<string, unknown> =>
 
 /**
  * One entry per step from version `n` to `n + 1`. Version 1 to 2 is the identity: files of version 1 have no
- * `otherIncome` block and load with the default (an empty list).
+ * `otherIncome` block and load with the default (an empty list). Version 2 to 3 is the identity too: files of
+ * versions 1 and 2 have no retiree-mode fields and load with `retired = false`.
  */
 export const WORKSPACE_MIGRATIONS: Record<number, (workspace: Record<string, unknown>) => unknown> =
-  { 1: (workspace) => workspace };
+  { 1: (workspace) => workspace, 2: (workspace) => workspace };
 
 /**
  * Brings an older file up to `target` step by step. Returns the migrated object or an issue.
@@ -250,6 +253,23 @@ function parsePerson(raw: unknown, index: number, issues: WorkspaceIssue[]): Per
   }
   const budget = r.optNum('savingsBudgetMonthly');
   if (budget !== undefined) person.savingsBudgetMonthly = budget;
+  // Retiree mode (`16` §8). Strict: `retired` is a boolean (null, numbers and text are errors, like
+  // `jointAssessment`); the start year is a finite number or absent (its range is checked by the household
+  // validation). Calendar-dependent rules are no import errors.
+  if (raw.retired !== undefined) {
+    if (typeof raw.retired === 'boolean') person.retired = raw.retired;
+    else r.issues.push({ code: 'invalid_field', field: `${base}.retired` });
+  }
+  if (raw.retirementStartYear !== undefined) {
+    const year = raw.retirementStartYear;
+    if (
+      typeof year === 'number' &&
+      Number.isFinite(year) &&
+      Math.abs(year) <= WORKSPACE_LIMITS.maxAbsValue
+    ) {
+      person.retirementStartYear = year;
+    } else r.issues.push({ code: 'invalid_field', field: `${base}.retirementStartYear` });
+  }
   issues.push(...r.issues, ...pr.issues);
   return person;
 }

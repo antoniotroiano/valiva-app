@@ -27,6 +27,10 @@ export type Person = {
   childrenBirthYears: number[];
   personalAssumptions: PersonalAssumptions;
   savingsBudgetMonthly?: number;
+  /** The person already draws the pension (retiree mode, `16`). Absent = false. */
+  retired?: boolean;
+  /** Year the pension started (notice); required with `retired`. */
+  retirementStartYear?: number;
 };
 
 /** Smallest and largest share of the wish that still counts after the first death. */
@@ -65,6 +69,10 @@ export function personContext(household: Household, person: Person): PersonConte
       lifeExpectancyAge: person.lifeExpectancyAge,
       childrenBirthYears: person.childrenBirthYears,
       desiredMonthlyIncomeToday: household.desiredMonthlyIncomeToday,
+      ...(person.retired !== undefined && { retired: person.retired }),
+      ...(person.retirementStartYear !== undefined && {
+        retirementStartYear: person.retirementStartYear,
+      }),
     },
     assumptions: { ...household.assumptions, ...person.personalAssumptions },
   };

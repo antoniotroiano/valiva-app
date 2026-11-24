@@ -1,6 +1,7 @@
 import {
   SCENARIO_NAMES,
   buildOtherIncomeProducts,
+  buildRetiredProducts,
   projectDepot,
   projectOccupational,
   projectStatutory,
@@ -17,6 +18,7 @@ import type {
   ValidationIssue,
 } from '@valiva/core';
 import { etfRetirement } from './etfRetirement';
+import { currentTaxAssumptions } from './taxConfig';
 import type { EtfPayoutState } from './etfRetirement';
 import { CURRENT_YEAR } from '../state/useHousehold';
 import { load as loadDepot } from '../state/useDepot';
@@ -116,6 +118,31 @@ export function buildPersonProducts(
   };
   const target = pr.targetRetirementAge;
   const enabled = blocks.overview.enabled;
+
+  // A person who already draws the pension: actual values from the blocks, calculated from today (`16`).
+  if (pr.retired === true) {
+    const tax = currentTaxAssumptions(ctxPerson.assumptions.churchTax);
+    const plan = blocks.etfPlan;
+    return [
+      ...buildRetiredProducts(
+        {
+          statutory: blocks.statutory,
+          occupational: blocks.occupational,
+          depot: blocks.depot,
+          etfPayout: blocks.etfPayout,
+          enabled,
+          etf: {
+            tax: tax.assumptions,
+            taxUnverified: tax.unverified,
+            taxEnabled: plan.taxEnabled,
+            ...(plan.advanceLumpSum === undefined ? {} : { advanceLumpSum: plan.advanceLumpSum }),
+          },
+        },
+        ctx,
+      ),
+      ...buildOtherIncomeProducts(blocks.otherIncome.entries, ctx),
+    ];
+  }
 
   const sc = blocks.statutory;
   const statutoryStart = sc.retirementAge ?? target;

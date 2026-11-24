@@ -15,6 +15,7 @@ export function CalculationRules() {
       title: t.jointAssessmentRulesTitle,
       rules: t.jointAssessmentRules,
     },
+    { id: 'retired', title: t.retiredRulesTitle, rules: t.retiredRules },
     { id: 'withdrawal', title: t.withdrawalRulesTitle, rules: t.withdrawalRules },
     { id: 'goals', title: t.goalRulesTitle, rules: t.goalRules },
   ];

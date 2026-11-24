@@ -1,0 +1,89 @@
+{
+  "name": "r03-statutory-starts-this-year",
+  "description": "Pension starts in 2026 (1,800 EUR): share 84 % this year, fixed euro amount from 2027 (example 6)",
+  "synthetic": true,
+  "kind": "statutory",
+  "currentYear": 2026,
+  "cases": [
+    {
+      "label": "this-year",
+      "input": {
+        "actualMonthlyGross": 1800
+      },
+      "profile": {
+        "birthYear": 1959,
+        "targetRetirementAge": 67,
+        "lifeExpectancyAge": 90,
+        "childrenBirthYears": [1985],
+        "retired": true,
+        "retirementStartYear": 2026
+      },
+      "assumptions": {
+        "inflationPercent": 2,
+        "returnScenarios": {
+          "pessimistic": 3,
+          "neutral": 5,
+          "optimistic": 7
+        },
+        "pensionAdjustmentPercent": 2.5,
+        "payoutPhaseReturnPercent": 2,
+        "marginalTaxRateTodayPercent": 35,
+        "employeeSocialInsuranceRatePercent": 20,
+        "health": {
+          "mode": "statutoryCompulsory",
+          "additionalRatePercent": 2.9,
+          "childless": false
+        }
+      },
+      "expected": {
+        "taxableSharePercent": 84,
+        "referenceAnnual": 22139.999999999996,
+        "referenceEstimated": true,
+        "taxFreeYearly": 3542.4,
+        "taxableMonthly": 1512.0,
+        "health": 157.5,
+        "care": 64.8,
+        "tax": 41.666666666666664,
+        "net": 1536.0333333333333,
+        "path": [
+          {
+            "t": 0,
+            "grossReal": 1800.0,
+            "taxableReal": 1512.0,
+            "healthReal": 157.5,
+            "careReal": 64.8,
+            "taxReal": 41.666666666666664,
+            "netReal": 1536.0333333333333
+          },
+          {
+            "t": 1,
+            "grossReal": 1808.8235294117644,
+            "taxableReal": 1519.411764705882,
+            "healthReal": 158.2720588235294,
+            "careReal": 65.11764705882352,
+            "taxReal": 42.916666666666664,
+            "netReal": 1542.517156862745
+          },
+          {
+            "t": 2,
+            "grossReal": 1817.6903114186848,
+            "taxableReal": 1533.9532871972315,
+            "healthReal": 159.04790224913492,
+            "careReal": 65.43685121107265,
+            "taxReal": 45.583333333333336,
+            "netReal": 1547.6222246251439
+          },
+          {
+            "t": 3,
+            "grossReal": 1826.6005580432857,
+            "taxableReal": 1548.427004884998,
+            "healthReal": 159.82754882878749,
+            "careReal": 65.75762008955829,
+            "taxReal": 48.25,
+            "netReal": 1552.76538912494
+          }
+        ]
+      }
+    }
+  ]
+}

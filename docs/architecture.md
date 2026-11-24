@@ -13,9 +13,9 @@ packages/core/src/           pure, deterministic functions; errors are returned 
   tax/                       taxConfig, legalConfig (config types), tax, incomeTax, retirementTax, jointTax (splitting)
   etf/                       etf, advanceLumpSum, calculate, validation (ETF savings plan)
   goals/                     goal, goalTypes, goalValidation, etfTarget, solver (savings goals, reverse calculators)
-  pension/                   statutory, depot, occupational, otherIncome (generic entries), netPension, payout, projection, allowance, etfProjector
+  pension/                   statutory, depot, occupational, otherIncome (generic entries), netPension, payout, projection, allowance, etfProjector; retiree mode: retired (inputs, limits, validation), statutoryActual, retiredPayout (company pension, depot), etfHolding
   household/                 household, householdMigration
-  overview/                  overview, otherIncomeProducts, householdOverview, jointAssessment, gapSolver, householdGapSolver
+  overview/                  overview, otherIncomeProducts, retiredProducts (products of a person who already draws the pension), householdOverview, jointAssessment, gapSolver, householdGapSolver
   workspace/                 blocks, workspace (file format: build, parse, apply)
   index.ts                   the only public interface (`@valiva/core`)
 packages/core/test/          mirrors src/ per folder; fixtures.ts, pensionFixtures.ts and golden-vectors/ are shared

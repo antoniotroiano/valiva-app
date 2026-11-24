@@ -34,9 +34,13 @@ export function useHouseholdOverview(
     setBlocks(next);
   }, [idKey]);
 
-  const gapPersonId = household.persons.some((p) => p.id === chosenGapPerson)
+  // Persons in the retiree mode have no savings plan, so the gap solver offers only the others (`16` §7).
+  const eligible = household.persons.filter((p) => p.retired !== true);
+  const gapPersonId = eligible.some((p) => p.id === chosenGapPerson)
     ? (chosenGapPerson as string)
-    : activePersonId;
+    : eligible.some((p) => p.id === activePersonId)
+      ? activePersonId
+      : (eligible[0]?.id ?? activePersonId);
 
   const computed = useMemo(() => {
     if (!blocks || !legal.ok) return {};
@@ -58,7 +62,7 @@ export function useHouseholdOverview(
     const person = household.persons.find((p) => p.id === gapPersonId);
     const b = blocks[gapPersonId];
     let gap: GapSolveResult | undefined;
-    if (outcome.ok && person && b) {
+    if (outcome.ok && person && b && person.retired !== true) {
       const ctx = personContext(household, person);
       gap = solveHouseholdGapContribution(
         household,

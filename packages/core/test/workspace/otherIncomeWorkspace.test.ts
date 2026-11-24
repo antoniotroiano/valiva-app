@@ -287,9 +287,9 @@ describe('otherIncome block: malicious and broken input', () => {
   });
 });
 
-describe('workspace format version 2', () => {
-  it('is version 2 and the step from 1 is the identity', () => {
-    expect(WORKSPACE_SCHEMA_VERSION).toBe(2);
+describe('workspace format version 2 (the block otherIncome; the current version is 3)', () => {
+  it('is version 3 now and the step from 1 is the identity', () => {
+    expect(WORKSPACE_SCHEMA_VERSION).toBe(3);
     const sample = { schemaVersion: 1, household: { id: 'h' } };
     expect(WORKSPACE_MIGRATIONS[1]!(sample)).toBe(sample);
   });
@@ -299,11 +299,11 @@ describe('workspace format version 2', () => {
     expect(r.status).toBe('ok');
     if (r.status !== 'ok') return;
     expect(r.warnings).toEqual([]);
-    expect(r.workspace.schemaVersion).toBe(2);
+    expect(r.workspace.schemaVersion).toBe(3);
     expect(r.workspace.byPerson.p1!.otherIncome).toBeUndefined();
     const { blocks } = applyWorkspace(r.workspace);
     expect(blocks.p1!.otherIncome).toBeUndefined(); // the app falls back to the default: an empty list
-    expect(serializeWorkspace(r.workspace)).toContain('"schemaVersion": 2');
+    expect(serializeWorkspace(r.workspace)).toContain('"schemaVersion": 3');
   });
 
   it('migrates all example files written in version 1 (the files of the previous release)', () => {
@@ -318,8 +318,8 @@ describe('workspace format version 2', () => {
     }
   });
 
-  it('refuses version 3 (and keeps refusing 0 and non-integers)', () => {
-    for (const version of [3, 99]) {
+  it('refuses version 4 (and keeps refusing 0 and non-integers)', () => {
+    for (const version of [4, 99]) {
       const r = parseWorkspace(workspaceText(undefined, version), YEAR, FORMAT);
       expect(r).toEqual({
         status: 'error',

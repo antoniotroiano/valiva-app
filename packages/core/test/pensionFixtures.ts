@@ -179,3 +179,66 @@ export const JOINT: JointAssessmentParameters = {
   splittingDivisor: 2,
   specialExpensesLumpSumJointYearly: 72,
 };
+
+/** Retiree-mode values as in config/pension-de.json and social-de.json (`retired` sections; a test checks the sync). */
+export const RETIRED_LEGAL = {
+  taxableShareTiers: [
+    { fromYear: 2005, percent: 50 },
+    { fromYear: 2006, percent: 52 },
+    { fromYear: 2007, percent: 54 },
+    { fromYear: 2008, percent: 56 },
+    { fromYear: 2009, percent: 58 },
+    { fromYear: 2010, percent: 60 },
+    { fromYear: 2011, percent: 62 },
+    { fromYear: 2012, percent: 64 },
+    { fromYear: 2013, percent: 66 },
+    { fromYear: 2014, percent: 68 },
+    { fromYear: 2015, percent: 70 },
+    { fromYear: 2016, percent: 72 },
+    { fromYear: 2017, percent: 74 },
+    { fromYear: 2018, percent: 76 },
+    { fromYear: 2019, percent: 78 },
+    { fromYear: 2020, percent: 80 },
+    { fromYear: 2021, percent: 81 },
+    { fromYear: 2022, percent: 82 },
+    { fromYear: 2023, percent: 82.5 },
+    { fromYear: 2024, percent: 83 },
+    { fromYear: 2025, percent: 83.5 },
+  ],
+  taxFreeAmountFixedFromYearAfterStart: 1,
+  careChildlessExemptBeforeBirthYear: 1940,
+} as const;
+
+/** `LEGAL` plus the retiree-mode values, as the app resolves them (`includeRetired`). */
+export const LEGAL_R: LegalParameters = {
+  ...LEGAL,
+  retired: {
+    ...RETIRED_LEGAL,
+    taxableShareTiers: RETIRED_LEGAL.taxableShareTiers.map((t) => ({ ...t })),
+  },
+};
+
+/** Marta of the concept (`16` §5.7): born 1955, pension start 2019, KVdR-insured with children, today 2026. */
+export const RET_PROFILE: Profile = {
+  birthYear: 1955,
+  targetRetirementAge: 67,
+  lifeExpectancyAge: 90,
+  childrenBirthYears: [1985],
+  retired: true,
+  retirementStartYear: 2019,
+};
+
+export const RET_CTX: ProjectionContext = {
+  profile: RET_PROFILE,
+  assumptions: ASSUMPTIONS,
+  legal: LEGAL_R,
+  currentYear: 2026,
+};
+
+/** The same context with other profile fields. */
+export function retCtx(
+  over: Partial<Profile> = {},
+  assumptions: GlobalAssumptions = ASSUMPTIONS,
+): ProjectionContext {
+  return { ...RET_CTX, profile: { ...RET_PROFILE, ...over }, assumptions };
+}

@@ -9,6 +9,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 ### Added
 
 - Beta build channel: every green `main` is published to a separate beta site with its own storage prefix (`valiva-beta.`), a beta notice and no search-engine indexing. The released app is unaffected.
+- Retiree mode: a person who already draws a pension is switched on in the profile ("Ich beziehe bereits Rente", with the start year from the pension notice) and enters actual values instead of a forecast: gross statutory pension from the notice, a running company pension or a rest capital, a rest capital of the retirement depot and an ETF holding with the sum paid in. The calculation runs from today. The taxable share follows the year the pension started (table of § 22 EStG up to 2025) and the tax-free part is fixed from the following year; childless people born before 1940 pay no care insurance surcharge.
+- Household with one retired person: a tile "Heute schon in Rente", transition years until the other person retires (shown without a gap, because that person's salary is not modelled) and joint assessment from the year both pensions run.
+- Example data for a retired person and for a couple with one retired person; the assumptions page lists the new legal values (all confirmed) and a calculation-rules row "Personen in Rente".
+
+### Changed
+
+- The export file format is version 3 (new optional fields for the retiree mode). Files of versions 1 and 2 still load; an older app refuses a file of version 3 instead of misreading it.
+- A retirement start in the past no longer ends in a dead-end message: it offers the retiree mode.
 
 ## [0.1.0] - 2026-11-24
 
@@ -29,7 +37,7 @@ First tagged version. Valiva is a retirement and savings planner that runs entir
 
 ### Known limitations
 
-- There is no retiree mode yet: persons who already draw their pension are not supported. A retirement start in the past shows an error instead of a result.
+- Retiree mode: disability pensions, a widow's pension already drawn (enter it as other income), the age-related relief allowance, voluntarily or privately insured people with their own contribution model and the pension adjustment on 1 July are not modelled.
 - Five legal values are still `unverified` and marked as such everywhere in the app: church tax rates (8 % and 9 %), base interest rate from 2027, age limit of the child allowance in the pension depot, and the simplification that Riester pensions are fully taxable. See `docs/legal-values-review.md`.
 - Taxes and social contributions are simplified. The assumptions are listed on the assumptions page and in `docs/assumptions.md`. Results are forecasts, not guarantees, and not tax or investment advice.
 - The export file is not encrypted. Data lives in the browser's local storage and is lost if the browser data is deleted.

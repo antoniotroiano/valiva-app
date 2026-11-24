@@ -68,6 +68,39 @@ function advanceItems(): LegalItem[] {
   return list;
 }
 
+/**
+ * The values of the retiree mode (section `retired` of the pension and social config, AP-20): the taxable-share
+ * table is one item (the table itself is in the source text), the others are plain values.
+ */
+function retiredItems(kind: 'pension' | 'social'): LegalItem[] {
+  const a = de.assumptions;
+  if (kind === 'pension') {
+    const r = pensionConfig.retired;
+    const table = r?.taxableShareTable;
+    return [
+      ...(table
+        ? [
+            {
+              key: 'taxableShareTable',
+              name: a.pensionNames.taxableShareTable ?? 'taxableShareTable',
+              value: { ...table, value: 1, unit: 'rule' } as LegalValue,
+            },
+          ]
+        : []),
+      ...items(
+        ['taxFreeAmountFixedFromYearAfterStart'],
+        (r ?? {}) as Record<string, LegalValue>,
+        a.pensionNames,
+      ),
+    ];
+  }
+  return items(
+    ['careChildlessExemptBeforeBirthYear'],
+    (socialConfig.retired ?? {}) as Record<string, LegalValue>,
+    a.socialNames,
+  );
+}
+
 /** All legal values of the config files, grouped for the page. Display only; nothing is computed here. */
 export function legalGroups(): LegalGroup[] {
   const a = de.assumptions;
@@ -86,7 +119,10 @@ export function legalGroups(): LegalGroup[] {
       title: g.pension,
       parts: [
         {
-          items: items(Object.keys(pensionConfig.values), pensionConfig.values, a.pensionNames),
+          items: [
+            ...items(Object.keys(pensionConfig.values), pensionConfig.values, a.pensionNames),
+            ...retiredItems('pension'),
+          ],
         },
       ],
     },
@@ -94,7 +130,12 @@ export function legalGroups(): LegalGroup[] {
       id: 'social',
       title: g.social,
       parts: [
-        { items: items(Object.keys(socialConfig.values), socialConfig.values, a.socialNames) },
+        {
+          items: [
+            ...items(Object.keys(socialConfig.values), socialConfig.values, a.socialNames),
+            ...retiredItems('social'),
+          ],
+        },
       ],
     },
     {

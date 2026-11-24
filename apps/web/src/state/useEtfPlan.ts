@@ -39,6 +39,12 @@ export function useEtfPlan(personId: string, profile: ProfileApi, legal: LegalRe
     const ages = [debouncedPayout.payoutStartAge, debouncedPayout.payoutEndAge];
     if (ages.some((a) => a !== undefined && !Number.isFinite(a))) return;
     if (Number.isNaN(debouncedPayout.withdrawalPercent)) return;
+    if (
+      Number.isNaN(debouncedPayout.holdingValue) ||
+      Number.isNaN(debouncedPayout.holdingContributions)
+    ) {
+      return;
+    }
     safeSetItem(personKey(personId, 'etfPayout'), JSON.stringify(debouncedPayout));
   });
 
